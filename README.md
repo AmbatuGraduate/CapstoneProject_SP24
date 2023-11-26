@@ -8,7 +8,8 @@
 - [CQRS](https://viblo.asia/p/trien-khai-ung-dung-don-gian-su-dung-cqrs-pattern-voi-raw-sql-va-ddd-gGJ59oy9ZX2) và [Mediator](https://refactoring.guru/design-patterns/mediator)
 - Authentication và authorization bằng JWT token
 ## Cấu trúc bài
-![image](https://github.com/quanSadie/CapstoneProject_SP24/assets/83583888/7f6155da-1f01-4264-827d-f6ff4cda6330)
+![image](https://github.com/quanSadie/CapstoneProject_SP24/assets/83583888/46f2ba33-1639-43a0-b301-e2f6ec0add7d,200x150)
+
 * API và Contracts là 1 presentaion layer, cầu nối đến với người dùng thường chứa các controllers
   * Contracts chứa các model request của api như LoginRequest, RegisterRequest...   
 * Infrastructure là 1 Infrastructure layer, có chức năng là triển khai truy cập dữ liệu từ DB
