@@ -5,7 +5,7 @@
 
 ## Sử dụng công nghệ, application architecture và design pattern
 - [Clean architecture](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture)
-- [QRS](https://topdev.vn/blog/cqrs-pattern-la-gi-vi-du-de-hieu-ve-cqrs-pattern/) và [Mediator](https://refactoring.guru/design-patterns/mediator)
+- [CQRS](https://viblo.asia/p/trien-khai-ung-dung-don-gian-su-dung-cqrs-pattern-voi-raw-sql-va-ddd-gGJ59oy9ZX2) và [Mediator](https://refactoring.guru/design-patterns/mediator)
 - Authentication và authorization bằng JWT token
 ## Cấu trúc bài
 ![image](https://github.com/quanSadie/CapstoneProject_SP24/assets/83583888/7f6155da-1f01-4264-827d-f6ff4cda6330)
