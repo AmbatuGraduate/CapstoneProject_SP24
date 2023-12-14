@@ -1,0 +1,11 @@
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\bin\Debug\net6.0\Tree.Domain.deps.json
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\bin\Debug\net6.0\Tree.Domain.dll
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\bin\Debug\net6.0\Tree.Domain.pdb
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\obj\Debug\net6.0\Tree.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\obj\Debug\net6.0\Tree.Domain.AssemblyInfoInputs.cache
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\obj\Debug\net6.0\Tree.Domain.AssemblyInfo.cs
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\obj\Debug\net6.0\Tree.Domain.csproj.CoreCompileInputs.cache
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\obj\Debug\net6.0\Tree.Domain.dll
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\obj\Debug\net6.0\refint\Tree.Domain.dll
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\obj\Debug\net6.0\Tree.Domain.pdb
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Learnings\Clean_Architecture_Core\Tree.Domain\Tree.Domain\obj\Debug\net6.0\ref\Tree.Domain.dll
