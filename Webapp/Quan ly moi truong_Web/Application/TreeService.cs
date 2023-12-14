@@ -17,16 +17,27 @@ namespace Application
             _treeRepository = treeRepository;
         }
 
+        // CRUD
         public Tree CreateTree(Tree tree)
         {
             _treeRepository.CreateTree(tree);
             return tree;
+        }
+        public void DeleteTree(int id)
+        {
+            _treeRepository.DeleteTree(id);
         }
 
         public List<Tree> GetAllTrees()
         {
             var trees = _treeRepository.GetAllTrees();
             return trees;
+        }
+
+        public Tree UpdateTree(Tree tree)
+        {
+            _treeRepository.UpdateTree(tree);
+            return tree;
         }
     }
 }

@@ -11,5 +11,7 @@ namespace Application
     {
         List<Tree> GetAllTrees();
         Tree CreateTree(Tree tree);
+        void DeleteTree(int id);
+        Tree UpdateTree(Tree tree);
     }
 }

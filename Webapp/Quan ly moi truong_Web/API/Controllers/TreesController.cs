@@ -31,5 +31,19 @@ namespace API.Controllers
             var treeToAdd = _treeService.CreateTree(tree);
             return Ok(treeToAdd);
         }
+
+        [HttpDelete]
+        public IActionResult Delete(int id)
+        {
+            _treeService.DeleteTree(id);
+            return Ok();
+        }
+
+        [HttpPut]
+        public IActionResult Update(Tree tree)
+        {
+            var treeToUpdate = _treeService.UpdateTree(tree);
+            return Ok(treeToUpdate);
+        }
     }
 }

@@ -28,9 +28,22 @@ namespace Infrastructure
             return tree;
         }
 
+        public void DeleteTree(int id)
+        {
+            _treeDbContext.Remove(id);
+            _treeDbContext.SaveChanges();
+        }
+
         public List<Tree> GetAllTrees()
         {
             return _treeDbContext.Trees.ToList();
+        }
+
+        public Tree UpdateTree(Tree tree)
+        {
+            _treeDbContext.Trees.Update(tree);
+            _treeDbContext.SaveChanges();
+            return tree;
         }
     }
 }
