@@ -16,6 +16,7 @@ namespace Infrastructure.Persistence
         public WebDbContext(DbContextOptions<WebDbContext> opts) : base(opts) { }
 
         public DbSet<Users> Users { get; set; } = null!;
+        public DbSet<Tree> Trees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

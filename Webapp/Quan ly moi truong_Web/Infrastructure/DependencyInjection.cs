@@ -43,7 +43,7 @@ namespace Infrastructure
         {
             services.AddDbContext<WebDbContext>(opts =>
             {
-                opts.UseSqlServer("server = localhost; database = DummyWebContext; uid=sa;pwd=binbo123;TrustServerCertificate=True");
+                opts.UseSqlServer("Server=localhost;Database=treedummy;Integrated Security=True;TrustServerCertificate=True;");
                 opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
             return services;

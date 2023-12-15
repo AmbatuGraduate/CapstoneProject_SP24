@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {}
+    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {}
   },
   "projects": {
-    "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
-        "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-        "outputPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\obj\\",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "E:\\VS2022_Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -32,11 +28,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
-                "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
+              "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
+                "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
               },
-              "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
-                "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj"
+              "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj"
               }
             }
           }
@@ -84,25 +80,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
         "projectName": "Contract",
-        "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
-        "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-        "outputPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\obj\\",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "E:\\VS2022_Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -143,25 +135,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-        "outputPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\obj\\",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "E:\\VS2022_Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -216,25 +204,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-        "outputPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "E:\\VS2022_Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -248,11 +232,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
-                "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
-              },
-              "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
-                "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj"
+              "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
               }
             }
           }
@@ -328,7 +309,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
