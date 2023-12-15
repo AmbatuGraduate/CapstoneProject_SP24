@@ -2,6 +2,7 @@
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Services;
+using Application.TreeManage;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
@@ -35,6 +36,8 @@ namespace Infrastructure
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITreeService, TreeService>();
+            services.AddScoped<ITreeRepository, TreeRepository>();
             return services;
         }
 
