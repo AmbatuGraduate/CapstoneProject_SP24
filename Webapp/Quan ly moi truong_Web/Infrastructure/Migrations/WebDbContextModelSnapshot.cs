@@ -37,6 +37,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("IntervalCutTime")
+                        .HasColumnType("int");
+
                     b.Property<float>("LeafLength")
                         .HasColumnType("real");
 

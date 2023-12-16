@@ -35,6 +35,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public Tree UpdateTree(Tree tree)
         {
+            tree.IntervalCutTime = (int)(DateTime.Now - tree.CutTime).TotalDays;
             _treeDbContext.Trees.Update(tree);
             _treeDbContext.SaveChanges();
             return tree;

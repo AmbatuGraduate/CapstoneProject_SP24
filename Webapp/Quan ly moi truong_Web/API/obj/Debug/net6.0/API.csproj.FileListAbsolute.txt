@@ -232,3 +232,4 @@ C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-
 C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\API\obj\Debug\net6.0\API.pdb
 C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\API\obj\Debug\net6.0\API.genruntimeconfig.cache
 C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\API\obj\Debug\net6.0\ref\API.dll
+C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\API\bin\Debug\net6.0\web.config
