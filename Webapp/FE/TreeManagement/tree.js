@@ -22,8 +22,8 @@ function renderTreesList(trees) {
         // Append button and function cell
         var functionCell = $('<div class="tree-cell function"></div>');
         functionCell.append('<span class="cell-label">Chỉnh sửa:</span>');
-        functionCell.append('<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTreeModal">Sửa</button>');
-        functionCell.append('<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Xóa</button>');
+        functionCell.append('<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTreeModal">Sửa</button> &nbsp;   ');
+        functionCell.append('<button data-treeid="' + tree.id + '" type="button" class="btn btn-primary delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>');
         treeRow.append(functionCell);
 
         // Define the properties you want to display and their corresponding labels
@@ -37,7 +37,7 @@ function renderTreesList(trees) {
             'Tán lá': 'leafLength',
             'Thời điểm trồng': 'plantTime',
             'Thời điểm cắt': 'cutTime',
-            'Thời hạn cắt': 'idk',
+            'Thời hạn cắt': 'intervalCutTime',
             'Ghi chú': 'note'
         };
 

@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
   <link rel="stylesheet" href="./style.css">
 
 </head>
@@ -51,80 +52,7 @@
       <div class="app-content-header">
         <h1 class="app-content-headerText">Quản lý cây xanh</h1>
 
-        <div class="modal fade" id="addTreeModal" tabindex="-1" role="dialog" aria-labelledby="addTreeModalLabel"
-          aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="addTreeModalLabel">Thêm</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <!-- Your form for editing tree goes here -->
-                <form id="editTreeForm">
-                  <fieldset disabled>
-                    <div class="mb-3">
-                      <label for="disabledSelect" class="form-label">Quận</label>
-                      <select id="disabledSelect" class="form-select">
-                        <option>Hải Châu</option>
-                        <option>Liên Chiểu</option>
-                        <option>Sơn Trà</option>
-                        <option>Ngũ Hành Sơn</option>
-                        <option>Thanh Khê</option>
-                        <option>Cẩm Lệ</option>
-                      </select>
-                    </div>
-                    <div class="mb-3">
-                      <label for="disabledTextInput" class="form-label">Tuyến đường</label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                      <label for="disabledTextInput" class="form-label">Loại cây</label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                      <label for="disabledTextInput" class="form-label">Giống cây </label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                      <label for="disabledTextInput" class="form-label"> Đường kính thân </label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                      <label for="disabledTextInput" class="form-label"> Tán lá</label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                      <label for="disabledTextInput" class="form-label"> Thời điểm trồng </label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                      <label for="disabledTextInput" class="form-label"> Thời điểm cắt tỉa gần nhất</label>
-                      <input type="text" id="disabledTextInput" class="form-control" placeholder="">
-                    </div>
-                    <div class="mb-3">
-                      <label for="disabledSelect" class="form-label">Quận</label>
-                      <select id="disabledSelect" class="form-select">
-                        <option>3 tháng</option>
-                        <option>6 tháng</option>
-                        <option>9 tháng</option>
-                      </select>
-                    </div>
-                    <div class="mb-3">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled>
-                      </div>
-                    </div>
-                  </fieldset>
-                  <!-- Add other form fields as needed -->
-                  <button type="button" class="btn btn-primary" onclick="saveTree()">Save</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
       <div class="app-content-actions">
         <button class="action-button filter jsFilter"><span>Bộ lọc</span><svg xmlns="http://www.w3.org/2000/svg"
@@ -232,11 +160,91 @@
 
   <!-- modal -->
   <!-- ----------------------------------------------------------------------------------- -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- add -->
+  <div class="modal fade" id="addTreeModal" tabindex="-1" role="dialog" aria-labelledby="addTreeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addTreeModalLabel">Thêm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Your form for editing tree goes here -->
+          <form id="editTreeForm">
+            <fieldset>
+              <div class="mb-3">
+                <label for="add_tree_district" class="form-label">Quận</label>
+                <select id="add_tree_district" class="form-select">
+                  <option>Hải Châu</option>
+                  <option>Liên Chiểu</option>
+                  <option>Sơn Trà</option>
+                  <option>Ngũ Hành Sơn</option>
+                  <option>Thanh Khê</option>
+                  <option>Cẩm Lệ</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="add_tree_street" class="form-label">Tuyến đường</label>
+                <input type="text" id="add_tree_street" class="form-control" placeholder="">
+              </div>
+              <div class="mb-3">
+                <label for="add_tree_type" class="form-label">Loại cây</label>
+                <input type="text" id="add_tree_type" class="form-control" placeholder="">
+              </div>
+              <div class="mb-3">
+                <label for="add_tree_rootType" class="form-label">Giống cây </label>
+                <input type="text" id="add_tree_rootType" class="form-control" placeholder="">
+              </div>
+              <div class="mb-3">
+                <label for="add_tree_diameter" class="form-label"> Đường kính thân </label>
+                <input type="text" id="add_tree_diameter" class="form-control" placeholder="">
+              </div>
+              <div class="mb-3">
+                <label for="add_tree_leaf" class="form-label"> Tán lá</label>
+                <input type="text" id="add_tree_leaf" class="form-control" placeholder="">
+              </div>
+              <div class="mb-3">
+                <label for="add_tree_plant" class="form-label"> Thời điểm trồng </label>
+                <input type="text" id="add_tree_plant" class="form-control datepicker" placeholder="">
+              </div>
+              <div class="mb-3">
+                <label for="add_tree_cut" class="form-label"> Thời điểm cắt tỉa gần nhất</label>
+                <input type="text" id="add_tree_cut" class="form-control datepicker" placeholder="">
+              </div>
+              <div class="mb-3">
+                <label for="add_tree_interval" class="form-label">Thời hạn cắt tỉa</label>
+                <select id="add_tree_interval" class="form-select">
+                  <option value="3">3 tháng</option>
+                  <option value="6">6 tháng</option>
+                  <option value="9">9 tháng</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="add_tree_note" class="form-label"> Ghi chú</label>
+                <input type="text" id="add_tree_note" class="form-control" placeholder="">
+              </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="disabledFieldsetCheck" disabled>
+                </div>
+              </div>
+            </fieldset>
+            <!-- Add other form fields as needed -->
+            <button type="button" id="add_tree_btn" class="btn btn-primary" onclick="saveTree()">Save</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- ----------------------------------------------------------------------------------- -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Bạn có muốn xóa cây?</h5>
+          <h5 class="modal-title" id="deleteModalLabel">Bạn có muốn xóa cây?</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -244,7 +252,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary">Delete</button>
+          <button type="button" class="btn btn-primary" onclick="confirmDelete()">Delete</button>
         </div>
       </div>
     </div>
@@ -305,7 +313,7 @@
                 <input type="text" id="disabledTextInput" class="form-control" placeholder="">
               </div>
               <div class="mb-3">
-                <label for="disabledSelect" class="form-label">Quận</label>
+                <label for="disabledSelect" class="form-label">Thời hạn cắt tỉa</label>
                 <select id="disabledSelect" class="form-select">
                   <option>3 tháng</option>
                   <option>6 tháng</option>
@@ -319,7 +327,7 @@
               </div>
             </fieldset>
             <!-- Add other form fields as needed -->
-            <button type="button" class="btn btn-primary" onclick="saveTree()">Save</button>
+            <button type="button" class="btn btn-primary" onclick="saveUpdateTree()">Save</button>
           </form>
         </div>
       </div>
@@ -330,6 +338,8 @@
 
   <!-- partial -->
   <script src="./tree.js"></script>
+  <script src="./addTree.js"></script>
+
   <script src="./script.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
@@ -338,6 +348,7 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="./deleteTree.js"></script>
 </body>
 
 </html>

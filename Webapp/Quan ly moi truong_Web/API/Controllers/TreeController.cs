@@ -33,7 +33,7 @@ namespace API.Controllers
             return Ok(treeToAdd);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
             _treeService.DeleteTree(id);

@@ -47,9 +47,3 @@ window.onclick = function (event) {
   }
 };
 
-function saveTree() {
-  // Add your logic to save the tree data here
-  alert("Tree saved!");
-  // You may want to close the modal after saving
-  $('#addTreeModal').modal('hide');
-}

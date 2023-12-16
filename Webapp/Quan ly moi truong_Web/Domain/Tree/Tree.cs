@@ -24,6 +24,8 @@ namespace Domain.Entities
         [DataMember]
         public DateTime CutTime { get; set; }
         [DataMember]
+        public int IntervalCutTime { get; set; }
+        [DataMember]
         public string Note { get; set; } = string.Empty;
     }
 }
