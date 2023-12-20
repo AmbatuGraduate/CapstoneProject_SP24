@@ -17,14 +17,14 @@
 * Domain và Application là 1 Core layer, giữ các business model bao gồm các entity, serivce, interface
 
 ## Dummy Database (tree)
-Demo url: 
+# Demo url: 
 -  <a href="https://drawsql.app/teams/idk-45/diagrams/tree-db"> TreeDummyDb </a>
 
 ![image](https://github.com/quanSadie/CapstoneProject_SP24/assets/108205081/aada41e1-4672-4e53-b0e5-6c18214e00fc)
 
 
 
-Overview:
+# Overview:
 ```
 -  Bảng cây sẽ chia ra thành **TreeInfo**, **TreeType** và **Thời điểm cắt tỉa**.
   - _Mục đích: Khi chọn thêm cây người dùng có thể chọn từ 1 list cây đã có sẵn (drop down)_.
