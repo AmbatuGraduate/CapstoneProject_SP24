@@ -1,4 +1,5 @@
-﻿using Application.TreeManage;
+﻿
+using Application.Common.Interfaces.Persistence;
 using Domain.Entities;
 
 namespace Infrastructure.Persistence.Repositories
@@ -14,7 +15,7 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // business rule
-        public Tree CreateTree(Tree tree)
+        public Trees CreateTree(Trees tree)
         {
             _treeDbContext.Trees.Add(tree);
             _treeDbContext.SaveChanges();
@@ -24,16 +25,22 @@ namespace Infrastructure.Persistence.Repositories
 
         public void DeleteTree(int id)
         {
-            _treeDbContext.Remove(id);
+            var tree = _treeDbContext.Trees.FirstOrDefault(t => t.Id == id);
+            _treeDbContext.Trees.Remove(tree);
             _treeDbContext.SaveChanges();
         }
 
-        public List<Tree> GetAllTrees()
+        public List<Trees> GetAllTrees()
         {
             return _treeDbContext.Trees.ToList();
         }
 
-        public Tree UpdateTree(Tree tree)
+        public Trees GetTreeById(int id)
+        {
+            return _treeDbContext.Trees.FirstOrDefault(tree => tree.Id == id);
+        }
+
+        public Trees UpdateTree(Trees tree)
         {
             tree.IntervalCutTime = (int)(DateTime.Now - tree.CutTime).TotalDays;
             _treeDbContext.Trees.Update(tree);

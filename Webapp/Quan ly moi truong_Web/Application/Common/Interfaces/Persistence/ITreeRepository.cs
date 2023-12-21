@@ -5,13 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.TreeManage
+namespace Application.Common.Interfaces.Persistence
 {
     public interface ITreeRepository
     {
-        List<Tree> GetAllTrees();
-        Tree CreateTree(Tree tree);
+        List<Trees> GetAllTrees();
+        Trees GetTreeById(int id);
+        Trees CreateTree(Trees tree);
         void DeleteTree(int id);
-        Tree UpdateTree(Tree tree);
+        Trees UpdateTree(Trees tree);
     }
 }

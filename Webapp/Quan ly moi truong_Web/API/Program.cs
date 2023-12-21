@@ -26,12 +26,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandler("/error");
-app.UseCors();
-app.UseHttpsRedirection();
+
+app.UseCors("AllowAllHeaders");
+//app.UseHttpsRedirection();
 
 
-/*app.UseAuthentication();
-app.UseAuthorization();*/
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
