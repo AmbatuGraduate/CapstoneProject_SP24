@@ -77,5 +77,4 @@ thành
             _treeDbContext.SaveChanges();
         }
 ```
-và sửa cả controller của cây lấy thêm id của cây
 => Nguyên nhân là do `dbContext.Remove(Object entity)` thì nó yêu cầu 1 `entity` nhưng do truyền vào đó là kiểu `int` nên sẽ báo không có entity nào là `int` cả
