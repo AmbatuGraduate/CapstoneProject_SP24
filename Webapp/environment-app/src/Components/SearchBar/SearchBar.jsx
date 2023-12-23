@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './searchbar.scss';
 
 import { BiSearchAlt } from "react-icons/bi";
 

@@ -1,9 +1,7 @@
-.tool {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    
-    > :not(:last-child) {
-        margin-right: 30px;
+.manageTree {
+    .searchArea {
+        .searchBar {
+            margin-right: 1rem;
+        }
     }
 }

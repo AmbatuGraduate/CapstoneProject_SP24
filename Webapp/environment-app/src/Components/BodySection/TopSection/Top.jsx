@@ -6,6 +6,8 @@ import { IoNotificationsOutline } from "react-icons/io5";
 
 // imported Image
 import img from '../../../Assets/adminImg.jpg'
+
+
 import SearchBar from '../../SearchBar/SearchBar';
 
 
@@ -24,9 +26,9 @@ const Top = () => {
                     <input type="text" placeholder='Tìm kiếm' />
                     <BiSearchAlt className='icon' />
                 </div> */}
-                <div className='searchBar flex'>
+                {/* <div className='searchBar flex'>
                     <SearchBar />
-                </div>
+                </div> */}
 
                 <div className="adminDiv flex">
                     <IoNotificationsOutline className='icon' />

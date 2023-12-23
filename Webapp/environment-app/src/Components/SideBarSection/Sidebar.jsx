@@ -56,7 +56,7 @@ const Sidebar = () => {
 
                     </li>
                     <li className="listItem">
-                        <NavLink to='/'>
+                        <NavLink to='/' className='nemuLink flex'>
                             <GrUserManager className='icon' />
                             <span className='smallText'>
                                 Quản lý nhân sự
