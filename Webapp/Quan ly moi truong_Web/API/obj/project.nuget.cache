@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kpDehG+jcpwrU3bfwL3C3Ft4DJ54n08pLt1fs7vqVQunaUXdo9ixqXsgtHyQSrdMK+G0+Cr6ATWzVW0fxlKN8w==",
+  "dgSpecHash": "W9MmGLG5aQEHwAOYnaZEXdEbupeXc7zGAHObf31jvwENTi6mrNqm4AUMp4k2w5mEofuD2ChOOx31iS9R+qULTQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
+  "projectFilePath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

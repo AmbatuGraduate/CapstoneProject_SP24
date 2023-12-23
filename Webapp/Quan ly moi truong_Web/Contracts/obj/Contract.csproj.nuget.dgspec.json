@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {}
+    "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
         "projectName": "Contract",
-        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\obj\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

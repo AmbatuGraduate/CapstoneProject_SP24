@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Application
-build_property.ProjectDir = C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\Application\
+build_property.ProjectDir = C:\Users\admin\OneDrive\Documents\GitHub\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

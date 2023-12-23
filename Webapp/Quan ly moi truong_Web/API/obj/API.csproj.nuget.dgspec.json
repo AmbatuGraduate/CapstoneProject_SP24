@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj": {}
+    "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\API\\obj\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,14 +28,14 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
+              "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
               },
-              "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
-                "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
+              "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
+                "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
               },
-              "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj"
+              "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj"
               }
             }
           }
@@ -96,14 +96,14 @@
         }
       }
     },
-    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\obj\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -120,11 +120,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
-                "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
+              "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
+                "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
               },
-              "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj"
+              "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj"
               }
             }
           }
@@ -176,14 +176,14 @@
         }
       }
     },
-    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
         "projectName": "Contract",
-        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\obj\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -231,14 +231,14 @@
         }
       }
     },
-    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -300,14 +300,14 @@
         }
       }
     },
-    "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
+    "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
+        "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
         "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -324,8 +324,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
+              "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
+                "projectPath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
               }
             }
           }

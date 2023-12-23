@@ -1,4 +1,3 @@
-
 import { useState } from 'react'
 import './style.scss'
 
@@ -7,20 +6,20 @@ export const Filter = () => {
     const toggleFilter = () => {
         setShowFilter(!showFilter);
     };
-  
+
     return (
         <div className='filter-container'>
-            <button onClick={toggleFilter} type="button" class="btn btn-success">
+            <button onClick={toggleFilter} type="button" className="btn btn-success">
                 Bộ lọc
             </button>
             <svg xmlns="http://www.w3.org/2000/svg"
-                width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter">
+                width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                strokeLinecap="round" strokeLinejoin="round" className="feather feather-filter">
                 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
             </svg>
             {
-                showFilter ? 
-                    <div class="filter-menu">
+                showFilter ?
+                    <div className="filter-menu">
                         <label>Quận</label>
                         <select>
                             <option>Tất cả </option>
@@ -37,17 +36,17 @@ export const Filter = () => {
                             <option>Đã cắt tỉa</option>
                             <option>Cần cắt tỉa</option>
                         </select>
-                        <div class="filter-menu-buttons">
-                            <button class="filter-button reset">
+                        <div className="filter-menu-buttons">
+                            <button className="filter-button reset">
                                 Đặt lại
                             </button>
-                            <button class="filter-button apply">
+                            <button className="filter-button apply">
                                 Duyệt
                             </button>
                         </div>
                     </div>
-                : ""
-            }               
+                    : ""
+            }
         </div>
     )
 }

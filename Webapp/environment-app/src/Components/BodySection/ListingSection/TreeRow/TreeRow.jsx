@@ -45,4 +45,4 @@ function TreeRow() {
   )
 }
 
-export default TreeRow
+export default TreeRow;

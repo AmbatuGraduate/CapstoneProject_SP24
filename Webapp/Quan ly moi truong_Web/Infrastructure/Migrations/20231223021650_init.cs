@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,7 @@ namespace Infrastructure.Migrations
                     LeafLength = table.Column<float>(type: "real", nullable: false),
                     PlantTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CutTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IntervalCutTime = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
