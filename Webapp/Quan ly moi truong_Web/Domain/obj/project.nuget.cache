@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2nq/0zMKVkvuSrbLH+vRZvHO38xu6L51+mN/ITS88mDNtSrHHi+xH3WO7dVYWoDfI64Qac/oZCbaESqWEjtZOQ==",
+  "dgSpecHash": "F6RKStI8dZ7wIIsFqC7rGYzwsTUCSTxQzuOqLVhbmg9HGqlWxeHxBNcPS0YOH+O1ed9gxDT9R2kjTdjHWtATcg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\admin\\OneDrive\\Documents\\GitHub\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
+  "projectFilePath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\entityframework\\6.1.0\\entityframework.6.1.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\erroror\\1.3.0\\erroror.1.3.0.nupkg.sha512",
