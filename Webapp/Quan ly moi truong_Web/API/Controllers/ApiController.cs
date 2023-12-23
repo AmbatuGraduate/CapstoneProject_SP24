@@ -17,10 +17,10 @@ namespace API.Controllers
         {
 
             // Having bug, don't show detail of list error
-            //if (errors.All(e => e.Type == ErrorType.Validation))
-            //{
-            //    return ValidationProblem(errors);
-            //}
+            if (errors.All(e => e.Type == ErrorType.Validation))
+            {
+                return ValidationProblem(errors);
+            }
 
             return Problem(errors[0]);
         }

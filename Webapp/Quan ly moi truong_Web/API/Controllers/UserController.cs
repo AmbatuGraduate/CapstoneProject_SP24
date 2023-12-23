@@ -15,7 +15,7 @@ using Application.User.Commands.Add;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class UserController : ApiController
     {
 

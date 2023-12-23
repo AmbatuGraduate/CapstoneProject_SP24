@@ -3,7 +3,7 @@
 namespace Domain.Entities
 {
     [DataContract]
-    public class Tree
+    public class Trees
     {
         [DataMember]
         public int Id { get; set; }
