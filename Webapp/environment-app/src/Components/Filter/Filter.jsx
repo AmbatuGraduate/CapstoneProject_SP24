@@ -13,9 +13,11 @@ export const Filter = () => {
     };
 
     return (
-        <div className='filter-container'>
+        <div className='filter-container flex'>
             <button onClick={toggleFilter} type="button" className="btn btn-success">
-                Bộ lọc
+                <span className='smallText '>
+                    Bộ lọc
+                </span>
                 <FiFilter className='icon' />
             </button>
             {

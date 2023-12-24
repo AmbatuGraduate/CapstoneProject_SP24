@@ -20,3 +20,14 @@ C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-
 C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\refint\Contract.dll
 C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\Contract.pdb
 C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\ref\Contract.dll
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\bin\Debug\net6.0\Contract.deps.json
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\bin\Debug\net6.0\Contract.dll
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\bin\Debug\net6.0\Contract.pdb
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\Contract.GeneratedMSBuildEditorConfig.editorconfig
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\Contract.AssemblyInfoInputs.cache
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\Contract.AssemblyInfo.cs
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\Contract.csproj.CoreCompileInputs.cache
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\Contract.dll
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\refint\Contract.dll
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\Contract.pdb
+E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Contracts\obj\Debug\net6.0\ref\Contract.dll

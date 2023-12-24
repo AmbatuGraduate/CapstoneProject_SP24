@@ -4,7 +4,12 @@ const axiosClient = axios.create({
     baseURL: 'https://localhost:7024/api/Tree',
     headers: {
         'Content-Type': 'application/json',
-    }
+        'Access-Control-Allow-Origin': '*'
+    },
+    Credential: 'include',
+    xhrFields: {
+        withCredentials: true
+    },
 });
 //Interceptors 
 // Add a request interceptor

@@ -3757,19 +3757,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\Mang\\.nuget\\packages\\": {},
+    "E:\\setup\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
+      "projectUniqueName": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\API\\obj\\",
+      "projectPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
+      "packagesPath": "C:\\Users\\Mang\\.nuget\\packages\\",
+      "outputPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "E:\\setup\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Mang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3777,20 +3782,21 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
-              "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
+            "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
+              "projectPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
             },
-            "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
-              "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
+            "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
+              "projectPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
             },
-            "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\Web\\CapstoneProject_SP24-main\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj"
+            "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }
@@ -3847,7 +3853,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
       }
     }
   },

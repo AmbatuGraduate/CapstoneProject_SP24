@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { MdDelete } from "react-icons/md";
 import treeApi from '../../../../Api/treeApi';
+import './treeRow.scss';
 
 function TreeRow() {
   var properties = {
@@ -50,7 +51,7 @@ function TreeRow() {
               {data.map((tree) => (
                 <tr key={tree.id} className="trees-row">
                   <td className="tree-cell function">
-                    <span className="cell-label">Chỉnh sửa:</span>
+                    {/* <span className="cell-label">Chỉnh sửa:</span> */}
                     <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTreeModal">Sửa</button>
                     <button data-treeid={tree.id} type="button" className="btn btn-primary delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
                   </td>

@@ -21,48 +21,43 @@
 }
 
 .filter-container {
-    display: flex;
-    align-items: center;
     position: relative;
-    height: 1rem;
-    width: 100%;
 
     .btn {
         background-color: #28a745;
-        color: #fff;
-        padding: 8px 16px;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        margin-right: 8px;
+        color: var(--whiteColor);
+        border-radius: 5px;
+        box-shadow: 0 2px 4px var(--inputColor);
+        align-items: center;
+        padding: 1rem;
+
+        .smallText {
+            font-size: var(--normalFontSize);
+        }
+        .icon {
+            height: var(--normalFontSize);
+        }
 
         &:hover {
             background-color: #218838;
         }
     }
 
-    svg.feather-filter {
-        width: 16px;
-        height: 16px;
-        fill: none;
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-    }
-
     .filter-menu {
         position: absolute;
         background: var(--whiteColor);
-        top: -50%;
-        left: 100%;
+        top: 10%;
+        left: 110%;
+        right: -200%;
         padding: 1rem;
         border-radius: 5px;
+        box-shadow: 0 2px 4px var(--inputColor);
 
         label {
-            font-weight: bold;
+            font-size: var(--h3FontSize);
             margin-bottom: 5px;
+            color: var(--textColor);
+            font-weight: 800;
         }
 
         select {
@@ -71,15 +66,18 @@
             margin-bottom: 10px;
             border-radius: 4px;
             border: 1px solid #ccc;
+            cursor: pointer;
+            color: var(--textColor);
         }
 
         .filter-menu-buttons {
             display: flex;
-            gap: 10%;
-
+            width: 100%;
+            justify-content: space-between;
             .filter-button {
-                padding: 8px 16px;
-                border-radius: 4px;
+                height: 2.5rem;
+                width: 5rem;
+                border-radius: 5px;
                 border: none;
                 cursor: pointer;
                 font-size: 14px;
