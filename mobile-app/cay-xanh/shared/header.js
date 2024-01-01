@@ -14,9 +14,37 @@ export default function Header({ navigation, title }) {
     }
     return (
 
-        <View>
-            <MaterialIcons name="menu" size={28} onPress={openMenu} ></MaterialIcons>
-            <Text>{title}</Text>
+        <View style={styles.header}>
+            <MaterialIcons style={styles.icon} name="menu" size={28} onPress={openMenu} ></MaterialIcons>
+            <Text style={styles.headerText}>{title}</Text>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    header: {
+        width: '100%',
+        height: '100%',
+        flex: 1,
+        flexDirection: 'row',
+        backgroundColor: '#fff'
+    },
+    headerText: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: '#333',
+        letterSpacing: 1,
+    },
+    icon: {
+        borderWidth: 1,
+        borderColor: '#333'
+    },
+    headerImg: {
+        width: 26,
+        height: 26,
+        marginHorizontal: 10,
+    },
+    headerTitle: {
+        flexDirection: 'row',
+    }
+});
