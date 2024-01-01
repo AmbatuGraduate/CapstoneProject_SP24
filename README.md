@@ -1,4 +1,5 @@
-![image](https://github.com/quanSadie/CapstoneProject_SP24/assets/108205081/19ea9f03-a56a-4f01-95ed-b5bc4c3ea8f2)# CapstoneProject_SP24
+# CapstoneProject_SP24
+![image](https://github.com/quanSadie/CapstoneProject_SP24/assets/108205081/19ea9f03-a56a-4f01-95ed-b5bc4c3ea8f2)
 
 ## Description
 App Mobile của Project cây xanh
