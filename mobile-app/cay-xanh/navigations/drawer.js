@@ -17,9 +17,9 @@ function Routes() {
             <Drawer.Navigator screenOptions={{
                 headerShown: false,
             }}>
-                <Drawer.Screen name="Home" component={HomeStackRouting} />
-                <Drawer.Screen name="Profile" component={ProfileStackRouting} />
-                <Drawer.Screen name="Tasks" component={TaskStackRouting} />
+                <Drawer.Screen name="Trang chủ" component={HomeStackRouting} />
+                <Drawer.Screen name="Hồ sơ" component={ProfileStackRouting} />
+                <Drawer.Screen name="Lịch trình" component={TaskStackRouting} />
             </Drawer.Navigator>
         </NavigationContainer>
     );

@@ -1,10 +1,9 @@
 import 'react-native-gesture-handler';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Font from 'expo-font';
-import React, { useState } from 'react';
-import AppLoading from 'expo-app-loading';
-import Home from './screens/home';
+import React, { useState, useEffect, useCallback } from 'react';
 import Routes from './navigations/drawer';
+import * as SplashScreen from 'expo-splash-screen';
 
 
 /*************************************************************
@@ -15,42 +14,35 @@ import Routes from './navigations/drawer';
 
 
 
-// ----------------------------------
-// Get font
-const getFonts = () => Font.loadAsync({
-  'nunito-regular': require('./assets/fonts/static/NunitoSans_7pt-Regular.ttf'),
-  'nunito-bold': require('./assets/fonts/static/NunitoSans_7pt-SemiBold.ttf'),
-});
 
+SplashScreen.preventAutoHideAsync();
 // ----------------------------------
 // App funcion
 export default function App() {
-  // Ensure font is loaded before app
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  if (fontsLoaded) {
-    return (
-      <Routes />
-    );
-  } else {
-    return (
-      <AppLoading
-        startAsync={getFonts}
-        onFinish={() => setFontsLoaded(true)}
-        onError={console.log('')}
-      />
-    )
+  useEffect(() => {
+    async function prepareFont() {
+      try {
+        await Font.loadAsync({
+          'nunito-regular': require('./assets/fonts/static/NunitoSans_7pt-Regular.ttf'),
+          'nunito-bold': require('./assets/fonts/static/NunitoSans_7pt-SemiBold.ttf'),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setFontsLoaded(true);
+        SplashScreen.hideAsync();
+      }
+    }
+    prepareFont();
+  }, []);
+
+  if (!fontsLoaded) {
+    return null;
   }
+  return (
+    <Routes />
+  )
 
 }
-
-// ----------------------------------
-// Style
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

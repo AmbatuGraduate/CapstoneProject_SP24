@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
     },
     icon: {
-        borderWidth: 1,
         borderColor: '#333'
     },
     headerImg: {

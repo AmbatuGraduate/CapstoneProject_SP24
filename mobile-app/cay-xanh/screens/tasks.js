@@ -32,7 +32,7 @@ export default function TasksList({ navigation }) {
 }
 const styles = StyleSheet.create({
     records: {
-        height: 250,
+        height: 100,
         borderWidth: 1,
         borderColor: '#333',
         borderRadius: 8,

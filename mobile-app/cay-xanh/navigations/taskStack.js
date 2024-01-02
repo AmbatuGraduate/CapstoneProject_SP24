@@ -5,7 +5,7 @@ import TasksList from '../screens/tasks';
 import TaskDetails from '../screens/taskDetails';
 
 /*************************************************************
-**________________ HOME NAVIGATION OF APP __________________**
+**________________ TASK NAVIGATION OF APP __________________**
 **                  CREATED BY: LE ANH QUAN                 **
 *************************************************************/
 
@@ -17,7 +17,18 @@ function TaskStackRouting() {
                 headerTitle: () => <Header navigation={navigation} title='Lịch trình' />,
             })}>
             </Stack.Screen>
-            <Stack.Screen name="TaskDetails" component={TaskDetails}></Stack.Screen>
+            <Stack.Screen name="TaskDetails" component={TaskDetails}
+                options={
+                    {
+                        title: 'Chi tiết công việc',
+                        headerTintColor: '#333',
+                        headerStyle: {
+                            backgroundColor: '#cffdbc',
+                            height: 60,
+                        }
+
+                    }
+                }></Stack.Screen>
         </Stack.Navigator>
     )
 }

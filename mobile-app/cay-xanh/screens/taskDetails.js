@@ -1,16 +1,92 @@
 import React from "react";
-import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, Button } from 'react-native';
+import FlatButton from "../shared/button";
+/*************************************************************
+**_________________ TASK DETAILS SCREEN ____________________**
+**                  CREATED BY: LE ANH QUAN                 **
 
-export default function TaskDetails({ navigation, route }) {
+*************************************************************/
+
+export default function TaskDetails({ route }) {
 
     const { key, name, img } = route.params;
 
     return (
-        <View>
-            <Text>{name}</Text>
-            <Image
-                style={{ width: '100%', height: '80%' }}
-                source={{ uri: img }}></Image>
+        // NOI DUNG CHI TIET 
+        <View style={styles.content}>
+            {/* ANH */}
+            <View style={styles.imageContainer}>
+                <Image
+                    style={styles.img}
+                    source={{ uri: img }}
+                />
+            </View>
+            {/* DIA CHI */}
+            <View style={styles.detailsContainer}>
+                <Text style={styles.nameText}>Địa chỉ</Text>
+                <View
+                    style={{
+                        borderBottomColor: 'black',
+                        borderBottomWidth: 1,
+                    }}
+                />
+                <Text>Quận: Ngũ Hành Sơn</Text>
+                <Text>Đường: Nam Kỳ Khởi Nghĩa</Text>
+                <Text>Số nhà: 001</Text>
+            </View>
+
+            {/* THONG TIN CHI TIET */}
+            <View style={styles.detailsContainer}>
+                <Text style={styles.nameText}>Thông tin chi tiết</Text>
+                <View
+                    style={{
+                        borderBottomColor: 'black',
+                        borderBottomWidth: 1,
+                    }}
+                />
+                <Text>{name}</Text>
+                <Text>Cây rễ sâu</Text>
+                <Text>Bàng Đài Loan</Text>
+                <Text>Thòi điểm trồng: 19/10/2019</Text>
+                <Text>Thòi điểm chăm sóc: 19/10/2021</Text>
+            </View>
+            <FlatButton style={{ bottom: 0 }} text='Hoàn thành' onPress={() => { console.log('btn pressed') }}></FlatButton>
+
         </View>
-    )
+    );
 }
+
+const styles = StyleSheet.create({
+    content: {
+        flex: 1,
+    },
+    imageContainer: {
+        margin: 20,
+        overflow: 'hidden',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+        backgroundColor: 'white',
+        borderRadius: 8
+    },
+    img: {
+        width: '100%',
+        height: 200,
+    },
+    detailsContainer: {
+        marginTop: 15,
+        padding: 8,
+        paddingHorizontal: 20,
+        marginBottom: 10,
+    },
+    nameText: {
+        fontSize: 18,
+        letterSpacing: 1,
+        fontWeight: 'bold',
+    },
+});
