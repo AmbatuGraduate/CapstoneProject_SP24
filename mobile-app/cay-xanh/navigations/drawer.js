@@ -2,6 +2,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from '@react-navigation/native';
 import HomeStackRouting from "./homeStack";
 import ProfileStackRouting from "./profileStack";
+import TaskStackRouting from "./taskStack";
 
 
 /*************************************************************
@@ -18,6 +19,7 @@ function Routes() {
             }}>
                 <Drawer.Screen name="Home" component={HomeStackRouting} />
                 <Drawer.Screen name="Profile" component={ProfileStackRouting} />
+                <Drawer.Screen name="Tasks" component={TaskStackRouting} />
             </Drawer.Navigator>
         </NavigationContainer>
     );

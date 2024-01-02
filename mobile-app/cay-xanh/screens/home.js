@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Button, Modal, FlatList, TouchableOpacity, TouchableWithoutFeedback, Keyboard, Image } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image } from 'react-native';
 
 /*************************************************************
 **__________________ HOME SCREEN OF APP ____________________**
@@ -13,6 +13,7 @@ export default function Home() {
         { name: 'cay bang', img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg', key: '1' },
         { name: 'cay phuong', img: 'https://upload.wikimedia.org/wikipedia/commons/8/87/Royal_Poinciana.jpg', key: '2' },
     ]);
+
 
     return (
         <View>
