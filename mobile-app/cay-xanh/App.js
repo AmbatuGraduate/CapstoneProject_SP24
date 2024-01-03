@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
-import { StyleSheet, Text, View } from 'react-native';
 import * as Font from 'expo-font';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Routes from './navigations/drawer';
 import * as SplashScreen from 'expo-splash-screen';
 

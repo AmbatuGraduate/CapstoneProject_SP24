@@ -30,9 +30,9 @@ export default function TaskDetails({ route }) {
                         borderBottomWidth: 1,
                     }}
                 />
-                <Text>Quận: Ngũ Hành Sơn</Text>
-                <Text>Đường: Nam Kỳ Khởi Nghĩa</Text>
-                <Text>Số nhà: 001</Text>
+                <Text style={styles.infoText}>Quận: Ngũ Hành Sơn</Text>
+                <Text style={styles.infoText}>Đường: Nam Kỳ Khởi Nghĩa</Text>
+                <Text style={styles.infoText}>Số nhà: 001</Text>
             </View>
 
             {/* THONG TIN CHI TIET */}
@@ -44,11 +44,11 @@ export default function TaskDetails({ route }) {
                         borderBottomWidth: 1,
                     }}
                 />
-                <Text>{name}</Text>
-                <Text>Cây rễ sâu</Text>
-                <Text>Bàng Đài Loan</Text>
-                <Text>Thòi điểm trồng: 19/10/2019</Text>
-                <Text>Thòi điểm chăm sóc: 19/10/2021</Text>
+                <Text style={styles.infoText}>{name}</Text>
+                <Text style={styles.infoText}>Cây rễ sâu</Text>
+                <Text style={styles.infoText}>Bàng Đài Loan</Text>
+                <Text style={styles.infoText}>Thòi điểm trồng: 19/10/2019</Text>
+                <Text style={styles.infoText}>Thòi điểm chăm sóc: 19/10/2021</Text>
             </View>
             <FlatButton style={{ bottom: 0 }} text='Hoàn thành' onPress={() => { console.log('btn pressed') }}></FlatButton>
 
@@ -86,7 +86,9 @@ const styles = StyleSheet.create({
     },
     nameText: {
         fontSize: 18,
-        letterSpacing: 1,
-        fontWeight: 'bold',
+        fontFamily: 'nunito-bold'
     },
+    infoText: {
+        fontFamily: 'nunito-regular'
+    }
 });
