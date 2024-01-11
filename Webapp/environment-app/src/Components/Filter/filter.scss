@@ -22,6 +22,7 @@
 
 .filter-container {
     position: relative;
+    z-index: 1;
 
     .btn {
         background-color: #28a745;
@@ -30,7 +31,7 @@
         box-shadow: 0 2px 4px var(--inputColor);
         align-items: center;
         padding: 1rem;
-
+        border: none;
         .smallText {
             font-size: var(--normalFontSize);
         }

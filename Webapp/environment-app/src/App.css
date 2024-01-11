@@ -77,11 +77,6 @@ img{
     margin-left: .5rem;
 }
 
-.btn:hover{
-    background: var(--paleGreen);
-    color: var(--PrimanyColor);
-}
-
 body{
     align-items: center;
     justify-content: center;
@@ -100,7 +95,7 @@ body{
     overflow: hidden;
     border-radius: 1rem;
     box-shadow: 2px 2px 8px var(--greyText);
-
+    
 }
 
 /* hide the scroll thumb */

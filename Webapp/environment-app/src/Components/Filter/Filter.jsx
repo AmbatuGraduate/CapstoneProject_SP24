@@ -15,7 +15,7 @@ export const Filter = () => {
     return (
         <div className='filter-container flex'>
             <button onClick={toggleFilter} type="button" className="btn btn-success">
-                <span className='smallText '>
+                <span className='smallText d-none d-sm-inline'>
                     Bộ lọc
                 </span>
                 <FiFilter className='icon' />
