@@ -28,7 +28,7 @@
     overflow: auto;
 
     .logoDiv {
-        padding: 1.5rem 1.5rem 1.5rem;
+        padding: 1rem 1rem;
         cursor: pointer;
 
         img {
@@ -39,19 +39,12 @@
             padding: 0.2rem;
         }
     }
-
-    .lineBlock {
-        height: 0.25rem;
-        background: var(--textColor);
-        border: none;
-    }
-
     .menuDiv,
     .settingDiv {
         .divTitle {
             font-size: var(--h1FontSize);
             color: var(--blackColor);
-            padding: 1.5rem;
+            padding: 1.5rem 1.5rem;
         }
 
         .menuLists {
@@ -72,7 +65,7 @@
                     background: var(--PrimanyColor);
                 }
 
-                .nemuLink {
+                .menuLink {
                     color: var(--greyText);
                     font-weight: 500;
                     transition: 0;
@@ -81,7 +74,7 @@
                     }
                 }
 
-                &:hover .nemuLink {
+                &:hover .menuLink {
                     color: var(--PrimanyColor);
                     transition: 0;
                 }
@@ -90,16 +83,21 @@
                     height: 100%;
                     transition: 0.3s ease;
                 }
+
+                &:active .menuLink {
+                    color: var(--blackColor);
+                }
             }
         }
     }
 
     .sideBarCard {
-        width: 100%;
+        max-height: 30%;
+        width: 18%;
         padding: 1rem;
         text-align: center;
-        margin-top: 100%;
-        position: relative;
+        position: absolute;
+        bottom: 0;
 
         .icon {
             position: absolute;

@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
 
 *{
     padding: 0;
     box-sizing: border-box;
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 /* Colors and Styles (Defauly) */
@@ -60,7 +60,7 @@ img{
 .grid{
     display: grid;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .btn{
@@ -83,14 +83,13 @@ img{
 }
 
 body{
-    display: flex;
     align-items: center;
     justify-content: center;
     margin: auto;
     padding: 1rem;
 }
 
-.container{
+.container-fluid{
     position: relative;
     width: 98vw;
     height: 96vh;

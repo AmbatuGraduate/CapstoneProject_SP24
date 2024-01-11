@@ -6,7 +6,7 @@ import Body from './Components/BodySection/Body';
 
 const App = () => {
     return (
-        <div className='container'>
+        <div className='container-fluid'>
             <Sidebar />
             <Body />
         </div>
