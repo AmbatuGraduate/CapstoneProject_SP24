@@ -94,6 +94,7 @@ namespace API.Controllers
         public async Task<IActionResult> Update(int id, UpdateTreeRequest request)
         {
             var command = mapper.Map<UpdateTreeCommand>((id, request));
+
             ErrorOr<TreeResult> updateResult = await mediator.Send(command);
 
             if (updateResult.IsError && updateResult.FirstError == Errors.GetTreeById.getTreeFail)

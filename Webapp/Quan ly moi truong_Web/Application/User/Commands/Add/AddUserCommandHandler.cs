@@ -1,9 +1,9 @@
-﻿using Application.Authentication.Commands.Register;
+﻿
 using Application.Authentication.Common;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.User.Common;
-using Domain.Entities;
+using Domain.Entities.User;
 using ErrorOr;
 using MediatR;
 using System;
@@ -39,12 +39,7 @@ namespace Application.User.Commands.Add
             // Create user (generate unique id) & persist to DB
             Users user = new Users
             {
-                Name = request.Name,
-                Address = request.Address,
-                PhoneNumber = request.Phone,
-                Password = request.Password,
-                Role = "Employee",
-                Image = request.Image
+
             };
 
             userRepository.Add(user);

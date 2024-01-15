@@ -8,9 +8,16 @@ namespace Contract.Tree
 {
     public record AddTreeRequest
     (
-        int id, string district, string street,
-        string rootType, string type, float bodyDiameter,
-        float leafLength, DateTime plantTime, DateTime cutTime,
-        int intervalCutTime, string note
+        Guid id, 
+        string district, 
+        string street,
+        string rootType, 
+        string type, 
+        float bodyDiameter,
+        float leafLength, 
+        DateTime plantTime, 
+        DateTime cutTime,
+        int intervalCutTime, 
+        string note 
     );
 }

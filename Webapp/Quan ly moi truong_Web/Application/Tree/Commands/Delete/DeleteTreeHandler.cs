@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Tree.Common;
 using Domain.Common.Errors;
+using Domain.Entities.Tree;
 using ErrorOr;
 using MediatR;
 using System;
@@ -26,12 +27,12 @@ namespace Application.Tree.Commands.Delete
         {
             await Task.CompletedTask;
 
-            if (treeRepository.GetTreeById(request.id) == null)
-                return Errors.GetTreeById.getTreeFail;
+            //if (treeRepository.GetTreeById(request.id) == null)
+            //    return Errors.GetTreeById.getTreeFail;
 
-            treeRepository.DeleteTree(request.id);
+            //treeRepository.DeleteTree(request.id);
 
-            return new TreeResult(new Domain.Entities.Trees());
+            return new TreeResult(new Trees());
         }
     }
 }

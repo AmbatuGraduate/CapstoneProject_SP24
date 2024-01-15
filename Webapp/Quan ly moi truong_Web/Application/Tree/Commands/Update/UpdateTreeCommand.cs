@@ -11,9 +11,15 @@ namespace Application.Tree.Commands.Update
 {
     public record UpdateTreeCommand (
         int id, 
-        string district, string street,
-        string rootType, string type, float bodyDiameter,
-        float leafLength, DateTime plantTime, DateTime cutTime,
-        int intervalCutTime, string note
+        string district, 
+        string street,
+        string rootType, 
+        string type, 
+        float bodyDiameter,
+        float leafLength, 
+        DateTime plantTime, 
+        DateTime cutTime,
+        int intervalCutTime, 
+        string note
         ) : IRequest<ErrorOr<TreeResult>>;
 }

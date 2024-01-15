@@ -1,6 +1,6 @@
 ﻿
 using Application.Common.Interfaces.Persistence;
-using Domain.Entities;
+using Domain.Entities.Tree;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -23,9 +23,9 @@ namespace Infrastructure.Persistence.Repositories
             return tree;
         }
 
-        public void DeleteTree(int id)
+        public void DeleteTree(Guid id)
         {
-            var tree = _treeDbContext.Trees.FirstOrDefault(t => t.Id == id);
+            var tree = _treeDbContext.Trees.FirstOrDefault(t => t.TreeId == id);
             _treeDbContext.Trees.Remove(tree);
             _treeDbContext.SaveChanges();
         }
@@ -35,9 +35,9 @@ namespace Infrastructure.Persistence.Repositories
             return _treeDbContext.Trees.ToList();
         }
 
-        public Trees GetTreeById(int id)
+        public Trees GetTreeById(Guid id)
         {
-            return _treeDbContext.Trees.FirstOrDefault(tree => tree.Id == id);
+            return _treeDbContext.Trees.FirstOrDefault(t => t.TreeId == id);
         }
 
         public Trees UpdateTree(Trees tree)

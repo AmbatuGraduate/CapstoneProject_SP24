@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Tree.Common;
-using Domain.Common.Errors;
-using Domain.Entities;
+using Domain.Entities.Tree;
 using ErrorOr;
 using MediatR;
 
@@ -22,24 +21,24 @@ namespace Application.Tree.Commands.Update
         {
             await Task.CompletedTask;
 
-            if(treeRepository.GetTreeById(request.id) == null)
-            {
-                return Errors.GetTreeById.getTreeFail;
-            }
+            //if(treeRepository.GetTreeById(request.id) == null)
+            //{
+            //    return Errors.GetTreeById.getTreeFail;
+            //}
 
             var tree = new Trees
             {
-                Id = request.id,
-                District = request.district,
-                Street = request.street,
-                RootType = request.rootType,
-                Type = request.type,
-                BodyDiameter = request.bodyDiameter,
-                LeafLength = request.leafLength,
-                PlantTime = request.plantTime,
-                CutTime = request.cutTime,
-                IntervalCutTime = request.intervalCutTime,
-                Note = request.note,
+                //Id = request.id,
+                //District = request.district,
+                //Street = request.street,
+                //RootType = request.rootType,
+                //Type = request.type,
+                //BodyDiameter = request.bodyDiameter,
+                //LeafLength = request.leafLength,
+                //PlantTime = request.plantTime,
+                //CutTime = request.cutTime,
+                //IntervalCutTime = request.intervalCutTime,
+                //Note = request.note,
             };
 
             var result = new TreeResult(treeRepository.UpdateTree(tree));

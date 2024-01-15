@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.User.Common;
 using Domain.Common.Errors;
-using Domain.Entities;
+using Domain.Entities.User;
 using ErrorOr;
 using MediatR;
 using System;
@@ -36,14 +36,14 @@ namespace Application.User.Commands.Udpate
             //Update user
             Users user = new Users
             {
-                Id = request.Id,
-                Name = request.Name,
-                Address = request.Address,
-                PhoneNumber = request.Phone,
-                Password = request.Password,
-                Role = request.Role,
-                Image = request.Image,
-                LockoutEnabled = request.Status
+                //Id = request.Id,
+                //Name = request.Name,
+                //Address = request.Address,
+                //PhoneNumber = request.Phone,
+                //Password = request.Password,
+                //Role = request.Role,
+                //Image = request.Image,
+                //LockoutEnabled = request.Status
             };
 
             userRepository.Update(user);

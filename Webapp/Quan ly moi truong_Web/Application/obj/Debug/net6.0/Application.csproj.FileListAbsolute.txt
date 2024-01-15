@@ -1,9 +1,7 @@
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Application.deps.json
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Application.dll
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Application.pdb
-E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Contract.dll
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Domain.dll
-E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Contract.pdb
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Domain.pdb
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Application\obj\Debug\net6.0\Application.csproj.AssemblyReference.cache
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Application\obj\Debug\net6.0\Application.GeneratedMSBuildEditorConfig.editorconfig
@@ -35,9 +33,7 @@ C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-
 E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Application.deps.json
 E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Application.dll
 E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Application.pdb
-E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Contract.dll
 E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Domain.dll
-E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Contract.pdb
 E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\bin\Debug\net6.0\Domain.pdb
 E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\obj\Debug\net6.0\Application.csproj.AssemblyReference.cache
 E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Application\obj\Debug\net6.0\Application.GeneratedMSBuildEditorConfig.editorconfig

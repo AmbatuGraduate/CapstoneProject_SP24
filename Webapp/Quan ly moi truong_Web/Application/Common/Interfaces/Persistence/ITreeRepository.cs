@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Domain.Entities.Tree;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +10,9 @@ namespace Application.Common.Interfaces.Persistence
     public interface ITreeRepository
     {
         List<Trees> GetAllTrees();
-        Trees GetTreeById(int id);
+        Trees GetTreeById(Guid id);
         Trees CreateTree(Trees tree);
-        void DeleteTree(int id);
+        void DeleteTree(Guid id);
         Trees UpdateTree(Trees tree);
     }
 }

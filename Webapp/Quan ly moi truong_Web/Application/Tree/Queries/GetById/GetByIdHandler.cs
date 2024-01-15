@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Tree.Common;
 using Domain.Common.Errors;
+using Domain.Entities.Tree;
 using ErrorOr;
 using MediatR;
 using System;
@@ -26,14 +27,14 @@ namespace Application.Tree.Queries.GetById
         {
             await Task.CompletedTask;
 
-            var tree = treeRepository.GetTreeById(request.id);
+            //var tree = treeRepository.GetTreeById(request.id);
 
-            if(tree == null)
-            {
-                return Errors.GetTreeById.getTreeFail;
-            }
+            //if(tree == null)
+            //{
+            //    return Errors.GetTreeById.getTreeFail;
+            //}
 
-            return new TreeResult(tree);
+            return new TreeResult(new Trees());
         }
     }
 }

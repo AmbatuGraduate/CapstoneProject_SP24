@@ -42,7 +42,7 @@ namespace Infrastructure
         {
             services.AddDbContext<WebDbContext>(opts =>
             {
-                opts.UseSqlServer("Server=tcp:sampleazuredemo.database.windows.net,1433;Initial Catalog=DummyDB;Persist Security Info=False;User ID=vu;Password=2646347.com;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                opts.UseSqlServer("Server=tcp:urban-sanitation.database.windows.net,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=adminServer;Password=Urbansanitation357;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
                 opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
             return services;
