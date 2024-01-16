@@ -15,7 +15,7 @@ function TreeRow() {
   }, [])
   return (
     <div className='bd-form'>
-      <table className='table table-striped'>
+      <table className='table'>
         <thead className='table'>
           <tr>
             <th>Chỉnh sửa</th>
