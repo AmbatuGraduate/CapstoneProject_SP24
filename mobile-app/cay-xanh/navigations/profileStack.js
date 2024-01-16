@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '../shared/header';
 import Profile from '../screens/profile';
 import Password from '../screens/password';
+import EditProfile from '../screens/editProfile';
 /*************************************************************
 **________________ HOME NAVIGATION OF APP __________________**
 **                  CREATED BY: LE ANH QUAN                 **
@@ -19,6 +20,12 @@ function ProfileStackRouting() {
             <Stack.Screen name="ChangePassword" component={Password}
                 options={{
                     title: 'Đổi mật khẩu',
+                    headerTintColor: 'palegreen'
+                }}>
+            </Stack.Screen>
+            <Stack.Screen name="EditProfile" component={EditProfile}
+                options={{
+                    title: 'Chỉnh sửa thông tin',
                     headerTintColor: '#f1356d'
                 }}>
             </Stack.Screen>

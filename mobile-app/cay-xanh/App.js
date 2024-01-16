@@ -2,7 +2,8 @@ import 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import React, { useState, useEffect } from 'react';
 import Routes from './navigations/drawer';
-import * as SplashScreen from 'expo-splash-screen';
+import * as SplashScreen from 'expo-splash-screen'; // loading screen
+import { RootSiblingParent } from 'react-native-root-siblings'; // show toast all app
 
 
 /*************************************************************
@@ -41,7 +42,10 @@ export default function App() {
     return null;
   }
   return (
-    <Routes />
+    <RootSiblingParent>
+      <Routes />
+    </RootSiblingParent>
+
   )
 
 }

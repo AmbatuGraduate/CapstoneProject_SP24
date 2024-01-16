@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, Image, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import FlatButton from "../shared/button";
 
 /*************************************************************
 **_________________ PROFILE SCREEN OF APP __________________**
@@ -13,7 +14,7 @@ export default function Profile({ navigation }) {
         <View style={styles.container}>
 
             {/* ------------------------------------------------------------------- */}
-            {/* PROFILE PICTURE */}
+            {/* PROFILE PICTURE Container*/}
 
             <TouchableHighlight style={styles.imageContainer} onPress={() => alert('Yaay!')}>
                 <Image
@@ -23,54 +24,50 @@ export default function Profile({ navigation }) {
             </TouchableHighlight>
 
             {/* ------------------------------------------------------------------- */}
-            {/* NAME */}
+            {/* NAME Container*/}
 
-            <View style={styles.name}>
+            <View style={styles.nameContainer}>
                 <Text style={{ fontWeight: 'bold', fontSize: 24 }}>Quan Le Anh</Text>
                 <Text style={{ fontSize: 16 }}>Ngu Hanh Son, Da Nang</Text>
             </View>
 
             {/* ------------------------------------------------------------------- */}
-            {/* Details  */}
+            {/* Details info Container*/}
 
             <View style={styles.infoContainer}>
                 <View style={styles.infoSection}>
-                    <Text style={styles.label}>Tên đăng nhập</Text>
+                    <MaterialIcons style={styles.icon} size={24} name="account-circle" ></MaterialIcons>
                     <Text style={styles.info}>aobnao9</Text>
+                    <View></View>
+                    <View></View>
                 </View>
                 <View style={styles.infoSection}>
-                    <Text style={styles.label}>Số điện thoại</Text>
-                    <Text style={styles.info}>012345678</Text>
+                    <MaterialIcons style={styles.icon} size={24} name="calendar-today" ></MaterialIcons>
+                    <Text style={styles.info}>Ngày Sinh</Text>
+                    <View></View>
+                    <View></View>
                 </View>
+                <View style={styles.infoSection}>
+                    <MaterialIcons style={styles.icon} size={24} name="local-phone" ></MaterialIcons>
+                    <Text style={styles.info}>0123456789</Text>
+                    <View></View>
+                    <View></View>
+                </View>
+                {/* Functional Features */}
+                {/* Password  */}
+                <TouchableOpacity style={styles.infoSection} onPress={() => { navigation.navigate('ChangePassword') }}>
+                    <MaterialIcons style={styles.icon} size={24} name="lock" ></MaterialIcons>
+                    <Text style={styles.info}>Đổi mật khẩu </Text>
+                    <View></View>
+                    <View></View>
+                    <View></View>
+                    <MaterialIcons style={styles.iconBtn} size={24} name="cached" ></MaterialIcons>
+                </TouchableOpacity>
             </View>
 
             {/* ------------------------------------------------------------------- */}
-            {/* FEATURES */}
-
-            <View>
-                {/* Info  */}
-                <TouchableOpacity style={styles.profileNavigator} onPress={() => { navigation.navigate('ChangePassword') }}>
-                    <View style={{ flexDirection: 'row', }}>
-                        <MaterialIcons style={styles.icon} size={20} name="person" ></MaterialIcons>
-                        <Text style={styles.buttonText}> Thay đổi thông tin cá nhân </Text>
-                    </View>
-
-                    <MaterialIcons style={styles.icon} size={20} name="navigate-next" ></MaterialIcons>
-                </TouchableOpacity>
-
-                {/* Password  */}
-                <TouchableOpacity style={styles.profileNavigator} onPress={() => { navigation.navigate('ChangePassword') }}>
-                    <View style={{ flexDirection: 'row', }}>
-                        <MaterialIcons style={styles.icon} size={20} name="lock" ></MaterialIcons>
-                        <Text style={styles.buttonText}> Đổi mật khẩu </Text>
-                    </View>
-
-                    <MaterialIcons style={styles.icon} size={20} name="navigate-next" ></MaterialIcons>
-                </TouchableOpacity>
-
-            </View>
-
-
+            {/* Edit profile Container */}
+            <FlatButton text='Chỉnh sửa' onPress={() => { navigation.navigate('EditProfile') }}></FlatButton>
         </View >
     )
 }
@@ -78,17 +75,17 @@ export default function Profile({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        backgroundColor: 'white',
+        paddingVertical: 30,
+        justifyContent: 'space-between',
     },
-    name: {
+    nameContainer: {
         alignItems: 'center',
-        marginBottom: 20
     },
     imageContainer: {
         alignSelf: 'center',
-        margin: 20,
         overflow: 'hidden',
-        shadowColor: "#000",
+        shadowColor: "#333",
         shadowOffset: {
             width: 0,
             height: 6,
@@ -105,38 +102,31 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
     },
-    profileNavigator: {
-        borderBottomColor: '#999DA0',
-        borderBottomWidth: 1,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingTop: 25,
-        marginRight: 15,
-        marginLeft: 15
-    },
-    buttonText: {
-        fontSize: 16,
-        color: '#777D7E',
-    },
     icon: {
         color: '#98BD98',
+        marginRight: 36,
+        marginLeft: 10
     },
+    iconBtn: {
+        color: '#98BD98',
+    },
+    // information
     infoContainer: {
-        padding: 12,
-        margin: 5
-    },
-    label: {
-        color: 'lightgrey',
-        fontWeight: 'bold',
-        paddingTop: 20,
-        paddingBottom: 10
-    },
-    info: {
-        fontWeight: 'bold'
     },
     infoSection: {
-        borderBottomColor: '#999DA0',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderBottomColor: '#d3d3d3',
         borderBottomWidth: 1,
-        paddingBottom: 5
-    }
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+    },
+    info: {
+        flex: 1,
+        fontSize: 20,
+        color: '#777D7E',
+        fontFamily: 'nunito-regular',
+    },
+
 })

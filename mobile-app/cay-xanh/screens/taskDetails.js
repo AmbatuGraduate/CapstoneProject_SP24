@@ -47,10 +47,10 @@ export default function TaskDetails({ route }) {
                 <Text style={styles.infoText}>{name}</Text>
                 <Text style={styles.infoText}>Cây rễ sâu</Text>
                 <Text style={styles.infoText}>Bàng Đài Loan</Text>
-                <Text style={styles.infoText}>Thòi điểm trồng: 19/10/2019</Text>
-                <Text style={styles.infoText}>Thòi điểm chăm sóc: 19/10/2021</Text>
+                <Text style={styles.infoText}>Thời điểm trồng: 19/10/2019</Text>
+                <Text style={styles.infoText}>Thời điểm chăm sóc: 19/10/2021</Text>
             </View>
-            <FlatButton style={{ bottom: 0 }} text='Hoàn thành' onPress={() => { console.log('btn pressed') }}></FlatButton>
+            <FlatButton style={{ bottom: 10 }} text='Hoàn thành' onPress={() => { console.log('btn pressed') }}></FlatButton>
 
         </View>
     );
@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
         fontFamily: 'nunito-bold'
     },
     infoText: {
-        fontFamily: 'nunito-regular'
-    }
+        fontFamily: 'nunito-regular',
+    },
+
 });

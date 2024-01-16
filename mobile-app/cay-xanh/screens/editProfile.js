@@ -1,10 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet, Dimensions, TextInput } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Dimensions, TextInput, TouchableHighlight, Image } from 'react-native';
 import FlatButton from "../shared/button";
-import Toast from 'react-native-root-toast';
 
-export default function Password() {
+export default function EditProfile() {
 
     return (
         <View style={styles.container}>
@@ -12,18 +10,14 @@ export default function Password() {
             {/* ------------------------------------------------------------------- */}
             {/* PROFILE PICTURE Container*/}
 
-            <View style={styles.imageContainer} onPress={() => alert('Yaay!')}>
-                <MaterialIcons size={72} name="lock" ></MaterialIcons>
-            </View>
+            <TouchableHighlight style={styles.imageContainer} onPress={() => alert('Yaay!')}>
+                <Image
+                    style={styles.img}
+                    source={{ uri: 'https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg' }}
+                />
+            </TouchableHighlight>
 
             {/* ------------------------------------------------------------------- */}
-            {/* text Container*/}
-
-            <View style={styles.nameContainer}>
-                <Text style={{ fontSize: 16, fontFamily: 'nunito-bold', textAlign: 'center', }}>Đổi mật khẩu</Text>
-                <Text style={{ fontSize: 14, fontFamily: 'nunito-regular', textAlign: 'center', }}>Nhập mật khẩu cũ và mật khẩu mới phía dưới</Text>
-            </View>
-
             {/* ------------------------------------------------------------------- */}
             {/* password info Container*/}
 
@@ -33,31 +27,31 @@ export default function Password() {
                         fontSize: 14,
                         color: '#777D7E',
                         fontFamily: 'nunito-bold',
-                    }}>Mật khẩu cũ</Text>
+                    }}>Số điện thoại</Text>
 
-                    <TextInput secureTextEntry={true} style={styles.info} placeholder='*********'></TextInput>
+                    <TextInput style={styles.info} placeholder='Ví dụ: 0123456789'></TextInput>
                 </View>
                 <View style={styles.infoSection}>
                     <Text style={{
                         fontSize: 14,
                         color: '#777D7E',
                         fontFamily: 'nunito-bold',
-                    }}>Mật khẩu mới</Text>
-                    <TextInput secureTextEntry={true} style={styles.info} placeholder='*********'></TextInput>
+                    }}>Ngày sinh</Text>
+                    <TextInput style={styles.info} placeholder='Ví dụ: 12/02/2022'></TextInput>
                 </View>
                 <View style={styles.infoSection}>
                     <Text style={{
                         fontSize: 14,
                         color: '#777D7E',
                         fontFamily: 'nunito-bold',
-                    }}>Nhập lại mật khẩu mới</Text>
-                    <TextInput secureTextEntry={true} style={styles.info} placeholder='*********'></TextInput>
+                    }}>Họ Tên</Text>
+                    <TextInput style={styles.info} placeholder='Ví dụ: Lê Anh Quân'></TextInput>
                 </View>
             </View>
 
             {/* ------------------------------------------------------------------- */}
             {/* Edit profile Container */}
-            <FlatButton text='Đổi mật khẩu' onPress={() => alert('pass')}></FlatButton>
+            <FlatButton text='Chỉnh sửa' onPress={() => alert('pass')}></FlatButton>
         </View >
     )
 }
@@ -69,10 +63,6 @@ const styles = StyleSheet.create({
         paddingVertical: 30,
         justifyContent: 'space-between',
     },
-    nameContainer: {
-        alignItems: 'center',
-        paddingHorizontal: 80
-    },
     imageContainer: {
         alignSelf: 'center',
         alignItems: 'center',
@@ -80,6 +70,22 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         width: Dimensions.get('window').width * 0.33,
         height: Dimensions.get('window').width * 0.33,
+    },
+    imageContainer: {
+        alignSelf: 'center',
+        overflow: 'hidden',
+        shadowColor: "#333",
+        shadowOffset: {
+            width: 0,
+            height: 6,
+        },
+        shadowOpacity: 0.37,
+        shadowRadius: 7.49,
+        elevation: 12,
+        backgroundColor: 'white',
+        width: Dimensions.get('window').width * 0.33,
+        height: Dimensions.get('window').width * 0.33,
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
     },
     img: {
         width: '100%',
