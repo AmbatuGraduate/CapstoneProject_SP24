@@ -1,4 +1,4 @@
-﻿using Application.Authentication.Commands.Register;
+﻿
 using Application.Authentication.Common;
 using ErrorOr;
 using FluentValidation;

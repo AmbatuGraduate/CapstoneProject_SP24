@@ -1,6 +1,5 @@
 ﻿
 using Application.User.Common;
-using Domain.Entities;
 using ErrorOr;
 using MediatR;
 using System;

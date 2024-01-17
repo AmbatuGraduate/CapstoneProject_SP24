@@ -10,55 +10,95 @@ import { LuTrees } from "react-icons/lu";
 import { FaTreeCity } from "react-icons/fa6";
 import { GrUserManager } from "react-icons/gr";
 import { BsQuestionCircle } from "react-icons/bs";
+import { GiTreeBranch } from "react-icons/gi";
+import { MdOutlineMap } from "react-icons/md";
+import { BsBusFrontFill } from "react-icons/bs";
+import { PiTrashSimpleBold } from "react-icons/pi";
 
 // import router
 import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
     return (
-        <div className='sideBar gird'>
+        <div className='sideBar '>
 
             <div className='logoDiv flex'>
                 <img src={logo} alt='Image_name' />
+
             </div>
-            <hr className='lineBlock' />
-            <div className='menuDiv'>
-                <h3 className="divTitle">
-                    Điều hướng
-                </h3>
+            <hr className='line' />
+            <div className='menuDiv p-0'>
+
                 <ul className="menuLists grid">
 
                     <li className="listItem">
-                        <NavLink to="/" className='nemuLink flex'>
+                        <NavLink to="/" className='menuLink flex'>
                             <TbLayoutDashboard className='icon' />
-                            <span className='smallText'>
-                                Quản lý
+                            <span className='smallText d-none d-md-inline'>
+                                Quản lý báo cáo
                             </span>
                         </NavLink>
                     </li>
 
                     <li className="listItem">
-                        <NavLink to='/manage-tree' className='nemuLink flex'>
+                        <NavLink to='/manage-tree' className='menuLink flex'>
                             <LuTrees className='icon' />
-                            <span className='smallText'>
+                            <span className='smallText d-none d-md-inline'>
                                 Quản lý cây xanh
                             </span>
                         </NavLink>
                     </li>
 
                     <li className="listItem">
-                        <NavLink to='/' className='nemuLink flex'>
+                        <NavLink to="/" className='menuLink flex'>
+                            <GiTreeBranch className='icon' />
+                            <span className='smallText d-none d-md-inline'>
+                                Quản lý cắt tỉa
+                            </span>
+                        </NavLink>
+                    </li>
+
+                    <li className="listItem">
+                        <NavLink to="/" className='menuLink flex'>
+                            <MdOutlineMap className='icon' />
+                            <span className='smallText d-none d-md-inline'>
+                                Quản lý tuyến đường
+                            </span>
+                        </NavLink>
+                    </li>
+
+                    <li className="listItem">
+                        <NavLink to="/" className='menuLink flex'>
+                            <BsBusFrontFill className='icon' />
+                            <span className='smallText d-none d-md-inline'>
+                                Quản lý xe thu gom
+                            </span>
+                        </NavLink>
+                    </li>
+
+                    <li className="listItem">
+                        <NavLink to='/' className='menuLink flex'>
                             <FaTreeCity className='icon' />
-                            <span className='smallText'>
+                            <span className='smallText d-none d-md-inline'>
                                 Quản lý vệ sinh đô thị
+                            </span>
+                        </NavLink>
+                    </li>
+
+                    <li className="listItem">
+                        <NavLink to='/' className='menuLink flex'>
+                            <PiTrashSimpleBold className='icon' />
+                            <span className='smallText d-none d-md-inline'>
+                                Quản lý thu gom rác
                             </span>
                         </NavLink>
 
                     </li>
+
                     <li className="listItem">
-                        <NavLink to='/' className='nemuLink flex'>
+                        <NavLink to='/' className='menuLink flex'>
                             <GrUserManager className='icon' />
-                            <span className='smallText'>
+                            <span className='smallText d-none d-md-inline'>
                                 Quản lý nhân sự
                             </span>
                         </NavLink>
@@ -68,7 +108,7 @@ const Sidebar = () => {
 
             <div className="sideBarCard">
                 <BsQuestionCircle className='icon' />
-                <div className='cardContent'>
+                <div className='cardContent d-none d-xl-block'>
                     <div className="circle1"></div>
                     <div className="circle2"></div>
 

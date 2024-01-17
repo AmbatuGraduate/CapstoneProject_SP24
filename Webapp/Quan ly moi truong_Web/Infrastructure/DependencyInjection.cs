@@ -1,14 +1,11 @@
-﻿
-using Application.Common.Interfaces.Authentication;
+﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Services;
-using Application.TreeManage;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,7 +33,6 @@ namespace Infrastructure
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<ITreeService, TreeService>();
             services.AddScoped<ITreeRepository, TreeRepository>();
             return services;
         }
@@ -46,7 +42,7 @@ namespace Infrastructure
         {
             services.AddDbContext<WebDbContext>(opts =>
             {
-                opts.UseSqlServer("Server=tcp:sampleazuredemo.database.windows.net,1433;Initial Catalog=DummyDB;Persist Security Info=False;User ID=vu;Password=2646347.com;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                opts.UseSqlServer("Server=tcp:urban-sanitation.database.windows.net,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=adminServer;Password=Urbansanitation357;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
                 opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
             return services;

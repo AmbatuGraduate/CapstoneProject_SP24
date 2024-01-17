@@ -1,72 +1,62 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { MdDelete } from "react-icons/md";
-import treeApi from '../../../../Api/treeApi';
+// import treeApi from '../../../../Api/treeApi';
 import './treeRow.scss';
+import axios from 'axios';
+import { BiSolidEdit } from "react-icons/bi";
+import Delete from '../../../Modals/ModelDelete';
+import { Link } from 'react-router-dom';
 
 function TreeRow() {
-  var properties = {
-    'Mã số cây': 'id',
-    'Quận': 'district',
-    'Tuyến đường': 'street',
-    'Loại cây': 'rootType',
-    'Giống cây': 'type',
-    'Đường kính thân': 'bodyDiameter',
-    'Tán lá': 'leafLength',
-    'Thời điểm trồng': 'plantTime',
-    'Thời điểm cắt': 'cutTime',
-    'Thời hạn cắt': 'intervalCutTime',
-    'Ghi chú': 'note'
-  };
-
-  const [data, setData] = useState();
-
-  const fetchTrees = useCallback(async () => {
-    try {
-      const treeList = await treeApi.getAll();
-      setData(treeList);
-    } catch (error) {
-      // Handle the error
-    }
-  }, []);
-
+  const [data, setData] = useState([]);
   useEffect(() => {
-    fetchTrees();
-  }, [fetchTrees]);
-
+    axios.get('http://localhost:8000/tree')
+      .then(res => setData(res.data))
+      .catch(err => console.log(err))
+  }, [])
   return (
-    data ? (
-      <div className="trees-area-wrapper tableView">
-
-        <div className="table-responsive">
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th className="tree-cell function"><i className="fas fa-band-aid"></i>Chỉnh sửa</th>
-                {Object.keys(properties).map(label => (
-                  <th key={label} className={"tree-cell " + properties[label].toLowerCase()}>{label}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((tree) => (
-                <tr key={tree.id} className="trees-row">
-                  <td className="tree-cell function">
-                    {/* <span className="cell-label">Chỉnh sửa:</span> */}
-                    <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTreeModal">Sửa</button>
-                    <button data-treeid={tree.id} type="button" className="btn btn-primary delete-btn" data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
-                  </td>
-                  {Object.values(properties).map(property => (
-                    <td key={property} className={"tree-cell " + property.toLowerCase()}>{tree[property]}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    ) : 'loading'
-  );
+    <div className='bd-form'>
+      <table className='table'>
+        <thead className='table'>
+          <tr>
+            <th>Chỉnh sửa</th>
+            <th>Mã số cây</th>
+            <th>Tuyến đường</th>
+            <th>Đường kính thân</th>
+            <th>Tán lá</th>
+            <th>Thời điểm trồng</th>
+            <th>Thời điểm cắt tỉa</th>
+            <th>Lịch cắt tỉa</th>
+            <th>Giống cây</th>
+            <th>Ghi chú</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((d, i) => {
+            return <tr key={i}>
+              <td>
+                <Link to="/update-tree" activeClassname="active" extract={true}>
+                  <button type="button" class="btn btn-click" ><BiSolidEdit /></button>
+                </Link>
+                <Delete />
+              </td>
+              <td><button type="button" class="btn btn-click">{d.MaCay}</button></td>
+              <td>{d.DuongId}</td>
+              <td>{d.DuongKinhThan}</td>
+              <td>{d.TanLa}</td>
+              <td>{d.ThoiDiemTrong}</td>
+              <td>{d.ThoiDiemCatTiepTheo}</td>
+              <td>{d.LichCatTia}</td>
+              <td>{d.GiongCayId}</td>
+              <td>{d.Note}</td>
+            </tr>
+          })
+          }
+        </tbody>
+      </table>
+    </div>
+  )
 }
 
-export default TreeRow;
+export default TreeRow
+
+

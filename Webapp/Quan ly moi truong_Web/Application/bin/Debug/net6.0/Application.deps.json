@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v6.0": {
       "Application/1.0.0": {
         "dependencies": {
-          "Contract": "1.0.0",
           "Domain": "1.0.0",
           "FluentValidation": "11.8.0",
           "FluentValidation.AspNetCore": "11.3.0",
@@ -236,11 +235,6 @@
       },
       "System.ComponentModel.Annotations/5.0.0": {},
       "System.Runtime.CompilerServices.Unsafe/6.0.0": {},
-      "Contract/1.0.0": {
-        "runtime": {
-          "Contract.dll": {}
-        }
-      },
       "Domain/1.0.0": {
         "dependencies": {
           "ErrorOr": "1.3.0",
@@ -412,11 +406,6 @@
       "sha512": "sha512-/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg==",
       "path": "system.runtime.compilerservices.unsafe/6.0.0",
       "hashPath": "system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
-    },
-    "Contract/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     },
     "Domain/1.0.0": {
       "type": "project",

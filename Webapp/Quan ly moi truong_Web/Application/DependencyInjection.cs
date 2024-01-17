@@ -1,7 +1,6 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
 using MediatR;
-using Application.Authentication.Commands.Register;
 using ErrorOr;
 using Application.Authentication.Common;
 using FluentValidation;

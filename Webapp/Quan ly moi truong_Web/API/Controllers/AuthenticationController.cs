@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Common.Errors;
 using MediatR;
-using Application.Authentication.Commands.Register;
 using Application.Authentication.Common;
 using Application.Authentication.Queries.Login;
 using MapsterMapper;
@@ -24,19 +23,6 @@ namespace API.Controllers
         {
             this.mediator = mediator;
             this.mapper = mapper;
-        }
-
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterRequest request)
-        {
-            var command = mapper.Map<RegisterCommand>(request);
-
-            ErrorOr<AuthenticationResult> authResult = await mediator.Send(command);
-
-            return authResult.Match(
-                    authResult => Ok(mapper.Map<AuthenticationResponse>(authResult)),
-                    errors => Problem(errors)
-                );
         }
 
 

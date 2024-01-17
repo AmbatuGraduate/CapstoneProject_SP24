@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&display=swap');
 
 *{
     padding: 0;
     box-sizing: border-box;
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 /* Colors and Styles (Defauly) */
@@ -77,20 +77,14 @@ img{
     margin-left: .5rem;
 }
 
-.btn:hover{
-    background: var(--paleGreen);
-    color: var(--PrimanyColor);
-}
-
 body{
-    display: flex;
     align-items: center;
     justify-content: center;
     margin: auto;
     padding: 1rem;
 }
 
-.container{
+.container-fluid{
     position: relative;
     width: 98vw;
     height: 96vh;
@@ -101,10 +95,10 @@ body{
     overflow: hidden;
     border-radius: 1rem;
     box-shadow: 2px 2px 8px var(--greyText);
-
+    
 }
 
-/* hide the scroll thumb */
+/* hide the scroll thumb
 ::-webkit-scrollbar{
     display: none;
-}
+} */

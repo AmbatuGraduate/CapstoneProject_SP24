@@ -372,16 +372,6 @@
           "buildTransitive/netcoreapp3.1/_._": {}
         }
       },
-      "Contract/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "compile": {
-          "bin/placeholder/Contract.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Contract.dll": {}
-        }
-      },
       "Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -1028,11 +1018,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Contract/1.0.0": {
-      "type": "project",
-      "path": "../Contracts/Contract.csproj",
-      "msbuildProject": "../Contracts/Contract.csproj"
-    },
     "Domain/1.0.0": {
       "type": "project",
       "path": "../Domain/Domain.csproj",
@@ -1041,7 +1026,6 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "Contract >= 1.0.0",
       "Domain >= 1.0.0",
       "FluentValidation >= 11.8.0",
       "FluentValidation.AspNetCore >= 11.3.0",
@@ -1050,23 +1034,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mang\\.nuget\\packages\\": {},
-    "E:\\setup\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\lenovo\\.nuget\\packages\\": {},
+    "E:\\VS2022_Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
+      "projectUniqueName": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
       "projectName": "Application",
-      "projectPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
-      "packagesPath": "C:\\Users\\Mang\\.nuget\\packages\\",
-      "outputPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\obj\\",
+      "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
+      "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
+      "outputPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "E:\\setup\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "E:\\VS2022_Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Mang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1075,18 +1059,14 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
-              "projectPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
-            },
-            "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
-              "projectPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj"
+            "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
+              "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj"
             }
           }
         }
@@ -1134,7 +1114,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   },

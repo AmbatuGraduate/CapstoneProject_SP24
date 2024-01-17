@@ -3,7 +3,6 @@ import './manageTree.scss'
 import { Filter } from "../../Components/Filter/Filter"
 import Listing from '../../Components/BodySection/ListingSection/Listing'
 import SearchBar from '../../Components/SearchBar/SearchBar';
-import { SearchBox } from '../../Components/SearchBox';
 
 
 export const ManageTree = () => {

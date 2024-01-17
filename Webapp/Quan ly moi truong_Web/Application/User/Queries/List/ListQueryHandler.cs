@@ -2,7 +2,6 @@
 using Application.Authentication.Queries.Login;
 using Application.Common.Interfaces.Persistence;
 using Application.User.Common;
-using Domain.Entities;
 using ErrorOr;
 using MediatR;
 using System;

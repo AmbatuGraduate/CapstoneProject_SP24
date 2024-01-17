@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistence;
-using Domain.Entities;
+using Domain.Entities.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;

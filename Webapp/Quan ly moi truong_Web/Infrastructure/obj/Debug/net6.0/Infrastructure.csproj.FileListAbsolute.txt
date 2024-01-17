@@ -3,11 +3,9 @@ E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.dll
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.pdb
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Application.dll
-E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Contract.dll
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Domain.dll
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Application.pdb
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Domain.pdb
-E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Contract.pdb
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.AssemblyReference.cache
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
 E:\Project\Đồ Án\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.AssemblyInfoInputs.cache
@@ -40,24 +38,22 @@ C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-
 C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.pdb
 C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.genruntimeconfig.cache
 C:\Users\admin\OneDrive\Desktop\Capstone Project\Codes\Web\CapstoneProject_SP24-main\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\ref\Infrastructure.dll
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.deps.json
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.runtimeconfig.json
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.dll
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.pdb
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Application.dll
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Contract.dll
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Domain.dll
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Application.pdb
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Contract.pdb
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Domain.pdb
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.AssemblyReference.cache
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.AssemblyInfoInputs.cache
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.AssemblyInfo.cs
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.CoreCompileInputs.cache
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.CopyComplete
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.dll
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\refint\Infrastructure.dll
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.pdb
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.genruntimeconfig.cache
-E:\CAPSTONE\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\ref\Infrastructure.dll
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.AssemblyReference.cache
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.AssemblyInfoInputs.cache
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.AssemblyInfo.cs
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.CoreCompileInputs.cache
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.dll
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\refint\Infrastructure.dll
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.pdb
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.deps.json
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.runtimeconfig.json
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.dll
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Infrastructure.pdb
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Application.dll
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Domain.dll
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Application.pdb
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\bin\Debug\net6.0\Domain.pdb
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.csproj.CopyComplete
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\Infrastructure.genruntimeconfig.cache
+E:\Project\Đồ Án\CapstoneProject_SP24\Webapp\Quan ly moi truong_Web\Infrastructure\obj\Debug\net6.0\ref\Infrastructure.dll

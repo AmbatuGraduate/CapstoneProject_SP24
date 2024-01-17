@@ -23,42 +23,32 @@
 .sideBar {
     background: var(--whiteColor);
     box-shadow: 1px 0px 4px var(--greyText);
-    width: 18%;
+    max-width: 15%;
+    width: 15%;
     height: 100%;
     overflow: auto;
 
     .logoDiv {
-        padding: 1.5rem 1.5rem 1.5rem;
+        padding: 1rem 1rem;
         cursor: pointer;
 
         img {
-            max-width: 50%;
+            width: 50%;
             margin-right: 0.5rem;
             background: var(--inputColor);
             border-radius: 2px;
             padding: 0.2rem;
+            min-width: 3rem;
         }
     }
-
-    .lineBlock {
-        height: 0.25rem;
-        background: var(--textColor);
-        border: none;
-    }
-
     .menuDiv,
     .settingDiv {
-        .divTitle {
-            font-size: var(--h1FontSize);
-            color: var(--blackColor);
-            padding: 1.5rem;
-        }
-
         .menuLists {
+            padding-left: 0;
+            size: var(--h2FontSize);
             .listItem {
-                padding: 0.2rem 1.5rem;
-                width: 100%;
                 position: relative;
+                padding-left: 1.5rem;
 
                 &::before {
                     position: absolute;
@@ -72,16 +62,17 @@
                     background: var(--PrimanyColor);
                 }
 
-                .nemuLink {
+                .menuLink {
                     color: var(--greyText);
                     font-weight: 500;
                     transition: 0;
+                    text-decoration: none;
                     .icon {
                         margin-right: 0.5rem;
                     }
                 }
 
-                &:hover .nemuLink {
+                &:hover .menuLink {
                     color: var(--PrimanyColor);
                     transition: 0;
                 }
@@ -90,16 +81,20 @@
                     height: 100%;
                     transition: 0.3s ease;
                 }
+
+                &:active .menuLink {
+                    color: var(--blackColor);
+                }
             }
         }
     }
 
     .sideBarCard {
-        width: 100%;
+        width: 15%;
         padding: 1rem;
         text-align: center;
-        margin-top: 100%;
-        position: relative;
+        position: absolute;
+        bottom: 0;
 
         .icon {
             position: absolute;
@@ -115,7 +110,7 @@
 
         .cardContent {
             position: relative;
-            padding: 1rem;
+            padding: 0.5rem;
             background: var(--HoverColor);
             border-radius: 10px;
             overflow: hidden;
@@ -139,6 +134,11 @@
                 position: relative;
                 color: var(--textColor);
                 z-index: 1000;
+                background-color: var(--bgColor);
+            }
+            .btn:hover {
+                background: var(--paleGreen);
+                color: var(--PrimanyColor);
             }
 
             .circle1,

@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {}
+    "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {}
   },
   "projects": {
-    "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
+    "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
+        "projectUniqueName": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
         "projectName": "Contract",
-        "projectPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
-        "packagesPath": "C:\\Users\\Mang\\.nuget\\packages\\",
-        "outputPath": "E:\\CAPSTONE\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\obj\\",
+        "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj",
+        "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
+        "outputPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "E:\\setup\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "E:\\VS2022_Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Mang\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -60,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }
