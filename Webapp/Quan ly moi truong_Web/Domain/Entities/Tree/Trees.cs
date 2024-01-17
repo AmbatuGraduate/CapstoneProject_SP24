@@ -29,6 +29,8 @@ namespace Domain.Entities.Tree
         public virtual Cultivars? Cultivar { get; set; }
         [DataMember]
         public string Note { get; set; } = string.Empty;
+        [DataMember]
+        public bool isExist { get; set; } = true;
 
         [DataMember]
         public DateTime CreateDate { get; set; } = DateTime.Now;
