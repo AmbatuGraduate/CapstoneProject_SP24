@@ -1,0 +1,37 @@
+{
+    "tree": [
+        {
+            "MaCay": 1,
+            "DuongId": "Cồn Dầu 4",
+            "DuongKinhThan": "130",
+            "TanLa": "100",
+            "ThoiDiemTrong": "2023-11-20",
+            "ThoiDiemCatTiepTheo": "2023-12-21",
+            "LichCatTia": "2023-12-21",
+            "GiongCayId": "2023-12-21",
+            "Note": "string1"
+        },
+        {
+            "MaCay": 1,
+            "DuongId": "Cồn Dầu 4",
+            "DuongKinhThan": "130",
+            "TanLa": "100",
+            "ThoiDiemTrong": "2023-11-20",
+            "ThoiDiemCatTiepTheo": "2023-12-21",
+            "LichCatTia": "2023-12-21",
+            "GiongCayId": "2023-12-21",
+            "Note": "string1"
+        },
+        {
+            "MaCay": 1,
+            "DuongId": "Cồn Dầu 4",
+            "DuongKinhThan": "130",
+            "TanLa": "100",
+            "ThoiDiemTrong": "2023-11-20",
+            "ThoiDiemCatTiepTheo": "2023-12-21",
+            "LichCatTia": "2023-12-21",
+            "GiongCayId": "2023-12-21",
+            "Note": "string1"
+        }
+    ]
+}
