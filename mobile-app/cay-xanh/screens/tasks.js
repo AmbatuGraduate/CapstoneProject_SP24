@@ -45,17 +45,26 @@ export default function TasksList({ navigation }) {
         setMarked(markedDates);
     }, [trees]);
 
-    // render marked date for dates that have tasks
+    // This function is responsible for rendering the tasks for a selected date.
+    // It returns a FlatList component that displays a list of tasks for the selected date.
+    // Each task is wrapped in a TouchableOpacity component, which allows the user to press on a task.
+    // When a task is pressed, the app navigates to a 'TaskDetails' screen where the user can view more details about the task.
+    // The function uses the 'data' state variable, which should contain an array of tasks for each date.
     const renderItemsForSelectedDate = () => {
         const items = transformedData[selectedDate] || [];
 
         return (
             <FlatList
+                // The data prop is the array of tasks for the selected date.
                 data={items}
+                // The keyExtractor prop is a function that returns a unique identifier for each task.
                 keyExtractor={(item) => item.id.toString()}
+                // The renderItem prop is a function that returns a component for each task.
                 renderItem={({ item }) => (
                     <TouchableOpacity
+                        // Apply some styles to the TouchableOpacity.
                         style={styles.records}
+                        // When the TouchableOpacity is pressed, navigate to the 'TaskDetails' screen.
                         onPress={() => {
                             navigation.navigate('TaskDetails', {
                                 key: item.id,
@@ -136,3 +145,9 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
 });
+
+// Initially, the selectedDate state is set to the current date when the component mounts.
+
+// When you press a day on the calendar, the handleDayPress function is called. This function updates the selectedDate state to the date that was pressed and updates the marked state to highlight the selected day.
+
+// After the selectedDate state is updated, the component re-renders, and the renderItemsForSelectedDate function is called inside the ScrollView to render the items for the selected date.
