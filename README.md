@@ -3,6 +3,7 @@
 ## Mô Tả
 - Sửa lại toàn bộ Domain dựa trên DB mà team đã chốt (tạm thời)
 - Các chức năng CRUD cơ bản của cây, người dùng sẽ không thể dùng được do vẫn chưa sửa theo domain mới
+- Trong `Infrastructure.DependencyInjection.cs` có chứa connection string của sql server azure và muốn kết nối sql server đó vào ssms thì đã có tk được ghi vào bên `wiki > cách để deploy SQL server, Window server của Azure`
 
 ## Giải thích về cấu trúc
 ```
