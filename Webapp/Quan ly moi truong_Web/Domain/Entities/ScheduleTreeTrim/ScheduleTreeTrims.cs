@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.BucketTruck;
 using Domain.Entities.ListTreeTrimmerTask;
+using Domain.Entities.ScheduleTreeTrim_street_map;
 using Domain.Entities.Street;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,6 @@ namespace Domain.Entities.ScheduleTreeTrim
         [DataMember]
         public Guid ScheduleTreeTrimId { get; set; }
         [DataMember]
-        public Guid StreetId { get; set; }
-        public virtual Streets? Streets { get; set; }
-        [DataMember]
         public Guid BucketTruckId { get; set; }
         public virtual BucketTrucks? BucketTrucks { get; set; }
         [DataMember]
@@ -35,7 +33,9 @@ namespace Domain.Entities.ScheduleTreeTrim
         [DataMember]
         public string UpdateBy { get; set; }
 
-        public ICollection<ListTreeTrimmerTasks>? ListTreeTrimmerTasks { get; set; }
+        public ICollection<User_scheduleTreeTrim_maps>? User_scheduleTreeTrim_maps { get; set; }
+        public ICollection<ScheduleTreeTrim_street_maps>? ScheduleTreeTrim_street_maps { get; set; }
+
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.GarbageTruck;
 using Domain.Entities.ListGarbagemanTask;
+using Domain.Entities.ScheduleGarbageCollect_street_map;
 using Domain.Entities.Street;
 using System;
 using System.Collections.Generic;
@@ -27,9 +28,6 @@ namespace Domain.Entities.ScheduleGarbageCollect
         public Guid GarbageTruckId { get; set; }
         public virtual GarbageTrucks? GarbageTrucks { get; set; }
 
-        [DataMember]
-        public Guid StreetId { get; set; }
-        public virtual Streets? Streets { get; set; }
 
         [DataMember]
         public DateTime CreateDate { get; set; } = DateTime.Now;
@@ -40,6 +38,7 @@ namespace Domain.Entities.ScheduleGarbageCollect
         [DataMember]
         public string UpdateBy { get; set; }
 
-        public ICollection<ListGarbagemanTasks>? ListGarbagemanTasks { get; set; }
+        public ICollection<User_scheduleGarbageCollect_maps>? User_scheduleGarbageCollect_maps { get; set; }
+         public ICollection<ScheduleGarbageCollect_street_maps>? ScheduleGarbageCollect_street_maps { get; set; }
     }
 }

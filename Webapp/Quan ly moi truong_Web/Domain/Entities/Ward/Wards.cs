@@ -22,6 +22,5 @@ namespace Domain.Entities.Ward
         public Guid DistrictId { get; set; }
         public virtual Districts? Districts { get; set; }
         public ICollection<Streets>? Streets { get; set; }
-        public ICollection<GarbageDumps>? GarbageDumps { get; set; }
     }
 }

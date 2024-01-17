@@ -1,27 +1,22 @@
-﻿using Domain.Entities.ScheduleTreeTrim;
-using Domain.Entities.User;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities.ScheduleTreeTrim;
+using Domain.Entities.Street;
 
-namespace Domain.Entities.ListTreeTrimmerTask
+namespace Domain.Entities.ScheduleTreeTrim_street_map
 {
-    [DataContract]
-    public class ListTreeTrimmerTasks
+    public class ScheduleTreeTrim_street_maps
     {
         [DataMember]
-        public Guid ListTreeTrimmerTaskId { get; set; }
-        [DataMember]
-        public Guid UserId { get; set; }
-        public virtual Users? Users { get; set; }
-
+        public Guid StreetId { get; set; }
+        public virtual Streets? Street{get; set;}
         [DataMember]
         public Guid ScheduleTreeTrimId { get; set; }
-        public virtual ScheduleTreeTrims? ScheduleTreeTrims { get; set; }
-
+        public virtual ScheduleTreeTrims? ScheduleTreeTrim {get; set;}
         [DataMember]
         public DateTime CreateDate { get; set; } = DateTime.Now;
         [DataMember]
@@ -30,6 +25,5 @@ namespace Domain.Entities.ListTreeTrimmerTask
         public DateTime UpdateDate { get; set; }
         [DataMember]
         public string UpdateBy { get; set; }
-
     }
 }

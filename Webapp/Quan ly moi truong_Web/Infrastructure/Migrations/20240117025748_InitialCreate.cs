@@ -95,6 +95,23 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ScheduleCleanSidewalks",
+                columns: table => new
+                {
+                    ScheduleCleanSidewalksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    WorkingMonth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduleCleanSidewalks", x => x.ScheduleCleanSidewalksId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StreetTypes",
                 columns: table => new
                 {
@@ -124,6 +141,30 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TreeTypes", x => x.TreeTypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScheduleTreeTrims",
+                columns: table => new
+                {
+                    ScheduleTreeTrimId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BucketTruckId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EstimatedPruningTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ActualTrimmingTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduleTreeTrims", x => x.ScheduleTreeTrimId);
+                    table.ForeignKey(
+                        name: "FK_ScheduleTreeTrims_Bucket Trucks_BucketTruckId",
+                        column: x => x.BucketTruckId,
+                        principalTable: "Bucket Trucks",
+                        principalColumn: "BucketTruckId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -269,6 +310,62 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User_scheduleCleanSidewalk_maps",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScheduleCleanSidewalkId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User_scheduleCleanSidewalk_maps", x => new { x.UserId, x.ScheduleCleanSidewalkId });
+                    table.ForeignKey(
+                        name: "FK_User_scheduleCleanSidewalk_maps_ScheduleCleanSidewalks_ScheduleCleanSidewalkId",
+                        column: x => x.ScheduleCleanSidewalkId,
+                        principalTable: "ScheduleCleanSidewalks",
+                        principalColumn: "ScheduleCleanSidewalksId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_User_scheduleCleanSidewalk_maps_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User_scheduleTreeTrim_maps",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScheduleTreeTrimId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User_scheduleTreeTrim_maps", x => new { x.UserId, x.ScheduleTreeTrimId });
+                    table.ForeignKey(
+                        name: "FK_User_scheduleTreeTrim_maps_ScheduleTreeTrims_ScheduleTreeTrimId",
+                        column: x => x.ScheduleTreeTrimId,
+                        principalTable: "ScheduleTreeTrims",
+                        principalColumn: "ScheduleTreeTrimId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_User_scheduleTreeTrim_maps_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "GarbageDumps",
                 columns: table => new
                 {
@@ -278,8 +375,7 @@ namespace Infrastructure.Migrations
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    WardsWardId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    UpdateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -290,21 +386,14 @@ namespace Infrastructure.Migrations
                         principalTable: "Streets",
                         principalColumn: "StreetId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_GarbageDumps_Wards_WardsWardId",
-                        column: x => x.WardsWardId,
-                        principalTable: "Wards",
-                        principalColumn: "WardId");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ScheduleCleanSidewalks",
+                name: "ScheduleCleanSidewalk_street_maps",
                 columns: table => new
                 {
-                    ScheduleCleanSidewalksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StreetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    WorkingMonth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ScheduleCleanSidewalksId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -312,9 +401,15 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ScheduleCleanSidewalks", x => x.ScheduleCleanSidewalksId);
+                    table.PrimaryKey("PK_ScheduleCleanSidewalk_street_maps", x => new { x.StreetId, x.ScheduleCleanSidewalksId });
                     table.ForeignKey(
-                        name: "FK_ScheduleCleanSidewalks_Streets_StreetId",
+                        name: "FK_ScheduleCleanSidewalk_street_maps_ScheduleCleanSidewalks_ScheduleCleanSidewalksId",
+                        column: x => x.ScheduleCleanSidewalksId,
+                        principalTable: "ScheduleCleanSidewalks",
+                        principalColumn: "ScheduleCleanSidewalksId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ScheduleCleanSidewalk_street_maps_Streets_StreetId",
                         column: x => x.StreetId,
                         principalTable: "Streets",
                         principalColumn: "StreetId",
@@ -322,14 +417,11 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ScheduleTreeTrims",
+                name: "ScheduleTreeTrim_street_maps",
                 columns: table => new
                 {
-                    ScheduleTreeTrimId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StreetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BucketTruckId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EstimatedPruningTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ActualTrimmingTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ScheduleTreeTrimId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -337,15 +429,15 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ScheduleTreeTrims", x => x.ScheduleTreeTrimId);
+                    table.PrimaryKey("PK_ScheduleTreeTrim_street_maps", x => new { x.StreetId, x.ScheduleTreeTrimId });
                     table.ForeignKey(
-                        name: "FK_ScheduleTreeTrims_Bucket Trucks_BucketTruckId",
-                        column: x => x.BucketTruckId,
-                        principalTable: "Bucket Trucks",
-                        principalColumn: "BucketTruckId",
+                        name: "FK_ScheduleTreeTrim_street_maps_ScheduleTreeTrims_ScheduleTreeTrimId",
+                        column: x => x.ScheduleTreeTrimId,
+                        principalTable: "ScheduleTreeTrims",
+                        principalColumn: "ScheduleTreeTrimId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ScheduleTreeTrims_Streets_StreetId",
+                        name: "FK_ScheduleTreeTrim_street_maps_Streets_StreetId",
                         column: x => x.StreetId,
                         principalTable: "Streets",
                         principalColumn: "StreetId",
@@ -420,64 +512,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ListSidewalkCleanerTasks",
-                columns: table => new
-                {
-                    ListSidewalkCleanerTaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ScheduleCleanSidewalkId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ListSidewalkCleanerTasks", x => x.ListSidewalkCleanerTaskId);
-                    table.ForeignKey(
-                        name: "FK_ListSidewalkCleanerTasks_ScheduleCleanSidewalks_ScheduleCleanSidewalkId",
-                        column: x => x.ScheduleCleanSidewalkId,
-                        principalTable: "ScheduleCleanSidewalks",
-                        principalColumn: "ScheduleCleanSidewalksId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ListSidewalkCleanerTasks_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ListTreeTrimmerTasks",
-                columns: table => new
-                {
-                    ListTreeTrimmerTaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ScheduleTreeTrimId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ListTreeTrimmerTasks", x => x.ListTreeTrimmerTaskId);
-                    table.ForeignKey(
-                        name: "FK_ListTreeTrimmerTasks_ScheduleTreeTrims_ScheduleTreeTrimId",
-                        column: x => x.ScheduleTreeTrimId,
-                        principalTable: "ScheduleTreeTrims",
-                        principalColumn: "ScheduleTreeTrimId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ListTreeTrimmerTasks_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ScheduleGarbageCollects",
                 columns: table => new
                 {
@@ -487,8 +521,6 @@ namespace Infrastructure.Migrations
                     TransitTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     WorkingMonth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GarbageTruckId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StreetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StreetsStreetId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -502,19 +534,41 @@ namespace Infrastructure.Migrations
                         column: x => x.GarbageTruckId,
                         principalTable: "GarbageTrucks",
                         principalColumn: "GarbageTruckId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ScheduleGarbageCollects_Streets_StreetsStreetId",
-                        column: x => x.StreetsStreetId,
-                        principalTable: "Streets",
-                        principalColumn: "StreetId");
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ListGarbagemanTasks",
+                name: "ScheduleGarbageCollect_street_maps",
                 columns: table => new
                 {
-                    ListGarbagemanTaskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StreetId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ScheduleGarbageCollectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScheduleGarbageCollect_street_maps", x => new { x.StreetId, x.ScheduleGarbageCollectId });
+                    table.ForeignKey(
+                        name: "FK_ScheduleGarbageCollect_street_maps_ScheduleGarbageCollects_ScheduleGarbageCollectId",
+                        column: x => x.ScheduleGarbageCollectId,
+                        principalTable: "ScheduleGarbageCollects",
+                        principalColumn: "ScheduleGarbageCollectId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ScheduleGarbageCollect_street_maps_Streets_StreetId",
+                        column: x => x.StreetId,
+                        principalTable: "Streets",
+                        principalColumn: "StreetId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "User_scheduleGarbageCollect_maps",
+                columns: table => new
+                {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ScheduleGarbageCollectId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -524,15 +578,15 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ListGarbagemanTasks", x => x.ListGarbagemanTaskId);
+                    table.PrimaryKey("PK_User_scheduleGarbageCollect_maps", x => new { x.UserId, x.ScheduleGarbageCollectId });
                     table.ForeignKey(
-                        name: "FK_ListGarbagemanTasks_ScheduleGarbageCollects_ScheduleGarbageCollectId",
+                        name: "FK_User_scheduleGarbageCollect_maps_ScheduleGarbageCollects_ScheduleGarbageCollectId",
                         column: x => x.ScheduleGarbageCollectId,
                         principalTable: "ScheduleGarbageCollects",
                         principalColumn: "ScheduleGarbageCollectId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ListGarbagemanTasks_Users_UserId",
+                        name: "FK_User_scheduleGarbageCollect_maps_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
@@ -544,8 +598,8 @@ namespace Infrastructure.Migrations
                 columns: new[] { "BucketTruckId", "BucketTruckLicensePlates", "CraneArmLength", "CreateBy", "CreateDate", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("f9257e9f-6d30-45fd-8afc-3e3266d7adc6"), "123123123Aa", 12f, "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(832), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(833) },
-                    { new Guid("f9257e9f-6d31-45fd-8afc-3e3266d7adc6"), "123123123Aa", 12f, "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(846), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(846) }
+                    { new Guid("f9257e9f-6d30-45fd-8afc-3e3266d7adc6"), "123123123Aa", 12f, "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 722, DateTimeKind.Local).AddTicks(7893), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 722, DateTimeKind.Local).AddTicks(7894) },
+                    { new Guid("f9257e9f-6d31-45fd-8afc-3e3266d7adc6"), "123123123Aa", 12f, "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 722, DateTimeKind.Local).AddTicks(7909), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 722, DateTimeKind.Local).AddTicks(7909) }
                 });
 
             migrationBuilder.InsertData(
@@ -553,9 +607,9 @@ namespace Infrastructure.Migrations
                 columns: new[] { "DepartmentId", "CreateBy", "CreateDate", "DepartmentName", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("bc2f24de-1b9b-489a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(4375), "Cat tia cay", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(4375) },
-                    { new Guid("bc2f24de-2b9b-429a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(4370), "Thu gom rac", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(4371) },
-                    { new Guid("bc2f24de-2b9b-489a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(4356), "Quet don via he", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(4357) }
+                    { new Guid("bc2f24de-1b9b-489a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(1305), "Cat tia cay", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(1305) },
+                    { new Guid("bc2f24de-2b9b-429a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(1298), "Thu gom rac", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(1300) },
+                    { new Guid("bc2f24de-2b9b-489a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(1286), "Quet don via he", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(1287) }
                 });
 
             migrationBuilder.InsertData(
@@ -563,9 +617,9 @@ namespace Infrastructure.Migrations
                 columns: new[] { "DistrictId", "CreateBy", "CreateDate", "DistrictName", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("be7d62da-33ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(5813), "Thanh Khe", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(5814) },
-                    { new Guid("be7d62da-51ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(5818), "Hai Chau", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(5818) },
-                    { new Guid("be7d62da-53ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(5802), "Ngu Hanh Son", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(5803) }
+                    { new Guid("be7d62da-33ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(2781), "Thanh Khe", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(2782) },
+                    { new Guid("be7d62da-51ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(2785), "Hai Chau", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(2786) },
+                    { new Guid("be7d62da-53ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(2769), "Ngu Hanh Son", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(2770) }
                 });
 
             migrationBuilder.InsertData(
@@ -573,8 +627,8 @@ namespace Infrastructure.Migrations
                 columns: new[] { "GarbageTruckTypeId", "CreateBy", "CreateDate", "GarbageTruckTypeName", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("12e42a48-f991-4733-bd7c-2e536f921b22"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(1279), "Xe thu gom rac to", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(1279) },
-                    { new Guid("12e42a48-f991-4733-bd7c-2e536f931b22"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(1229), "Xe thu gom rac nho", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(1230) }
+                    { new Guid("12e42a48-f991-4733-bd7c-2e536f921b22"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(7791), "Xe thu gom rac to", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(7792) },
+                    { new Guid("12e42a48-f991-4733-bd7c-2e536f931b22"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(7716), "Xe thu gom rac nho", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(7716) }
                 });
 
             migrationBuilder.InsertData(
@@ -582,42 +636,52 @@ namespace Infrastructure.Migrations
                 columns: new[] { "RoleId", "CreateBy", "CreateDate", "RoleName", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("8977ef77-e554-4ef3-8353-3e01161f84d0"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(6852), "Employee", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(6853) },
-                    { new Guid("abccde85-c7dc-4f78-9e4e-b1b3e7abee84"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(6837), "Manager", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(6838) },
-                    { new Guid("cacd4b3a-8afe-43e9-b757-f57f5c61f8d8"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(6848), "Leader", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(6849) }
+                    { new Guid("8977ef77-e554-4ef3-8353-3e01161f84d0"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(460), "Employee", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(460) },
+                    { new Guid("abccde85-c7dc-4f78-9e4e-b1b3e7abee84"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(443), "Manager", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(444) },
+                    { new Guid("cacd4b3a-8afe-43e9-b757-f57f5c61f8d8"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(455), "Leader", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(456) }
                 });
+
+            migrationBuilder.InsertData(
+                table: "ScheduleCleanSidewalks",
+                columns: new[] { "ScheduleCleanSidewalksId", "CreateBy", "CreateDate", "StartTime", "UpdateBy", "UpdateDate", "WorkingMonth" },
+                values: new object[] { new Guid("7a866c85-b013-4fab-80c7-15d21d0c686c"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(2760), new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(2759), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(2761), new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(2759) });
 
             migrationBuilder.InsertData(
                 table: "StreetTypes",
                 columns: new[] { "StreetTypeId", "CreateBy", "CreateDate", "StreetTypeName", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(9435), "Duong Kinh Doanh", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(9436) },
-                    { new Guid("e3d44b7e-8ebe-434f-88ef-054a81951be1"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(9447), "Duong Dan Sinh", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(9448) }
+                    { new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(5974), "Duong Kinh Doanh", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(5975) },
+                    { new Guid("e3d44b7e-8ebe-434f-88ef-054a81951be1"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(5986), "Duong Dan Sinh", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(5987) }
                 });
 
             migrationBuilder.InsertData(
                 table: "TreeTypes",
                 columns: new[] { "TreeTypeId", "CreateBy", "CreateDate", "TreeTypeName", "UpdateBy", "UpdateDate" },
-                values: new object[] { new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 395, DateTimeKind.Local).AddTicks(2388), "Cay than go", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 395, DateTimeKind.Local).AddTicks(2388) });
+                values: new object[] { new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(8667), "Cay than go", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(8667) });
 
             migrationBuilder.InsertData(
                 table: "Cultivars",
                 columns: new[] { "CultivarId", "CreateBy", "CreateDate", "CultivarName", "TreeTypeId", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("136514ac-99a2-221a-80e1-5351d9a9c4af"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(2564), "Giong cay phuong", new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(2565) },
-                    { new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(2550), "Giong cay bang", new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(2550) }
+                    { new Guid("136514ac-99a2-221a-80e1-5351d9a9c4af"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 722, DateTimeKind.Local).AddTicks(9718), "Giong cay phuong", new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 722, DateTimeKind.Local).AddTicks(9719) },
+                    { new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 722, DateTimeKind.Local).AddTicks(9705), "Giong cay bang", new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 722, DateTimeKind.Local).AddTicks(9706) }
                 });
+
+            migrationBuilder.InsertData(
+                table: "ScheduleTreeTrims",
+                columns: new[] { "ScheduleTreeTrimId", "ActualTrimmingTime", "BucketTruckId", "CreateBy", "CreateDate", "EstimatedPruningTime", "UpdateBy", "UpdateDate" },
+                values: new object[] { new Guid("04dc28f5-94c4-4565-93a2-934d6fee53fd"), new DateTime(2024, 4, 18, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(500), new Guid("f9257e9f-6d30-45fd-8afc-3e3266d7adc6"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(501), new DateTime(2024, 4, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(497), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(502) });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "DepartmentId", "Email", "EmailConfirmed", "Image", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "Password", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RoleId", "SecurityStamp", "TwoFactorEnabled", "UserCode", "UserName" },
                 values: new object[,]
                 {
-                    { new Guid("56b77536-6c85-4e7d-910b-964e906c7cf2"), 0, "Admin", "c496ef12-197d-4bc4-ac33-881a84abc539", new Guid("bc2f24de-2b9b-489a-a108-64a114d2b9be"), null, false, "string", false, null, "Admin", null, null, "123123Aa!", null, "0947346127", false, new Guid("abccde85-c7dc-4f78-9e4e-b1b3e7abee84"), null, false, "admin", null },
-                    { new Guid("b2b1e0ce-0187-4285-8cce-60fdff665f46"), 0, "30 Nam Ky Khoi Nghia", "35f0855f-527c-4b19-b109-27ac61752891", new Guid("bc2f24de-2b9b-489a-a108-64a114d2b9be"), null, false, "string", false, null, "Nguyen Van A", null, null, "123123Aa!", null, "0947123244", false, new Guid("8977ef77-e554-4ef3-8353-3e01161f84d0"), null, false, "NHS_HH_NKKN_123", null },
-                    { new Guid("b2b1e0ce-0187-4285-8cce-60fdff666f46"), 0, "45 Huynh Lam", "3c59e210-faa3-474c-8908-85bc62ce7551", new Guid("bc2f24de-2b9b-429a-a108-64a114d2b9be"), null, false, "string", false, null, "Nguyen Van B", null, null, "123123Aa!", null, "0947133244", false, new Guid("8977ef77-e554-4ef3-8353-3e01161f84d0"), null, false, "NHS_HH_NKKN_456", null }
+                    { new Guid("56b77536-6c85-4e7d-910b-964e906c7cf2"), 0, "Admin", "afb98cf8-3cec-4a4d-bcd6-e61bdc721796", new Guid("bc2f24de-2b9b-489a-a108-64a114d2b9be"), null, false, "string", false, null, "Admin", null, null, "123123Aa!", null, "0947346127", false, new Guid("abccde85-c7dc-4f78-9e4e-b1b3e7abee84"), null, false, "admin", null },
+                    { new Guid("b2b1e0ce-0187-4285-8cce-60fdff665f46"), 0, "30 Nam Ky Khoi Nghia", "32ef3a64-536d-41fa-ae10-f156b84426f5", new Guid("bc2f24de-2b9b-489a-a108-64a114d2b9be"), null, false, "string", false, null, "Nguyen Van A", null, null, "123123Aa!", null, "0947123244", false, new Guid("8977ef77-e554-4ef3-8353-3e01161f84d0"), null, false, "NHS_HH_NKKN_123", null },
+                    { new Guid("b2b1e0ce-0187-4285-8cce-60fdff666f46"), 0, "45 Huynh Lam", "ac99ebce-7e64-4e1d-a955-4b119a80e399", new Guid("bc2f24de-2b9b-429a-a108-64a114d2b9be"), null, false, "string", false, null, "Nguyen Van B", null, null, "123123Aa!", null, "0947133244", false, new Guid("8977ef77-e554-4ef3-8353-3e01161f84d0"), null, false, "NHS_HH_NKKN_456", null }
                 });
 
             migrationBuilder.InsertData(
@@ -642,75 +706,84 @@ namespace Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Streets",
                 columns: new[] { "StreetId", "CreateBy", "CreateDate", "NumberOfHouses", "StreetLength", "StreetName", "StreetTypeId", "UpdateBy", "UpdateDate", "WardId" },
-                values: new object[] { new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(7900), 20, 10000f, "Duong Huynh Lam", new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(7901), new Guid("996c63bc-5f0a-44f6-8c9a-aad741b3beac") });
+                values: new object[] { new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(4534), 20, 10000f, "Duong Huynh Lam", new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(4535), new Guid("996c63bc-5f0a-44f6-8c9a-aad741b3beac") });
 
             migrationBuilder.InsertData(
-                table: "GarbageDumps",
-                columns: new[] { "GarbageDumpId", "CreateBy", "CreateDate", "GarbageDumpName", "StreetId", "UpdateBy", "UpdateDate", "WardsWardId" },
+                table: "User_scheduleCleanSidewalk_maps",
+                columns: new[] { "ScheduleCleanSidewalkId", "UserId", "CreateBy", "CreateDate", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("be5d01ee-b15c-4ced-aa0c-165c47dac9f9"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(7663), "HL-HH-NHS_1", new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(7663), null },
-                    { new Guid("be5d01ee-b15d-4ced-aa0c-165c47dac9f9"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(7676), "HL-HH-NHS_2", new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(7677), null }
+                    { new Guid("7a866c85-b013-4fab-80c7-15d21d0c686c"), new Guid("b2b1e0ce-0187-4285-8cce-60fdff665f46"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(567), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(568) },
+                    { new Guid("7a866c85-b013-4fab-80c7-15d21d0c686c"), new Guid("b2b1e0ce-0187-4285-8cce-60fdff666f46"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(578), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(579) }
                 });
 
             migrationBuilder.InsertData(
-                table: "ScheduleCleanSidewalks",
-                columns: new[] { "ScheduleCleanSidewalksId", "CreateBy", "CreateDate", "StartTime", "StreetId", "UpdateBy", "UpdateDate", "WorkingMonth" },
-                values: new object[] { new Guid("7a866c85-b013-4fab-80c7-15d21d0c686c"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(7437), new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(7436), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(7438), new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(7437) });
+                table: "User_scheduleTreeTrim_maps",
+                columns: new[] { "ScheduleTreeTrimId", "UserId", "CreateBy", "CreateDate", "UpdateBy", "UpdateDate" },
+                values: new object[,]
+                {
+                    { new Guid("04dc28f5-94c4-4565-93a2-934d6fee53fd"), new Guid("b2b1e0ce-0187-4285-8cce-60fdff665f46"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(4199), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(4200) },
+                    { new Guid("04dc28f5-94c4-4565-93a2-934d6fee53fd"), new Guid("b2b1e0ce-0187-4285-8cce-60fdff666f46"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(4210), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(4210) }
+                });
 
             migrationBuilder.InsertData(
-                table: "ScheduleTreeTrims",
-                columns: new[] { "ScheduleTreeTrimId", "ActualTrimmingTime", "BucketTruckId", "CreateBy", "CreateDate", "EstimatedPruningTime", "StreetId", "UpdateBy", "UpdateDate" },
-                values: new object[] { new Guid("04dc28f5-94c4-4565-93a2-934d6fee53fd"), new DateTime(2024, 4, 16, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(1077), new Guid("f9257e9f-6d30-45fd-8afc-3e3266d7adc6"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(1079), new DateTime(2024, 4, 15, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(1076), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 394, DateTimeKind.Local).AddTicks(1080) });
+                table: "GarbageDumps",
+                columns: new[] { "GarbageDumpId", "CreateBy", "CreateDate", "GarbageDumpName", "StreetId", "UpdateBy", "UpdateDate" },
+                values: new object[,]
+                {
+                    { new Guid("be5d01ee-b15c-4ced-aa0c-165c47dac9f9"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(4383), "HL-HH-NHS_1", new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(4384) },
+                    { new Guid("be5d01ee-b15d-4ced-aa0c-165c47dac9f9"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(4394), "HL-HH-NHS_2", new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(4395) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ScheduleCleanSidewalk_street_maps",
+                columns: new[] { "ScheduleCleanSidewalksId", "StreetId", "CreateBy", "CreateDate", "UpdateBy", "UpdateDate" },
+                values: new object[] { new Guid("7a866c85-b013-4fab-80c7-15d21d0c686c"), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(2273), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(2274) });
+
+            migrationBuilder.InsertData(
+                table: "ScheduleTreeTrim_street_maps",
+                columns: new[] { "ScheduleTreeTrimId", "StreetId", "CreateBy", "CreateDate", "UpdateBy", "UpdateDate" },
+                values: new object[] { new Guid("04dc28f5-94c4-4565-93a2-934d6fee53fd"), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(8298), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(8299) });
 
             migrationBuilder.InsertData(
                 table: "Trees",
                 columns: new[] { "TreeId", "BodyDiameter", "CreateBy", "CreateDate", "CultivarId", "CutTime", "IntervalCutTime", "LeafLength", "Note", "PlantTime", "StreetId", "TreeCode", "UpdateBy", "UpdateDate" },
-                values: new object[] { new Guid("24b2ee45-d7c3-4cc7-9fac-406b4bac1d82"), 30f, "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 395, DateTimeKind.Local).AddTicks(821), new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"), new DateTime(2024, 4, 15, 17, 8, 48, 395, DateTimeKind.Local).AddTicks(818), 3, 50f, "", new DateTime(2024, 1, 15, 17, 8, 48, 395, DateTimeKind.Local).AddTicks(818), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "12_HL_HH_NHS", "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 395, DateTimeKind.Local).AddTicks(822) });
+                values: new object[] { new Guid("24b2ee45-d7c3-4cc7-9fac-406b4bac1d82"), 30f, "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(7285), new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"), new DateTime(2024, 4, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(7282), 3, 50f, "", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(7281), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "12_HL_HH_NHS", "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 725, DateTimeKind.Local).AddTicks(7286) });
 
             migrationBuilder.InsertData(
                 table: "GarbageTrucks",
                 columns: new[] { "GarbageTruckId", "CreateBy", "CreateDate", "GarbageDumpId", "GarbageTruckLicensePlates", "GarbageTruckTypeId", "GarbageTruckWeight", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("fc34e805-4550-4037-a273-17a0b1639bbc"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(9702), new Guid("be5d01ee-b15c-4ced-aa0c-165c47dac9f9"), "123456Aa", new Guid("12e42a48-f991-4733-bd7c-2e536f931b22"), 450f, "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(9703) },
-                    { new Guid("fc34e805-4550-4037-a273-17a0b1639bbe"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(9688), new Guid("be5d01ee-b15c-4ced-aa0c-165c47dac9f9"), "123123Aa", new Guid("12e42a48-f991-4733-bd7c-2e536f931b22"), 450f, "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 392, DateTimeKind.Local).AddTicks(9690) }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ListSidewalkCleanerTasks",
-                columns: new[] { "ListSidewalkCleanerTaskId", "CreateBy", "CreateDate", "ScheduleCleanSidewalkId", "UpdateBy", "UpdateDate", "UserId" },
-                values: new object[,]
-                {
-                    { new Guid("3c30019e-05f6-4f43-8bd5-3e29ef90031a"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(3207), new Guid("7a866c85-b013-4fab-80c7-15d21d0c686c"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(3207), new Guid("b2b1e0ce-0187-4285-8cce-60fdff666f46") },
-                    { new Guid("3c30019e-05f6-4f43-8bd5-3e29ef9004cf"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(3194), new Guid("7a866c85-b013-4fab-80c7-15d21d0c686c"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(3195), new Guid("b2b1e0ce-0187-4285-8cce-60fdff665f46") }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ListTreeTrimmerTasks",
-                columns: new[] { "ListTreeTrimmerTaskId", "CreateBy", "CreateDate", "ScheduleTreeTrimId", "UpdateBy", "UpdateDate", "UserId" },
-                values: new object[,]
-                {
-                    { new Guid("25f83ff6-39d4-461d-82d3-3814cb57fa9c"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(4152), new Guid("04dc28f5-94c4-4565-93a2-934d6fee53fd"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(4154), new Guid("b2b1e0ce-0187-4285-8cce-60fdff665f46") },
-                    { new Guid("e13c54c5-1923-49ef-99ab-54a60fed579c"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(4165), new Guid("04dc28f5-94c4-4565-93a2-934d6fee53fd"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(4166), new Guid("b2b1e0ce-0187-4285-8cce-60fdff666f46") }
+                    { new Guid("fc34e805-4550-4037-a273-17a0b1639bbc"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(6193), new Guid("be5d01ee-b15c-4ced-aa0c-165c47dac9f9"), "123456Aa", new Guid("12e42a48-f991-4733-bd7c-2e536f931b22"), 450f, "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(6194) },
+                    { new Guid("fc34e805-4550-4037-a273-17a0b1639bbe"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(6181), new Guid("be5d01ee-b15c-4ced-aa0c-165c47dac9f9"), "123123Aa", new Guid("12e42a48-f991-4733-bd7c-2e536f931b22"), 450f, "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 723, DateTimeKind.Local).AddTicks(6182) }
                 });
 
             migrationBuilder.InsertData(
                 table: "ScheduleGarbageCollects",
-                columns: new[] { "ScheduleGarbageCollectId", "CreateBy", "CreateDate", "GabageMass", "GarbageTruckId", "StartTime", "StreetId", "StreetsStreetId", "TransitTime", "UpdateBy", "UpdateDate", "WorkingMonth" },
+                columns: new[] { "ScheduleGarbageCollectId", "CreateBy", "CreateDate", "GabageMass", "GarbageTruckId", "StartTime", "TransitTime", "UpdateBy", "UpdateDate", "WorkingMonth" },
                 values: new object[,]
                 {
-                    { new Guid("26397b2b-ca94-4af4-bf0d-f7aaa7510698"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(9391), 10f, new Guid("fc34e805-4550-4037-a273-17a0b1639bbe"), new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(9386), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), null, new DateTime(2024, 1, 15, 20, 8, 48, 393, DateTimeKind.Local).AddTicks(9387), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(9391), new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(9390) },
-                    { new Guid("e3c19a06-7f84-4c4d-8d83-71264a5cf176"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(9407), 10f, new Guid("fc34e805-4550-4037-a273-17a0b1639bbe"), new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(9405), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), null, new DateTime(2024, 1, 15, 20, 8, 48, 393, DateTimeKind.Local).AddTicks(9406), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(9407), new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(9406) }
+                    { new Guid("26397b2b-ca94-4af4-bf0d-f7aaa7510698"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(6609), 10f, new Guid("fc34e805-4550-4037-a273-17a0b1639bbe"), new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(6604), new DateTime(2024, 1, 17, 12, 57, 48, 724, DateTimeKind.Local).AddTicks(6605), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(6610), new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(6608) },
+                    { new Guid("e3c19a06-7f84-4c4d-8d83-71264a5cf176"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(6623), 10f, new Guid("fc34e805-4550-4037-a273-17a0b1639bbe"), new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(6621), new DateTime(2024, 1, 17, 12, 57, 48, 724, DateTimeKind.Local).AddTicks(6622), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(6623), new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(6622) }
                 });
 
             migrationBuilder.InsertData(
-                table: "ListGarbagemanTasks",
-                columns: new[] { "ListGarbagemanTaskId", "CreateBy", "CreateDate", "ScheduleGarbageCollectId", "UpdateBy", "UpdateDate", "UserId" },
+                table: "ScheduleGarbageCollect_street_maps",
+                columns: new[] { "ScheduleGarbageCollectId", "StreetId", "CreateBy", "CreateDate", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("f348026b-3f20-4197-865f-076f47c4cbc7"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(2218), new Guid("26397b2b-ca94-4af4-bf0d-f7aaa7510698"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(2219), new Guid("b2b1e0ce-0187-4285-8cce-60fdff665f46") },
-                    { new Guid("f348026b-3f20-4197-865f-076f47c4cbd7"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(2230), new Guid("26397b2b-ca94-4af4-bf0d-f7aaa7510698"), "Admin", new DateTime(2024, 1, 15, 17, 8, 48, 393, DateTimeKind.Local).AddTicks(2231), new Guid("b2b1e0ce-0187-4285-8cce-60fdff666f46") }
+                    { new Guid("26397b2b-ca94-4af4-bf0d-f7aaa7510698"), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(4440), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(4441) },
+                    { new Guid("e3c19a06-7f84-4c4d-8d83-71264a5cf176"), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(4451), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 724, DateTimeKind.Local).AddTicks(4452) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "User_scheduleGarbageCollect_maps",
+                columns: new[] { "ScheduleGarbageCollectId", "UserId", "CreateBy", "CreateDate", "UpdateBy", "UpdateDate" },
+                values: new object[,]
+                {
+                    { new Guid("26397b2b-ca94-4af4-bf0d-f7aaa7510698"), new Guid("b2b1e0ce-0187-4285-8cce-60fdff665f46"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(2383), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(2384) },
+                    { new Guid("26397b2b-ca94-4af4-bf0d-f7aaa7510698"), new Guid("b2b1e0ce-0187-4285-8cce-60fdff666f46"), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(2395), "Admin", new DateTime(2024, 1, 17, 9, 57, 48, 726, DateTimeKind.Local).AddTicks(2395) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -724,11 +797,6 @@ namespace Infrastructure.Migrations
                 column: "StreetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GarbageDumps_WardsWardId",
-                table: "GarbageDumps",
-                column: "WardsWardId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_GarbageTrucks_GarbageDumpId",
                 table: "GarbageTrucks",
                 column: "GarbageDumpId");
@@ -739,44 +807,19 @@ namespace Infrastructure.Migrations
                 column: "GarbageTruckTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ListGarbagemanTasks_ScheduleGarbageCollectId",
-                table: "ListGarbagemanTasks",
-                column: "ScheduleGarbageCollectId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ListGarbagemanTasks_UserId",
-                table: "ListGarbagemanTasks",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ListSidewalkCleanerTasks_ScheduleCleanSidewalkId",
-                table: "ListSidewalkCleanerTasks",
-                column: "ScheduleCleanSidewalkId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ListSidewalkCleanerTasks_UserId",
-                table: "ListSidewalkCleanerTasks",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ListTreeTrimmerTasks_ScheduleTreeTrimId",
-                table: "ListTreeTrimmerTasks",
-                column: "ScheduleTreeTrimId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ListTreeTrimmerTasks_UserId",
-                table: "ListTreeTrimmerTasks",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Reports_UserId",
                 table: "Reports",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ScheduleCleanSidewalks_StreetId",
-                table: "ScheduleCleanSidewalks",
-                column: "StreetId");
+                name: "IX_ScheduleCleanSidewalk_street_maps_ScheduleCleanSidewalksId",
+                table: "ScheduleCleanSidewalk_street_maps",
+                column: "ScheduleCleanSidewalksId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduleGarbageCollect_street_maps_ScheduleGarbageCollectId",
+                table: "ScheduleGarbageCollect_street_maps",
+                column: "ScheduleGarbageCollectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ScheduleGarbageCollects_GarbageTruckId",
@@ -784,19 +827,14 @@ namespace Infrastructure.Migrations
                 column: "GarbageTruckId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ScheduleGarbageCollects_StreetsStreetId",
-                table: "ScheduleGarbageCollects",
-                column: "StreetsStreetId");
+                name: "IX_ScheduleTreeTrim_street_maps_ScheduleTreeTrimId",
+                table: "ScheduleTreeTrim_street_maps",
+                column: "ScheduleTreeTrimId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ScheduleTreeTrims_BucketTruckId",
                 table: "ScheduleTreeTrims",
                 column: "BucketTruckId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ScheduleTreeTrims_StreetId",
-                table: "ScheduleTreeTrims",
-                column: "StreetId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Streets_StreetTypeId",
@@ -819,6 +857,21 @@ namespace Infrastructure.Migrations
                 column: "StreetId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_User_scheduleCleanSidewalk_maps_ScheduleCleanSidewalkId",
+                table: "User_scheduleCleanSidewalk_maps",
+                column: "ScheduleCleanSidewalkId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_scheduleGarbageCollect_maps_ScheduleGarbageCollectId",
+                table: "User_scheduleGarbageCollect_maps",
+                column: "ScheduleGarbageCollectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_scheduleTreeTrim_maps_ScheduleTreeTrimId",
+                table: "User_scheduleTreeTrim_maps",
+                column: "ScheduleTreeTrimId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_DepartmentId",
                 table: "Users",
                 column: "DepartmentId");
@@ -838,25 +891,37 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ListGarbagemanTasks");
-
-            migrationBuilder.DropTable(
-                name: "ListSidewalkCleanerTasks");
-
-            migrationBuilder.DropTable(
-                name: "ListTreeTrimmerTasks");
-
-            migrationBuilder.DropTable(
                 name: "Reports");
+
+            migrationBuilder.DropTable(
+                name: "ScheduleCleanSidewalk_street_maps");
+
+            migrationBuilder.DropTable(
+                name: "ScheduleGarbageCollect_street_maps");
+
+            migrationBuilder.DropTable(
+                name: "ScheduleTreeTrim_street_maps");
 
             migrationBuilder.DropTable(
                 name: "Trees");
 
             migrationBuilder.DropTable(
-                name: "ScheduleGarbageCollects");
+                name: "User_scheduleCleanSidewalk_maps");
+
+            migrationBuilder.DropTable(
+                name: "User_scheduleGarbageCollect_maps");
+
+            migrationBuilder.DropTable(
+                name: "User_scheduleTreeTrim_maps");
+
+            migrationBuilder.DropTable(
+                name: "Cultivars");
 
             migrationBuilder.DropTable(
                 name: "ScheduleCleanSidewalks");
+
+            migrationBuilder.DropTable(
+                name: "ScheduleGarbageCollects");
 
             migrationBuilder.DropTable(
                 name: "ScheduleTreeTrims");
@@ -865,7 +930,7 @@ namespace Infrastructure.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Cultivars");
+                name: "TreeTypes");
 
             migrationBuilder.DropTable(
                 name: "GarbageTrucks");
@@ -878,9 +943,6 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "TreeTypes");
 
             migrationBuilder.DropTable(
                 name: "GarbageDumps");

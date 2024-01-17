@@ -4114,11 +4114,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
+      "projectUniqueName": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
+      "projectPath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
       "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-      "outputPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\API\\obj\\",
+      "outputPath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "E:\\VS2022_Shared\\NuGetPackages"
@@ -4139,11 +4139,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
-              "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
+            "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj": {
+              "projectPath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Contracts\\Contract.csproj"
             },
-            "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
-              "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj"
+            "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj": {
+              "projectPath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj"
             }
           }
         }

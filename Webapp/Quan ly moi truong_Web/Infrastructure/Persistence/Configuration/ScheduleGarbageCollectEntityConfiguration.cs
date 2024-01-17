@@ -33,7 +33,6 @@ namespace Infrastructure.Persistence.Configuration
             builder.HasData(new ScheduleGarbageCollects
             {
                 ScheduleGarbageCollectId = Guid.Parse("26397b2b-ca94-4af4-bf0d-f7aaa7510698"),
-                StreetId = Guid.Parse("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"),
                 GarbageTruckId = Guid.Parse("fc34e805-4550-4037-a273-17a0b1639bbe"),
                 GabageMass = 10,
                 StartTime = DateTime.Now,
@@ -48,7 +47,6 @@ namespace Infrastructure.Persistence.Configuration
             builder.HasData(new ScheduleGarbageCollects
             {
                 ScheduleGarbageCollectId = Guid.Parse("e3c19a06-7f84-4c4d-8d83-71264a5cf176"),
-                StreetId = Guid.Parse("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"),
                 GarbageTruckId = Guid.Parse("fc34e805-4550-4037-a273-17a0b1639bbe"),
                 GabageMass = 10,
                 StartTime = DateTime.Now,

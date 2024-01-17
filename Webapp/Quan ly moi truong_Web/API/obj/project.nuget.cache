@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "r4WcSoI9fJ5pWYMmlNtv128PWNofT4vuKSIywPEo7MmJ8dFCQpDGrb242fmjgxHjCOSqilmu6htkjGdIBrkIUA==",
+  "dgSpecHash": "3Q+P7k+WdyzWnp1MlKdo1hFSlsFUJnszoJ/xx/VaN1UlAhq/ifn8lxwCyqoFOjtEQxu2YH2igFVuwnXOMCaiHA==",
   "success": true,
-  "projectFilePath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
+  "projectFilePath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lenovo\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\lenovo\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

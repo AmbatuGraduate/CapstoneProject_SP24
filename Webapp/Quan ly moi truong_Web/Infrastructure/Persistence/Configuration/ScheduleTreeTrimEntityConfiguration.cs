@@ -30,7 +30,6 @@ namespace Infrastructure.Persistence.Configuration
             builder.HasData(new ScheduleTreeTrims
             {
                 ScheduleTreeTrimId = Guid.Parse("04dc28f5-94c4-4565-93a2-934d6fee53fd"),
-                StreetId = Guid.Parse("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"),
                 BucketTruckId = Guid.Parse("f9257e9f-6d30-45fd-8afc-3e3266d7adc6"),
                 EstimatedPruningTime = DateTime.Now.AddMonths(3),
                 ActualTrimmingTime = DateTime.Now.AddMonths(3).AddDays(1),

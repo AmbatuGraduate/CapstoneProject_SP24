@@ -29,7 +29,6 @@ namespace Infrastructure.Persistence.Configuration
             builder.HasData(new ScheduleCleanSidewalks 
             {
                 ScheduleCleanSidewalksId = Guid.Parse("7a866c85-b013-4fab-80c7-15d21d0c686c"), 
-                StreetId = Guid.Parse("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), 
                 StartTime = DateTime.Now,
                 WorkingMonth = DateTime.Now,
                 CreateDate = DateTime.Now, 

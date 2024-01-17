@@ -29,8 +29,24 @@ namespace Infrastructure.Persistence.Configuration
             builder.Property(bucketTruck => bucketTruck.UpdateBy)
                 .HasMaxLength(50);
 
-            builder.HasData(new BucketTrucks {BucketTruckId = Guid.Parse("f9257e9f-6d30-45fd-8afc-3e3266d7adc6"), BucketTruckLicensePlates= "123123123Aa", CraneArmLength= 12, CreateDate= DateTime.Now, CreateBy= "Admin", UpdateBy = "Admin", UpdateDate= DateTime.Now });
-            builder.HasData(new BucketTrucks { BucketTruckId = Guid.Parse("f9257e9f-6d31-45fd-8afc-3e3266d7adc6"), BucketTruckLicensePlates = "123123123Aa", CraneArmLength = 12, CreateDate = DateTime.Now, CreateBy = "Admin", UpdateBy = "Admin", UpdateDate = DateTime.Now });
+            builder.HasData(new BucketTrucks {
+                BucketTruckId = Guid.Parse("f9257e9f-6d30-45fd-8afc-3e3266d7adc6"), 
+                BucketTruckLicensePlates= "123123123Aa", 
+                CraneArmLength= 12, 
+                CreateDate= DateTime.Now, 
+                CreateBy= "Admin", 
+                UpdateBy = "Admin", 
+                UpdateDate= DateTime.Now 
+            });
+            builder.HasData(new BucketTrucks { 
+                BucketTruckId = Guid.Parse("f9257e9f-6d31-45fd-8afc-3e3266d7adc6"), 
+                BucketTruckLicensePlates = "123123123Aa", 
+                CraneArmLength = 12, 
+                CreateDate = DateTime.Now, 
+                CreateBy = "Admin", 
+                UpdateBy = "Admin", 
+                UpdateDate = DateTime.Now 
+            });
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.ListSidewalkCleanerTask;
+using Domain.Entities.ScheduleCleanSidewalk_street_map;
 using Domain.Entities.Street;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,6 @@ namespace Domain.Entities.ScheduleCleanSidewalk
         [DataMember]
         public Guid ScheduleCleanSidewalksId { get; set; }
         [DataMember]
-        public Guid StreetId { get; set; }
-        public virtual Streets? Streets { get; set; }
-
-        [DataMember]
         public DateTime StartTime { get; set; }
         [DataMember]
         public DateTime WorkingMonth { get; set; }
@@ -32,7 +29,8 @@ namespace Domain.Entities.ScheduleCleanSidewalk
         [DataMember]
         public string UpdateBy { get; set; }
 
-        public ICollection<ListSidewalkCleanerTasks>? ListSidewalkCleanerTasks { get; set; }
+        public ICollection<User_scheduleCleanSidewalk_maps>? User_scheduleCleanSidewalk_maps { get; set; }
+        public ICollection<ScheduleCleanSidewalk_street_maps>? ScheduleCleanSidewalk_street_maps { get; set; }
 
     }
 }

@@ -1,4 +1,4 @@
-﻿using Domain.Entities.ScheduleCleanSidewalk;
+﻿using Domain.Entities.ScheduleGarbageCollect;
 using Domain.Entities.User;
 using System;
 using System.Collections.Generic;
@@ -7,20 +7,18 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.ListSidewalkCleanerTask
+namespace Domain.Entities.ListGarbagemanTask
 {
     [DataContract]
-    public class ListSidewalkCleanerTasks
+    public class User_scheduleGarbageCollect_maps
     {
-        [DataMember]
-        public Guid ListSidewalkCleanerTaskId { get; set; }
         [DataMember]
         public Guid UserId { get; set; }
         public virtual Users? Users { get; set; }
 
         [DataMember]
-        public Guid ScheduleCleanSidewalkId { get; set; }
-        public virtual ScheduleCleanSidewalks? ScheduleCleanSidewalks { get; set; }
+        public Guid ScheduleGarbageCollectId { get; set; }
+        public virtual ScheduleGarbageCollects? ScheduleGarbageCollects { get; set; }
 
         [DataMember]
         public DateTime CreateDate { get; set; } = DateTime.Now;
@@ -30,5 +28,6 @@ namespace Domain.Entities.ListSidewalkCleanerTask
         public DateTime UpdateDate { get; set; }
         [DataMember]
         public string UpdateBy { get; set; }
+
     }
 }
