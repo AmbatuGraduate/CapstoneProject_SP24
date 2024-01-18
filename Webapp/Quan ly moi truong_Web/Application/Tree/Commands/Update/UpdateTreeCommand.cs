@@ -1,15 +1,10 @@
 ﻿using Application.Tree.Common;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Tree.Commands.Update
 {
-    public record UpdateTreeCommand (
+    public record UpdateTreeCommand(
         string TreeCode,
         Guid StreetId,
         float BodyDiameter,

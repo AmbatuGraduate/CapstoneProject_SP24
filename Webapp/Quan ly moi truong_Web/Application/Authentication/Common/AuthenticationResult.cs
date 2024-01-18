@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Entities.User;
+﻿using Domain.Entities.User;
 
 namespace Application.Authentication.Common
 {
@@ -13,5 +8,4 @@ namespace Application.Authentication.Common
     /// <param name="User">The data user when login or register return</param>
     /// <param name="Token">Token is from generate when login or register</param>
     public record AuthenticationResult(Users User, string Token);
-
 }

@@ -1,11 +1,6 @@
 ﻿using Domain.Entities.Role;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
@@ -16,7 +11,7 @@ namespace Infrastructure.Persistence.Configuration
             ConfigurationRolesTable(builder);
         }
 
-        private void ConfigurationRolesTable(EntityTypeBuilder<Roles> builder) 
+        private void ConfigurationRolesTable(EntityTypeBuilder<Roles> builder)
         {
             builder.ToTable("Roles")
                    .HasKey(role => role.RoleId);

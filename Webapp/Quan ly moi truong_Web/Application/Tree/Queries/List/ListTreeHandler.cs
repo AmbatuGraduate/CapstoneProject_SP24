@@ -2,18 +2,12 @@
 using Application.Tree.Common;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Tree.Queries.List
 {
     public class ListTreeHandler :
         IRequestHandler<ListTreeQuery, ErrorOr<List<TreeResult>>>
     {
-
         private readonly ITreeRepository treeRepository;
 
         public ListTreeHandler(ITreeRepository treeRepository)
@@ -28,7 +22,7 @@ namespace Application.Tree.Queries.List
             List<TreeResult> treeResults = new List<TreeResult>();
             var trees = treeRepository.GetAllTrees();
 
-            foreach(var tree in trees)
+            foreach (var tree in trees)
             {
                 treeResults.Add(new TreeResult(tree));
             }

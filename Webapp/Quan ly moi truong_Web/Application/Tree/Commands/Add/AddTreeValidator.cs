@@ -1,9 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Tree.Commands.Add
 {
@@ -23,7 +18,6 @@ namespace Application.Tree.Commands.Add
             RuleFor(x => x.CultivarId).NotEmpty();
             RuleFor(x => x.CreateBy).NotEmpty();
             RuleFor(x => x.UpdateBy).NotEmpty();
-
         }
     }
 }

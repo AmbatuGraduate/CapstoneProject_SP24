@@ -6,11 +6,6 @@ using Application.Tree.Queries.GetById;
 using Application.Tree.Queries.GetByTreeCode;
 using Contract.Tree;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API.Mapping
 {
@@ -31,7 +26,6 @@ namespace API.Mapping
     {
         public void Register(TypeAdapterConfig config)
         {
-
             config.NewConfig<(string, UpdateTreeRequest), UpdateTreeCommand>()
                 .MapWith(dest => new UpdateTreeCommand(
                     dest.Item1,

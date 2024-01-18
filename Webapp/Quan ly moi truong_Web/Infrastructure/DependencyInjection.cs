@@ -11,18 +11,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 
 namespace Infrastructure
 {
     public static class DependencyInjection
     {
-
         public static IServiceCollection AddInfrastructure(
             this IServiceCollection services,
             ConfigurationManager configuration
@@ -34,6 +29,8 @@ namespace Infrastructure
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
+            services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
+
             return services;
         }
 
@@ -47,7 +44,6 @@ namespace Infrastructure
             });
             return services;
         }
-
 
         public static IServiceCollection AddAuth(
             this IServiceCollection services,
@@ -74,9 +70,7 @@ namespace Infrastructure
                         Encoding.UTF8.GetBytes(jwtSettings.Secret))
                 });
 
-
             return services;
         }
-
     }
 }

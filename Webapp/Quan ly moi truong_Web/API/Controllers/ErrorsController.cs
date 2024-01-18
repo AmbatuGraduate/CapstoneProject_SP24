@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,11 +16,9 @@ namespace API.Controllers
             var (statusCode, msg) = exception switch
             {
                 _ => (StatusCodes.Status500InternalServerError, "An unexpected error occurred")
-
             };
 
             return Problem(statusCode: statusCode, title: msg);
         }
-
     }
 }

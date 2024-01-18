@@ -21,9 +21,9 @@ namespace API.Controllers
     [EnableCors("AllowAllHeaders")]
     public class TreeController : ApiController
     {
-
         private readonly IMediator mediator;
         private readonly IMapper mapper;
+
         public TreeController(IMediator mediator, IMapper mapper)
         {
             this.mediator = mediator;

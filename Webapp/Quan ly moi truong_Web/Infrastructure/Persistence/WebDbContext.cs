@@ -22,21 +22,15 @@ using Domain.Entities.Tree;
 using Domain.Entities.TreeType;
 using Domain.Entities.User;
 using Domain.Entities.Ward;
-using Infrastructure.Persistence.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence
 {
     // Update At: 17/01/2024 10:10
     // updated by: Dang Ngiuyen Khanh Vu
-    // Changes: 
+    // Changes:
     // - Thêm 3 DBSet của map ScheduleCleanSidewalk_street_maps, ScheduleGarbageCollect_street_maps
     // , ScheduleTreeTrim_street_maps
     // - Thêm mối quan hệ giữa đường và map ScheduleCleanSidewalk_street_maps, ScheduleGarbageCollect_street_maps,
@@ -45,7 +39,9 @@ namespace Infrastructure.Persistence
 
     public class WebDbContext : DbContext
     {
-        public WebDbContext(DbContextOptions<WebDbContext> opts) : base(opts) { }
+        public WebDbContext(DbContextOptions<WebDbContext> opts) : base(opts)
+        {
+        }
 
         public DbSet<Users> Users { get; set; }
         public DbSet<Trees> Trees { get; set; }
@@ -72,7 +68,6 @@ namespace Infrastructure.Persistence
         public DbSet<ScheduleCleanSidewalk_street_maps> ScheduleCleanSidewalk_street_maps { get; set; }
         public DbSet<ScheduleGarbageCollect_street_maps> ScheduleGarbageCollect_street_maps { get; set; }
         public DbSet<ScheduleTreeTrim_street_maps> ScheduleTreeTrim_street_maps { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -102,14 +97,13 @@ namespace Infrastructure.Persistence
                         .HasForeignKey(e => e.DepartmentId)
                         .IsRequired();
 
-            //Relationship entity Users - Reports => 1 - n 
+            //Relationship entity Users - Reports => 1 - n
             modelBuilder.Entity<Users>()
                         .HasMany(e => e.Reports)
                         .WithOne(e => e.Users)
                         .HasForeignKey(e => e.UserId)
                         .IsRequired();
 
-            
             //Relationship entity Users - User_scheduleGarbageCollect_maps => 1 - n
             modelBuilder.Entity<Users>()
                         .HasMany(e => e.User_scheduleGarbageCollect_maps)
@@ -151,7 +145,7 @@ namespace Infrastructure.Persistence
                         .WithOne(e => e.ScheduleTreeTrims)
                         .HasForeignKey(e => e.ScheduleTreeTrimId)
                         .IsRequired();
-            
+
             //Relationship entity ScheduleCleanSidewalks - ScheduleCleanSidewalk_street_maps => 1 - n
             modelBuilder.Entity<ScheduleCleanSidewalks>()
                         .HasMany(e => e.ScheduleCleanSidewalk_street_maps)
@@ -159,41 +153,40 @@ namespace Infrastructure.Persistence
                         .HasForeignKey(e => e.ScheduleCleanSidewalksId)
                         .IsRequired();
 
-            //Relationship entity ScheduleTreeTrims - ScheduleTreeTrim_street_maps =>  1 - n 
+            //Relationship entity ScheduleTreeTrims - ScheduleTreeTrim_street_maps =>  1 - n
             modelBuilder.Entity<ScheduleTreeTrims>()
                         .HasMany(e => e.ScheduleTreeTrim_street_maps)
                         .WithOne(e => e.ScheduleTreeTrim)
                         .HasForeignKey(e => e.ScheduleTreeTrimId)
                         .IsRequired();
 
-            //Relationship entity ScheduleGarbageCollects - ScheduleGarbageCollect_street_maps =>  1 - n 
+            //Relationship entity ScheduleGarbageCollects - ScheduleGarbageCollect_street_maps =>  1 - n
             modelBuilder.Entity<ScheduleGarbageCollects>()
                         .HasMany(e => e.ScheduleGarbageCollect_street_maps)
                         .WithOne(e => e.ScheduleGarbageCollect)
                         .HasForeignKey(e => e.ScheduleGarbageCollectId)
                         .IsRequired();
 
-            //Relationship entity Streets - ScheduleGarbageCollect_street_maps =>  1 - n 
+            //Relationship entity Streets - ScheduleGarbageCollect_street_maps =>  1 - n
             modelBuilder.Entity<Streets>()
                         .HasMany(e => e.ScheduleGarbageCollect_street_maps)
                         .WithOne(e => e.Street)
                         .HasForeignKey(e => e.StreetId)
                         .IsRequired();
 
-            //Relationship entity Streets - ScheduleCleanSidewalk_street_maps =>  1 - n 
+            //Relationship entity Streets - ScheduleCleanSidewalk_street_maps =>  1 - n
             modelBuilder.Entity<Streets>()
                         .HasMany(e => e.ScheduleCleanSidewalk_street_maps)
                         .WithOne(e => e.Street)
                         .HasForeignKey(e => e.StreetId)
                         .IsRequired();
 
-            //Relationship entity Streets - ScheduleTreeTrim_street_maps =>  1 - n 
+            //Relationship entity Streets - ScheduleTreeTrim_street_maps =>  1 - n
             modelBuilder.Entity<Streets>()
                         .HasMany(e => e.ScheduleTreeTrim_street_maps)
                         .WithOne(e => e.Street)
                         .HasForeignKey(e => e.StreetId)
                         .IsRequired();
-
 
             //Relationship entity GarbageTrucks - ScheduleGarbageCollects => 1 - n
             modelBuilder.Entity<GarbageTrucks>()
@@ -231,8 +224,7 @@ namespace Infrastructure.Persistence
                         .HasForeignKey(e => e.BucketTruckId)
                         .IsRequired();
 
-
-            //Relationship entity TreeTypes - Cultivars => 1 - n 
+            //Relationship entity TreeTypes - Cultivars => 1 - n
             modelBuilder.Entity<TreeTypes>()
                         .HasMany(e => e.Cultivars)
                         .WithOne(e => e.TreeTypes)
@@ -273,7 +265,6 @@ namespace Infrastructure.Persistence
                         .WithOne(e => e.Districts)
                         .HasForeignKey(e => e.DistrictId)
                         .IsRequired();
-
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(WebDbContext).Assembly);
         }

@@ -1,12 +1,6 @@
-﻿using Domain.Entities.GarbageTruckType;
-using Domain.Entities.ListGarbagemanTask;
+﻿using Domain.Entities.ListGarbagemanTask;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
@@ -20,7 +14,7 @@ namespace Infrastructure.Persistence.Configuration
         private void ConfigruationListGarbagemanTasksTable(EntityTypeBuilder<User_scheduleGarbageCollect_maps> builder)
         {
             builder.ToTable("User_scheduleGarbageCollect_maps")
-                   .HasKey(user_scheduleGarbageCollect_maps => new { user_scheduleGarbageCollect_maps.UserId, user_scheduleGarbageCollect_maps .ScheduleGarbageCollectId});
+                   .HasKey(user_scheduleGarbageCollect_maps => new { user_scheduleGarbageCollect_maps.UserId, user_scheduleGarbageCollect_maps.ScheduleGarbageCollectId });
 
             builder.Property(listGarbagemanTask => listGarbagemanTask.CreateBy)
                    .HasMaxLength(50);
@@ -32,4 +26,3 @@ namespace Infrastructure.Persistence.Configuration
         }
     }
 }
-

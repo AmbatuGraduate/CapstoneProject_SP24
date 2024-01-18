@@ -1,19 +1,10 @@
-﻿using Application.Common.Interfaces.Authentication;
+﻿using Application.Authentication.Common;
+using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
+using Domain.Common.Errors;
+using Domain.Entities.User;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-using System.Xml.Linq;
-using Domain.Common.Errors;
-using Application.Authentication.Common;
-using Domain.Entities.User;
 
 namespace Application.Authentication.Queries.Login
 {
@@ -42,7 +33,6 @@ namespace Application.Authentication.Queries.Login
 
             // Create JWT token
             var token = jwtTokenGenerator.GenerateToken(user);
-
 
             return new AuthenticationResult(
                         user,

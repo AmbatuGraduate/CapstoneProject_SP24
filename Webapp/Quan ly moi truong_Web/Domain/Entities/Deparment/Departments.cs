@@ -1,10 +1,5 @@
 ﻿using Domain.Entities.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities.Deparment
 {
@@ -13,6 +8,7 @@ namespace Domain.Entities.Deparment
     {
         [DataMember]
         public Guid DepartmentId { get; set; }
+
         [DataMember]
         public string DepartmentName { get; set; }
 
@@ -20,10 +16,13 @@ namespace Domain.Entities.Deparment
 
         [DataMember]
         public DateTime CreateDate { get; set; } = DateTime.Now;
+
         [DataMember]
         public string CreateBy { get; set; }
+
         [DataMember]
         public DateTime UpdateDate { get; set; }
+
         [DataMember]
         public string UpdateBy { get; set; }
     }

@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Tree.Common;
-using Domain.Entities.Tree;
 using Domain.Common.Errors;
+using Domain.Entities.Tree;
 using ErrorOr;
 using MediatR;
 
@@ -10,7 +10,6 @@ namespace Application.Tree.Commands.Update
     public class UpdateTreeHandler :
         IRequestHandler<UpdateTreeCommand, ErrorOr<TreeResult>>
     {
-
         private readonly ITreeRepository treeRepository;
 
         public UpdateTreeHandler(ITreeRepository treeRepository)
@@ -44,9 +43,7 @@ namespace Application.Tree.Commands.Update
                 UpdateBy = request.UpdateBy,
                 Note = request.Note,
                 isExist = treeRepository.GetTreeByTreeCode(request.TreeCode).isExist
-
             };
-
 
             var result = new TreeResult(treeRepository.UpdateTree(tree));
 

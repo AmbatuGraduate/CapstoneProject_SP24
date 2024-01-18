@@ -1,5 +1,4 @@
-﻿
-using Application.Authentication.Common;
+﻿using Application.Authentication.Common;
 using Application.Authentication.Queries.Login;
 using Contract.Authentication;
 using Contracts.Authentication;

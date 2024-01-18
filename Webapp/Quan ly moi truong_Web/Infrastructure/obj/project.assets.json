@@ -3777,19 +3777,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\admin\\.nuget\\packages\\": {}
+    "C:\\Users\\lenovo\\.nuget\\packages\\": {},
+    "E:\\VS2022_Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
+      "projectUniqueName": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
       "projectName": "Infrastructure",
-      "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
-      "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\obj\\",
+      "projectPath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\Infrastructure.csproj",
+      "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
+      "outputPath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "E:\\VS2022_Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -3803,8 +3808,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
-              "projectPath": "C:\\Users\\admin\\OneDrive\\Desktop\\Capstone Project\\Codes\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
+            "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj": {
+              "projectPath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj"
             }
           }
         }
@@ -3884,51 +3889,11 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   },
   "logs": [
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Microsoft.IdentityModel.JsonWebTokens' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
-      "libraryId": "Microsoft.IdentityModel.JsonWebTokens",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'Microsoft.IdentityModel.JsonWebTokens' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-8g9c-28fc-mcx2",
-      "libraryId": "Microsoft.IdentityModel.JsonWebTokens",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
-      "libraryId": "System.IdentityModel.Tokens.Jwt",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    },
-    {
-      "code": "NU1902",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Package 'System.IdentityModel.Tokens.Jwt' 7.0.3 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-8g9c-28fc-mcx2",
-      "libraryId": "System.IdentityModel.Tokens.Jwt",
-      "targetGraphs": [
-        "net6.0"
-      ]
-    },
     {
       "code": "NU1701",
       "level": "Warning",

@@ -2,16 +2,10 @@
 using Application.Common.Interfaces.Services;
 using Domain.Entities.User;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace Infrastructure.Authentication
@@ -21,7 +15,6 @@ namespace Infrastructure.Authentication
     /// </summary>
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
-
         private readonly JwtSettings jwtSettings;
         private readonly IDateTimeProvider dateTimeProvider;
 
@@ -38,7 +31,6 @@ namespace Infrastructure.Authentication
         /// <returns>String token</returns>
         public string GenerateToken(Users user)
         {
-
             var signingCredential = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
                     SecurityAlgorithms.HmacSha256
@@ -55,12 +47,12 @@ namespace Infrastructure.Authentication
             var securityToken = new JwtSecurityToken(
                 issuer: jwtSettings.Issuer,
                 audience: jwtSettings.Audience,
-                expires : dateTimeProvider.UtcNow.AddMinutes(jwtSettings.ExpiryMinutes),
+                expires: dateTimeProvider.UtcNow.AddMinutes(jwtSettings.ExpiryMinutes),
                 claims: claims,
                 signingCredentials: signingCredential
             );
 
-            return new JwtSecurityTokenHandler().WriteToken( securityToken );
+            return new JwtSecurityTokenHandler().WriteToken(securityToken);
         }
     }
 }

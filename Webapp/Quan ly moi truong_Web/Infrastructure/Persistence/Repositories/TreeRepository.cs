@@ -1,5 +1,4 @@
-﻿
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Domain.Entities.Tree;
 
 namespace Infrastructure.Persistence.Repositories

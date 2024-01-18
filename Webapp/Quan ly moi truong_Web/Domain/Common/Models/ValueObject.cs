@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Common.Models
+﻿namespace Domain.Common.Models
 {
     public abstract class ValueObject : IEquatable<ValueObject>
     {
@@ -12,7 +6,6 @@ namespace Domain.Common.Models
 
         public override bool Equals(object? obj)
         {
-
             if (obj == null || obj.GetType() != GetType()) return false;
 
             var valueObject = (ValueObject)obj;
