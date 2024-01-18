@@ -9,6 +9,8 @@
     --bgColor: hsl(220, 10%, 94%);
     --greyText: rgb(190, 190, 190);
     --inputColor: hsl(330, 12%, 97%);
+    --redColor: hsl(0, 82%, 44%);
+    --blackColor: hsl(0, 4%, 5%);
 
     /* Font and Typography */
     --biggestFontSize: 2.5rem;
@@ -28,27 +30,61 @@
     border-width: 1px;
     position: relative;
     margin-top: 25px;
+    thead{
+        &.thread-primary {
+            width: 100%;
+            border-radius: 5px;
+            background: var(--whiteColor);
+            border-collapse: collapse;
+            caption-side: bottom;
+            border-radius: 3;
+            th {
+                // border: 0.5px solid #858585;
+                border: none;
+                border-bottom: 2px solid darken(#f2f3f8,6%);
+                border-radius: 5px;
+                padding: 2rem;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                text-align: center;
+                background-color: var(--whiteColor);
+                color: var(--blackColor);
+            }
+        }
+    }
+    tbody{
+        th, td {
+            text-align: center;
+            border: none;
+			padding:15px;
+			font-size: 14px;
+			vertical-align: middle;
+			border-bottom: 2px solid #f8f9fd;
+        }
+    }  
 }
 
-.table {
-    width: 100%;
-    border-radius: 5px;
-    background: var(--whiteColor);
-    border-collapse: collapse;
-    caption-side: bottom;
+.text-left {
+    text-align: left!important;
+}
+.left-th{
+    text-align: left;
+    transform: translateX(-38px)
+}
+.left-th-1 {
+    text-align: left;
+    transform: translateX(-20px)
 }
 
-.table th {
-    border: 0.5px solid #858585;
-    border-radius: 5px;
-    padding: 2rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    text-align: center;
-    background-color: var(--whiteColor);
-    color: rgb(14, 13, 13);
+.font-bold{
+    font-weight: bold;
 }
 
-.table td {
-    text-align: center;
+.green-text{
+    color: var(--PrimanyColor)!important;
 }
+
+.red-text{
+    color: var(--redColor)!important;
+}
+

@@ -60,7 +60,7 @@ img{
 .grid{
     display: grid;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .btn{
@@ -98,7 +98,7 @@ body{
     
 }
 
-/* hide the scroll thumb
+/* hide the scroll thumb */
 ::-webkit-scrollbar{
     display: none;
-} */
+}
