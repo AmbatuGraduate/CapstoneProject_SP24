@@ -8,9 +8,9 @@ const Body = () => {
     return (
         <div className='mainContent'>
             <Top />
-            <div className="bottom ">
+            <div className="bottom">
                 <Router />
-
+             
             </div>
         </div>
     );

@@ -1,37 +1,84 @@
 {
     "tree": [
         {
-            "MaCay": 1,
+            "MaCay": "CD4-01",
+            "Quan": "Sơn Trà",
             "DuongId": "Cồn Dầu 4",
-            "DuongKinhThan": "130",
-            "TanLa": "100",
-            "ThoiDiemTrong": "2023-11-20",
-            "ThoiDiemCatTiepTheo": "2023-12-21",
-            "LichCatTia": "2023-12-21",
-            "GiongCayId": "2023-12-21",
-            "Note": "string1"
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
         },
         {
-            "MaCay": 1,
-            "DuongId": "Cồn Dầu 4",
-            "DuongKinhThan": "130",
-            "TanLa": "100",
-            "ThoiDiemTrong": "2023-11-20",
-            "ThoiDiemCatTiepTheo": "2023-12-21",
-            "LichCatTia": "2023-12-21",
-            "GiongCayId": "2023-12-21",
-            "Note": "string1"
+            "MaCay": "LVH-01",
+            "Quan": "Ngũ Hành Sơn",
+            "DuongId": "Lê Văn Hiến",
+            "GiongCay": "Hoa Phượng",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },       
+        {
+            "MaCay": "AHD-01",
+            "Quan": "Sơn Trà",
+            "DuongId": "An Hải Đông",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Cần cắt"
         },
         {
-            "MaCay": 1,
-            "DuongId": "Cồn Dầu 4",
-            "DuongKinhThan": "130",
-            "TanLa": "100",
-            "ThoiDiemTrong": "2023-11-20",
-            "ThoiDiemCatTiepTheo": "2023-12-21",
-            "LichCatTia": "2023-12-21",
-            "GiongCayId": "2023-12-21",
-            "Note": "string1"
-        }
+            "MaCay": "DDN-01",
+            "Quan": "Sơn Trà",
+            "DuongId": "Dương Đình Nghệ",
+            "GiongCay": "Bàng đài loan",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Cần cắt"
+        },
+        {
+            "MaCay": "YB-01",
+            "Quan": "Thanh Khê",
+            "DuongId": "Yên Bái",
+            "GiongCay": "Hoa Phượng",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "TCV-01",
+            "Quan": "Liên Chiểu",
+            "DuongId": "Trần Cao Vân",
+            "GiongCay": "Hoa Sữa",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "BHTQ-01",
+            "Quan": "Ngũ Hành Sơn",
+            "DuongId": "Bà Huyện Thanh Quan",
+            "GiongCay": "Bàng đài loan",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Cần cắt"
+        },
+        {
+            "MaCay": "LN-01",
+            "Quan": "Cẩm Lệ",
+            "DuongId": "Lê Ngân",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "LTN-01",
+            "Quan": "Hải Châu",
+            "DuongId": "Lê Thanh Nghị",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },  
+        {
+            "MaCay": "LTN-01",
+            "Quan": "Hải Châu",
+            "DuongId": "Lê Thanh Nghị",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        }   
     ]
-}
+  }

@@ -24,11 +24,9 @@ const Sidebar = () => {
 
             <div className='logoDiv flex'>
                 <img src={logo} alt='Image_name' />
-
             </div>
-            <hr className='line' />
             <div className='menuDiv p-0'>
-
+                <hr className='line' />
                 <ul className="menuLists grid">
 
                     <li className="listItem">
