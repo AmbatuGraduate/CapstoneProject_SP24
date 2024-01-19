@@ -30,6 +30,7 @@ namespace Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
+            services.AddScoped<ICultivarRepository, CultivarRepository>();
 
             return services;
         }
