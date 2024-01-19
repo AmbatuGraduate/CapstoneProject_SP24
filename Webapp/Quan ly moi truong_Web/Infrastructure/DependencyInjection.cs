@@ -20,10 +20,6 @@ namespace Infrastructure
 {
     public static class DependencyInjection
     {
-<<<<<<< HEAD
-        // Add infrastructure dependency injection
-=======
->>>>>>> vu/feature/get-information-of-cultivar
         public static IServiceCollection AddInfrastructure(
             this IServiceCollection services,
             ConfigurationManager configuration
@@ -36,14 +32,11 @@ namespace Infrastructure
             // Add repositories dependency injection
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
-<<<<<<< HEAD
             services.AddScoped<IScheduleTreeTrimRepository, ScheduleTreeTrimRepository>();
             services.AddScoped<IStreetRepository, StreetRepository>();
-=======
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
             services.AddScoped<ICultivarRepository, CultivarRepository>();
 
->>>>>>> vu/feature/get-information-of-cultivar
             return services;
         }
 
@@ -59,10 +52,6 @@ namespace Infrastructure
             return services;
         }
 
-<<<<<<< HEAD
-        // Add authentication
-=======
->>>>>>> vu/feature/get-information-of-cultivar
         public static IServiceCollection AddAuth(
             this IServiceCollection services,
             ConfigurationManager configuration

@@ -8,13 +8,8 @@ using ErrorOr;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
-using Domain.Common.Errors;
-using Application.User.Commands.Add;
 using Application.User.Queries.ListBySchedule;
 using Application.ScheduleTreeTrim.Common;
-=======
->>>>>>> vu/feature/get-information-of-cultivar
 
 namespace API.Controllers
 {

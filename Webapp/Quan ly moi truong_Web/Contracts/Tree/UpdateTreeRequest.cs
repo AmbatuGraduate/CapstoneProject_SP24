@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 ﻿
 namespace Contract.Tree
-=======
-﻿namespace Contract.Tree
->>>>>>> vu/feature/get-information-of-cultivar
+
 {
     public record UpdateTreeRequest
     (

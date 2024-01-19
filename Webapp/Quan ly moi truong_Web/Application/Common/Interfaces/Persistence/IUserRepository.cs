@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 ﻿using Domain.Entities.ScheduleTreeTrim;
 using Domain.Entities.User;
-=======
-﻿using Domain.Entities.User;
->>>>>>> vu/feature/get-information-of-cultivar
+
 
 namespace Application.Common.Interfaces.Persistence
 {

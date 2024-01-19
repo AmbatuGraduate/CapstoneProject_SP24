@@ -5,13 +5,9 @@ using Domain.Entities.ScheduleTreeTrim_street_map;
 using Domain.Entities.StreetType;
 using Domain.Entities.Tree;
 using Domain.Entities.Ward;
-<<<<<<< HEAD
 
 using System.Runtime.Serialization;
 
-=======
-using System.Runtime.Serialization;
->>>>>>> vu/feature/get-information-of-cultivar
 
 namespace Domain.Entities.Street
 {

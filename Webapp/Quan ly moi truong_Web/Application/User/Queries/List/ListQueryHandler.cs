@@ -2,10 +2,6 @@
 using Application.User.Common;
 using ErrorOr;
 using MediatR;
-<<<<<<< HEAD
-
-=======
->>>>>>> vu/feature/get-information-of-cultivar
 
 namespace Application.User.Queries.List
 {

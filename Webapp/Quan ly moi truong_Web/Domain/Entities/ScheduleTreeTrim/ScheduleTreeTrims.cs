@@ -2,10 +2,7 @@
 using Domain.Entities.ListTreeTrimmerTask;
 using Domain.Entities.ScheduleTreeTrim_street_map;
 using System.Runtime.Serialization;
-<<<<<<< HEAD
 
-=======
->>>>>>> vu/feature/get-information-of-cultivar
 
 namespace Domain.Entities.ScheduleTreeTrim
 {
