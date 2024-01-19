@@ -1,4 +1,5 @@
-﻿using Domain.Entities.User;
+﻿using Domain.Entities.ScheduleTreeTrim;
+using Domain.Entities.User;
 
 namespace Application.Common.Interfaces.Persistence
 {
@@ -8,7 +9,9 @@ namespace Application.Common.Interfaces.Persistence
         Users GetById(Guid id);
         Users? GetUserByPhone(string phoneNumber);
         void Add(Users user);
-
         void Update(Users user);
+        
+        // Get all schedules for a user
+        List<ScheduleTreeTrims> GetSchedulesByUserId(Guid userId);
     }
 }

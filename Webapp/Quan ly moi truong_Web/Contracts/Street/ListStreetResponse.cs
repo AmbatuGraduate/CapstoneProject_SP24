@@ -8,7 +8,6 @@
         int NumberOfHouses,
         Guid StreetTypeId,
         Guid WardId,
-        Guid DistrictId,
-        bool isExist
+        Guid DistrictId
     );
 }

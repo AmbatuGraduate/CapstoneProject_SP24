@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Application.ScheduleTreeTrim.Queries.List;
 using Contract.ScheduleTreeTrim;
 using Application.ScheduleTreeTrim.Queries.GetById;
+using Application.User.Queries.ListBySchedule;
+using Application.ScheduleTreeTrim.Queries.GetStreets;
+using Application.Street.Common;
 
 namespace API.Controllers
 {
@@ -58,6 +61,21 @@ namespace API.Controllers
             }
 
             return Ok(mapper.Map<ListScheduleTreeTrimResponse>(scheduleTreeTrim.Value));
+        }
+
+        // get streets of schedule tree trim by schedule id
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetStreetsOfSchedule(string id)
+        {
+            var query = new GetStreetsQuery(Guid.Parse(id));
+            ErrorOr<List<StreetResult>> result = await mediator.Send(query);
+
+            if (result.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
+            }
+
+            return Ok(result.Value);
         }
     }
 }

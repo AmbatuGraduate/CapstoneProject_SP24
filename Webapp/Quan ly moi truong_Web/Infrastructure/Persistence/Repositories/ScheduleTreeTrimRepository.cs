@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence.Schedules;
 using Domain.Entities.ScheduleTreeTrim;
+using Domain.Entities.Street;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,6 +45,15 @@ namespace Infrastructure.Persistence.Repositories
             _dbContext.ScheduleTreeTrims.Update(schedule);
             _dbContext.SaveChanges();
             return schedule;
+        }
+
+        // get street associated with schedule
+        public List<Streets> GetStreetsOfSchedule(Guid scheduleId)
+        {
+            return _dbContext.ScheduleTreeTrim_street_maps
+                .Where(map => map.ScheduleTreeTrimId == scheduleId)
+                .Select(map => map.Street)
+                .ToList();
         }
     }
 }
