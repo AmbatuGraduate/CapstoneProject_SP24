@@ -1,0 +1,324 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mindex d0ceaba..b038ff2 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -1,15 +1,116 @@[m
+ # CapstoneProject_SP24[m
+[31m-## Description[m
+[31m-App Mobile của Project cây xanh[m
+ [m
+[31m-## Sử dụng react native[m
+[32m+[m[32m## Mô Tả[m
+[32m+[m[32m- Sửa lại toàn bộ Domain dựa trên DB mà team đã chốt (tạm thời)[m
+[32m+[m[32m- Các chức năng CRUD cơ bản của cây, người dùng sẽ không thể dùng được do vẫn chưa sửa theo domain mới[m
+[32m+[m[32m- Trong `Infrastructure.DependencyInjection.cs` có chứa connection string của sql server azure và muốn kết nối sql server đó vào ssms thì đã có tk được ghi vào bên `wiki > cách để deploy SQL server, Window server của Azure`[m
+ [m
+[31m-## Cấu trúc bài[m
+[31m-![image](https://github.com/quanSadie/CapstoneProject_SP24/assets/108205081/a29bda29-624e-4a20-9722-bd4298a11f1b)[m
+[32m+[m[32m## Giải thích về cấu trúc[m
+[32m+[m[32m```[m
+ [m
+[31m-* Thư mục global bao gồm các file global như css hoặc các form dùng được lại nhiều lần .[m
+[31m-* Thư mục navigation bao gồm các config cho điều hướng giữa các screens.[m
+[31m-* Thư mục screens bao gồm các màn hình chính của app.[m
+[32m+[m[32m|___Domain[m
+[32m+[m[32m|   |___Common[m
+[32m+[m[32m|   |    |___Errors[m
+[32m+[m[32m|   |    |___Models[m
+[32m+[m[32m|   |___Enitites[m
+[32m+[m[32m|___Application[m
+[32m+[m[32m|        |___Common[m
+[32m+[m[32m|        |   |___Behaviors[m
+[32m+[m[32m|        |   |___Interfaces[m
+[32m+[m[32m|        |   |   |___Authentication[m
+[32m+[m[32m|        |   |   |___Persistence[m
+[32m+[m[32m|        |   |   |___Service[m
+[32m+[m[32m|        |___Tree[m
+[32m+[m[32m|            |___ Commands[m
+[32m+[m[32m|            |       |___ Add[m
+[32m+[m[32m|            |       |     |___ AddTreeCommand.cs[m
+[32m+[m[32m|            |       |     |___ AddTreeHandler.cs[m
+[32m+[m[32m|            |       |     |___ AddTreeValidator.cs[m
+[32m+[m[32m|            |       |___ Delete[m
+[32m+[m[32m|            |       |     |___ DeleteTreeCommand.cs[m
+[32m+[m[32m|            |       |     |___ DeleteTreeHandler.cs[m
+[32m+[m[32m|            |       |     |___ DeleteTreeValidator.cs[m
+[32m+[m[32m|            |       |___ Update[m
+[32m+[m[32m|            |             |___ UpdateTreeCommand.cs[m
+[32m+[m[32m|            |             |___ UpdateTreeHandler.cs[m
+[32m+[m[32m|            |             |___ UpdateTreeValidator.cs[m
+[32m+[m[32m|            |___ Common[m
+[32m+[m[32m|            |       |___ TreeResult.cs[m
+[32m+[m[32m|            |___ Queries[m
+[32m+[m[32m|                    |___ GetById[m
+[32m+[m[32m|                    |     |___ GetByIdTreeHandler.cs[m
+[32m+[m[32m|                    |     |___ GetByIdTreeQuery.cs[m
+[32m+[m[32m|                    |     |___ GetByIdTreeValidator.cs[m
+[32m+[m[32m|                    |___ Delete[m
+[32m+[m[32m|                            |___ ListTreeHandler.cs[m
+[32m+[m[32m|                            |___ ListTreeQuery.cs[m
+[32m+[m[32m|[m
+[32m+[m[32m|[m
+[32m+[m[32m...[m
+[32m+[m[32m|[m
+[32m+[m[32m|[m
+[32m+[m[32m|___Infrastructure[m
+[32m+[m[32m|             |__Persistence[m
+[32m+[m[32m|             |       |___Configuration[m
+[32m+[m[32m|             |       |___Repositories[m
+[32m+[m[32m|             |___Services[m
+[32m+[m[32m|[m
+[32m+[m[32m|___API[m
+[32m+[m[32m|   |___Common[m
+[32m+[m[32m|   |      |___Errors[m
+[32m+[m[32m|   |      |___Http[m
+[32m+[m[32m|   |___Controllers[m
+[32m+[m[32m|   |___Mapping[m
+[32m+[m[32m|   |___DependencyInjection.cs[m
+[32m+[m[32m|[m
+[32m+[m[32m|[m
+[32m+[m[32m|___Contract[m
+[32m+[m[32m```[m
+[32m+[m[32m- Giải thích:[m
+[32m+[m[32m    + Domain: nơi sẽ chứa các entity của web và ngoài ra Domain không được `add reference` tới các class library bên ngoài, trong domain sẽ có các folder:[m
+[32m+[m[32m        + Common là nơi sẽ chưa các obj chung như là các class thông báo lỗi,...[m
+[32m+[m[32m            + Errors sẽ là nơi chứa các class báo lỗi và nhưng class đó sẽ dùng partial class, ví dụ class như sau[m
+[32m+[m[32m            ```[m
+[32m+[m[32m                public static partial class Errors[m
+[32m+[m[32m                {[m
+[32m+[m[32m                    public static class AddTree[m
+[32m+[m[32m                    {[m
+[32m+[m[32m                        public static Error AddTreeFail = Error.Failure([m
+[32m+[m[32m                            code: "add.AddTree", description: "Add Fail.");[m
+[32m+[m[32m                    }[m
+[32m+[m[32m                }[m
+[32m+[m[32m            ```[m
+[32m+[m[32m            + Models thì sẽ là nơi chứa các class phục vụ cho việc dùng aggregate root (nhưng có thể sẽ xóa vì ko dùng)[m
+[32m+[m[32m        + Entities là nơi chứa các entity của web như cây, người dùng, role,...[m
+[32m+[m
+[32m+[m[32m    + Application là nơi sẽ thực hiện các bussiness logic[m
+[32m+[m[32m        + Interface.Authentiation là folder chứa các class interface dành cho authentication như là tạo Jwt token[m
+[32m+[m[32m        + Interface.Persistence là nơi chứa các interface repo cho Infrastructure[m
+[32m+[m[32m        + Khi muốn làm các func crud thì chỉ cần tạo 1 folder với tên là entity mà mình muốn là func crud và trong đó sẽ tạo thêm các folder là commands, common, và queries.[m
+[32m+[m[32m            + ví dụ như muốn làm crud cây[m
+[32m+[m[32m                + folder common là nơi chứa các class chung của 2 folder commands và queries sẽ dùng như là kết quả trả về[m
+[32m+[m[32m                + folder Commands có mục đích là dành cho các func nào sẽ ghi vào DB[m
+[32m+[m[32m                + folder Queries sẽ là nơi dành cho func đọc dữ liệu từ DB[m
+[32m+[m[32m                => lý do là làm theo CQRS pattern[m
+[32m+[m[32m                + Ngoài ra khi tạo 1 func trong commmands hay queries thì phải tạo 1 folder với tên chức năng mà bạn muốn tạo, ví dụ như muốn làm add tree thì chỉ tạo folder tên `Add`[m
+[32m+[m[32m                    + Trong folder `Add` hay là các folder chức năng khác trong tương lai hầu như sẽ có 3 class chính là request (khi đặt tên cho class này phải đặt là <tên func> + command hay query tùy vào func), validator (là nơi chứa các rule cho trường như là không được rỗng hay là phải có cùng regex, ...) và cuối cùng là handler func đó (đặt tên là <tên func> + handler)[m
+[32m+[m
+[32m+[m[32m    + Infrastructure là chủ yếu là dành cho các công việc liên quan đến DB[m
+[32m+[m[32m        + Persistence.Configuration là nơi sẽ config các property của entity[m
+[32m+[m[32m        + Persistence.Repositories là repo của entity[m
+[32m+[m
+[32m+[m[32m    + Contract là DTO request hoặc response của bên API và khi muốn tạo 1 request hay response DTP thì chỉ cần tạo 1 folder, ví dụ như đang làm 1 controller cho cây và muốn tạo 1 DTO request và response thì tạo 1 folder `tree` để lưu trữ các request và response[m
+[32m+[m
+[32m+[m[32m    + API thì là nơi sẽ giao tiếp với FE[m
+[32m+[m[32m        + Common.Errors là có 1 class được lấy trên mạng và cái này để handle các lỗi sẽ xảy ra[m
+[32m+[m[32m        + Common.Http thì là nơi để chứa các tên mà dùng chung qua nhiều hay lặp lại thì sẽ vào đó tạo 1 đn nghĩa key, ví dụ như từ `errors` được dùng nhiều thì tạo 1 `const sting Errors = "errors"` dùng rồi nếu như mà có thay đổi tên của key thì chỉ cần vào đây sửa 1 lần là cho hết toàn bộ[m
+[32m+[m[32m        + Controllers thì là nơi chứa các controller api của web; ngoài ra, `ApiController.cs` chính là class cha cho các API khác nên khi tạo mới thì kế thừa class đó[m
+[32m+[m[32m        => lý do là class `ApiController.cs` là class sẽ handle lỗi + có hàm override việc trả về detail lỗi nên mới cần kế thừa[m
+[32m+[m[32m        + Mapping thì là dành cho việc config mapping[m
+[32m+[m
+[32m+[m[32m### III. Thông tin thêm[m
+[32m+[m[32m- CQRS [HERE](https://topdev.vn/blog/cqrs-pattern-la-gi-vi-du-de-hieu-ve-cqrs-pattern/#:~:text=CQRS%20l%C3%A0%20pattern%20chia%20vi%E1%BB%87c,%C4%91%E1%BB%99t%20tr%C3%AAn%20c%C3%B9ng%20m%E1%BB%99t%20domain.)[m
+[32m+[m[32m- Mediator [HERE](https://refactoring.guru/design-patterns/mediator)[m
+[32m+[m[32m- Mapster [Nên coi đoạn đầu để hiểu về cách dùng mapster](https://www.youtube.com/watch?v=vBs6naPD6RE)[m
+[32m+[m[32m- Clean Architecture [Cái này sẽ giải thích ngắn gọn chút về clean architecture](https://learn.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures#clean-architecture)[m
+ [m
+[31m-## Notice[m
+[31m-1. Lúc kéo code về chạy lại lệnh npm i để cài đặt lại các dependencies [m
+[1mdiff --git a/Webapp/FE/TreeManagement/addTree.js b/Webapp/FE/TreeManagement/addTree.js[m
+[1mdeleted file mode 100644[m
+[1mindex 3dd117b..0000000[m
+[1m--- a/Webapp/FE/TreeManagement/addTree.js[m
+[1m+++ /dev/null[m
+[36m@@ -1,39 +0,0 @@[m
+[31m-function saveTree() {[m
+[31m-    // Collect data from the form[m
+[31m-    var treeData = {[m
+[31m-        id: Math.floor(Math.random() * 10000) + 1, // Generating a random id[m
+[31m-        district: $('#add_tree_district').val(),[m
+[31m-        street: $('#add_tree_street').val(),[m
+[31m-        rootType: $('#add_tree_rootType').val(),[m
+[31m-        type: $('#add_tree_type').val(),[m
+[31m-        bodyDiameter: parseFloat($('#add_tree_diameter').val()),[m
+[31m-        leafLength: parseFloat($('#add_tree_leaf').val()),[m
+[31m-        plantTime: new Date($('#add_tree_plant').val()).toISOString(),[m
+[31m-        cutTime: new Date($('#add_tree_cut').val()).toISOString(),[m
+[31m-        intervalCutTime: parseInt($('#add_tree_interval').val()),[m
+[31m-        note: $('#add_tree_note').val()[m
+[31m-    };[m
+[31m-[m
+[31m-    // Make a POST request[m
+[31m-    $.ajax({[m
+[31m-        type: 'POST',[m
+[31m-        url: 'https://localhost:7024/api/Tree',[m
+[31m-        contentType: 'application/json',[m
+[31m-        data: JSON.stringify(treeData),[m
+[31m-        success: function (response) {[m
+[31m-            console.log('Tree saved successfully:', response);[m
+[31m-            // Handle success, e.g., show a success message or redirect[m
+[31m-        },[m
+[31m-        error: function (xhr) {[m
+[31m-            console.error('Error saving tree:', xhr);[m
+[31m-[m
+[31m-            // Check if the response contains JSON data[m
+[31m-            if (xhr.responseJSON && xhr.responseJSON.errors) {[m
+[31m-                // Log the validation errors[m
+[31m-                console.error('Validation errors:', xhr.responseJSON.errors);[m
+[31m-            }[m
+[31m-        }[m
+[31m-    });[m
+[31m-    // You may want to close the modal after saving[m
+[31m-    $('#addTreeModal').modal('hide');[m
+[31m-}[m
+[1mdiff --git a/Webapp/FE/TreeManagement/deleteTree.js b/Webapp/FE/TreeManagement/deleteTree.js[m
+[1mdeleted file mode 100644[m
+[1mindex 1cfacca..0000000[m
+[1m--- a/Webapp/FE/TreeManagement/deleteTree.js[m
+[1m+++ /dev/null[m
+[36m@@ -1,49 +0,0 @@[m
+[31m-// Define the variable outside the functions[m
+[31m-[m
+[31m-// function deleteTree(treeId) {[m
+[31m-//     // Make a DELETE request[m
+[31m-//     $.ajax({[m
+[31m-//         type: 'DELETE',[m
+[31m-//         url: 'https://localhost:7024/api/Tree/' + treeId,[m
+[31m-//         success: function (response) {[m
+[31m-//             console.log('Tree deleted successfully:', response);[m
+[31m-//             // Optionally, you can remove the deleted tree from the UI[m
+[31m-//             // Example: $('#treeRow_' + treeId).remove();[m
+[31m-//         },[m
+[31m-//         error: function (xhr) {[m
+[31m-//             console.error('Error deleting tree:', xhr);[m
+[31m-//         }[m
+[31m-//     });[m
+[31m-// }[m
+[31m-var treeIdToDelete;[m
+[31m-$(document).on('click', '.delete-btn', function () {[m
+[31m-    // Retrieve the treeId from the data attribute[m
+[31m-    console.log('tree' + $(this).data('treeid'));[m
+[31m-    var treeId = $(this).data('treeid');[m
+[31m-[m
+[31m-    // Set the treeIdToDelete variable[m
+[31m-    treeIdToDelete = treeId;[m
+[31m-[m
+[31m-    // Show the confirmation modal[m
+[31m-    $('#deleteModal').modal('show');[m
+[31m-});[m
+[31m-[m
+[31m-function confirmDelete() {[m
+[31m-    // Close the confirmation modal[m
+[31m-    $('#deleteModal').modal('hide');[m
+[31m-[m
+[31m-    // Make a DELETE request[m
+[31m-    $.ajax({[m
+[31m-        type: 'DELETE',[m
+[31m-        url: 'https://localhost:7024/api/Tree?id=' + treeIdToDelete,[m
+[31m-        success: function (response) {[m
+[31m-            console.log('Tree deleted successfully:', response);[m
+[31m-[m
+[31m-            // Optionally, you can remove the deleted tree from the UI[m
+[31m-            // Example: $('#treeRow_' + treeIdToDelete).remove();[m
+[31m-        },[m
+[31m-        error: function (xhr) {[m
+[31m-            console.error('Error deleting tree:', xhr);[m
+[31m-        }[m
+[31m-    });[m
+[31m-}[m
+[1mdiff --git a/Webapp/FE/TreeManagement/index.html b/Webapp/FE/TreeManagement/index.html[m
+[1mdeleted file mode 100644[m
+[1mindex 9bc159f..0000000[m
+[1m--- a/Webapp/FE/TreeManagement/index.html[m
+[1m+++ /dev/null[m
+[36m@@ -1,354 +0,0 @@[m
+[31m-<!DOCTYPE html>[m
+[31m-<html lang="en">[m
+[31m-[m
+[31m-<head>[m
+[31m-  <meta charset="UTF-8">[m
+[31m-  <title>Tree Management</title>[m
+[31m-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">[m
+[31m-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">[m
+[31m-  <link rel="stylesheet"[m
+[31m-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />[m
+[31m-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"[m
+[31m-    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">[m
+[31m-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">[m
+[31m-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"[m
+[31m-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">[m
+[31m-[m
+[31m-  <link rel="stylesheet" href="./style.css">[m
+[31m-[m
+[31m-</head>[m
+[31m-[m
+[31m-<body>[m
+[31m-  <!-- partial:index.partial.html -->[m
+[31m-  <div class="app-container">[m
+[31m-    <div class="sidebar">[m
+[31m-      <div class="sidebar-header">[m
+[31m-        <div class="app-icon">[m
+[31m-          <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">[m
+[31m-            <path fill="currentColor"[m
+[31m-              d="M507.606 371.054a187.217 187.217 0 00-23.051-19.606c-17.316 19.999-37.648 36.808-60.572 50.041-35.508 20.505-75.893 31.452-116.875 31.711 21.762 8.776 45.224 13.38 69.396 13.38 49.524 0 96.084-19.286 131.103-54.305a15 15 0 004.394-10.606 15.028 15.028 0 00-4.395-10.615zM27.445 351.448a187.392 187.392 0 00-23.051 19.606C1.581 373.868 0 377.691 0 381.669s1.581 7.793 4.394 10.606c35.019 35.019 81.579 54.305 131.103 54.305 24.172 0 47.634-4.604 69.396-13.38-40.985-.259-81.367-11.206-116.879-31.713-22.922-13.231-43.254-30.04-60.569-50.039zM103.015 375.508c24.937 14.4 53.928 24.056 84.837 26.854-53.409-29.561-82.274-70.602-95.861-94.135-14.942-25.878-25.041-53.917-30.063-83.421-14.921.64-29.775 2.868-44.227 6.709-6.6 1.576-11.507 7.517-11.507 14.599 0 1.312.172 2.618.512 3.885 15.32 57.142 52.726 100.35 96.309 125.509zM324.148 402.362c30.908-2.799 59.9-12.454 84.837-26.854 43.583-25.159 80.989-68.367 96.31-125.508.34-1.267.512-2.573.512-3.885 0-7.082-4.907-13.023-11.507-14.599-14.452-3.841-29.306-6.07-44.227-6.709-5.022 29.504-15.121 57.543-30.063 83.421-13.588 23.533-42.419 64.554-95.862 94.134zM187.301 366.948c-15.157-24.483-38.696-71.48-38.696-135.903 0-32.646 6.043-64.401 17.945-94.529-16.394-9.351-33.972-16.623-52.273-21.525-8.004-2.142-16.225 2.604-18.37 10.605-16.372 61.078-4.825 121.063 22.064 167.631 16.325 28.275 39.769 54.111 69.33 73.721zM324.684 366.957c29.568-19.611 53.017-45.451 69.344-73.73 26.889-46.569 38.436-106.553 22.064-167.631-2.145-8.001-10.366-12.748-18.37-10.605-18.304 4.902-35.883 12.176-52.279 21.529 11.9 30.126 17.943 61.88 17.943 94.525.001 64.478-23.58 111.488-38.702 135.912zM266.606 69.813c-2.813-2.813-6.637-4.394-10.615-4.394a15 15 0 00-10.606 4.394c-39.289 39.289-66.78 96.005-66.78 161.231 0 65.256 27.522 121.974 66.78 161.231 2.813 2.813 6.637 4.394 10.615 4.394s7.793-1.581 10.606-4.394c39.248-39.247 66.78-95.96 66.78-161.231.001-65.256-27.511-121.964-66.78-161.231z" />[m
+[31m-          </svg>[m
+[31m-        </div>[m
+[31m-      </div>[m
+[31m-      <ul class="sidebar-list">[m
+[31m-        <li class="sidebar-list-item active">[m
+[31m-          <a href="#">[m
+[31m-            <span>Quản lý cây xanh</span>[m
+[31m-          </a>[m
+[31m-        </li>[m
+[31m-        <li class="sidebar-list-item">[m
+[31m-          <a href="#">[m
+[31m-            <span>Quản lý vệ sinh</span>[m
+[31m-          </a>[m
+[31m-        </li>[m
+[31m-        <li class="sidebar-list-item">[m
+[31m-          <a href="#">[m
+[31m-            <span>Quản lý nhân sự</span>[m
+[31m-          </a>[m
+[31m-        </li>[m
+[31m-      </ul>[m
+[31m-    </div>[m
+[31m-    <div class="app-content">[m
+[31m-      <div class="app-content-header">[m
+[31m-        <h1 class="app-content-headerText">Quản lý cây xanh</h1>[m
+[31m-[m
+[31m-[m
+[31m-      </div>[m
+[31m-      <div class="app-content-actions">[m
+[31m-        <button class="action-button filter jsFilter"><span>Bộ lọc</span><svg xmlns="http://www.w3.org/2000/svg"[m
+[31m-            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"[m
+[31m-            stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter">[m
+[31m-            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />[m
+[31m-          </svg></button> &nbsp;[m
+[31m-        <input class="search-bar" placeholder="Tìm kiếm..." type="text">[m
+[31m-        <div class="app-content-actions-wrapper">[m
+[31m-          <button class="app-content-headerButton" data-toggle="modal" data-target="#addTreeModal">Thêm cây</button>[m
+[31m-          <div class="filter-button-wrapper">[m
+[31m-[m
+[31m-[m
+[31m-            <div class="filter-menu">[m
+[31m-              <label>Quận</label>[m
+[31m-              <select>[m
+[31m-                <option>Tất cả </option>[m
+[31m-                <option>Hải Châu</option>[m
+[31m-                <option>Thanh Khê</option>[m
+[31m-                <option>Sơn Trà</option>[m
+[31m-                <option>Ngũ Hành Sơn</option>[m
+[31m-                <option>Cẩm Lệ</option>[m
+[31m-                <option>Liên Chiểu</option>[m
+[31m-              </select>[m
+[31m-              <label>Tình trạng</label>[m
+[31m-              <select>[m
+[31m-                <option>Tất cả</option>[m
+[31m-                <option>Đã cắt tỉa</option>[m
+[31m-                <option>Cần cắt tỉa</option>[m
+[31m-              </select>[m
+[31m-              <div class="filter-menu-buttons">[m
+[31m-                <butto

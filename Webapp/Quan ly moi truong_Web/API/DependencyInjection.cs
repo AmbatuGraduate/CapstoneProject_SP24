@@ -1,6 +1,4 @@
-﻿
-
-using API.Common.Errors;
+﻿using API.Common.Errors;
 using API.Mapping;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 

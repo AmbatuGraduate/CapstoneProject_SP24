@@ -1,19 +1,13 @@
 ﻿using Domain.Entities.GarbageDump;
-using Domain.Entities.ScheduleCleanSidewalk;
 using Domain.Entities.ScheduleCleanSidewalk_street_map;
-using Domain.Entities.ScheduleGarbageCollect;
 using Domain.Entities.ScheduleGarbageCollect_street_map;
-using Domain.Entities.ScheduleTreeTrim;
 using Domain.Entities.ScheduleTreeTrim_street_map;
 using Domain.Entities.StreetType;
 using Domain.Entities.Tree;
 using Domain.Entities.Ward;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Domain.Entities.Street
 {

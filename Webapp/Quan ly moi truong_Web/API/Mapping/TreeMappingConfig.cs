@@ -6,11 +6,6 @@ using Application.Tree.Queries.GetById;
 using Application.Tree.Queries.GetByTreeCode;
 using Contract.Tree;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API.Mapping
 {

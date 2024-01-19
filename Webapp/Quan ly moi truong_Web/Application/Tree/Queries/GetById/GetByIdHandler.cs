@@ -1,14 +1,8 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Tree.Common;
 using Domain.Common.Errors;
-using Domain.Entities.Tree;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Tree.Queries.GetById
 {
