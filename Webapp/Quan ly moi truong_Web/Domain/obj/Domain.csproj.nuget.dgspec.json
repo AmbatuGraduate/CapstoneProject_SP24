@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {}
+    "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
+    "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
+        "projectUniqueName": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
+        "projectPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\lenovo\\.nuget\\packages\\",
-        "outputPath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Domain\\obj\\",
+        "outputPath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\VS2022_Shared\\NuGetPackages"
@@ -73,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

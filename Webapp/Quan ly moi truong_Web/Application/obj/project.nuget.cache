@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "DMq6DzzY17r43qy2h/q2+xA64UCvEvYlKRO/fmHdVod2+t4+YKtU0u21WVZjT2GbPJdwNV9Aj2TtIJTPeGv0hw==",
+  "dgSpecHash": "t5epGRhbKb55aRNkVUkxyNgOL3hjNDBmu66IKzoWqHbRcVIPeZ26nNbRvnKeszGLt+QZdaVrenf+j3izFZkvsg==",
   "success": true,
-  "projectFilePath": "E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
+  "projectFilePath": "E:\\Project\\Đồ Án\\Webapp\\Quan ly moi truong_Web\\Application\\Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lenovo\\.nuget\\packages\\entityframework\\6.1.0\\entityframework.6.1.0.nupkg.sha512",
     "C:\\Users\\lenovo\\.nuget\\packages\\erroror\\1.3.0\\erroror.1.3.0.nupkg.sha512",
