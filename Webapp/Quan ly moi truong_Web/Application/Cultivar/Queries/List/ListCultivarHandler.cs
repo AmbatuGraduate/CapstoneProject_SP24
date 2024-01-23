@@ -27,15 +27,15 @@ namespace Application.Cultivar.Queries.List
         {
             await Task.CompletedTask;
 
-            List<CultivarResult> cultivalResults = new List<CultivarResult>();
+            List<CultivarResult> cultivarResults = new List<CultivarResult>();
             var cultivars = cultivarRepository.GetAllCultivars();
 
             foreach (var cultivar in cultivars)
             {
-                cultivalResults.Add(new CultivarResult(cultivar));
+                cultivarResults.Add(new CultivarResult(cultivar));
             }
 
-            return cultivalResults;
+            return cultivarResults;
         }
     }
 }

@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Contract.Cultivar
 {
-    public record ListCultivarRepsone
+    public record AddCultivarRequest
     (
         string CultivarName,
-        Guid TreeTypeId
+        Guid TreeTypeId,
+        string CreateBy,
+        string UpdateBy
     );
 }

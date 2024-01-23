@@ -1,10 +1,10 @@
-﻿using Application.Cultivar.Common;
+﻿using Application.Cultivar.Commands.Add;
+using Application.Cultivar.Commands.Update;
+using Application.Cultivar.Common;
 using Application.Cultivar.Queries.GetById;
 using Application.Cultivar.Queries.List;
-using Application.TreeType.Common;
-using Application.TreeType.Queries.List;
-using Contract.Cultival;
-using Contract.TreeType;
+using Contract.Cultivar;
+using Domain.Common.Errors;
 using ErrorOr;
 using MapsterMapper;
 using MediatR;
@@ -66,6 +66,37 @@ namespace API.Controllers
             }
 
             return Ok(mapper.Map<ListCultivarRepsone>(result.Value));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(AddCultivarRequest request)
+        {
+            var command = mapper.Map<AddCultivarCommand>(request);
+
+            ErrorOr<CultivarResult> addResult = await mediator.Send(command);
+
+            return addResult.Match(
+                treeToAdd => Ok(mapper.Map<ListCultivarRepsone>(addResult)),
+                errors => Problem(errors)
+                );
+        }
+
+
+        [HttpPut("{Id}")]
+        public async Task<IActionResult> Update(string Id, UpdateCultivarRequest request)
+        {
+            var command = mapper.Map<UpdateCultivarCommand>((Guid.Parse(Id), request));
+
+            ErrorOr<CultivarResult> updateResult = await mediator.Send(command);
+
+            if (updateResult.IsError && updateResult.FirstError == Errors.GetCultivarById.getCultivarById)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: updateResult.FirstError.Description);
+            }
+
+            return updateResult.Match(
+                updateResult => Ok(mapper.Map<ListCultivarRepsone>(updateResult)),
+                errors => Problem(errors));
         }
 
     }
