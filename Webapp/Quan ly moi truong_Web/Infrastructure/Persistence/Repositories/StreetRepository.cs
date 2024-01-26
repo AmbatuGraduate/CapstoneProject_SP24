@@ -41,5 +41,13 @@ namespace Infrastructure.Persistence.Repositories
             _streetDbContext.SaveChanges();
             return street;
         }
+
+        // delete 
+        public void DeleteStreet(Streets street)
+        {
+            _streetDbContext.Streets.Remove(street);
+            _streetDbContext.SaveChanges();
+        }
+
     }
 }

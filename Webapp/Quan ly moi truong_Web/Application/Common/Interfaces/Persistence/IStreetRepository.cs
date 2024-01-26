@@ -8,5 +8,6 @@ namespace Application.Common.Interfaces.Persistence
         Streets GetStreetById(Guid id);
         Streets CreateStreet(Streets street);
         Streets UpdateStreet(Streets street);
+        void DeleteStreet(Streets street);
     }
 }

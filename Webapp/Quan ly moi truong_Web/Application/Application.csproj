@@ -28,9 +28,6 @@
     <Folder Include="ScheduleTreeTrim\Commands\Delete\" />
     <Folder Include="ScheduleTreeTrim\Commands\Update\" />
     <Folder Include="ScheduleTreeTrim\Queries\GetFromUser\" />
-    <Folder Include="Street\Commands\Add\" />
-    <Folder Include="Street\Commands\Delete\" />
-    <Folder Include="Street\Commands\Update\" />
   </ItemGroup>
 
 </Project>

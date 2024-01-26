@@ -46,7 +46,9 @@ namespace Infrastructure
         {
             services.AddDbContext<WebDbContext>(opts =>
             {
-                opts.UseSqlServer("Server=tcp:urban-sanitation.database.windows.net,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=adminServer;Password=Urbansanitation357;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+/*                opts.UseSqlServer("Server=tcp:urban-sanitation.database.windows.net,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=adminServer;Password=Urbansanitation357;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+*/                
+                opts.UseSqlServer("Server=172.188.80.0;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=admin;Password=Urban123;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;");
                 opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
             return services;
