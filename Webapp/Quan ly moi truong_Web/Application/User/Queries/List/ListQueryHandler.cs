@@ -1,14 +1,7 @@
-﻿using Application.Authentication.Common;
-using Application.Authentication.Queries.Login;
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Application.User.Common;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.User.Queries.List
 {
@@ -29,7 +22,7 @@ namespace Application.User.Queries.List
             List<UserResult> userResults = new List<UserResult>();
             var list = userRepository.GetAll();
 
-            foreach(var ls in list)
+            foreach (var ls in list)
             {
                 userResults.Add(new UserResult(ls));
             }

@@ -1,16 +1,10 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Domain.Entities.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repositories
 {
     public class UserRepository : IUserRepository
     {
-
         private readonly WebDbContext webDbContext;
 
         public UserRepository(WebDbContext webDbContext)
@@ -26,7 +20,6 @@ namespace Infrastructure.Persistence.Repositories
         {
             return webDbContext.Users.ToList();
         }
-
 
         /// <summary>
         /// Add new user to databse

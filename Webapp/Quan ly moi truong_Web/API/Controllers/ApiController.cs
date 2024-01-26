@@ -1,12 +1,10 @@
 ﻿using API.Common.Http;
 using ErrorOr;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace API.Controllers
 {
-
     /// <summary>
     /// Base class for return problem when get error in validation
     /// </summary>
@@ -15,7 +13,6 @@ namespace API.Controllers
     {
         protected IActionResult Problem(List<Error> errors)
         {
-
             // Having bug, don't show detail of list error
             if (errors.All(e => e.Type == ErrorType.Validation))
             {
@@ -38,6 +35,7 @@ namespace API.Controllers
 
             return Problem(statusCode: statusCode, title: firstError.Description);
         }
+
         private IActionResult ValidationProblem(List<Error> errors)
         {
             var modelStateDictionary = new ModelStateDictionary();
@@ -51,6 +49,5 @@ namespace API.Controllers
 
             return ValidationProblem(modelStateDictionary);
         }
-
     }
 }

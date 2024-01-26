@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Infrastructure.Authentication
+﻿namespace Infrastructure.Authentication
 {
     /// <summary>
     /// Model setting of Jwt
@@ -16,6 +10,5 @@ namespace Infrastructure.Authentication
         public int ExpiryMinutes { get; init; }
         public string Issuer { get; init; } = null!;
         public string Audience { get; init; } = null!;
-
     }
 }

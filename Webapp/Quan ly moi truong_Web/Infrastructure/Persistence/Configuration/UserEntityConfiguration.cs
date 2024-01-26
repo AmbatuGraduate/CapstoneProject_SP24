@@ -1,13 +1,6 @@
-﻿using Domain.Entities.Street;
-using Domain.Entities.User;
-using Microsoft.AspNetCore.SignalR;
+﻿using Domain.Entities.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
@@ -58,7 +51,6 @@ namespace Infrastructure.Persistence.Configuration
                 RoleId = Guid.Parse("abccde85-c7dc-4f78-9e4e-b1b3e7abee84"),
                 DepartmentId = Guid.Parse("bc2f24de-2b9b-489a-a108-64a114d2b9be"),
                 Image = "string"
-
             });
 
             builder.HasData(new Users
@@ -72,7 +64,6 @@ namespace Infrastructure.Persistence.Configuration
                 RoleId = Guid.Parse("8977ef77-e554-4ef3-8353-3e01161f84d0"),
                 DepartmentId = Guid.Parse("bc2f24de-2b9b-489a-a108-64a114d2b9be"),
                 Image = "string"
-
             });
 
             builder.HasData(new Users
@@ -86,7 +77,6 @@ namespace Infrastructure.Persistence.Configuration
                 RoleId = Guid.Parse("8977ef77-e554-4ef3-8353-3e01161f84d0"),
                 DepartmentId = Guid.Parse("bc2f24de-2b9b-429a-a108-64a114d2b9be"),
                 Image = "string"
-
             });
         }
     }

@@ -67,7 +67,6 @@ namespace API.Common.Errors
 
             ApplyProblemDetailsDefaults(httpContext, problemDetails, statusCode.Value);
 
-
             return problemDetails;
         }
 
@@ -89,7 +88,7 @@ namespace API.Common.Errors
 
             var errors = httpContext?.Items[HttpContextItemKeys.Errors] as List<Error>;
             if (errors != null)
-                problemDetails.Extensions.Add("errorCodes", errors.Select(e=> e.Code));
+                problemDetails.Extensions.Add("errorCodes", errors.Select(e => e.Code));
         }
     }
 }

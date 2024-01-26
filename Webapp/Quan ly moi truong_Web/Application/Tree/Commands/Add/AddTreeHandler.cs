@@ -3,18 +3,12 @@ using Application.Tree.Common;
 using Domain.Entities.Tree;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Tree.Commands.Add
 {
     public class AddTreeHandler :
         IRequestHandler<AddTreeCommand, ErrorOr<TreeResult>>
     {
-
         private readonly ITreeRepository treeRepository;
 
         public AddTreeHandler(ITreeRepository treeRepository)
@@ -26,7 +20,8 @@ namespace Application.Tree.Commands.Add
         {
             await Task.CompletedTask;
 
-            var tree = new Trees {
+            var tree = new Trees
+            {
                 TreeId = Guid.NewGuid(),
                 TreeCode = request.TreeCode,
                 StreetId = request.StreetId,
@@ -40,13 +35,11 @@ namespace Application.Tree.Commands.Add
                 UpdateDate = DateTime.Now,
                 UpdateBy = request.UpdateBy,
                 Note = request.Note,
-
             };
 
             var result = new TreeResult(treeRepository.CreateTree(tree));
 
             return result;
-
         }
     }
 }

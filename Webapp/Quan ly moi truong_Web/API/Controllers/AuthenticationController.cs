@@ -1,14 +1,13 @@
-﻿using Contract.Authentication;
-using Contracts.Authentication;
-using ErrorOr;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Domain.Common.Errors;
-using MediatR;
-using Application.Authentication.Common;
+﻿using Application.Authentication.Common;
 using Application.Authentication.Queries.Login;
+using Contract.Authentication;
+using Contracts.Authentication;
+using Domain.Common.Errors;
+using ErrorOr;
 using MapsterMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
@@ -24,7 +23,6 @@ namespace API.Controllers
             this.mediator = mediator;
             this.mapper = mapper;
         }
-
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
