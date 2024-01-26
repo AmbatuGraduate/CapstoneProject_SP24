@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
+using Application.Common.Interfaces.Persistence.Schedules;
 using Application.Common.Interfaces.Services;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
@@ -14,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 
+
 namespace Infrastructure
 {
     public static class DependencyInjection
@@ -27,19 +29,25 @@ namespace Infrastructure
             services.AddPersistance();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
+            // Add repositories dependency injection
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
+            services.AddScoped<IScheduleTreeTrimRepository, ScheduleTreeTrimRepository>();
+            services.AddScoped<IStreetRepository, StreetRepository>();
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
             services.AddScoped<ICultivarRepository, CultivarRepository>();
 
             return services;
         }
 
+        // Add database context
         public static IServiceCollection AddPersistance(
             this IServiceCollection services)
         {
             services.AddDbContext<WebDbContext>(opts =>
             {
+/*                opts.UseSqlServer("Server=tcp:urban-sanitation.database.windows.net,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=adminServer;Password=Urbansanitation357;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+*/                
                 opts.UseSqlServer("Server=172.188.80.0;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=admin;Password=Urban123;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;");
                 opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });

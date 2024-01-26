@@ -3,6 +3,7 @@ using Domain.Entities.ListTreeTrimmerTask;
 using Domain.Entities.ScheduleTreeTrim_street_map;
 using System.Runtime.Serialization;
 
+
 namespace Domain.Entities.ScheduleTreeTrim
 {
     [DataContract]

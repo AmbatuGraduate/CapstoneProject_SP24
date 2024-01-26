@@ -1,6 +1,7 @@
-﻿using Domain.Entities.ScheduleTreeTrim;
+﻿using System.Runtime.Serialization;
+using Domain.Entities.ScheduleTreeTrim;
+
 using Domain.Entities.Street;
-using System.Runtime.Serialization;
 
 namespace Domain.Entities.ScheduleTreeTrim_street_map
 {

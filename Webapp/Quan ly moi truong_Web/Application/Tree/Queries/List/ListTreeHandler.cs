@@ -5,8 +5,7 @@ using MediatR;
 
 namespace Application.Tree.Queries.List
 {
-    public class ListTreeHandler :
-        IRequestHandler<ListTreeQuery, ErrorOr<List<TreeResult>>>
+    public class ListTreeHandler : IRequestHandler<ListTreeQuery, ErrorOr<List<TreeResult>>>
     {
         private readonly ITreeRepository treeRepository;
 

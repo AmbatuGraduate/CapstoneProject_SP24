@@ -8,6 +8,8 @@ using ErrorOr;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Application.User.Queries.ListBySchedule;
+using Application.ScheduleTreeTrim.Common;
 
 namespace API.Controllers
 {
@@ -81,6 +83,21 @@ namespace API.Controllers
             return updateResult.Match(
                 updateResult => Ok(mapper.Map<UserResponse>(updateResult)),
                 errors => Problem(errors));
+        }
+
+        // Get schedules for a user
+        [HttpGet("{id}/schedules")]
+        public async Task<IActionResult> GetSchedulesByUserId(string id)
+        {
+            var query = new UserScheduleQuery(Guid.Parse(id));
+            ErrorOr<List<ScheduleTreeTrimResult>> result = await mediator.Send(query);
+
+            if (result.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
+            }
+
+            return Ok(result.Value);
         }
     }
 }

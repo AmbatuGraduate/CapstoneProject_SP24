@@ -5,7 +5,9 @@ using Domain.Entities.ScheduleTreeTrim_street_map;
 using Domain.Entities.StreetType;
 using Domain.Entities.Tree;
 using Domain.Entities.Ward;
+
 using System.Runtime.Serialization;
+
 
 namespace Domain.Entities.Street
 {

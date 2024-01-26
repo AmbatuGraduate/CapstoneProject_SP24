@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistence;
+using Domain.Entities.ScheduleTreeTrim;
 using Domain.Entities.User;
 
 namespace Infrastructure.Persistence.Repositories
@@ -55,6 +56,15 @@ namespace Infrastructure.Persistence.Repositories
         public Users GetById(Guid id)
         {
             return webDbContext.Users.SingleOrDefault(u => u.Id == id);
+        }
+
+        // get all schedules for a user
+        public List<ScheduleTreeTrims> GetSchedulesByUserId(Guid userId)
+        {
+            return webDbContext.User_scheduleTreeTrim_maps
+                .Where(map => map.UserId == userId)
+                .Select(map => map.ScheduleTreeTrims)
+                .ToList();
         }
     }
 }

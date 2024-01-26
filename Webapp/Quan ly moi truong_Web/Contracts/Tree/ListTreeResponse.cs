@@ -1,4 +1,5 @@
-﻿namespace Contract.Tree
+﻿
+namespace Contract.Tree
 {
     public record ListTreeResponse
     (
