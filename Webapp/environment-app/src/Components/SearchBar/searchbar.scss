@@ -1,0 +1,20 @@
+.searchBar {
+    padding: 1rem 3rem;
+    background: var(--whiteColor);
+    border-radius: 5px;
+    gap: 1rem;
+    box-shadow: 0 2px 4px var(--inputColor);
+
+    input {
+        border: none;
+        outline: none;
+        background: none;
+    }
+
+    .icon {
+        color: var(--textColor);
+        &:hover {
+            color: var(--PrimanyColor);
+        }
+    }
+}
