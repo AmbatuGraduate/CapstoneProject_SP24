@@ -1,24 +1,21 @@
-﻿using Application.User.Commands.Udpate;
+﻿using Application.User.Commands.Add;
+using Application.User.Commands.Udpate;
 using Application.User.Common;
 using Application.User.Queries.List;
 using Contract.User;
+using Domain.Common.Errors;
 using ErrorOr;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Common.Errors;
-using Azure.Core;
-using Application.User.Commands.Add;
+using Application.User.Queries.ListBySchedule;
+using Application.ScheduleTreeTrim.Common;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize(Roles = "Admin")]
     public class UserController : ApiController
     {
-
         private readonly IMediator mediator;
         private readonly IMapper mapper;
 
@@ -39,7 +36,7 @@ namespace API.Controllers
             }
 
             List<UserResponse> users = new List<UserResponse>();
-            foreach(var user in listResult.Value)
+            foreach (var user in listResult.Value)
             {
                 users.Add(mapper.Map<UserResponse>(user));
             }
@@ -61,11 +58,10 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(string id,UpdateUserRequest request)
+        public async Task<IActionResult> UpdateUser(string id, UpdateUserRequest request)
         {
             return await Update(id, request);
         }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(string id, UpdateUserRequest request)
@@ -88,6 +84,20 @@ namespace API.Controllers
                 updateResult => Ok(mapper.Map<UserResponse>(updateResult)),
                 errors => Problem(errors));
         }
+
+        // Get schedules for a user
+        [HttpGet("{id}/schedules")]
+        public async Task<IActionResult> GetSchedulesByUserId(string id)
+        {
+            var query = new UserScheduleQuery(Guid.Parse(id));
+            ErrorOr<List<ScheduleTreeTrimResult>> result = await mediator.Send(query);
+
+            if (result.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
+            }
+
+            return Ok(result.Value);
+        }
     }
 }
-

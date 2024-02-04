@@ -1,15 +1,14 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Tree.Common;
+using Domain.Common.Errors;
 using ErrorOr;
 using MediatR;
-using Domain.Common.Errors;
 
 namespace Application.Tree.Queries.GetByTreeCode
 {
     public class GetByTreeCodeHandler :
         IRequestHandler<GetByTreeCodeQuery, ErrorOr<TreeResult>>
     {
-
         private readonly ITreeRepository treeRepository;
 
         public GetByTreeCodeHandler(ITreeRepository treeRepository)

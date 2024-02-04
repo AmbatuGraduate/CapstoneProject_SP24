@@ -1,16 +1,11 @@
 ﻿using Application.Common.Interfaces.Persistence;
+using Domain.Entities.ScheduleTreeTrim;
 using Domain.Entities.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repositories
 {
     public class UserRepository : IUserRepository
     {
-
         private readonly WebDbContext webDbContext;
 
         public UserRepository(WebDbContext webDbContext)
@@ -26,7 +21,6 @@ namespace Infrastructure.Persistence.Repositories
         {
             return webDbContext.Users.ToList();
         }
-
 
         /// <summary>
         /// Add new user to databse
@@ -62,6 +56,15 @@ namespace Infrastructure.Persistence.Repositories
         public Users GetById(Guid id)
         {
             return webDbContext.Users.SingleOrDefault(u => u.Id == id);
+        }
+
+        // get all schedules for a user
+        public List<ScheduleTreeTrims> GetSchedulesByUserId(Guid userId)
+        {
+            return webDbContext.User_scheduleTreeTrim_maps
+                .Where(map => map.UserId == userId)
+                .Select(map => map.ScheduleTreeTrims)
+                .ToList();
         }
     }
 }

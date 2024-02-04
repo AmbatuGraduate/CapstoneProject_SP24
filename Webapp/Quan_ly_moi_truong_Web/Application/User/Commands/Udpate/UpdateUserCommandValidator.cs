@@ -1,15 +1,10 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.User.Commands.Udpate
 {
     public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
     {
-        public UpdateUserCommandValidator() 
+        public UpdateUserCommandValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Address).NotEmpty();

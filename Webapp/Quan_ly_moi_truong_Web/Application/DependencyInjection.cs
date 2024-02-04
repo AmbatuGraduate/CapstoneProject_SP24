@@ -1,17 +1,13 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
-using MediatR;
-using ErrorOr;
-using Application.Authentication.Common;
+﻿using Application.Common.Behaviours;
 using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using Application.Common.Behaviours;
 
 namespace Application
 {
     public static class DependencyInjection
     {
-
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(DependencyInjection).Assembly));
@@ -25,6 +21,5 @@ namespace Application
 
             return services;
         }
-
     }
 }

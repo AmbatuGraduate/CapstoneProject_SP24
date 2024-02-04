@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 using Domain.Entities.ScheduleTreeTrim;
+
 using Domain.Entities.Street;
 
 namespace Domain.Entities.ScheduleTreeTrim_street_map
@@ -13,16 +9,23 @@ namespace Domain.Entities.ScheduleTreeTrim_street_map
     {
         [DataMember]
         public Guid StreetId { get; set; }
-        public virtual Streets? Street{get; set;}
+
+        public virtual Streets? Street { get; set; }
+
         [DataMember]
         public Guid ScheduleTreeTrimId { get; set; }
-        public virtual ScheduleTreeTrims? ScheduleTreeTrim {get; set;}
+
+        public virtual ScheduleTreeTrims? ScheduleTreeTrim { get; set; }
+
         [DataMember]
         public DateTime CreateDate { get; set; } = DateTime.Now;
+
         [DataMember]
         public string CreateBy { get; set; }
+
         [DataMember]
         public DateTime UpdateDate { get; set; }
+
         [DataMember]
         public string UpdateBy { get; set; }
     }

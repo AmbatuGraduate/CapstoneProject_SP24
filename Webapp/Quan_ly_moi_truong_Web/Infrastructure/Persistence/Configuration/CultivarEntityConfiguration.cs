@@ -1,12 +1,6 @@
-﻿using Domain.Entities.BucketTruck;
-using Domain.Entities.Cultivar;
+﻿using Domain.Entities.Cultivar;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
@@ -16,6 +10,7 @@ namespace Infrastructure.Persistence.Configuration
         {
             ConfigureCultivarsTable(builder);
         }
+
         private void ConfigureCultivarsTable(EntityTypeBuilder<Cultivars> builder)
         {
             builder.ToTable("Cultivars")

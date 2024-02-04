@@ -60,7 +60,7 @@ img{
 .grid{
     display: grid;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .btn{
@@ -87,7 +87,7 @@ body{
 .container-fluid{
     position: relative;
     width: 98vw;
-    height: 96vh;
+    height: 97vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -98,7 +98,7 @@ body{
     
 }
 
-/* hide the scroll thumb */
+/* hide the scroll thumb
 ::-webkit-scrollbar{
     display: none;
-}
+} */

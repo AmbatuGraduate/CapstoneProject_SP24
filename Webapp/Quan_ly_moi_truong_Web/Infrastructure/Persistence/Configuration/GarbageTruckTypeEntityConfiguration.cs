@@ -1,13 +1,6 @@
-﻿
-using Domain.Entities.GarbageTruck;
-using Domain.Entities.GarbageTruckType;
+﻿using Domain.Entities.GarbageTruckType;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
@@ -17,6 +10,7 @@ namespace Infrastructure.Persistence.Configuration
         {
             ConfigurationGarbageTruckTypesTable(builder);
         }
+
         private void ConfigurationGarbageTruckTypesTable(EntityTypeBuilder<GarbageTruckTypes> builder)
         {
             builder.ToTable("GarbageTruckTypes")

@@ -1,12 +1,6 @@
-﻿using Domain.Entities.ScheduleCleanSidewalk_street_map;
-using Domain.Entities.ScheduleGarbageCollect_street_map;
+﻿using Domain.Entities.ScheduleGarbageCollect_street_map;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
@@ -17,7 +11,7 @@ namespace Infrastructure.Persistence.Configuration
             ConfigurationScheduleGarbageCollect_street_mapsTable(builder);
         }
 
-        void ConfigurationScheduleGarbageCollect_street_mapsTable(EntityTypeBuilder<ScheduleGarbageCollect_street_maps> builder)
+        private void ConfigurationScheduleGarbageCollect_street_mapsTable(EntityTypeBuilder<ScheduleGarbageCollect_street_maps> builder)
         {
             builder.ToTable("ScheduleGarbageCollect_street_maps");
             builder.HasKey(scheduleGarbageCollect_street_maps => new { scheduleGarbageCollect_street_maps.StreetId, scheduleGarbageCollect_street_maps.ScheduleGarbageCollectId });

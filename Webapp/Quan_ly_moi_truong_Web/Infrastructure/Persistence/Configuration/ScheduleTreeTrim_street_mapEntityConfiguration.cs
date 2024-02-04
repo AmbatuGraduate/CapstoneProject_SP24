@@ -1,12 +1,6 @@
-﻿using Domain.Entities.ScheduleCleanSidewalk_street_map;
-using Domain.Entities.ScheduleTreeTrim_street_map;
+﻿using Domain.Entities.ScheduleTreeTrim_street_map;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
@@ -17,7 +11,7 @@ namespace Infrastructure.Persistence.Configuration
             ConfigurationScheduleTreeTrim_street_mapsTable(builder);
         }
 
-        void ConfigurationScheduleTreeTrim_street_mapsTable(EntityTypeBuilder<ScheduleTreeTrim_street_maps> builder)
+        private void ConfigurationScheduleTreeTrim_street_mapsTable(EntityTypeBuilder<ScheduleTreeTrim_street_maps> builder)
         {
             builder.ToTable("ScheduleTreeTrim_street_maps");
             builder.HasKey(scheduleTreeTrim_street_maps => new { scheduleTreeTrim_street_maps.StreetId, scheduleTreeTrim_street_maps.ScheduleTreeTrimId });

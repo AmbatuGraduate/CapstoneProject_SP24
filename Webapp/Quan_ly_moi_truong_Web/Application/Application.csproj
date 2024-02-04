@@ -25,6 +25,9 @@
 
   <ItemGroup>
     <Folder Include="Authentication\Commands\" />
+    <Folder Include="ScheduleTreeTrim\Commands\Delete\" />
+    <Folder Include="ScheduleTreeTrim\Commands\Update\" />
+    <Folder Include="ScheduleTreeTrim\Queries\GetFromUser\" />
   </ItemGroup>
 
 </Project>

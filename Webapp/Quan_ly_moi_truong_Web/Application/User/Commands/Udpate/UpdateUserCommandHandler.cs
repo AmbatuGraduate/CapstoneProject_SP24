@@ -4,18 +4,12 @@ using Domain.Common.Errors;
 using Domain.Entities.User;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.User.Commands.Udpate
 {
     public class UpdateUserCommandHandler :
         IRequestHandler<UpdateUserCommand, ErrorOr<UserResult>>
     {
-
         private readonly IUserRepository userRepository;
 
         public UpdateUserCommandHandler(IUserRepository userRepository)
@@ -27,7 +21,7 @@ namespace Application.User.Commands.Udpate
         {
             await Task.CompletedTask;
 
-            // Checking if user is null or not 
+            // Checking if user is null or not
             if (userRepository.GetById(request.Id) is null)
             {
                 return Errors.UpdateUser.UpdateUserFail;
@@ -49,7 +43,6 @@ namespace Application.User.Commands.Udpate
             userRepository.Update(user);
 
             return new UserResult(user);
-            
         }
     }
 }

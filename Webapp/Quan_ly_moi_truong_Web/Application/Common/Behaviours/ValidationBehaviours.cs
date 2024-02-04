@@ -1,17 +1,9 @@
-﻿
-using Application.Authentication.Common;
-using ErrorOr;
+﻿using ErrorOr;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Common.Behaviours
 {
-
     /// <summary>
     /// Checking the data from TRequest that is valid with the rule set from CommandValidator or QureryValidator
     /// </summary>
@@ -29,13 +21,11 @@ namespace Application.Common.Behaviours
             this.validator = validator;
         }
 
-
         public async Task<TResponse> Handle(
             TRequest request,
             RequestHandlerDelegate<TResponse> next,
             CancellationToken cancellationToken)
         {
-
             if (validator is null)
             {
                 return await next();
