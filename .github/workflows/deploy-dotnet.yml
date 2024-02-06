@@ -24,7 +24,7 @@ jobs:
       - name: Build and Publish
         run: |
           dotnet build ./Webapp/Quan_ly_moi_truong_Web/API/API.csproj --configuration Release
-          dotnet publish ./Webapp/Quan_ly_moi_truong_Web/API/API.csproj --configuration Release -o ./urban-be
+          dotnet publish ./Webapp/Quan_ly_moi_truong_Web/API/API.csproj --configuration Release -o ./BE
           
       - name: Copy files to Azure VM
         uses: appleboy/scp-action@master
@@ -34,5 +34,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           password: ${{secrets.AZURE_VM_PASSWORD}}
           port: 22
-          source: "urban-be/**"
-          target: C:\inetpub\wwwroot
+          source: "BE/**"
+          target: C:\inetpub\wwwroot\AmbatuGraduate
