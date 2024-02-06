@@ -1,12 +1,16 @@
-name: .NET
+name: CI/CD Deploy project
 
+# Event trigger git action
 on:
-  workflow_dispatch:
-  push:
-    branches: [ "dev" ]
-  pull_request:
-    branches: [ "dev" ]
-  
+  workflow_dispatch: # manual run action
+  push: # when push to branch
+    branches: [ "dev" ]  # choose branch dev
+  pull_request: # when pull from branch
+    branches: [ "dev" ] # choose branch dev
+
+env: 
+   # For run build react => can not run build becasue CI = true
+  CI: false
 
 jobs:
   #Job deploy back-end to the server
