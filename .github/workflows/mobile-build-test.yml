@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build on EAS
-        run: eas build --platform android --profile development --non-interactive --no-wait
+        run: eas build --platform android --profile development --non-interactive 
       - name: Download build artifact
         id: download
         run: |
