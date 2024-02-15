@@ -24,4 +24,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build on EAS
-        run: eas build --platform android --non-interactive --no-wait
+        run: eas build --platform android --profile development --non-interactive --no-wait
+      - name: Download build artifact
+        id: download
+        run: |
+          eas build:download --platform android
+          echo "APK_PATH=$(ls | grep .apk)" >> $GITHUB_ENV
+      - name: Distribute to DeployGate
+        uses: deploygate/github-actions-deploy@v1
+        with:
+          owner_name: ${{ secrets.DEPLOYGATE_OWNER_NAME }}
+          api_key: ${{ secrets.DEPLOYGATE_API_KEY }}
+          file_path: ${{ env.APK_PATH }}
