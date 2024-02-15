@@ -25,11 +25,3 @@ jobs:
         run: npm ci
       - name: Build on EAS
         run: eas build --platform android --profile development --non-interactive 
-      - name: Download build artifact
-        id: download
-        run: |
-          eas build:download-artifact --platform android
-          echo "APK_PATH=$(ls | grep .apk)" >> $GITHUB_ENV
-      - name: Distribute to DeployGate
-        run:  |
-          curl -F "file=@${{ env.APK_PATH }}" -F "token=${{ secrets.DEPLOYGATE_API_KEY }}" https://deploygate.com/api/users/${{ secrets.DEPLOYGATE_OWNER_NAME }}/apps
