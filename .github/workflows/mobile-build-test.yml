@@ -28,7 +28,7 @@ jobs:
       - name: Download build artifact
         id: download
         run: |
-          eas build:download --platform android
+          eas build:download-artifact --platform android
           echo "APK_PATH=$(ls | grep .apk)" >> $GITHUB_ENV
       - name: Distribute to DeployGate
         run:  |
