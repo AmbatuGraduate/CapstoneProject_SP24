@@ -1,0 +1,35 @@
+name: EAS Build
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+jobs:
+  build:
+    name: Install and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./mobile-app/cay-xanh
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Build on EAS
+        run: eas build --platform android --profile development --non-interactive 
+      - name: Download build artifact
+        id: download
+        run: |
+          eas build:download --platform android
+          echo "APK_PATH=$(ls | grep .apk)" >> $GITHUB_ENV
+      - name: Distribute to DeployGate
+        run:  |
+          curl -F "file=@${{ env.APK_PATH }}" -F "token=${{ secrets.DEPLOYGATE_API_KEY }}" https://deploygate.com/api/users/${{ secrets.DEPLOYGATE_OWNER_NAME }}/apps
