@@ -27,7 +27,8 @@
     "react-native-root-siblings": "^5.0.1",
     "react-native-root-toast": "^3.5.1",
     "react-native-safe-area-context": "4.6.3",
-    "react-native-screens": "~3.22.0"
+    "react-native-screens": "~3.22.0",
+    "expo-dev-client": "~2.4.13"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
