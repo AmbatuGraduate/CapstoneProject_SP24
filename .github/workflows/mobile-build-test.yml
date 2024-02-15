@@ -31,8 +31,5 @@ jobs:
           eas build:download --platform android
           echo "APK_PATH=$(ls | grep .apk)" >> $GITHUB_ENV
       - name: Distribute to DeployGate
-        uses: deploygate/github-actions-deploy@v1
-        with:
-          owner_name: ${{ secrets.DEPLOYGATE_OWNER_NAME }}
-          api_key: ${{ secrets.DEPLOYGATE_API_KEY }}
-          file_path: ${{ env.APK_PATH }}
+        run:  |
+          curl -F "file=@${{ env.APK_PATH }}" -F "token=${{ secrets.DEPLOYGATE_API_KEY }}" https://deploygate.com/api/users/${{ secrets.DEPLOYGATE_OWNER_NAME }}/apps
