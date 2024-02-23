@@ -36,6 +36,15 @@ const Sidebar = () => {
                 <ul className="menuLists grid">
 
                     <li className="listItem" >
+                        <NavLink exact to="/login" className='menuLink flex' activeClassName='active'>
+                            <TbLayoutDashboard className='icon' />
+                            <span className='smallText d-none d-md-inline '>
+                                Log in
+                            </span>
+                        </NavLink>
+                    </li>
+
+                    <li className="listItem" >
                         <NavLink exact to="/" className='menuLink flex' activeClassName='active'>
                             <TbLayoutDashboard className='icon' />
                             <span className='smallText d-none d-md-inline '>

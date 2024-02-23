@@ -8,9 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Application.ScheduleTreeTrim.Queries.List;
 using Contract.ScheduleTreeTrim;
 using Application.ScheduleTreeTrim.Queries.GetById;
-using Application.User.Queries.ListBySchedule;
 using Application.ScheduleTreeTrim.Queries.GetStreets;
 using Application.Street.Common;
+using Application.Common.Interfaces.Authentication;
+
+using Application.Calendar;
+using Application.Calendar.TreeCalendar.Queries.List;
 
 namespace API.Controllers
 {
@@ -22,11 +25,17 @@ namespace API.Controllers
         private readonly IMediator mediator;
         private readonly IMapper mapper;
 
+        private readonly HttpClient _httpClient;
+        private readonly ISessionService _sessionService;
+
+
         // constructor
-        public ScheduleTreeTrimController(IMediator mediator, IMapper mapper)
+        public ScheduleTreeTrimController(IMediator mediator, IMapper mapper, IHttpClientFactory httpClientFactory, ISessionService sessionService)
         {
             this.mediator = mediator;
             this.mapper = mapper;
+            _httpClient = httpClientFactory.CreateClient();
+            _sessionService = sessionService;
         }
 
         // get all schedule tree trims
@@ -76,6 +85,19 @@ namespace API.Controllers
             }
 
             return Ok(result.Value);
+        }
+
+        // get google calendar events
+        [HttpGet("{token}")]
+        public async Task<IActionResult> GetCalendarEvents(string token)
+        {
+            ErrorOr<List<MyEventResult>> list = await mediator.Send(new ListTreeCalendarQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list);
         }
     }
 }

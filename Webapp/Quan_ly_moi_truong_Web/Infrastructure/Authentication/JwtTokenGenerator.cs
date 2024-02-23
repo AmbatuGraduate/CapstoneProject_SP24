@@ -18,6 +18,10 @@ namespace Infrastructure.Authentication
         private readonly JwtSettings jwtSettings;
         private readonly IDateTimeProvider dateTimeProvider;
 
+        public JwtTokenGenerator()
+        {
+        }
+
         public JwtTokenGenerator(IDateTimeProvider dateTimeProvider, IOptions<JwtSettings> jwtOptions)
         {
             this.jwtSettings = jwtOptions.Value;

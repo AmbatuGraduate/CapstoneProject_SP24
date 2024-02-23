@@ -10,6 +10,14 @@ builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
 
+builder.Services.AddSession(options =>
+{
+    // Configure session options
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true; // Make the session cookie essential
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -21,12 +29,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
 }
-
+app.UseSession();
 app.UseExceptionHandler("/error");
-
 app.UseCors("AllowAllHeaders");
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();
