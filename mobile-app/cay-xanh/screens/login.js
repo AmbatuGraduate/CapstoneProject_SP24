@@ -7,7 +7,11 @@ import * as WebBrowser from 'expo-web-browser';
 import { makeRedirectUri } from 'expo-auth-session';
 
 WebBrowser.maybeCompleteAuthSession();
-
+const discovery = {
+    authorizationEndpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
+    tokenEndpoint: 'https://oauth2.googleapis.com/token',
+    revocationEndpoint: 'https://oauth2.googleapis.com/revoke',
+};
 
 const LoginScreen = ({ setUser }) => {
     const [userInfo, setUserInfo] = useState(null);
@@ -16,7 +20,13 @@ const LoginScreen = ({ setUser }) => {
         webClientId: '1083724780407-f10bbbl6aui68gfglabjalr9ae0627jj.apps.googleusercontent.com',
         iosClientId: '1083724780407-fu3mbn9hnn8u240phh1hlc1v41nu4r4b.apps.googleusercontent.com',
         androidClientId: '1083724780407-unohjah2mlejmahsc71516hsh9or3ash.apps.googleusercontent.com',
-    });
+        scopes: ['openid', 'profile', 'email'],
+        redirectUri: makeRedirectUri({
+            // custome uri scheme
+            native: 'com.googleusercontent.apps.1083724780407-f10bbbl6aui68gfglabjalr9ae0627jj.apps.googleusercontent.com://redirect',
+            useProxy: true,
+        }),
+    }, discovery);
 
     useEffect(() => {
         handleGoogleLogin();
