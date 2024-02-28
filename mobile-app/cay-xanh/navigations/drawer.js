@@ -1,9 +1,12 @@
+
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from '@react-navigation/native';
 import HomeStackRouting from "./homeStack";
 import ProfileStackRouting from "./profileStack";
 import TaskStackRouting from "./taskStack";
+import React, { useState } from 'react';
 
+import LoginScreen from "../screens/login";
 
 /*************************************************************
 **____CONFIGUURE ALL ROUTES THAT USE DRAWER NAVIGATION _____**
@@ -12,6 +15,13 @@ import TaskStackRouting from "./taskStack";
 
 const Drawer = createDrawerNavigator();
 function Routes() {
+
+    const [user, setUser] = useState(null);
+
+    if (!user) {
+        return <LoginScreen setUser={setUser} />;
+    }
+
     return (
         <NavigationContainer>
             <Drawer.Navigator screenOptions={{
