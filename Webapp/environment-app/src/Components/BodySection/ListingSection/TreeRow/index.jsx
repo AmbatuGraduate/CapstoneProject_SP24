@@ -16,12 +16,24 @@ function TreeRow() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/tree')
-      .then(res => setData(res.data))
-      .catch(err => console.log(err))
-      .catch(res => setTotalTree(res.data))
-      .catch(res => setTotalPages(res.total_pages))
-  }, []);
+        const fetchTree = async () => {
+            try {
+                const res = await axios.get(`https://localhost:7024/api/Tree/Get`);
+                const data = await res.data;
+                setData(data[0]);
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchTree()});
+
+
+  //   axios.get('http://localhost:8000/tree')
+  //     .then(res => setData(res.data))
+  //     .catch(err => console.log(err))
+  //     .catch(res => setTotalTree(res.data))
+  //     .catch(res => setTotalPages(res.total_pages))
+  // }, []);
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -73,13 +85,14 @@ function TreeRow() {
                     </td>
                     <td>
                       <Link to="/detail-tree">
-                        <button type="button" class="btn btn-click">{d.MaCay}</button>
+                        <button type="button" class="btn btn-click">{data.treeCode}</button>
                       </Link>
                     </td>
-                    <td className='text-left'>{d.Quan}</td>
-                    <td className='text-left'>{d.DuongId}</td>
-                    <td className='text-left'>{d.GiongCay}</td>
-                    <td>{d.ThoiDiemCatTiaGanNhat}</td>
+                    <td className='text-left'>{data["streetId"] ? data["streetId"] : 'streetId'}</td>
+                    <td className='text-left'>{data["streetId"] ? data["streetId"] : 'streetId'}</td>
+                    <td className='text-left'>{data["cultivarId"] ? data["cultivarId"] : 'cultivarId'}</td>
+                    <td className='text-left'>{data["cutTime"] ? data["cutTime"] : 'cutTime'}</td>
+                    <td>{data["Quan"] ? data["Quan"] : 'Quan'}</td>
                     <td className={"font-bold " + (d.TrangThai === "Đã cắt" ? "green-text" : "red-text")}>{d.TrangThai === "Đã cắt" ? "Đã cắt" : "Cần Cắt"}</td>
                   </tr>
               })
