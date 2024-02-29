@@ -1,0 +1,266 @@
+{
+    "tree": [
+        {
+            "MaCay": "CD4-01",
+            "Quan": "Sơn Trà",
+            "DuongId": "Cồn Dầu 4",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "LVH-01",
+            "Quan": "Ngũ Hành Sơn",
+            "DuongId": "Lê Văn Hiến",
+            "GiongCay": "Hoa Phượng",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "AHD-01",
+            "Quan": "Sơn Trà",
+            "DuongId": "An Hải Đông",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Cần cắt"
+        },
+        {
+            "MaCay": "DDN-01",
+            "Quan": "Sơn Trà",
+            "DuongId": "Dương Đình Nghệ",
+            "GiongCay": "Bàng đài loan",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Cần cắt"
+        },
+        {
+            "MaCay": "YB-01",
+            "Quan": "Thanh Khê",
+            "DuongId": "Yên Bái",
+            "GiongCay": "Hoa Phượng",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "TCV-01",
+            "Quan": "Liên Chiểu",
+            "DuongId": "Trần Cao Vân",
+            "GiongCay": "Hoa Sữa",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "BHTQ-01",
+            "Quan": "Ngũ Hành Sơn",
+            "DuongId": "Bà Huyện Thanh Quan",
+            "GiongCay": "Bàng đài loan",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Cần cắt"
+        },
+        {
+            "MaCay": "LN-01",
+            "Quan": "Cẩm Lệ",
+            "DuongId": "Lê Ngân",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "LTN-01",
+            "Quan": "Hải Châu",
+            "DuongId": "Lê Thanh Nghị",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "LTN-01",
+            "Quan": "Hải Châu",
+            "DuongId": "Lê Thanh Nghị",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "LTN-01",
+            "Quan": "Hải Châu",
+            "DuongId": "Lê Thanh Nghị",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "LTN-01",
+            "Quan": "Hải Châu",
+            "DuongId": "Lê Thanh Nghị",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "LTN-01",
+            "Quan": "Hải Châu",
+            "DuongId": "Lê Thanh Nghị",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        },
+        {
+            "MaCay": "LTN-01",
+            "Quan": "Hải Châu",
+            "DuongId": "Lê Thanh Nghị",
+            "GiongCay": "Hoa Giấy",
+            "ThoiDiemCatTiaGanNhat": "2023-11-20",
+            "TrangThai": "Đã cắt"
+        }
+    ],
+    "route": [
+        {
+            "TenDuong": "Cồn Dầu 4",
+            "DoDai": "500",
+            "SoLuongNha": "50",
+            "SoLuongCay": "60",
+            "Phuong": "Hòa Xuân",
+            "Quan": "Cẩm Lệ",
+            "Loai": "Dân sinh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        },
+        {
+            "TenDuong": "Lê Văn Hiến",
+            "DoDai": "4000",
+            "SoLuongNha": "500",
+            "SoLuongCay": "900",
+            "Phuong": "Hòa Hải",
+            "Quan": "Ngũ Hành Sơn",
+            "Loai": "Kinh doanh"
+        }
+    ],
+    "garbageTruck": [
+        {
+            "TenLoaiXe": "Xe trung chuyển",
+            "BienSoXe": "43H-12345",
+            "TaiTrongXe": "10100"
+        },
+        {
+            "TenLoaiXe": "Xe QKR chở rác",
+            "BienSoXe": "43H-23456",
+            "TaiTrongXe": "1550"
+        },
+        {
+            "TenLoaiXe": "Xe đẩy",
+            "BienSoXe": "XD01",
+            "TaiTrongXe": "550"
+        }
+    ],
+    "employee": [
+        {
+            "MaNV": "CT-NV01",
+            "TenNV": "Dương Trần Yến Nhi",
+            "DiaChi": "29 Sơn Thủy Đông 2, Hòa Hải, Ngũ Hành Sơn, Đà Nẵng",
+            "SoDienThoai": "0912345678",
+            "MK": "abc12345",
+            "TrangThai": "Hoạt động",
+            "VaiTro": "Nhân viên",
+            "BoPhan": "Cắt tỉa",
+            "AnhDaiDien": "../../../../Assets/DuongTranYenNhi_NhiDTY2.jpg",
+            "GhiChu": ""
+        }
+    ]
+}

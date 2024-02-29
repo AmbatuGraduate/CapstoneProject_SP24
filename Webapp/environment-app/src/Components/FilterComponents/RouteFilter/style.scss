@@ -1,0 +1,107 @@
+/* Colors and Styles (Defauly) */
+:root {
+    --PrimanyColor: hsl(94, 59%, 35%);
+    --HoverColor: #bdf094;
+    --paleGreen: hsl(96, 75%, 89%);
+    --whiteColor: hsl(0, 0%, 100%);
+    --blackColor: hsl(0, 0%, 18%);
+    --textColor: hsl(240, 1%, 48%);
+    --bgColor: hsl(220, 10%, 94%);
+    --greyText: rgb(190, 190, 190);
+    --inputColor: hsl(330, 12%, 97%);
+
+    /* Font and Typography */
+    --biggestFontSize: 2.5rem;
+    --h1FontSize: 1.5rem;
+    --h2FontSize: 1.25rem;
+    --h3FontSize: 1rem;
+    --normalFontSize: 0.938rem;
+    --smallFontSize: 0.813rem;
+    --smallestFontSize: 0.75rem;
+}
+
+.filter-container {
+    position: relative;
+    z-index: 1;
+
+    .btn {
+        background-color: var(--PrimanyColor);
+        color: var(--whiteColor);
+        border-radius: 5px;
+        box-shadow: 0 2px 4px var(--inputColor);
+        align-items: center;
+        padding: 1rem;
+        border: none;
+        .smallText {
+            font-size: var(--normalFontSize);
+        }
+        .icon {
+            height: var(--normalFontSize);
+        }
+
+        &:hover {
+            background-color: hsl(94, 45%, 35%);
+        }
+    }
+
+    .filter-menu {
+        position: absolute;
+        background: var(--whiteColor);
+        top: 10%;
+        left: 110%;
+        right: -200%;
+        padding: 1rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px var(--inputColor);
+
+        label {
+            font-size: var(--h3FontSize);
+            margin-bottom: 5px;
+            color: var(--textColor);
+            font-weight: 800;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            color: var(--textColor);
+        }
+
+        .filter-menu-buttons {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            .filter-button {
+                height: 2.5rem;
+                width: 5rem;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+                font-size: var(--normalFontSize);
+                font-weight: 500;
+
+                &.reset {
+                    background-color: #dc3545;
+                    color: #fff;
+
+                    &:hover {
+                        background-color: #c82333;
+                    }
+                }
+
+                &.apply {
+                    background-color: var(--PrimanyColor);
+                    color: #fff;
+
+                    &:hover {
+                        background-color: hsl(94, 45%, 35%);
+                    }
+                }
+            }
+        }
+    }
+}
