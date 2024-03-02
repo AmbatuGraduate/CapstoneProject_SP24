@@ -16,16 +16,7 @@ function TreeRow() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchTree = async () => {
-      try {
-        const res = await axios.get('https://localhost:7024/api/Tree/Get');;
-        const data = await res.data;
-        setData(data);
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchTree()
+    onLoadData();
   }, []);
 
   const [loading, setLoading] = useState(true);
@@ -35,6 +26,25 @@ function TreeRow() {
       setLoading(false)
     }, 1000)
   }, []);
+
+  const onLoadData = async () => {
+    try {
+      const res = await axios.get('http://vesinhdanang.xyz/AmbatuGraduate_API/api/tree/get');;
+      const data = await res.data;
+      setData(data);
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+  const onDeleteTree = async (treeCode) => {
+    try {
+      await axios.delete(`http://vesinhdanang.xyz/AmbatuGraduate_API/api/tree/GetByTreeCode/${treeCode}`);
+      onLoadData();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handlePageClick = (event) => {
     console.log("log event", event.selected);
@@ -73,7 +83,8 @@ function TreeRow() {
                       <Link to="/update-tree">
                         <button type="button" class="btn btn-click" ><BiSolidEdit /></button>
                       </Link>
-                      <Delete />
+                      <button onClick={onDeleteTree}><Delete /></button>
+
                     </td>
                     <td>
                       <Link to="/detail-tree">
@@ -83,14 +94,16 @@ function TreeRow() {
                     <td className='text-left'>{d.streetId || 'streetId'}</td>
                     <td className='text-left'>{d.cultivarId || 'cultivarId'}</td>
                     <td className='text-left'>{d.cutTime || 'cutTime'}</td>
-                    <td className={"font-bold " + (d.isExist ? "green-text" : "red-text")}>
-      {d.isExist ? "Đã cắt" : "Cần Cắt"} </td>
+                    <td className={"font-bold " + (d.isExist ? "green-text" : "red-text")}> {d.isExist ? "Đã cắt" : "Cần Cắt"} </td>
                   </tr>
               })
               }
             </tbody>
           </table>
         }
+        <Link to="/update-tree">
+          <Button variant="addTree" className="btn btn-primary btn-add-tree">Thêm cây</Button>{' '}
+        </Link>
         <ReactPaginate
           breakLabel="..."
           nextLabel=">"
@@ -99,7 +112,6 @@ function TreeRow() {
           marginPagesDisplayed={1}
           pageCount={10}
           previousLabel="<"
-
 
           pageClassName='page-item'
           pageLinkClassName='page-link'
@@ -112,7 +124,6 @@ function TreeRow() {
           containerClassName="pagination "
           activeClassName='active'
           renderOnZeroPageCount={null}
-
         />
       </div>
   )
