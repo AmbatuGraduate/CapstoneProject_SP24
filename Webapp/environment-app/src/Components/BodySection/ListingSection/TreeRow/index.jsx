@@ -16,24 +16,17 @@ function TreeRow() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-        const fetchTree = async () => {
-            try {
-                const res = await axios.get(`https://localhost:7024/api/Tree/Get`);
-                const data = await res.data;
-                setData(data[0]);
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchTree()});
-
-
-  //   axios.get('http://localhost:8000/tree')
-  //     .then(res => setData(res.data))
-  //     .catch(err => console.log(err))
-  //     .catch(res => setTotalTree(res.data))
-  //     .catch(res => setTotalPages(res.total_pages))
-  // }, []);
+    const fetchTree = async () => {
+      try {
+        const res = await axios.get('https://localhost:7024/api/Tree/Get');;
+        const data = await res.data;
+        setData(data);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchTree()
+  }, []);
 
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -65,7 +58,6 @@ function TreeRow() {
               <tr>
                 <th >Chỉnh sửa</th>
                 <th >Mã số cây</th>
-                <th >Quận</th>
                 <th >Tuyến đường</th>
                 <th >Giống cây</th>
                 <th>Thời điểm cắt tỉa gần nhất</th>
@@ -74,7 +66,7 @@ function TreeRow() {
             </thead>
             <tbody>
 
-              {data.map((d, index) => {
+              {data?.map((d, index) => {
                 if (index < (currentPages * 10) && index > ((currentPages - 1) * 10 - 1))
                   return <tr key={index}>
                     <td>
@@ -85,15 +77,14 @@ function TreeRow() {
                     </td>
                     <td>
                       <Link to="/detail-tree">
-                        <button type="button" class="btn btn-click">{data.treeCode}</button>
+                        <button type="button" class="btn btn-click">{d.treeCode}</button>
                       </Link>
                     </td>
-                    <td className='text-left'>{data["streetId"] ? data["streetId"] : 'streetId'}</td>
-                    <td className='text-left'>{data["streetId"] ? data["streetId"] : 'streetId'}</td>
-                    <td className='text-left'>{data["cultivarId"] ? data["cultivarId"] : 'cultivarId'}</td>
-                    <td className='text-left'>{data["cutTime"] ? data["cutTime"] : 'cutTime'}</td>
-                    <td>{data["Quan"] ? data["Quan"] : 'Quan'}</td>
-                    <td className={"font-bold " + (d.TrangThai === "Đã cắt" ? "green-text" : "red-text")}>{d.TrangThai === "Đã cắt" ? "Đã cắt" : "Cần Cắt"}</td>
+                    <td className='text-left'>{d.streetId || 'streetId'}</td>
+                    <td className='text-left'>{d.cultivarId || 'cultivarId'}</td>
+                    <td className='text-left'>{d.cutTime || 'cutTime'}</td>
+                    <td className={"font-bold " + (d.isExist ? "green-text" : "red-text")}>
+      {d.isExist ? "Đã cắt" : "Cần Cắt"} </td>
                   </tr>
               })
               }

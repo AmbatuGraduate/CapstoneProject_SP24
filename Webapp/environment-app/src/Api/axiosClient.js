@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosClient = axios.create({
-    baseURL: 'https://localhost:7024/api/Tree',
+    baseURL: 'https://localhost:7024/api/',
     headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
