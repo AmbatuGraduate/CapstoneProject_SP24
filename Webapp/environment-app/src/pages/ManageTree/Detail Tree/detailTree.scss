@@ -1,37 +1,37 @@
-// .detailtree{
-//     .container {
-//         display: flex;
-//         height: 100%;
-//         display: flex;
-//         img {
-//             height: 50%;
-//             width: 50%;
-//             margin-right: 150px;
-//         }
-//         .card-body{
-//             display: flex;
-//             flex-direction: column;
-//             .h6{
-//                 margin: auto;
-//             }
-//         }       
-//         .btn-success{
-//             align-items: var(--align-items);
-//             display: flex;
-//             flex-direction: column;
-//             margin-right: 100px;
-//         }
-//         .btn-danger{
-//             align-items: var(--align-items);
-//             display: flex;
-//             flex-direction: column;
-//             margin-right: 100px;
-//         }
-//         .card-text{
-//             margin: 20px;
-//         }
-//     }
-// }
+.detailtree{
+    .container {
+        display: flex;
+        height: 100%;
+        display: flex;
+        img {
+            height: 50%;
+            width: 50%;
+            margin-right: 150px;
+        }
+        .card-body{
+            display: flex;
+            flex-direction: column;
+            .h6{
+                margin: auto;
+            }
+        }       
+        .btn-success{
+            align-items: var(--align-items);
+            display: flex;
+            flex-direction: column;
+            margin-right: 100px;
+        }
+        .btn-danger{
+            align-items: var(--align-items);
+            display: flex;
+            flex-direction: column;
+            margin-right: 100px;
+        }
+        .card-text{
+            margin: 20px;
+        }
+    }
+}
 
 .button-group{
     display: flex;

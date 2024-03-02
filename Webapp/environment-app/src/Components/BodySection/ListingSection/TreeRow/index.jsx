@@ -87,7 +87,7 @@ function TreeRow() {
 
                     </td>
                     <td>
-                      <Link to="/detail-tree">
+                    <Link to={`/detail-tree/${d.treeCode}`}>
                         <button type="button" class="btn btn-click">{d.treeCode}</button>
                       </Link>
                     </td>
