@@ -5,7 +5,7 @@ on:
     branches:
       - dev
     paths:
-      - mobile-app/**
+      - 'mobile-app/**'
 jobs:
   build:
     name: Install and build
