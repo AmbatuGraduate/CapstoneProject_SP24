@@ -5,7 +5,7 @@ on:
     branches:
       - dev
     paths:
-      - 'mobile-app/cay-xanh/**'
+      - './mobile-app/cay-xanh/**'
 jobs:
   build:
     name: Install and build
