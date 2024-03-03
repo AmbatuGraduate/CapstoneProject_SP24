@@ -14,7 +14,7 @@ export default function TasksList({ navigation }) {
 
     const getTrees = async () => {
         try {
-            const response = await fetch('http://192.168.1.20:45455/api/Tree');
+            const response = await fetch('http://urban-sanitation.southeastasia.cloudapp.azure.com/urban-sanitation-be/api/tree/get');
             const json = await response.json();
             setTrees(json);
         } catch (error) {
@@ -58,23 +58,25 @@ export default function TasksList({ navigation }) {
                 // The data prop is the array of tasks for the selected date.
                 data={items}
                 // The keyExtractor prop is a function that returns a unique identifier for each task.
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.treeCode.toString()}
                 // The renderItem prop is a function that returns a component for each task.
                 renderItem={({ item }) => (
                     <TouchableOpacity
-                        // Apply some styles to the TouchableOpacity.
+                        // Apply styles to the TouchableOpacity.
                         style={styles.records}
                         // When the TouchableOpacity is pressed, navigate to the 'TaskDetails' screen.
                         onPress={() => {
                             navigation.navigate('TaskDetails', {
-                                key: item.id,
-                                name: item.type,
+                                key: item.treeCode,
+                                name: item.treeCode,
                                 img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg'
                             });
                         }}
                     >
-                        <Text style={styles.itemText}>Loai Cay: {item.type}</Text>
-                        <Text style={styles.itemText}>Dia chi: {item.street}</Text>
+                        {/* <Text style={styles.itemText}>Loai Cay: {item.type}</Text>
+                        <Text style={styles.itemText}>Dia chi: {item.street}</Text> */}
+                        <Text style={styles.itemText}>Loai Cay: {item.treeCode}</Text>
+                        <Text style={styles.itemText}>Dia chi: {item.streetId}</Text>
                     </TouchableOpacity>
                 )}
             />
