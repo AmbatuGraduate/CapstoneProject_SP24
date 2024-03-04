@@ -23,7 +23,7 @@ const LoginScreen = ({ setUser }) => {
         webClientId: '1083724780407-f10bbbl6aui68gfglabjalr9ae0627jj.apps.googleusercontent.com',
         iosClientId: '1083724780407-fu3mbn9hnn8u240phh1hlc1v41nu4r4b.apps.googleusercontent.com',
         androidClientId: '1083724780407-unohjah2mlejmahsc71516hsh9or3ash.apps.googleusercontent.com',
-        scopes: ['openid', 'profile', 'email'],
+        scopes: ['openid', 'profile', 'email', 'https://www.googleapis.com/auth/calendar', ' https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/admin.directory.user', 'https://www.googleapis.com/auth/userinfo.profile'],
         // redirectUri: makeRedirectUri({
         //     // custome uri scheme
         //     native: 'https://auth.expo.io/@aobnao9/cay-xanh',
@@ -36,7 +36,6 @@ const LoginScreen = ({ setUser }) => {
     }, [res]);
 
 
-
     async function handleGoogleLogin() {
         const user = await AsyncStorage.getItem("@user");
 
@@ -44,7 +43,9 @@ const LoginScreen = ({ setUser }) => {
             setUserInfo(JSON.parse(user));
         } else {
             if (res?.type === 'success') {
+                console.log("auth:" + res.params.code);
                 await getUserInfo(res.authentication.accessToken);
+                await AsyncStorage.setItem("@accessToken", res.authentication.accessToken);
             }
         }
     }
@@ -56,6 +57,7 @@ const LoginScreen = ({ setUser }) => {
         const user = await response.json();
         console.log(user);
         await AsyncStorage.setItem("@user", JSON.stringify(user));
+
         setUserInfo(user);
         setUser(user);
     }

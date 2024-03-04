@@ -21,9 +21,12 @@ namespace Application.Calendar.TreeCalendar.Queries.List
 
             var events = await _treeCalendarService.GetEvents(request.accessToken, request.calendarId);
 
-            foreach (var treeEvent in events)
+            if (events != null)
             {
-                treeEventResults.Add(new MyEventResult(treeEvent));
+                foreach (var treeEvent in events)
+                {
+                    treeEventResults.Add(new MyEventResult(treeEvent));
+                }
             }
 
             return treeEventResults;

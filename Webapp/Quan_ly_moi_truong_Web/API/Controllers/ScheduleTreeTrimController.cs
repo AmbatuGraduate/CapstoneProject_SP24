@@ -91,6 +91,7 @@ namespace API.Controllers
         [HttpGet("{token}")]
         public async Task<IActionResult> GetCalendarEvents(string token)
         {
+            System.Diagnostics.Debug.WriteLine("token: " + token);
             ErrorOr<List<MyEventResult>> list = await mediator.Send(new ListTreeCalendarQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
             if (list.IsError)
             {

@@ -17,9 +17,10 @@ namespace API
             services.AddControllers();
             services.AddHttpClient();
             services.AddDistributedMemoryCache();
-            services.AddSession(cfg => {                    
-                cfg.Cookie.Name = "tokenv2";             
-                cfg.IdleTimeout = new TimeSpan(0, 60, 0);    
+            services.AddSession(cfg =>
+            {
+                cfg.Cookie.Name = "tokenv2";
+                cfg.IdleTimeout = new TimeSpan(0, 60, 0);
             });
             services.AddSingleton<ProblemDetailsFactory, WebProblemDetailFactory>();
             services.AddCors(opt =>
@@ -27,10 +28,15 @@ namespace API
                 opt.AddPolicy("AllowAllHeaders",
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:3000", "http://localhost:5500")
+                        builder
+/*                        .WithOrigins("http://localhost:3000", "http://localhost:5500")
+*/                        .AllowAnyOrigin()
                                .AllowAnyHeader()
                                .AllowAnyMethod()
-                               .AllowCredentials();
+/*                               .AllowCredentials()
+*/
+                        ;
+
                     });
             });
 
