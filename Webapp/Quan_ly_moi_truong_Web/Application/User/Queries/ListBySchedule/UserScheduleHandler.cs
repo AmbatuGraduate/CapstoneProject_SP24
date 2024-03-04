@@ -22,14 +22,14 @@ namespace Application.User.Queries.ListBySchedule
         public async Task<ErrorOr<List<ScheduleTreeTrimResult>>> Handle(UserScheduleQuery request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
-            var user = userRepository.GetById(request.UserId);
-            if (user == null)
-            {
-                return Errors.GetScheduleTreeTrimById.getScheduleFail;
-            }
+            //var user = userRepository.GetById(request.UserId);
+            //if (user == null)
+            //{
+            //    return Errors.GetScheduleTreeTrimById.getScheduleFail;
+            //}
 
-            var schedules = userRepository.GetSchedulesByUserId(request.UserId);
-            return new List<ScheduleTreeTrimResult>(schedules.Select(s => new ScheduleTreeTrimResult(s)).ToList());
+            //var schedules = userRepository.GetSchedulesByUserId(request.UserId);
+            return new List<ScheduleTreeTrimResult>(/*schedules.Select(s => new ScheduleTreeTrimResult(s)).ToList()*/);
         }
     }
 }

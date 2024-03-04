@@ -1,13 +1,8 @@
-﻿using Domain.Entities.GarbageDump;
-using Domain.Entities.ScheduleCleanSidewalk_street_map;
-using Domain.Entities.ScheduleGarbageCollect_street_map;
-using Domain.Entities.ScheduleTreeTrim_street_map;
+﻿using Domain.Entities.ResidentialGroup;
 using Domain.Entities.StreetType;
 using Domain.Entities.Tree;
-using Domain.Entities.Ward;
 
 using System.Runtime.Serialization;
-
 
 namespace Domain.Entities.Street
 {
@@ -32,14 +27,10 @@ namespace Domain.Entities.Street
         public virtual StreetTypes? StreetType { get; set; }
 
         [DataMember]
-        public Guid WardId { get; set; }
+        public Guid ResidentialGroupId { get; set; }
 
-        public virtual Wards? Wards { get; set; }
+        public virtual ResidentialGroups? ResidentialGroup { get; set; }
 
-        public ICollection<ScheduleCleanSidewalk_street_maps>? ScheduleCleanSidewalk_street_maps { get; set; }
-        public ICollection<ScheduleGarbageCollect_street_maps>? ScheduleGarbageCollect_street_maps { get; set; }
-        public ICollection<ScheduleTreeTrim_street_maps>? ScheduleTreeTrim_street_maps { get; set; }
-        public ICollection<GarbageDumps>? GarbageDumps { get; set; }
         public ICollection<Trees>? Trees { get; set; }
 
         [DataMember]

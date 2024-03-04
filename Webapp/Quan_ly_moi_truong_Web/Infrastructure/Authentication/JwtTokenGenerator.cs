@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Services;
-using Domain.Entities.User;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -28,12 +27,18 @@ namespace Infrastructure.Authentication
             this.dateTimeProvider = dateTimeProvider;
         }
 
+        public JwtSecurityToken DecodeToken(string jwt)
+        {
+            var payload = new JwtSecurityToken(jwt);
+            return payload;
+        }
+
         /// <summary>
         /// Create a token for user when login or register
         /// </summary>
         /// <param name="user">The data of user login or register</param>
         /// <returns>String token</returns>
-        public string GenerateToken(Users user)
+        public string GenerateToken(string id, string name, string access_token, string image, DateTime expire)
         {
             var signingCredential = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
@@ -42,8 +47,10 @@ namespace Infrastructure.Authentication
 
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Name, user.Name),
+                new Claim(JwtRegisteredClaimNames.Sub, id),
+                new Claim(JwtRegisteredClaimNames.Name,name),
+                new Claim("img", image),
+                new Claim("atkn", access_token),
                 //new Claim(ClaimTypes.Role, user.Role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
@@ -51,7 +58,7 @@ namespace Infrastructure.Authentication
             var securityToken = new JwtSecurityToken(
                 issuer: jwtSettings.Issuer,
                 audience: jwtSettings.Audience,
-                expires: dateTimeProvider.UtcNow.AddMinutes(jwtSettings.ExpiryMinutes),
+                expires: expire.AddHours(1),
                 claims: claims,
                 signingCredentials: signingCredential
             );

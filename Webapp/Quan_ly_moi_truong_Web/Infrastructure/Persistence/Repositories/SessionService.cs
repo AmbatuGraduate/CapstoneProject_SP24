@@ -1,5 +1,4 @@
-﻿
-using Application.Common.Interfaces.Authentication;
+﻿using Application.Common.Interfaces.Authentication;
 using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Persistence.Repositories

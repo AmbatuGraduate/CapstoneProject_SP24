@@ -8,11 +8,15 @@ using Mapster;
 
 namespace API.Mapping
 {
+    // Update At: 03/02/2024 14:48
+    // updated by: Dang Ngiuyen Khanh Vu
+    // Changes:
+    // - Chỉnh lại mapping thay vì ward thành ResidentialGroup
+
     public class StreetMappingConfig : IRegister
     {
         public void Register(TypeAdapterConfig config)
         {
-
             config.NewConfig<Guid, GetByIdQuery>()
                 .Map(dest => dest.StreetId, src => src);
 
@@ -23,7 +27,7 @@ namespace API.Mapping
                 .Map(dest => dest.StreetLength, src => src.street.StreetLength)
                 .Map(dest => dest.NumberOfHouses, src => src.street.NumberOfHouses)
                 .Map(dest => dest.StreetTypeId, src => src.street.StreetTypeId)
-                .Map(dest => dest.WardId, src => src.street.WardId);
+                .Map(dest => dest.ResidentialGroupId, src => src.street.ResidentialGroupId);
 
             // config for get by id
             config.NewConfig<StreetResult, DetailsStreetResponse>()
@@ -35,16 +39,16 @@ namespace API.Mapping
             // config for update
             config.NewConfig<(string, UpdateStreetRequest), UpdateStreetCommand>()
                 .MapWith(dest => new UpdateStreetCommand(
-                                       new Guid (dest.Item1),
-                                       dest.Item2.StreetName, 
+                                       new Guid(dest.Item1),
+                                       dest.Item2.StreetName,
                                        dest.Item2.StreetLength,
-                                       dest.Item2.NumberOfHouses, 
+                                       dest.Item2.NumberOfHouses,
                                        dest.Item2.StreetTypeId,
-                                       dest.Item2.WardId,
+                                       dest.Item2.ResidentialGroupId,
                                        dest.Item2.UpdateBy));
             // config for delete
             config.NewConfig<Guid, DeleteStreetCommand>()
                 .MapWith(dest => new DeleteStreetCommand(dest));
-        }   
+        }
     }
 }

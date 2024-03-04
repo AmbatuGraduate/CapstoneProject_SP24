@@ -10,7 +10,7 @@ namespace Application.Street.Commands.Update
                float StreetLength,
                int NumberOfHouses,
                Guid StreetTypeId,
-               Guid WardId,
+               Guid ResidentialGroupId,
                string UpdateBy
                ) : IRequest<ErrorOr<StreetResult>>;
 }
