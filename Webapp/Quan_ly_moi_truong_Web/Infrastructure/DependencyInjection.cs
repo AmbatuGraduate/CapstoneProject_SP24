@@ -61,7 +61,7 @@ namespace Infrastructure
                 return new CalendarService(new BaseClientService.Initializer
                 {
                     HttpClientInitializer = credential,
-                    ApplicationName = "Your Application Name"
+                    ApplicationName = "cay-xanh"
                 });
             });
 
