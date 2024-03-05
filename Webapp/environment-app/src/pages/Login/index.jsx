@@ -39,7 +39,7 @@ export const Login = () => {
     });
 
     const getEvents = () => {
-        fetch('https://26.25.18.126:45456/api/ScheduleTreeTrim/GetCalendarEvents/' + accessToken, {
+        fetch('https://localhost:7024/api/ScheduleTreeTrim/GetCalendarEvents/' + accessToken, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
