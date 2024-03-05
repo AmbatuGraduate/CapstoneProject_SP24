@@ -7,4 +7,5 @@ using System.Threading.Tasks;
 namespace Application.Calendar
 {
     public record MyEventResult (MyEvent myEvent);
+    public record MyAddedEventResult(MyAddedEvent myAddedEvent);
 }

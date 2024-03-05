@@ -1,8 +1,10 @@
 ﻿using Application.Calendar;
 using Application.Common.Interfaces.Persistence.Schedules;
 using Application.User.Common;
+using Azure.Core;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
+using Google.Apis.Calendar.v3.Data;
 
 namespace Infrastructure.Persistence.Repositories.Calendar
 {
@@ -13,6 +15,45 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         public TreeCalendarService(Func<GoogleCredential, CalendarService> calendarServiceFactory)
         {
             _calendarServiceFactory = calendarServiceFactory;
+        }
+
+        public async Task<MyAddedEvent> AddEvent(string accessToken, string calendarId, MyAddedEvent myEvent)
+        {
+            string[] Scopes = { CalendarService.Scope.Calendar };
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
+                var service = _calendarServiceFactory(credential);
+                var addedEvent = new Event()
+                {
+                    Id = myEvent.Id,
+                    Summary = myEvent.Summary,
+                    Description = myEvent.Description,
+                    Location = "800 Howard St., San Francisco, CA 94103",
+                    Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
+                    {
+                        DateTime = DateTime.Parse(myEvent.Start.DateTime),
+                        TimeZone = "America/Los_Angeles"
+                    },
+                    End = new Google.Apis.Calendar.v3.Data.EventDateTime()
+                    {
+                        DateTime = DateTime.Parse(myEvent.End.DateTime),
+                        TimeZone = "America/Los_Angeles"
+                    },
+                    Attendees = myEvent.Attendees
+                        .Select(attendee => new EventAttendee { Email = attendee.Email })
+                        .ToList()
+                };
+                EventsResource.InsertRequest insertRequest = service.Events.Insert(addedEvent, calendarId);
+                Event createdEvent = insertRequest.Execute();
+                Console.WriteLine("Event created: " + createdEvent.HtmlLink);
+                return myEvent;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<List<MyEvent>> GetEvents(string accessToken, string calendarId)
