@@ -14,11 +14,13 @@ export default function TasksList({ navigation }) {
     const [marked, setMarked] = useState({}); // marked date
     const [pressedDate, setPressedDate] = useState(null);
 
+
+    // local test: 'http://192.168.1.40:45456/api/ScheduleTreeTrim/GetCalendarEvents/' + atoken
     const getEvents = async () => {
         try {
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('http://192.168.1.40:45456/api/ScheduleTreeTrim/GetCalendarEvents/' + atoken,
+                    fetch('http://vesinhdanang.xyz/AmbatuGraduate_API/api/ScheduleTreeTrim/GetCalendarEvents/' + atoken,
                         {
                             method: 'GET',
                             headers: {
@@ -34,8 +36,6 @@ export default function TasksList({ navigation }) {
                         })
                         .then((json) => {
                             const jsonEvents = json.value.map(item => item.myEvent);
-                            console.log(jsonEvents);
-
                             setEvents(jsonEvents);
                         })
                         .catch((error) => {
@@ -82,6 +82,13 @@ export default function TasksList({ navigation }) {
     // The function uses the 'data' state variable, which should contain an array of tasks for each date.
     const renderItemsForSelectedDate = () => {
         const items = transformedData[selectedDate] || [];
+        if (items.length === 0) {
+            return (
+                <View style={styles.emptyContainer}>
+                    <Text style={styles.emptyText}>Không có hoạt động nào trong hôm nay</Text>
+                </View>
+            );
+        }
 
         return (
             <FlatList
@@ -98,7 +105,9 @@ export default function TasksList({ navigation }) {
                         onPress={() => {
                             navigation.navigate('TaskDetails', {
                                 key: item.id,
-                                name: item.summary,
+                                description: item.description,
+                                address: item.location,
+                                start: item.date,
                                 img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg'
                             });
                         }}
@@ -106,19 +115,19 @@ export default function TasksList({ navigation }) {
                         {/* <Text style={styles.itemText}>Loai Cay: {item.type}</Text>
                         <Text style={styles.itemText}>Dia chi: {item.street}</Text> */}
                         <View style={styles.itemContainer}>
-                            <Text style={styles.itemLabel}>Mo ta:</Text>
-                            <Text style={styles.itemText}>{item.description}</Text>
+                            <Text style={styles.itemLabel}>Nhiệm vụ:</Text>
+                            <Text style={styles.itemText}>{item.summary}</Text>
                         </View>
                         <View style={styles.itemContainer}>
-                            <Text style={styles.itemLabel}>Ngay:</Text>
+                            <Text style={styles.itemLabel}>Ngày:</Text>
                             <Text style={styles.itemText}>{item.date}</Text>
                         </View>
                         <View style={styles.itemContainer}>
-                            <Text style={styles.itemLabel}>Gio:</Text>
+                            <Text style={styles.itemLabel}>Giờ:</Text>
                             <Text style={styles.itemText}>{item.time}</Text>
                         </View>
                         <View style={styles.itemContainer}>
-                            <Text style={styles.itemLabel}>Dia chi:</Text>
+                            <Text style={styles.itemLabel}>Địa chỉ:</Text>
                             <Text style={styles.itemText}>{item.location}</Text>
                         </View>
                     </TouchableOpacity>
@@ -198,6 +207,19 @@ const styles = StyleSheet.create({
     itemText: {
         fontSize: 16,
         flex: 0.75,
+    },
+    emptyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f2f2f2',
+        padding: 20,
+    },
+    emptyText: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: '#999',
+        textAlign: 'center',
     },
 });
 
