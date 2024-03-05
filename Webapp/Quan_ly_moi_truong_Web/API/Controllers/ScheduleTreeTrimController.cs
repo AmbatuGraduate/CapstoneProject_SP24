@@ -15,6 +15,7 @@ using Application.Common.Interfaces.Authentication;
 using Application.Calendar;
 using Application.Calendar.TreeCalendar.Queries.List;
 using Application.Calendar.TreeCalendar.Commands.Add;
+using Application.Calendar.TreeCalendar.Commands.Update;
 
 namespace API.Controllers
 {
@@ -105,6 +106,18 @@ namespace API.Controllers
         public async Task<IActionResult> AddCalendarEvent(string token, MyAddedEvent? myEvent)
         {
             ErrorOr<MyAddedEventResult> list = await mediator.Send(new AddCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent));
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list);
+        }
+
+        [HttpPost()]
+        public async Task<IActionResult> UpdateCalendarEvent(string token, MyUpdatedEvent? myEvent, string eventId)
+        {
+            ErrorOr<MyUpdatedEventResult> list = await mediator.Send(new UpdateCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent, eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);

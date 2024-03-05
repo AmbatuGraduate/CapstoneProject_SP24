@@ -24,6 +24,16 @@ namespace Application.Calendar
         public List<User> Attendees { get; set; }
     }
 
+    public class MyUpdatedEvent
+    {
+        public string Summary { get; set; }
+        public string Description { get; set; }
+        public string Location { get; set; }
+        public EventDateTime Start { get; set; }
+        public EventDateTime End { get; set; }
+        public List<User> Attendees { get; set; }
+    }
+
     public class User
     {
         public string Name { get; set; }
