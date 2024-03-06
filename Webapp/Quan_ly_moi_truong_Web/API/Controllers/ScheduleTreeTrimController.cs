@@ -12,6 +12,7 @@ using Application.Calendar;
 using Application.Calendar.TreeCalendar.Queries.List;
 using Application.Calendar.TreeCalendar.Commands.Add;
 using Application.Calendar.TreeCalendar.Commands.Update;
+using Application.Calendar.TreeCalendar.Commands.Delete;
 
 namespace API.Controllers
 {
@@ -115,6 +116,18 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateCalendarEvent(string token, MyUpdatedEvent? myEvent, string eventId)
         {
             ErrorOr<MyUpdatedEventResult> list = await mediator.Send(new UpdateCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent, eventId));
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list);
+        }
+
+        [HttpDelete()]
+        public async Task<IActionResult> DeleteCalendarEvent(string token, string eventId)
+        {
+            ErrorOr<MyDeletedEventResult> list = await mediator.Send(new DeleteCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);

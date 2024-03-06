@@ -12,5 +12,6 @@ namespace Application.Common.Interfaces.Persistence.Schedules
         Task<MyAddedEvent> AddEvent(string token, string calendarId, MyAddedEvent myEvent);
 
         Task<MyUpdatedEvent> UpdateEvent(string token, string calendarId, MyUpdatedEvent myEvent, string eventId);
+        Task<bool> DeleteEvent(string token, string calendarId, string eventId);
     }
 }
