@@ -2,9 +2,11 @@
 using Application.Common.Interfaces.Persistence.Schedules;
 using Application.User.Common;
 using Azure.Core;
+using Domain.Entities.User;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
+using System.Security.Cryptography.Xml;
 
 namespace Infrastructure.Persistence.Repositories.Calendar
 {
@@ -90,6 +92,68 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     service.Events.Update(updatedEvent, calendarId, eventId)
                         .Execute();
                 }
+                return myEvent;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteEvent(string accessToken, string calendarId, string eventId)
+        {
+            string[] Scopes = { CalendarService.Scope.Calendar };
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
+                var service = _calendarServiceFactory(credential);
+                Event retrievedEvent = service.Events.Get(calendarId, eventId)
+                    .Execute();
+
+                if (retrievedEvent != null)
+                {
+                    service.Events.Delete(calendarId, eventId)
+                        .Execute();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<MyEvent> GetEventById(string accessToken, string calendarId, string eventId)
+        {
+            MyEvent myEvent = new MyEvent();
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+
+                // Use the factory to create a CalendarService with the correct credential
+                var service = _calendarServiceFactory(credential);
+                Event retrievenedEvent = service.Events.Get(calendarId, eventId)
+                    .Execute();
+                myEvent = new MyEvent
+                {
+                    Id = retrievenedEvent.Id,
+                    Summary = retrievenedEvent.Summary,
+                    Description = retrievenedEvent.Description,
+                    Location = retrievenedEvent.Location,
+                    Start = retrievenedEvent.Start.DateTime ?? DateTime.MinValue,
+                    End = retrievenedEvent.End.DateTime ?? DateTime.MinValue,
+                    Attendees = retrievenedEvent.Attendees
+                            .Select(attendee => new UserResult(new Users
+                            {
+                                Name = attendee.DisplayName,
+                                Email = attendee.Email,
+                            }
+                            ))
+                            .ToList()
+
+                };
                 return myEvent;
             }
             catch (Exception ex)
