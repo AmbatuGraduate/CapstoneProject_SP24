@@ -28,16 +28,16 @@ namespace Application.Authentication.Queries.Login
                 return Errors.Authentication.InvalidCredentials;
 
             // Valid the password is correct
-            if (user.Password != query.Password)
+            //if (user.Password != query.Password)
                 return new[] { Errors.Authentication.InvalidCredentials };
 
             // Create JWT token
-            var token = jwtTokenGenerator.GenerateToken(user);
+        //    var token = jwtTokenGenerator.GenerateToken(user);
 
-            return new AuthenticationResult(
-                        user,
-                        token
-                    );
+        //    return new AuthenticationResult(
+        //                user,
+        //                token
+        //            );
         }
     }
 }

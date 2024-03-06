@@ -6,7 +6,7 @@
                float StreetLength,
                int NumberOfHouses,
                Guid StreetTypeId,
-               Guid WardId,
+               Guid ResidentialGroupId,
                string UpdateBy
         );
 }

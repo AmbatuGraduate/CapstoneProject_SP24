@@ -36,7 +36,7 @@ namespace Infrastructure.Persistence.Configuration
                 StreetName = "Duong Huynh Lam",
                 StreetLength = 10000,
                 NumberOfHouses = 20,
-                WardId = Guid.Parse("996c63bc-5f0a-44f6-8c9a-aad741b3beac"),
+                ResidentialGroupId = Guid.Parse("0a0e931d-d055-48a9-b8a4-2cf57ac2f6f5"),
                 CreateDate = DateTime.Now,
                 CreateBy = "Admin",
                 UpdateBy = "Admin",

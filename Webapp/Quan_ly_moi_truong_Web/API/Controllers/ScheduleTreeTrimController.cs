@@ -1,16 +1,12 @@
-﻿using Application.ScheduleTreeTrim.Common;
+﻿using Application.Calendar;
+using Application.Calendar.TreeCalendar.Queries.List;
+using Application.Common.Interfaces.Authentication;
+using ErrorOr;
 using MapsterMapper;
 using MediatR;
-using ErrorOr;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Application.ScheduleTreeTrim.Queries.List;
-using Contract.ScheduleTreeTrim;
-using Application.ScheduleTreeTrim.Queries.GetById;
-using Application.ScheduleTreeTrim.Queries.GetStreets;
-using Application.Street.Common;
-using Application.Common.Interfaces.Authentication;
 
 using Application.Calendar;
 using Application.Calendar.TreeCalendar.Queries.List;
@@ -39,53 +35,53 @@ namespace API.Controllers
         }
 
         // get all schedule tree trims
-        [HttpGet]
-        public async Task<IActionResult> Get()
-        {
-            ErrorOr<List<ScheduleTreeTrimResult>> list = await mediator.Send(new ListScheduleTreeTrimQuery());
+        // [HttpGet]
+        // public async Task<IActionResult> Get()
+        // {
+        //     ErrorOr<List<ScheduleTreeTrimResult>> list = await mediator.Send(new ListScheduleTreeTrimQuery());
 
-            if (list.IsError)
-            {
-                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
-            }
+        //     if (list.IsError)
+        //     {
+        //         return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+        //     }
 
-            List<ListScheduleTreeTrimResponse> scheduleTreeTrims = new List<ListScheduleTreeTrimResponse>();
-            foreach (var scheduleTreeTrim in list.Value)
-            {
-                scheduleTreeTrims.Add(mapper.Map<ListScheduleTreeTrimResponse>(scheduleTreeTrim));
-            }
+        //     List<ListScheduleTreeTrimResponse> scheduleTreeTrims = new List<ListScheduleTreeTrimResponse>();
+        //     foreach (var scheduleTreeTrim in list.Value)
+        //     {
+        //         scheduleTreeTrims.Add(mapper.Map<ListScheduleTreeTrimResponse>(scheduleTreeTrim));
+        //     }
 
-            return Ok(scheduleTreeTrims);
-        }
+        //     return Ok(scheduleTreeTrims);
+        // }
 
-        // get by id
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(Guid id)
-        {
-            ErrorOr<ScheduleTreeTrimResult> scheduleTreeTrim = await mediator.Send(new GetByIdQuery(id));
+        // // get by id
+        // [HttpGet("{id}")]
+        // public async Task<IActionResult> Get(Guid id)
+        // {
+        //     ErrorOr<ScheduleTreeTrimResult> scheduleTreeTrim = await mediator.Send(new GetByIdQuery(id));
 
-            if (scheduleTreeTrim.IsError)
-            {
-                return Problem(statusCode: StatusCodes.Status400BadRequest, title: scheduleTreeTrim.FirstError.Description);
-            }
+        //     if (scheduleTreeTrim.IsError)
+        //     {
+        //         return Problem(statusCode: StatusCodes.Status400BadRequest, title: scheduleTreeTrim.FirstError.Description);
+        //     }
 
-            return Ok(mapper.Map<ListScheduleTreeTrimResponse>(scheduleTreeTrim.Value));
-        }
+        //     return Ok(mapper.Map<ListScheduleTreeTrimResponse>(scheduleTreeTrim.Value));
+        // }
 
-        // get streets of schedule tree trim by schedule id
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetStreetsOfSchedule(string id)
-        {
-            var query = new GetStreetsQuery(Guid.Parse(id));
-            ErrorOr<List<StreetResult>> result = await mediator.Send(query);
+        // // get streets of schedule tree trim by schedule id
+        // [HttpGet("{id}")]
+        // public async Task<IActionResult> GetStreetsOfSchedule(string id)
+        // {
+        //     var query = new GetStreetsQuery(Guid.Parse(id));
+        //     ErrorOr<List<StreetResult>> result = await mediator.Send(query);
 
-            if (result.IsError)
-            {
-                return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
-            }
+        //     if (result.IsError)
+        //     {
+        //         return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
+        //     }
 
-            return Ok(result.Value);
-        }
+        //     return Ok(result.Value);
+        // }
 
         // get google calendar events
         [HttpGet("{token}")]

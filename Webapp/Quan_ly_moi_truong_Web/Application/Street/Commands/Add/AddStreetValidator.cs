@@ -11,7 +11,7 @@ namespace Application.Street.Commands.Add
             RuleFor(x => x.StreetLength).NotEmpty();
             RuleFor(x => x.NumberOfHouses).NotEmpty();
             RuleFor(x => x.StreetTypeId).NotEmpty();
-            RuleFor(x => x.WardId).NotEmpty();
+            RuleFor(x => x.ResidentialGroupId).NotEmpty();
             RuleFor(x => x.CreateBy).NotEmpty();
             RuleFor(x => x.UpdateBy).NotEmpty();
         }

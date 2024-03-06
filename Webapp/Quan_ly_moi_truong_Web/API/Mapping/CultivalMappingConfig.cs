@@ -2,15 +2,8 @@
 using Application.Cultivar.Commands.Update;
 using Application.Cultivar.Common;
 using Application.Cultivar.Queries.GetById;
-using Application.Tree.Common;
 using Contract.Cultivar;
-using Contract.Tree;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API.Mapping
 {

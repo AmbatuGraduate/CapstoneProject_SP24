@@ -11,8 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 using Google.Apis.Auth;
 using Infrastructure.Authentication;
 using Microsoft.Extensions.Options;
-using Application.Session.Common;
 using Application.Common.Interfaces.Authentication;
+using Application.GoogleAuthentication.Common;
+using Application.GoogleAuthentication.Queries.GoogleLogin;
+using Application.GoogleAuthentication.Queries.GoogleRefresh;
+using Microsoft.AspNetCore.Cors;
 
 namespace API.Controllers
 {
@@ -24,6 +27,7 @@ namespace API.Controllers
     // - Thêm biến googelApiSettings => để thay vì ghi rõ ra các thông tin cần bảo mật
     // - Refresh vẫn còn bị lỗi và không rõ nguyên nhân nên id token sẽ tồn tại được 1 tiếng
 
+    [EnableCors("AllowAllHeaders")]
     [Route("api/auth")]
     [AllowAnonymous]
 
@@ -45,18 +49,55 @@ namespace API.Controllers
             _sessionService = sessionService;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest request)
-        {
-            var query = mapper.Map<LoginQuery>(request);
+        // [HttpPost("login")]
+        // public async Task<IActionResult> Login(LoginRequest request)
+        // {
+        //     var query = mapper.Map<LoginQuery>(request);
 
-            ErrorOr<AuthenticationResult> authResult = await mediator.Send(query);
+        //     ErrorOr<AuthenticationResult> authResult = await mediator.Send(query);
+
+        //     if (authResult.IsError
+        //         && authResult.FirstError == Errors.Authentication.InvalidCredentials)
+        //     {
+        //         return Problem(statusCode: StatusCodes.Status401Unauthorized, title: authResult.FirstError.Description);
+        //     }
+
+        //     return authResult.Match(
+        //             authResult => Ok(mapper.Map<AuthenticationResponse>(authResult)),
+        //             errors => Problem(errors)
+        //         );
+        // }
+
+
+        [HttpPost("google")]
+        public async Task<IActionResult> Google([FromBody] GoogleAuthRequest request)
+        {
+            var query = mapper.Map<GoogleLoginQuery>(request);
+
+            ErrorOr<GoogleAuthenticationResult> authResult = await mediator.Send(query);
 
             if (authResult.IsError
                 && authResult.FirstError == Errors.Authentication.InvalidCredentials)
-            {
                 return Problem(statusCode: StatusCodes.Status401Unauthorized, title: authResult.FirstError.Description);
-            }
+
+            Response.Cookies.Append("u_tkn", authResult.Value.token, new CookieOptions()
+            {
+                IsEssential = true,
+                Expires = authResult.Value.expire_in.AddDays(1),
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None
+            });
+
+            //Refresh nên được set ở 1 nơi an toàn
+            Response.Cookies.Append("refresh_tkn", authResult.Value.refresh_tkn, new CookieOptions()
+            {
+                IsEssential = true,
+                Expires = authResult.Value.expire_in.AddMonths(6),
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None
+            });
 
             return authResult.Match(
                     authResult => Ok(mapper.Map<AuthenticationResponse>(authResult)),
@@ -64,75 +105,40 @@ namespace API.Controllers
                 );
         }
 
-
-        [HttpPost("google")]
-        public async Task<IActionResult> Google([FromBody] GoogleAuthRequest request, [FromServices] AuthenticationService authenticationService)
-        {
-            var idToken = await authenticationService.AuthenticateWithGoogle(request.AuthCode);
-
-
-
-            GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(idToken);
-
-            // kiểm tra xem có lấy được payload không
-            if (payload != null)
-            {
-                // Chuyển đổi thời gian lấy từ payload dưới dạng giây chuyển qua datetime
-                DateTime date = new DateTime(1974, 1, 1, 0, 0, 0, DateTimeKind.Local).AddSeconds((long)payload.ExpirationTimeSeconds);
-
-                // - Kiểm tra payload còn hạn không
-                // - Issuer (iss) thông thường sẽ là accounts.google.com or là https://accounts.google.com
-                // - Audience (aud) thì sẽ là client Id 
-                // => thông tin cụ thể về việc validate id token https://developers.google.com/identity/openid-connect/openid-connect#validatinganidtoken
-                if (date.CompareTo(DateTime.Now) == 0 && payload.Issuer.Contains("accounts.google.com") && payload.Audience.ToString() == googelApiSettings.ClientId)
-
-                    // Nếu như hợp lệ thì sẽ set cookie cho nó
-                    // Ở đây phải set Secure và HttpOnly true để tránh việc có thể dùng JS lấy
-
-                    Response.Cookies.Append("token_v2", idToken, new CookieOptions()
-                    {
-                        IsEssential = true,
-                        Expires = new DateTime(1974, 1, 1, 0, 0, 0, DateTimeKind.Local).AddSeconds((long)payload.ExpirationTimeSeconds),
-                        Secure = true,
-                        HttpOnly = true,
-                        Domain = "localhost",
-                        SameSite = SameSiteMode.None
-                    });
-                System.Diagnostics.Debug.WriteLine("access: " + _sessionService.getAccessToken());
-
-                return Ok(_sessionService.getAccessToken());
-            }
-
-            return BadRequest("Invalid ID token");
-        }
-
         [HttpPost("googlelogout")]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("token_v2");
+            Response.Cookies.Delete("u_tkn");
             return Ok("User is logged out");
         }
 
-
         [HttpPost("refresh")]
         [Authorize]
-        public async Task<IActionResult> Refresh([FromBody] GoogleAuthRequest request)
+        public async Task<IActionResult> Refresh()
         {
+            var tokenAuth = Request.Cookies["u_tkn"];
+            var refresh_tkn = Request.Cookies["refresh_tkn"];
 
-            //var flow = new GoogleAuthorizationCodeFlow(new GoogleAuthorizationCodeFlow.Initializer
-            //{
+            var query = mapper.Map<GoogleRefreshQuery>((refresh_tkn, tokenAuth));
 
-            //    ClientSecrets = new ClientSecrets
-            //    {
-            //        ClientId = "1083724780407-f10bbbl6aui68gfglabjalr9ae0627jj.apps.googleusercontent.com",
-            //        ClientSecret = "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"
-            //    },
-            //    Scopes = new[] { "https://localhost:7024/api/auth/google" }
-            //});
+            ErrorOr<GoogleRefreshResult> authResult = await mediator.Send(query);
 
-            //var token = await flow.ExchangeCodeForTokenAsync("", request.AuthCode, "https://localhost:7024/api/auth/CallBack", CancellationToken.None);
+            if (authResult.IsError && authResult.FirstError == Errors.Authentication.ExpireRefreshToken)
+                return Problem(statusCode: StatusCodes.Status404NotFound, title: authResult.FirstError.Description);
 
-            return Ok();
+            Response.Cookies.Append("u_tkn", authResult.Value.token, new CookieOptions()
+            {
+                IsEssential = true,
+                Expires = authResult.Value.expire_in.AddDays(1),
+                Secure = true,
+                HttpOnly = true,
+                SameSite = SameSiteMode.None
+            });
+
+            return authResult.Match(
+                    authResult => Ok(mapper.Map<AuthenticationResponse>(authResult)),
+                    errors => Problem(errors)
+                );
         }
     }
 
