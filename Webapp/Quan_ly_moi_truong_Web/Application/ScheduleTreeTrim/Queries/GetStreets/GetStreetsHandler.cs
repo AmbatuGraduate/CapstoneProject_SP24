@@ -21,14 +21,14 @@ namespace Application.ScheduleTreeTrim.Queries.GetStreets
         public async Task<ErrorOr<List<StreetResult>>> Handle(GetStreetsQuery request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
-            var schedule = scheduleTreeTrimRepository.GetScheduleTreeTrimById(request.ScheduleId);
-            if (schedule == null)
-            {
-                return Errors.GetScheduleTreeTrimById.getScheduleFail;
-            }
+            //var schedule = scheduleTreeTrimRepository.GetScheduleTreeTrimById(request.ScheduleId);
+            //if (schedule == null)
+            //{
+            //    return Errors.GetScheduleTreeTrimById.getScheduleFail;
+            //}
 
-            var streets = scheduleTreeTrimRepository.GetStreetsOfSchedule(request.ScheduleId);
-            return new List<StreetResult>(streets.Select(s => new StreetResult(s)).ToList());
+            //var streets = scheduleTreeTrimRepository.GetStreetsOfSchedule(request.ScheduleId);
+            return new List<StreetResult>(/*streets.Select(s => new StreetResult(s)).ToList()*/);
         }
     }
 }

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import FlatButton from "../shared/button";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /*************************************************************
 **_________________ PROFILE SCREEN OF APP __________________**
@@ -10,6 +11,18 @@ import FlatButton from "../shared/button";
 
 export default function Profile({ navigation }) {
 
+    const [user, setUser] = useState(null);
+    // check if user is logged in
+    useEffect(() => {
+        AsyncStorage.getItem("@user").then(user => {
+            if (user !== null) {
+                setUser(JSON.parse(user));
+                console.log(user);
+            }
+        });
+    }, []);
+
+
     return (
         <View style={styles.container}>
 
@@ -17,17 +30,21 @@ export default function Profile({ navigation }) {
             {/* PROFILE PICTURE Container*/}
 
             <TouchableHighlight style={styles.imageContainer} onPress={() => alert('Yaay!')}>
-                <Image
-                    style={styles.img}
-                    source={{ uri: 'https://sm.ign.com/ign_nordic/cover/a/avatar-gen/avatar-generations_prsz.jpg' }}
-                />
+                {user ? (
+                    <Image
+                        style={styles.img}
+                        source={{ uri: user.picture }}
+                    />
+                ) : (
+                    <View></View>
+                )}
             </TouchableHighlight>
 
             {/* ------------------------------------------------------------------- */}
             {/* NAME Container*/}
 
             <View style={styles.nameContainer}>
-                <Text style={{ fontWeight: 'bold', fontSize: 24 }}>Quan Le Anh</Text>
+                <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{user?.name}</Text>
                 <Text style={{ fontSize: 16 }}>Ngu Hanh Son, Da Nang</Text>
             </View>
 
@@ -37,7 +54,7 @@ export default function Profile({ navigation }) {
             <View style={styles.infoContainer}>
                 <View style={styles.infoSection}>
                     <MaterialIcons style={styles.icon} size={24} name="account-circle" ></MaterialIcons>
-                    <Text style={styles.info}>aobnao9</Text>
+                    <Text style={styles.info} numberOfLines={1}>{user?.email}</Text>
                     <View></View>
                     <View></View>
                 </View>
@@ -78,9 +95,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         paddingVertical: 30,
         justifyContent: 'space-between',
+        paddingHorizontal: 20,
     },
     nameContainer: {
         alignItems: 'center',
+        marginBottom: 20,
     },
     imageContainer: {
         alignSelf: 'center',
@@ -97,6 +116,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * 0.33,
         height: Dimensions.get('window').width * 0.33,
         borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
+        marginBottom: 20,
     },
     img: {
         width: '100%',
@@ -112,6 +132,7 @@ const styles = StyleSheet.create({
     },
     // information
     infoContainer: {
+        marginTop: 20,
     },
     infoSection: {
         flexDirection: 'row',
@@ -119,14 +140,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderBottomColor: '#d3d3d3',
         borderBottomWidth: 1,
-        paddingHorizontal: 20,
+        paddingHorizontal: 0,
         paddingVertical: 15,
     },
     info: {
         flex: 1,
-        fontSize: 20,
+        fontSize: 16,
         color: '#777D7E',
         fontFamily: 'nunito-regular',
+        flexWrap: 'nowrap', // Prevent text from wrapping
+        overflow: 'hidden', // Hide overflow text
+        width: '90%', // Set a specific width
     },
-
-})
+});

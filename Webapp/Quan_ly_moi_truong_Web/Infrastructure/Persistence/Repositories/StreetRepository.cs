@@ -42,12 +42,11 @@ namespace Infrastructure.Persistence.Repositories
             return street;
         }
 
-        // delete 
+        // delete
         public void DeleteStreet(Streets street)
         {
             _streetDbContext.Streets.Remove(street);
             _streetDbContext.SaveChanges();
         }
-
     }
 }

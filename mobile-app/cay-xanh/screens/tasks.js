@@ -3,8 +3,11 @@ import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 export default function TasksList({ navigation }) {
-    const [trees, setTrees] = useState([]);
+    const [events, setEvents] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [selectedDate, setSelectedDate] = useState(moment().format("YYYY-MM-DD"));
     const [transformedData, setTransformedData] = useState({});
@@ -12,11 +15,36 @@ export default function TasksList({ navigation }) {
     const [pressedDate, setPressedDate] = useState(null);
 
 
-    const getTrees = async () => {
+    // local test: 'http://192.168.1.40:45456/api/ScheduleTreeTrim/GetCalendarEvents/' + atoken
+    const getEvents = async () => {
         try {
-            const response = await fetch('http://urban-sanitation.southeastasia.cloudapp.azure.com/urban-sanitation-be/api/tree/get');
-            const json = await response.json();
-            setTrees(json);
+            AsyncStorage.getItem("@accessToken").then(atoken => {
+                if (atoken !== null) {
+                    fetch('http://vesinhdanang.xyz/AmbatuGraduate_API/api/ScheduleTreeTrim/GetCalendarEvents/' + atoken,
+                        {
+                            method: 'GET',
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        })
+                        .then((res) => {
+                            if (res.ok) {
+                                return res.json();
+                            } else {
+                                throw new Error('Network response was not ok');
+                            }
+                        })
+                        .then((json) => {
+                            const jsonEvents = json.value.map(item => item.myEvent);
+                            setEvents(jsonEvents);
+                        })
+                        .catch((error) => {
+                            console.log('There has been a problem with fetch operation: ', error.message);
+                        });
+                } else {
+                    console.log('token null');
+                }
+            });
         } catch (error) {
             console.error(error);
         } finally {
@@ -24,26 +52,28 @@ export default function TasksList({ navigation }) {
         }
     }
 
-    // Trees list not change when add new data, only change if  reload
+    // Events list not change when add new data, only change if  reload
     useEffect(() => {
-        getTrees();
+        getEvents();
     }, []);
 
     useEffect(() => {
-        const data = {};
-        const markedDates = {};
-
-        trees.forEach(item => {
-            const currentDate = item.plantTime.split("T")[0];
-            if (!data[currentDate]) {
-                data[currentDate] = [];
-            }
-            data[currentDate].push({ ...item, day: currentDate });
-            markedDates[currentDate] = { marked: true };
-        });
-        setTransformedData(data);
-        setMarked(markedDates);
-    }, [trees]);
+        if (Array.isArray(events)) {
+            const data = {};
+            const markedDates = {};
+            events.forEach(item => {
+                const [date, time] = item.start.split("T");
+                const currentDate = date;
+                if (!data[currentDate]) {
+                    data[currentDate] = [];
+                }
+                data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
+                markedDates[currentDate] = { marked: true };
+            });
+            setTransformedData(data);
+            setMarked(markedDates);
+        }
+    }, [events]);
 
     // This function is responsible for rendering the tasks for a selected date.
     // It returns a FlatList component that displays a list of tasks for the selected date.
@@ -52,13 +82,20 @@ export default function TasksList({ navigation }) {
     // The function uses the 'data' state variable, which should contain an array of tasks for each date.
     const renderItemsForSelectedDate = () => {
         const items = transformedData[selectedDate] || [];
+        if (items.length === 0) {
+            return (
+                <View style={styles.emptyContainer}>
+                    <Text style={styles.emptyText}>Không có hoạt động nào trong hôm nay</Text>
+                </View>
+            );
+        }
 
         return (
             <FlatList
                 // The data prop is the array of tasks for the selected date.
                 data={items}
                 // The keyExtractor prop is a function that returns a unique identifier for each task.
-                keyExtractor={(item) => item.treeCode.toString()}
+                keyExtractor={(item) => item.id.toString()}
                 // The renderItem prop is a function that returns a component for each task.
                 renderItem={({ item }) => (
                     <TouchableOpacity
@@ -67,16 +104,32 @@ export default function TasksList({ navigation }) {
                         // When the TouchableOpacity is pressed, navigate to the 'TaskDetails' screen.
                         onPress={() => {
                             navigation.navigate('TaskDetails', {
-                                key: item.treeCode,
-                                name: item.treeCode,
+                                key: item.id,
+                                description: item.description,
+                                address: item.location,
+                                start: item.date,
                                 img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg'
                             });
                         }}
                     >
                         {/* <Text style={styles.itemText}>Loai Cay: {item.type}</Text>
                         <Text style={styles.itemText}>Dia chi: {item.street}</Text> */}
-                        <Text style={styles.itemText}>Loai Cay: {item.treeCode}</Text>
-                        <Text style={styles.itemText}>Dia chi: {item.streetId}</Text>
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemLabel}>Nhiệm vụ:</Text>
+                            <Text style={styles.itemText}>{item.summary}</Text>
+                        </View>
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemLabel}>Ngày:</Text>
+                            <Text style={styles.itemText}>{item.date}</Text>
+                        </View>
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemLabel}>Giờ:</Text>
+                            <Text style={styles.itemText}>{item.time}</Text>
+                        </View>
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemLabel}>Địa chỉ:</Text>
+                            <Text style={styles.itemText}>{item.location}</Text>
+                        </View>
                     </TouchableOpacity>
                 )}
             />
@@ -142,9 +195,31 @@ const styles = StyleSheet.create({
         shadowRadius: 7.49,
         elevation: 6,
     },
+    itemContainer: {
+        flexDirection: 'row',
+        marginBottom: 5,
+    },
+    itemLabel: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        flex: 0.25,
+    },
     itemText: {
         fontSize: 16,
-        marginBottom: 5,
+        flex: 0.75,
+    },
+    emptyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f2f2f2',
+        padding: 20,
+    },
+    emptyText: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: '#999',
+        textAlign: 'center',
     },
 });
 

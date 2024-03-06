@@ -10,7 +10,7 @@ on:
   pull_request: # when pull from branch
     branches: [ "dev" ] # choose branch dev
     paths: 
-      - Webapp/**
+      - 'Webapp/**'
 
 env: 
    # For run build react => can not run build becasue CI = true

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, FlatList, Image } from 'react-native';
 
+
 /*************************************************************
 **__________________ HOME SCREEN OF APP ____________________**
 **                  CREATED BY: LE ANH QUAN                 **

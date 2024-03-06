@@ -28,7 +28,7 @@ namespace Application.Street.Commands.Add
                 StreetLength = request.StreetLength,
                 NumberOfHouses = request.NumberOfHouses,
                 StreetTypeId = request.StreetTypeId,
-                WardId  = request.WardId,
+                ResidentialGroupId = request.ResidentialGroupId,
                 CreateBy = request.CreateBy,
                 UpdateDate = DateTime.Now,
                 UpdateBy =  request.UpdateBy,

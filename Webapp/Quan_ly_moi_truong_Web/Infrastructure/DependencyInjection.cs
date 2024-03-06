@@ -2,7 +2,6 @@
 using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Persistence.Schedules;
 using Application.Common.Interfaces.Services;
-using Application.Session.Common;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Services;
@@ -49,7 +48,9 @@ namespace Infrastructure
 
 
             // Add repositories dependency injection
-            services.AddScoped<ISessionService, SessionService>();
+           services.AddScoped<ISessionService, SessionService>();
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
             services.AddScoped<IScheduleTreeTrimRepository, ScheduleTreeTrimRepository>();
@@ -61,7 +62,7 @@ namespace Infrastructure
                 return new CalendarService(new BaseClientService.Initializer
                 {
                     HttpClientInitializer = credential,
-                    ApplicationName = "Your Application Name"
+                    ApplicationName = "cay-xanh"
                 });
             });
 

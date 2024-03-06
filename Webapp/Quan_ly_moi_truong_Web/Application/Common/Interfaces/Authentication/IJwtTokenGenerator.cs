@@ -1,9 +1,11 @@
-﻿using Domain.Entities.User;
+﻿using System.IdentityModel.Tokens.Jwt;
 
 namespace Application.Common.Interfaces.Authentication
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(Users user);
+        string GenerateToken(string name, string id, string access_token, string image, DateTime expire);
+
+        JwtSecurityToken DecodeToken(string jwt);
     }
 }

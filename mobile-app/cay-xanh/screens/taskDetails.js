@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, Button } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import FlatButton from "../shared/button";
 /*************************************************************
 **_________________ TASK DETAILS SCREEN ____________________**
@@ -9,7 +9,7 @@ import FlatButton from "../shared/button";
 
 export default function TaskDetails({ route }) {
 
-    const { key, name, img } = route.params;
+    const { key, description, address, start, img } = route.params;
 
     return (
         // NOI DUNG CHI TIET 
@@ -30,9 +30,7 @@ export default function TaskDetails({ route }) {
                         borderBottomWidth: 1,
                     }}
                 />
-                <Text style={styles.infoText}>Quận: Ngũ Hành Sơn</Text>
-                <Text style={styles.infoText}>Đường: Nam Kỳ Khởi Nghĩa</Text>
-                <Text style={styles.infoText}>Số nhà: 001</Text>
+                <Text style={styles.infoText}>{address}</Text>
             </View>
 
             {/* THONG TIN CHI TIET */}
@@ -44,13 +42,28 @@ export default function TaskDetails({ route }) {
                         borderBottomWidth: 1,
                     }}
                 />
-                <Text style={styles.infoText}>{name}</Text>
-                <Text style={styles.infoText}>Cây rễ sâu</Text>
-                <Text style={styles.infoText}>Bàng Đài Loan</Text>
-                <Text style={styles.infoText}>Thời điểm trồng: 19/10/2019</Text>
-                <Text style={styles.infoText}>Thời điểm chăm sóc: 19/10/2021</Text>
+                <Text style={styles.infoText}>{description}</Text>
             </View>
-            <FlatButton style={{ bottom: 10 }} text='Hoàn thành' onPress={() => { console.log('btn pressed') }}></FlatButton>
+
+            {/* THONG TIN CHI TIET */}
+            <View style={styles.detailsContainer}>
+                <Text style={styles.nameText}>Thời gian</Text>
+                <View
+                    style={{
+                        borderBottomColor: 'black',
+                        borderBottomWidth: 1,
+                    }}
+                />
+                <Text style={styles.infoText}>{start}</Text>
+            </View>
+
+
+            <FlatButton style={{
+                position: 'absolute',
+                bottom: 10,
+                left: 0,
+                right: 0
+            }} text='Hoàn thành' onPress={() => { console.log('btn pressed') }}></FlatButton>
 
         </View>
     );
@@ -59,11 +72,13 @@ export default function TaskDetails({ route }) {
 const styles = StyleSheet.create({
     content: {
         flex: 1,
+        padding: 20,
     },
     imageContainer: {
         margin: 20,
+        marginBottom: 30,
         overflow: 'hidden',
-        shadowColor: "#000",
+        shadowColor: "#aaa",
         shadowOffset: {
             width: 0,
             height: 6,
@@ -72,7 +87,7 @@ const styles = StyleSheet.create({
         shadowRadius: 7.49,
         elevation: 12,
         backgroundColor: 'white',
-        borderRadius: 8
+        borderRadius: 15
     },
     img: {
         width: '100%',
@@ -86,10 +101,15 @@ const styles = StyleSheet.create({
     },
     nameText: {
         fontSize: 18,
+        color: '#333',
+        textTransform: 'uppercase',
         fontFamily: 'nunito-bold'
     },
     infoText: {
-        fontFamily: 'nunito-regular',
+        fontSize: 16,
+        letterSpacing: 1.5,
+        color: '#666',
+        marginVertical: 10,
+        // fontFamily: 'nunito-regular',
     },
-
 });
