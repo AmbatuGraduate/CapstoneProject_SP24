@@ -17,6 +17,7 @@ export default function Profile({ navigation }) {
         AsyncStorage.getItem("@user").then(user => {
             if (user !== null) {
                 setUser(JSON.parse(user));
+                console.log(user);
             }
         });
     }, []);
@@ -29,11 +30,13 @@ export default function Profile({ navigation }) {
             {/* PROFILE PICTURE Container*/}
 
             <TouchableHighlight style={styles.imageContainer} onPress={() => alert('Yaay!')}>
-                {user && (
+                {user ? (
                     <Image
                         style={styles.img}
                         source={{ uri: user.picture }}
                     />
+                ) : (
+                    <View></View>
                 )}
             </TouchableHighlight>
 

@@ -6,6 +6,8 @@ const LogoutScreen = ({ navigation, setUser }) => {
     useEffect(() => {
         const logout = async () => {
             await AsyncStorage.removeItem("@user");
+            await AsyncStorage.removeItem("@accessToken");
+            await AsyncStorage.removeItem("@refreshToken");
             setUser(null);
         };
 

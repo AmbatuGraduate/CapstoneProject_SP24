@@ -10,5 +10,7 @@ namespace Application.Common.Interfaces.Authentication
         Task<TokenData> AuthenticateWithGoogle(string authCode);
 
         Task<TokenData> RefreshTokenWithGoogle(string refreshToken);
+
+        Task<TokenData> RefreshTokenWithMobileClient(string refreshToken);
     }
 }

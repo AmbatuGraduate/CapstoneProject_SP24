@@ -16,6 +16,7 @@ using Application.GoogleAuthentication.Common;
 using Application.GoogleAuthentication.Queries.GoogleLogin;
 using Application.GoogleAuthentication.Queries.GoogleRefresh;
 using Microsoft.AspNetCore.Cors;
+using Application.GoogleAuthentication.Queries.GoogleRefreshMobile;
 
 namespace API.Controllers
 {
@@ -139,6 +140,20 @@ namespace API.Controllers
                     authResult => Ok(mapper.Map<AuthenticationResponse>(authResult)),
                     errors => Problem(errors)
                 );
+        }
+
+        [HttpGet("RefreshMobile")]
+        public async Task<IActionResult> RefreshMobile(string refreshToken)
+        {
+            var refreshQuery = new GoogleRefreshQueryMobile(refreshToken);
+
+            System.Diagnostics.Debug.WriteLine("controller level: " + refreshQuery.refresh_tk);
+
+            ErrorOr<GoogleRefreshResultMobile> authResult = await mediator.Send(refreshQuery);
+
+            if (authResult.IsError && authResult.FirstError == Errors.Authentication.ExpireRefreshToken)
+                return Problem(statusCode: StatusCodes.Status404NotFound, title: authResult.FirstError.Description);
+            return Ok(authResult);
         }
     }
 
