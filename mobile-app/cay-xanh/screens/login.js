@@ -33,7 +33,7 @@ const LoginScreen = ({ setUser }) => {
             if (Date.now() >= expireTimestamp) {
                 // Token is expired, refresh it
                 const refreshToken = await AsyncStorage.getItem("@refreshToken");
-                const response = await axios.get(`http://192.168.1.40:45456/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+                const response = await axios.get(`http://vesinhdanang.xyz/AmbatuGraduate_API/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
                 const newTokenData = response.data.value;
 
                 // Update the user data with the new token
