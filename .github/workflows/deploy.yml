@@ -5,8 +5,12 @@ on:
   workflow_dispatch: # manual run action
   push: # when push to branch
     branches: [ "dev" ]  # choose branch dev
+    paths: 
+      - 'Webapp/**'
   pull_request: # when pull from branch
     branches: [ "dev" ] # choose branch dev
+    paths: 
+      - Webapp/**
 
 env: 
    # For run build react => can not run build becasue CI = true

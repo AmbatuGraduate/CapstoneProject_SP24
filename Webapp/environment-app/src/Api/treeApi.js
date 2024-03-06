@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 const treeApi = {
     getAll() {
-        const url = 'https://localhost:7024/api/Tree';
+        const url = 'https://localhost:7024/api/Tree/Get';
         return axiosClient.get(url);
     },
 
