@@ -1,9 +1,7 @@
 ﻿using Domain.Entities.Deparment;
-using Domain.Entities.ListGarbagemanTask;
-using Domain.Entities.ListSidewalkCleanerTask;
-using Domain.Entities.ListTreeTrimmerTask;
 using Domain.Entities.Report;
 using Domain.Entities.Role;
+using Domain.Entities.UserRefreshToken;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.Serialization;
 
@@ -44,8 +42,6 @@ namespace Domain.Entities.User
         public string Image { get; set; } = null!;
 
         public ICollection<Reports>? Reports { get; set; }
-        public ICollection<User_scheduleGarbageCollect_maps>? User_scheduleGarbageCollect_maps { get; set; }
-        public ICollection<User_scheduleTreeTrim_maps>? User_scheduleTreeTrim_maps { get; set; }
-        public ICollection<User_scheduleCleanSidewalk_maps>? User_scheduleCleanSidewalk_maps { get; set; }
+        public ICollection<UserRefreshTokens>? UserRefreshTokens { get; set; }
     }
 }

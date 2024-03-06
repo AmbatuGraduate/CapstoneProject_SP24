@@ -1,5 +1,5 @@
 ﻿using Domain.Entities.District;
-using Domain.Entities.Street;
+using Domain.Entities.ResidentialGroup;
 using System.Runtime.Serialization;
 
 namespace Domain.Entities.Ward
@@ -17,6 +17,6 @@ namespace Domain.Entities.Ward
         public Guid DistrictId { get; set; }
 
         public virtual Districts? Districts { get; set; }
-        public ICollection<Streets>? Streets { get; set; }
+        public ICollection<ResidentialGroups>? ResidentialGroups { get; set; }
     }
 }

@@ -19,12 +19,12 @@ namespace Application.ScheduleTreeTrim.Queries.List
             await Task.CompletedTask;
 
             List<ScheduleTreeTrimResult> scheduleTreeTrimResults = new List<ScheduleTreeTrimResult>();
-            var scheduleTreeTrims = scheduleTreeTrimRepository.GetAllScheduleTreeTrims();
+            //var scheduleTreeTrims = scheduleTreeTrimRepository.GetAllScheduleTreeTrims();
 
-            foreach (var scheduleTreeTrim in scheduleTreeTrims)
-            {
-                scheduleTreeTrimResults.Add(new ScheduleTreeTrimResult(scheduleTreeTrim));
-            }
+            //foreach (var scheduleTreeTrim in scheduleTreeTrims)
+            //{
+            //    scheduleTreeTrimResults.Add(new ScheduleTreeTrimResult(scheduleTreeTrim));
+            //}
 
             return scheduleTreeTrimResults;
         }

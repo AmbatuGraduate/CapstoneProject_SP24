@@ -19,6 +19,7 @@
     <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Authentication\Commands\" />
-    <Folder Include="Calendar\TreeCalendar\Commands\" />
     <Folder Include="ScheduleTreeTrim\Commands\Delete\" />
     <Folder Include="ScheduleTreeTrim\Commands\Update\" />
     <Folder Include="ScheduleTreeTrim\Queries\GetFromUser\" />

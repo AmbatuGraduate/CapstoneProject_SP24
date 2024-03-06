@@ -7,7 +7,7 @@
         string StreetLength,
         int NumberOfHouses,
         Guid StreetTypeId,
-        Guid WardId,
+        Guid ResidentialGroupId,
         Guid DistrictId
     );
 }

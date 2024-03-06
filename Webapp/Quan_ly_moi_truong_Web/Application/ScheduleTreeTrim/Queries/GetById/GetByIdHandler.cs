@@ -24,14 +24,14 @@ namespace Application.ScheduleTreeTrim.Queries.GetById
         {
             await Task.CompletedTask;
 
-            var scheduleTreeTrim = scheduleTreeTrimRepository.GetScheduleTreeTrimById(request.ScheduleTreeTrimId);
+            //var scheduleTreeTrim = scheduleTreeTrimRepository.GetScheduleTreeTrimById(request.ScheduleTreeTrimId);
 
-            if (scheduleTreeTrim == null)
-            {
-                return Errors.GetTreeById.getTreeFail;
-            }
+            //if (scheduleTreeTrim == null)
+            //{
+            //    return Errors.GetTreeById.getTreeFail;
+            //}
 
-            return new ScheduleTreeTrimResult(scheduleTreeTrim);
+            return new ScheduleTreeTrimResult(/*scheduleTreeTrim*/);
         }
     }
 }

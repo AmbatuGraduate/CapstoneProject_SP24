@@ -27,8 +27,6 @@ namespace Infrastructure.Persistence.Configuration
             builder.Property(reports => reports.FeedbackBy)
                    .HasMaxLength(50)
                    .IsRequired(false);
-
-            builder.HasData(new Reports { ReportId = Guid.Parse("6e4ba4c3-6edf-45ca-8b60-54caa256c725"), UserId = Guid.Parse("b2b1e0ce-0187-4285-8cce-60fdff665f46"), Title = "DEMO", Content = "Demo", Image = "string", Status = false });
         }
     }
 }

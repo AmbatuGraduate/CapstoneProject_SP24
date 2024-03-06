@@ -32,7 +32,7 @@ namespace Application.Street.Commands.Update
                 StreetLength = request.StreetLength,
                 NumberOfHouses = request.NumberOfHouses,
                 StreetTypeId = request.StreetTypeId,
-                WardId = request.WardId,
+                ResidentialGroupId = request.ResidentialGroupId,
                 CreateBy = streetRepository.GetStreetById(request.StreetId).CreateBy,
                 CreateDate = streetRepository.GetStreetById(request.StreetId).CreateDate,
                 UpdateDate = DateTime.Now,

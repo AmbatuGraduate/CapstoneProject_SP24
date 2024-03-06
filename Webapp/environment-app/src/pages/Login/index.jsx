@@ -9,9 +9,12 @@ export const Login = () => {
     const handleSuccess = (response) => {
         const authCode = response.code;
         fetch('https://localhost:7024/api/auth/google', {
+            credentials: 'include',
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                "Access-Control-Allow-Origin": "*"
             },
             body: JSON.stringify({ AuthCode: authCode })
         })
@@ -63,6 +66,34 @@ export const Login = () => {
             });
     }
 
+    const refreshHandler = () => {
+        fetch('https://localhost:7024/api/auth/refresh', {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Credentials': true,
+                "Access-Control-Allow-Origin": "*"
+            },
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return res.json(); // This returns a Promise
+                } else {
+                    console.error('Failed to get events:', res.statusText);
+                    // Handle authentication failure
+                }
+            })
+            .then((events) => { // This block will be executed after the Promise resolves
+                console.log('Events:', events);
+                // Do something with the events
+            })
+            .catch((error) => {
+                console.log(error);
+                // Handle errors here
+            });
+    }
+
     return (
         <div>
             {!isLoggedIn ? (
@@ -74,6 +105,9 @@ export const Login = () => {
                     <p>User is logged in.</p>
                     <button onClick={() => getEvents()}>
                         get events
+                    </button>
+                    <button onClick={() => refreshHandler()}>
+                        Refresh
                     </button>
                 </div>
             )}

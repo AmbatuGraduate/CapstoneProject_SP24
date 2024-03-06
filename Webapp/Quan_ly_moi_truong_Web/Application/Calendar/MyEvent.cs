@@ -12,4 +12,37 @@ namespace Application.Calendar
         public DateTime End { get; set; }
         public List<UserResult> Attendees { get; set; }
     }
+
+    public class MyAddedEvent
+    {
+        public string Id { get; set; }
+        public string Summary { get; set; }
+        public string Description { get; set; }
+        public string Location { get; set; }
+        public EventDateTime Start { get; set; }
+        public EventDateTime End { get; set; }
+        public List<User> Attendees { get; set; }
+    }
+
+    public class MyUpdatedEvent
+    {
+        public string Summary { get; set; }
+        public string Description { get; set; }
+        public string Location { get; set; }
+        public EventDateTime Start { get; set; }
+        public EventDateTime End { get; set; }
+        public List<User> Attendees { get; set; }
+    }
+
+    public class User
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class EventDateTime
+    {
+        public string DateTime { get; set; }
+        public string TimeZone { get; set; }
+    }
 }
