@@ -124,7 +124,7 @@ namespace API.Controllers
             return Ok(list);
         }
 
-        [HttpPost()]
+        [HttpDelete()]
         public async Task<IActionResult> DeleteCalendarEvent(string token, string eventId)
         {
             ErrorOr<MyDeletedEventResult> list = await mediator.Send(new DeleteCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", eventId));
