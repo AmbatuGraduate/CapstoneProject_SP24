@@ -6,7 +6,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as WebBrowser from 'expo-web-browser';
-import axios from 'axios';
+
 
 WebBrowser.maybeCompleteAuthSession();
 const discovery = {
@@ -16,45 +16,6 @@ const discovery = {
 };
 
 const LoginScreen = ({ setUser }) => {
-    useEffect(() => {
-        checkTokenExpiration();
-    }, []);
-
-    async function checkTokenExpiration() {
-        const user = await AsyncStorage.getItem("@user");
-        if (user) {
-            const userData = JSON.parse(user);
-            const { token_received_at, expire_in, token } = userData;
-
-            // Calculate the expiration timestamp
-            const expireTimestamp = token_received_at * 1000 + expire_in * 1000;
-
-            // Check if the token is expired
-            if (Date.now() >= expireTimestamp) {
-                // Token is expired, refresh it
-                const refreshToken = await AsyncStorage.getItem("@refreshToken");
-                const response = await axios.get(`http://vesinhdanang.xyz/AmbatuGraduate_API/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
-                const newTokenData = response.data.value;
-
-                // Update the user data with the new token
-                const updatedUser = {
-                    ...userData,
-                    token: newTokenData.token,
-                    token_received_at: Date.now() / 1000, // Update the time when the new token was received
-                    expire_in: newTokenData.expire_in // Update the number of seconds the new token is valid for
-                };
-
-                // Save the updated user data
-                await AsyncStorage.setItem("@user", JSON.stringify(updatedUser));
-                await AsyncStorage.setItem("@accessToken", newTokenData.token);
-
-                setUserInfo(updatedUser);
-            } else {
-                // Token is not expired, set the user info
-                setUserInfo(userData);
-            }
-        }
-    }
 
     const [userInfo, setUserInfo] = useState(null);
     const [req, res, promptAsyn] = Google.useAuthRequest({
