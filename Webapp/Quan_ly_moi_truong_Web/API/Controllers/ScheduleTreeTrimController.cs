@@ -13,6 +13,7 @@ using Application.Calendar.TreeCalendar.Queries.List;
 using Application.Calendar.TreeCalendar.Commands.Add;
 using Application.Calendar.TreeCalendar.Commands.Update;
 using Application.Calendar.TreeCalendar.Commands.Delete;
+using Application.Calendar.TreeCalendar.Queries.GetByAttendeeId;
 
 namespace API.Controllers
 {
@@ -92,6 +93,19 @@ namespace API.Controllers
         {
             System.Diagnostics.Debug.WriteLine("token: " + token);
             ErrorOr<List<MyEventResult>> list = await mediator.Send(new ListTreeCalendarQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list);
+        }
+
+        [HttpGet()]
+        public async Task<IActionResult> GetCalendarEventsByAttendeeEmail(string token, string attendeeEmail)
+        {
+            System.Diagnostics.Debug.WriteLine("token: " + token);
+            ErrorOr<List<MyEventResult>> list = await mediator.Send(new GetByAttendeeEmailQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", attendeeEmail));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);

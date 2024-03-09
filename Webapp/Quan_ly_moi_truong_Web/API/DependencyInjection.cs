@@ -29,12 +29,12 @@ namespace API
                     builder =>
                     {
                         builder
-/*                        .WithOrigins("http://localhost:3000", "http://localhost:5500")
-*/                        .AllowAnyOrigin()
-                               .AllowAnyHeader()
-                               .AllowAnyMethod()
-/*                               .AllowCredentials()
-*/
+                        .WithOrigins("http://localhost:3000", "http://localhost:5500")
+                        //.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+
                         ;
 
                     });
