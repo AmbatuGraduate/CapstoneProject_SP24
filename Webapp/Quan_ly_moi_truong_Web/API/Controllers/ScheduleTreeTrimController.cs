@@ -14,6 +14,8 @@ using Application.Calendar.TreeCalendar.Commands.Add;
 using Application.Calendar.TreeCalendar.Commands.Update;
 using Application.Calendar.TreeCalendar.Commands.Delete;
 using Application.Calendar.TreeCalendar.Queries.GetByAttendeeId;
+using Domain.Enums;
+using Application.Calendar.TreeCalendar.Commands.UpdateJobStatus;
 
 namespace API.Controllers
 {
@@ -130,6 +132,18 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateCalendarEvent(string token, MyUpdatedEvent? myEvent, string eventId)
         {
             ErrorOr<MyUpdatedEventResult> list = await mediator.Send(new UpdateCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent, eventId));
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list);
+        }
+
+        [HttpPost()]
+        public async Task<IActionResult> UpdateJobWorkingStatus(string token, JobWorkingStatus jobWorkingStatus, string eventId)
+        {
+            ErrorOr<MyUpdatedJobStatusResult> list = await mediator.Send(new UpdateJobStatusCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", jobWorkingStatus, eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);

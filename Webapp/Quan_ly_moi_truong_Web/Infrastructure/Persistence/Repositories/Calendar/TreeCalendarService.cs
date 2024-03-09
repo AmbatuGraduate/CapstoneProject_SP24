@@ -3,6 +3,7 @@ using Application.Common.Interfaces.Persistence.Schedules;
 using Application.User.Common;
 using Azure.Core;
 using Domain.Entities.User;
+using Domain.Enums;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
@@ -45,7 +46,14 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     },
                     Attendees = myEvent.Attendees
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
-                        .ToList()
+                        .ToList(),
+                    ExtendedProperties = new Event.ExtendedPropertiesData
+                    {
+                        Private__ = new Dictionary<string, string>
+                        {
+                            {"JobWorkingStatus", ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart) }
+                        }
+                    }
                 };
                 EventsResource.InsertRequest insertRequest = service.Events.Insert(addedEvent, calendarId);
                 Event createdEvent = insertRequest.Execute();
@@ -57,6 +65,49 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
                 return null;
             }
+        }
+
+        public async Task<bool> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
+        {
+            string[] Scopes = { CalendarService.Scope.Calendar };
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
+                var service = _calendarServiceFactory(credential);
+                Event retrievedEvent = service.Events.Get(calendarId, eventId)
+                    .Execute();
+
+                if (retrievedEvent != null)
+                {
+                    string newJobStatus = ConvertToJobWorkingStatusString(jobWorkingStatus);
+                    if(retrievedEvent.ExtendedProperties.Private__  != null 
+                        && retrievedEvent.ExtendedProperties.Private__.ContainsKey("JobWorkingStatus"))
+                    {
+                        retrievedEvent.ExtendedProperties.Private__["JobWorkingStatus"] = newJobStatus;
+                    }
+                    service.Events.Update(retrievedEvent, calendarId, eventId)
+                        .Execute();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                return false;
+            }
+        }
+
+        public string ConvertToJobWorkingStatusString(JobWorkingStatus jobWorkingStatus)
+        {
+            return jobWorkingStatus switch
+            {
+                JobWorkingStatus.None => "None",
+                JobWorkingStatus.NotStart => "Not Start",
+                JobWorkingStatus.InProgress => "In Progress",
+                JobWorkingStatus.Done => "Done",
+                JobWorkingStatus.DoneWithIssue => "Done With Issue",
+            };
+            
         }
 
         public async Task<MyUpdatedEvent> UpdateEvent(string accessToken, string calendarId, MyUpdatedEvent myEvent, string eventId)
@@ -71,26 +122,24 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
                 if (retrievedEvent != null)
                 {
-                    var updatedEvent = new Event()
+                    retrievedEvent.Summary = myEvent.Summary;
+                    retrievedEvent.Description = myEvent.Description;
+                    retrievedEvent.Location = "800 Howard St., San Francisco, CA 94103";
+                    retrievedEvent.Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
-                        Summary = myEvent.Summary,
-                        Description = myEvent.Description,
-                        Location = "800 Howard St., San Francisco, CA 94103",
-                        Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
-                        {
-                            DateTime = DateTime.Parse(myEvent.Start.DateTime),
-                            TimeZone = "America/Los_Angeles"
-                        },
-                        End = new Google.Apis.Calendar.v3.Data.EventDateTime()
-                        {
-                            DateTime = DateTime.Parse(myEvent.End.DateTime),
-                            TimeZone = "America/Los_Angeles"
-                        },
-                        Attendees = myEvent.Attendees
-                            .Select(attendee => new EventAttendee { Email = attendee.Email })
-                            .ToList()
+                        DateTime = DateTime.Parse(myEvent.Start.DateTime),
+                        TimeZone = "America/Los_Angeles"
                     };
-                    service.Events.Update(updatedEvent, calendarId, eventId)
+                    retrievedEvent.End = new Google.Apis.Calendar.v3.Data.EventDateTime()
+                    {
+                        DateTime = DateTime.Parse(myEvent.End.DateTime),
+                        TimeZone = "America/Los_Angeles"
+                    };
+                    retrievedEvent.Attendees = myEvent.Attendees
+                        .Select(attendee => new EventAttendee { Email = attendee.Email })
+                        .ToList();
+                    
+                    service.Events.Update(retrievedEvent, calendarId, eventId)
                         .Execute();
                 }
                 return myEvent;
