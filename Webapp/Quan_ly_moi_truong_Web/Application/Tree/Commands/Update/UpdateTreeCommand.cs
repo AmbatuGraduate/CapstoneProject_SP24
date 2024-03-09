@@ -15,5 +15,5 @@ namespace Application.Tree.Commands.Update
         string Note,
         string UpdateBy,
         bool isExist
-        ) : IRequest<ErrorOr<TreeResult>>;
+        ) : IRequest<ErrorOr<AddTreeResult>>;
 }

@@ -7,16 +7,21 @@ using MediatR;
 namespace Application.Tree.Queries.GetByTreeCode
 {
     public class GetByTreeCodeHandler :
-        IRequestHandler<GetByTreeCodeQuery, ErrorOr<TreeResult>>
+        IRequestHandler<GetByTreeCodeQuery, ErrorOr<TreeDetailResult>>
     {
         private readonly ITreeRepository treeRepository;
+        private readonly IStreetRepository streetRepository;
+        private readonly ICultivarRepository cultivarRepository;
 
-        public GetByTreeCodeHandler(ITreeRepository treeRepository)
+
+        public GetByTreeCodeHandler(ITreeRepository treeRepository, IStreetRepository streetRepository, ICultivarRepository cultivarRepository)
         {
             this.treeRepository = treeRepository;
+            this.streetRepository = streetRepository;
+            this.cultivarRepository = cultivarRepository;
         }
 
-        public async Task<ErrorOr<TreeResult>> Handle(GetByTreeCodeQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<TreeDetailResult>> Handle(GetByTreeCodeQuery request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
 
@@ -27,7 +32,11 @@ namespace Application.Tree.Queries.GetByTreeCode
                 return Errors.GetTreeById.getTreeFail;
             }
 
-            return new TreeResult(tree);
+            var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
+            var cultivar = cultivarRepository.GetCultivarById(tree.CultivarId).CultivarName;
+            var result = new TreeDetailResult(tree.TreeCode, streetName, cultivar, tree.BodyDiameter, tree.LeafLength, tree.PlantTime, tree.CutTime, tree.Note);
+
+            return result;
         }
     }
 }

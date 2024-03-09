@@ -17,5 +17,5 @@ namespace Application.Tree.Commands.Add
         string CreateBy,
         string UpdateBy,
         bool isExist
-        ) : IRequest<ErrorOr<TreeResult>>;
+        ) : IRequest<ErrorOr<AddTreeResult>>;
 }

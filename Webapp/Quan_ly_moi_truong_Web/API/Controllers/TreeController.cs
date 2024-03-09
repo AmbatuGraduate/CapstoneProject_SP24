@@ -1,4 +1,5 @@
-﻿using Application.Tree.Commands.Add;
+﻿using Application.Common.Interfaces.Persistence;
+using Application.Tree.Commands.Add;
 using Application.Tree.Commands.Delete;
 using Application.Tree.Commands.Update;
 using Application.Tree.Common;
@@ -24,6 +25,7 @@ namespace API.Controllers
         private readonly IMediator mediator;
         private readonly IMapper mapper;
 
+
         public TreeController(IMediator mediator, IMapper mapper)
         {
             this.mediator = mediator;
@@ -46,6 +48,7 @@ namespace API.Controllers
                 trees.Add(mapper.Map<ListTreeResponse>(tree));
             }
 
+            
             return Ok(trees);
         }
 
@@ -54,14 +57,15 @@ namespace API.Controllers
         {
             var query = mapper.Map<GetByIdQuery>(Guid.Parse(TreeId));
 
-            ErrorOr<TreeResult> result = await mediator.Send(query);
+            ErrorOr<TreeDetailResult> result = await mediator.Send(query);
 
             if (result.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
             }
-
             return Ok(mapper.Map<DetailTreeResponse>(result.Value));
+
+
         }
 
         [HttpGet("{TreeCode}")]
@@ -69,7 +73,7 @@ namespace API.Controllers
         {
             var query = mapper.Map<GetByTreeCodeQuery>(TreeCode);
 
-            ErrorOr<TreeResult> result = await mediator.Send(query);
+            ErrorOr<TreeDetailResult> result = await mediator.Send(query);
 
             if (result.IsError)
             {
@@ -84,10 +88,10 @@ namespace API.Controllers
         {
             var command = mapper.Map<AddTreeCommand>(request);
 
-            ErrorOr<TreeResult> addResult = await mediator.Send(command);
+            ErrorOr<AddTreeResult> addResult = await mediator.Send(command);
 
             return addResult.Match(
-                treeToAdd => Ok(mapper.Map<DetailTreeResponse>(addResult)),
+                treeToAdd => Ok(mapper.Map<AddTreeResponse>(addResult)),
                 errors => Problem(errors)
                 );
         }
@@ -97,7 +101,7 @@ namespace API.Controllers
         {
             var command = mapper.Map<DeleteTreeCommand>(TreeCode);
 
-            ErrorOr<TreeResult> deleteResult = await mediator.Send(command);
+            ErrorOr<AddTreeResult> deleteResult = await mediator.Send(command);
 
             return deleteResult.Match(
                 result => Ok(),
@@ -109,7 +113,7 @@ namespace API.Controllers
         {
             var command = mapper.Map<UpdateTreeCommand>((TreeCode, request));
 
-            ErrorOr<TreeResult> updateResult = await mediator.Send(command);
+            ErrorOr<AddTreeResult> updateResult = await mediator.Send(command);
 
             if (updateResult.IsError && updateResult.FirstError == Errors.GetTreeById.getTreeFail)
             {
@@ -117,7 +121,7 @@ namespace API.Controllers
             }
 
             return updateResult.Match(
-                updateResult => Ok(mapper.Map<DetailTreeResponse>(updateResult)),
+                updateResult => Ok(mapper.Map<AddTreeResponse>(updateResult)),
                 errors => Problem(errors));
         }
     }

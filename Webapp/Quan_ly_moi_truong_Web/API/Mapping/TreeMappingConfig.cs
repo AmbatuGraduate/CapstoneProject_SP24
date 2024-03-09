@@ -47,15 +47,26 @@ namespace API.Mapping
                 .Map(dest => dest.TreeId, src => src);
 
             config.NewConfig<TreeResult, ListTreeResponse>()
-                .Map(dest => dest.TreeCode, src => src.tree.TreeCode)
-                .Map(dest => dest.StreetId, src => src.tree.StreetId)
-                .Map(dest => dest.PlantTime, src => src.tree.PlantTime)
-                .Map(dest => dest.CutTime, src => src.tree.CutTime)
-                .Map(dest => dest.CultivarId, src => src.tree.CultivarId)
-                .Map(dest => dest.isExist, src => src.tree.isExist);
+                .Map(dest => dest.TreeCode, src => src.TreeCode)
+                .Map(dest => dest.StreetName, src => src.StreetName)
+                .Map(dest => dest.BodyDiameter, src => src.BodyDiameter)
+                .Map(dest => dest.LeafLength, src => src.LeafLength)
+                .Map(dest => dest.CutTime, src => src.CutTime)
+                .Map(dest => dest.Cultivar, src => src.Cultivar)
+                .Map(dest => dest.isCut, src => src.isCut);
 
-            config.NewConfig<TreeResult, DetailTreeResponse>()
-                .Map(dest => dest, src => src.tree);
+            config.NewConfig<TreeDetailResult, DetailTreeResponse>()
+                .Map(dest => dest.TreeCode, src => src.TreeCode)
+                .Map(dest => dest.StreetName, src => src.StreetName)
+                .Map(dest => dest.BodyDiameter, src => src.BodyDiameter)
+                .Map(dest => dest.LeafLength, src => src.LeafLength)
+                .Map(dest => dest.PlantTime, src => src.PlantTime)
+                .Map(dest => dest.CutTime, src => src.CutTime)
+                .Map(dest => dest.Cultivar, src => src.Cultivar)
+                .Map(dest => dest.Note, src => src.Note);
+
+
+            config.NewConfig<AddTreeResult, AddTreeResponse>();
         }
     }
 }

@@ -8,7 +8,7 @@ using MediatR;
 namespace Application.Tree.Commands.Update
 {
     public class UpdateTreeHandler :
-        IRequestHandler<UpdateTreeCommand, ErrorOr<TreeResult>>
+        IRequestHandler<UpdateTreeCommand, ErrorOr<AddTreeResult>>
     {
         private readonly ITreeRepository treeRepository;
 
@@ -17,7 +17,7 @@ namespace Application.Tree.Commands.Update
             this.treeRepository = treeRepository;
         }
 
-        public async Task<ErrorOr<TreeResult>> Handle(UpdateTreeCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AddTreeResult>> Handle(UpdateTreeCommand request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
 
@@ -45,7 +45,7 @@ namespace Application.Tree.Commands.Update
                 isExist = treeRepository.GetTreeByTreeCode(request.TreeCode).isExist
             };
 
-            var result = new TreeResult(treeRepository.UpdateTree(tree));
+            var result = new AddTreeResult(treeRepository.UpdateTree(tree).TreeCode);
 
             return result;
         }

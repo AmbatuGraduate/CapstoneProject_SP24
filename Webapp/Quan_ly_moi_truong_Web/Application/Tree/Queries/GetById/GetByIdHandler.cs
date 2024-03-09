@@ -7,16 +7,20 @@ using MediatR;
 namespace Application.Tree.Queries.GetById
 {
     public class GetByIdHandler :
-        IRequestHandler<GetByIdQuery, ErrorOr<TreeResult>>
+        IRequestHandler<GetByIdQuery, ErrorOr<TreeDetailResult>>
     {
         private readonly ITreeRepository treeRepository;
+        private readonly IStreetRepository streetRepository;
+        private readonly ICultivarRepository cultivarRepository;
 
-        public GetByIdHandler(ITreeRepository treeRepository)
+        public GetByIdHandler(ITreeRepository treeRepository,  IStreetRepository streetRepository, ICultivarRepository cultivarRepository)
         {
             this.treeRepository = treeRepository;
+            this.streetRepository = streetRepository;
+            this.cultivarRepository = cultivarRepository;
         }
 
-        public async Task<ErrorOr<TreeResult>> Handle(GetByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<TreeDetailResult>> Handle(GetByIdQuery request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
 
@@ -27,7 +31,11 @@ namespace Application.Tree.Queries.GetById
                 return Errors.GetTreeById.getTreeFail;
             }
 
-            return new TreeResult(tree);
+            var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
+            var cultivar = cultivarRepository.GetCultivarById(tree.CultivarId).CultivarName;
+            var result = new TreeDetailResult(tree.TreeCode, streetName, cultivar, tree.BodyDiameter, tree.LeafLength,tree.PlantTime ,tree.CutTime, tree.Note);
+
+            return result;
         }
     }
 }

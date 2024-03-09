@@ -7,7 +7,7 @@ using MediatR;
 namespace Application.Tree.Commands.Delete
 {
     public class DeleteTreeHandler :
-        IRequestHandler<DeleteTreeCommand, ErrorOr<TreeResult>>
+        IRequestHandler<DeleteTreeCommand, ErrorOr<AddTreeResult>>
     {
         private readonly ITreeRepository treeRepository;
 
@@ -16,7 +16,7 @@ namespace Application.Tree.Commands.Delete
             this.treeRepository = treeRepository;
         }
 
-        public async Task<ErrorOr<TreeResult>> Handle(DeleteTreeCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AddTreeResult>> Handle(DeleteTreeCommand request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
 
@@ -27,7 +27,7 @@ namespace Application.Tree.Commands.Delete
             tree.isExist = false;
             treeRepository.UpdateTree(tree);
 
-            return new TreeResult(tree);
+            return new AddTreeResult(tree.TreeCode);
         }
     }
 }
