@@ -6,6 +6,7 @@ using Domain.Entities.User;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
+using System.Linq;
 using System.Security.Cryptography.Xml;
 
 namespace Infrastructure.Persistence.Repositories.Calendar
@@ -68,7 +69,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 Event retrievedEvent = service.Events.Get(calendarId, eventId)
                     .Execute();
 
-                if(retrievedEvent != null)
+                if (retrievedEvent != null)
                 {
                     var updatedEvent = new Event()
                     {
@@ -144,14 +145,14 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     Location = retrievenedEvent.Location,
                     Start = retrievenedEvent.Start.DateTime ?? DateTime.MinValue,
                     End = retrievenedEvent.End.DateTime ?? DateTime.MinValue,
-                    Attendees = retrievenedEvent.Attendees
+                    Attendees = (retrievenedEvent.Attendees != null) ? retrievenedEvent.Attendees
                             .Select(attendee => new UserResult(new Users
                             {
                                 Name = attendee.DisplayName,
                                 Email = attendee.Email,
                             }
                             ))
-                            .ToList()
+                            .ToList() : new List<UserResult>()
 
                 };
                 return myEvent;
@@ -163,9 +164,56 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
-        public async Task<List<MyEvent>> GetEvents(string accessToken, string calendarId)
+        public async Task<List<MyEvent>> GetEventsByAttendeeEmail(string accessToken, string calendarId, string attendeeEmail)
         {
-            List<MyEvent> myEvents = new List<MyEvent>();
+            MyEvent myEvent = new MyEvent();
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+
+                // Use the factory to create a CalendarService with the correct credential
+                var service = _calendarServiceFactory(credential);
+
+                var listRequest = service.Events.List(calendarId);
+                listRequest.TimeMaxDateTimeOffset = DateTime.Now;
+                listRequest.ShowDeleted = false;
+                listRequest.SingleEvents = true;
+                listRequest.MaxResults = 10;
+                listRequest.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+                var events = await listRequest.ExecuteAsync();
+                List<MyEvent> myEvents = events.Items
+                    .Where(myEvent => ((myEvent.Attendees != null) && (myEvent.Attendees.Any(user => user.Email.Equals(attendeeEmail)))))
+                    .Select(returnEvent =>  new MyEvent
+                    {
+                        Id = returnEvent.Id,
+                        Summary = returnEvent.Summary,
+                        Description = returnEvent.Description,
+                        Location = returnEvent.Location,
+                        Start = returnEvent.Start.DateTime ?? DateTime.MinValue,
+                        End = returnEvent.End.DateTime ?? DateTime.MinValue,
+                        Attendees = (returnEvent.Attendees != null) ? returnEvent.Attendees
+                            .Select(attendee => new UserResult(new Users
+                            {
+                                Name = attendee.DisplayName,
+                                Email = attendee.Email,
+                            }
+                            ))
+                            .ToList() : new List<UserResult>()
+                    })
+                    .ToList<MyEvent>();
+                return myEvents;
+}
+            catch (Exception ex)
+            {
+            System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+            return null;
+            }
+        }
+
+        public async Task<List<MyEvent>> GetEvents(string accessToken, string calendarId)
+{
+    List<MyEvent> myEvents = new List<MyEvent>();
             try
             {
                 var credential = GoogleCredential.FromAccessToken(accessToken);
@@ -192,7 +240,14 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         Location = eventItem.Location,
                         Start = eventItem.Start.DateTime ?? DateTime.MinValue,
                         End = eventItem.End.DateTime ?? DateTime.MinValue,
-                        Attendees = new List<UserResult>()
+                        Attendees = (eventItem.Attendees != null) ? eventItem.Attendees
+                            .Select(attendee => new UserResult(new Users
+                            {
+                                Name = attendee.DisplayName,
+                                Email = attendee.Email,
+                            }
+                            ))
+                            .ToList() : new List<UserResult>()
                     });
                 }
 
