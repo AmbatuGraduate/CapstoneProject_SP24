@@ -67,6 +67,7 @@ const LoginScreen = ({ setUser }) => {
 
         setUserInfo(user);
         setUser(user);
+        return user;
     }
 
     return (
