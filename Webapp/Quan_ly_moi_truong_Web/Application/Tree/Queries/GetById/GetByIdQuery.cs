@@ -4,5 +4,5 @@ using MediatR;
 
 namespace Application.Tree.Queries.GetById
 {
-    public record GetByIdQuery(Guid TreeId) : IRequest<ErrorOr<TreeResult>>;
+    public record GetByIdQuery(Guid TreeId) : IRequest<ErrorOr<TreeDetailResult>>;
 }

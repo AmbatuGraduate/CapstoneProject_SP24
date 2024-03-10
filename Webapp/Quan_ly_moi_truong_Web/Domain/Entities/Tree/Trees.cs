@@ -42,6 +42,9 @@ namespace Domain.Entities.Tree
         public string Note { get; set; } = string.Empty;
 
         [DataMember]
+        public bool isCut { get; set; } = true;
+
+        [DataMember]
         public bool isExist { get; set; } = true;
 
         [DataMember]

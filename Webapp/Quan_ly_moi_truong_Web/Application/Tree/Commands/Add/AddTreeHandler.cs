@@ -7,7 +7,7 @@ using MediatR;
 namespace Application.Tree.Commands.Add
 {
     public class AddTreeHandler :
-        IRequestHandler<AddTreeCommand, ErrorOr<TreeResult>>
+        IRequestHandler<AddTreeCommand, ErrorOr<AddTreeResult>>
     {
         private readonly ITreeRepository treeRepository;
 
@@ -16,7 +16,7 @@ namespace Application.Tree.Commands.Add
             this.treeRepository = treeRepository;
         }
 
-        public async Task<ErrorOr<TreeResult>> Handle(AddTreeCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AddTreeResult>> Handle(AddTreeCommand request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
 
@@ -37,7 +37,7 @@ namespace Application.Tree.Commands.Add
                 Note = request.Note,
             };
 
-            var result = new TreeResult(treeRepository.CreateTree(tree));
+            var result = new AddTreeResult(treeRepository.CreateTree(tree).TreeCode);
 
             return result;
         }

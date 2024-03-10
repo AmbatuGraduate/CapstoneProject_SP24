@@ -8,10 +8,14 @@ namespace Application.Tree.Queries.List
     public class ListTreeHandler : IRequestHandler<ListTreeQuery, ErrorOr<List<TreeResult>>>
     {
         private readonly ITreeRepository treeRepository;
+        private readonly IStreetRepository streetRepository;
+        private readonly ICultivarRepository cultivarRepository;
 
-        public ListTreeHandler(ITreeRepository treeRepository)
+        public ListTreeHandler(ITreeRepository treeRepository, IStreetRepository streetRepository, ICultivarRepository cultivarRepository)
         {
             this.treeRepository = treeRepository;
+            this.streetRepository = streetRepository;
+            this.cultivarRepository = cultivarRepository;
         }
 
         public async Task<ErrorOr<List<TreeResult>>> Handle(ListTreeQuery request, CancellationToken cancellationToken)
@@ -23,7 +27,11 @@ namespace Application.Tree.Queries.List
 
             foreach (var tree in trees)
             {
-                treeResults.Add(new TreeResult(tree));
+                var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
+                var cultivar = cultivarRepository.GetCultivarById(tree.CultivarId).CultivarName;
+                var result = new TreeResult(tree.TreeCode, streetName, cultivar, tree.BodyDiameter, tree.LeafLength, tree.CutTime, tree.isCut);
+
+                treeResults.Add(result);
             }
 
             return treeResults;

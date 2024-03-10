@@ -4,10 +4,11 @@ namespace Contract.Tree
     public record ListTreeResponse
     (
         string TreeCode,
-        Guid StreetId,
-        DateTime PlantTime,
+        string StreetName,
+        string Cultivar,
+        float BodyDiameter,
+        float LeafLength,
         DateTime CutTime,
-        Guid CultivarId,
-        bool isExist
+        bool isCut
     );
 }
