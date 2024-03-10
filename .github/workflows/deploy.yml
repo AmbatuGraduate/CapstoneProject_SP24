@@ -44,7 +44,8 @@ jobs:
           password: ${{secrets.AZURE_VM_PASSWORD}}
           port: 22
           source: "BE/**"
-          target: C:\inetpub\wwwroot\AmbatuGraduate
+          target: C:\inetpub\wwwroot\AmbatuGraduate\BE
+          strip_components: 1
           
   #Job deploy front-end to the server
   deploy-fe:
