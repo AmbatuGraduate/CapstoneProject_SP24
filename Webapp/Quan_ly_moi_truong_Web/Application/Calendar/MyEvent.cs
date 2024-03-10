@@ -34,6 +34,14 @@ namespace Application.Calendar
         public List<User> Attendees { get; set; }
     }
 
+    public class MyUpdatedJobStatus
+    {
+        public class EventExtendedProperties
+        {
+            Dictionary<string, string> PrivateProperties { get; set; }
+        }
+    }
+
     public class User
     {
         public string Name { get; set; }
@@ -44,5 +52,10 @@ namespace Application.Calendar
     {
         public string DateTime { get; set; }
         public string TimeZone { get; set; }
+    }
+
+    public class EventExtendedProperties
+    {
+        Dictionary<string, string> PrivateProperties { get; set; }
     }
 }
