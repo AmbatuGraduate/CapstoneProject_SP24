@@ -37,6 +37,7 @@ export default function TasksList({ navigation }) {
                         .then((json) => {
                             const jsonEvents = json.value.map(item => item.myEvent);
                             setEvents(jsonEvents);
+                            console.log('jsonEvents', jsonEvents);
                         })
                         .catch((error) => {
                             console.log('There has been a problem with fetch operation: ', error.message);

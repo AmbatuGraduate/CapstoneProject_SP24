@@ -51,6 +51,7 @@ const LoginScreen = ({ setUser }) => {
                     token_received_at: currentTime, // Save the time when the token was received
                     expire_in: res.authentication.expiresIn // Save the number of seconds the token is valid for
                 };
+                await AsyncStorage.setItem("@user", JSON.stringify(userData));
                 await AsyncStorage.setItem("@accessToken", res.authentication.accessToken);
                 await AsyncStorage.setItem("@refreshToken", res.authentication.refreshToken);
             }

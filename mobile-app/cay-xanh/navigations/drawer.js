@@ -52,10 +52,11 @@ function Routes() {
             const { token_received_at, expire_in, token } = userData;
 
             // Calculate the expiration timestamp
-            const expireTimestamp = token_received_at * 1000 + expire_in * 1000;
-
+            const expireTimestamp = token_received_at + expire_in;
+            console.log('expireTimestamp', expireTimestamp);
             // Check if the token is expired
-            if (Date.now() >= expireTimestamp) {
+
+            if (Date.now() / 1000 >= expireTimestamp) {
                 // Token is expired, refresh it
                 const refreshToken = await AsyncStorage.getItem("@refreshToken");
                 const response = await axios.get(`http://vesinhdanang.xyz/AmbatuGraduate_API/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
