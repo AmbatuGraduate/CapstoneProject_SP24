@@ -99,5 +99,25 @@ namespace API.Controllers
 
             return Ok(result.Value);
         }
+
+        // get all google users
+        [HttpGet("accessToken")]
+        public async Task<IActionResult> GetGoogleUsers(string accessToken)
+        {
+            ErrorOr<List<GoogleUserRecord>> listResult = await mediator.Send(new ListQueryGoogle(accessToken));
+
+            if (listResult.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: listResult.FirstError.Description);
+            }
+
+            List<GoogleUserResponse> users = new List<GoogleUserResponse>();
+            foreach (var user in listResult.Value)
+            {
+                users.Add(mapper.Map<GoogleUserResponse>(user));
+            }
+
+            return Ok(users);
+        }
     }
 }

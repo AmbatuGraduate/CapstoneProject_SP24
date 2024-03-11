@@ -2,6 +2,7 @@
 using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Persistence.Schedules;
 using Application.Common.Interfaces.Services;
+using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Services;
@@ -60,6 +61,15 @@ namespace Infrastructure
             services.AddScoped<Func<GoogleCredential, CalendarService>>(provider => (credential) =>
             {
                 return new CalendarService(new BaseClientService.Initializer
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = "cay-xanh"
+                });
+            });
+
+            services.AddScoped<Func<GoogleCredential, DirectoryService>>(provider => (credential) =>
+            {
+                return new DirectoryService(new BaseClientService.Initializer
                 {
                     HttpClientInitializer = credential,
                     ApplicationName = "cay-xanh"

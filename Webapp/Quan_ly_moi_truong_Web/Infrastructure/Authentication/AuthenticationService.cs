@@ -14,7 +14,11 @@ namespace Infrastructure.Authentication
         private string clientId;
 
         private string clientSecret;
-        private string[] scopes = { "https://www.googleapis.com/auth/calendar" };
+        private string[] scopes = { "https://www.googleapis.com/auth/calendar" ,
+                                          "https://www.googleapis.com/auth/userinfo.email",
+                                          "https://www.googleapis.com/auth/admin.directory.user",
+                                          "https://www.googleapis.com/auth/userinfo.profile",
+                                          "openid", "profile", "email"};
         private string[] mobileScopes = { "https://www.googleapis.com/auth/calendar" , 
                                           "https://www.googleapis.com/auth/userinfo.email",
                                           "https://www.googleapis.com/auth/admin.directory.user", 

@@ -6,7 +6,7 @@ using MediatR;
 namespace Application.User.Queries.List
 {
     public class ListQueryHandler
-        : IRequestHandler<ListQuery, ErrorOr<List<UserResult>>>
+        : IRequestHandler<ListQueryGoogle, ErrorOr<List<GoogleUserRecord>>>
     {
         private readonly IUserRepository userRepository;
 
@@ -15,16 +15,19 @@ namespace Application.User.Queries.List
             this.userRepository = userRepository;
         }
 
-        public async Task<ErrorOr<List<UserResult>>> Handle(ListQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<List<GoogleUserRecord>>> Handle(ListQueryGoogle request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
 
-            List<UserResult> userResults = new List<UserResult>();
-            var list = userRepository.GetAll();
+            List<GoogleUserRecord> userResults = new List<GoogleUserRecord>();
+            var list = await userRepository.GetGoogleUsers(request.accessToken);
 
-            foreach (var ls in list)
+            if (list != null)
             {
-                userResults.Add(new UserResult(ls));
+                foreach (var user in list)
+                {
+                    userResults.Add(new GoogleUserRecord(user));
+                }
             }
 
             return userResults;

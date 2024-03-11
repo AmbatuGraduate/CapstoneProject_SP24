@@ -1,15 +1,20 @@
 ﻿using Application.Common.Interfaces.Persistence;
+using Application.User.Common;
 using Domain.Entities.User;
+using Google.Apis.Admin.Directory.directory_v1;
+using Google.Apis.Auth.OAuth2;
 
 namespace Infrastructure.Persistence.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly WebDbContext webDbContext;
+        private readonly Func<GoogleCredential, DirectoryService> _directoryServiceFactory;
 
-        public UserRepository(WebDbContext webDbContext)
+        public UserRepository(WebDbContext webDbContext, Func<GoogleCredential, DirectoryService> directoryServiceFactory)
         {
             this.webDbContext = webDbContext;
+            _directoryServiceFactory = directoryServiceFactory;
         }
 
         /// <summary>
@@ -57,13 +62,38 @@ namespace Infrastructure.Persistence.Repositories
             return webDbContext.Users.SingleOrDefault(u => u.Id == id);
         }
 
-        // get all schedules for a user
-        //public List<ScheduleTreeTrims> GetSchedulesByUserId(Guid userId)
-        //{
-        //    return webDbContext.User_scheduleTreeTrim_maps
-        //        .Where(map => map.UserId == userId)
-        //        .Select(map => map.ScheduleTreeTrims)
-        //        .ToList();
-        //}
+        public async Task<List<GoogleUser>> GetGoogleUsers(string accessToken)
+        {
+            List<GoogleUser> users = new List<GoogleUser>();
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+                var request = service.Users.List();
+                request.Domain = "vesinhdanang.xyz";
+                var result = await request.ExecuteAsync();
+                if (result.UsersValue != null)
+                {
+                    foreach (var user in result.UsersValue)
+                    {
+                        users.Add(new GoogleUser
+                        {
+                            Id = user.Id,
+                            Email = user.PrimaryEmail,
+                            Name = user.Name.FullName,
+                            Picture = user.ThumbnailPhotoUrl
+                        });
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {e.Message}");
+                System.Diagnostics.Debug.WriteLine($"Exception: {e}");
+            }
+
+            return users;
+        }
+
     }
 }
