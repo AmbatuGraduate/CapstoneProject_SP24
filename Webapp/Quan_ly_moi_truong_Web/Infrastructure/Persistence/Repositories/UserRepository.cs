@@ -128,6 +128,7 @@ namespace Infrastructure.Persistence.Repositories
             }
         }
 
+        // update google user
         public async Task<UpdateGoogleUser> UpdateGoogleUser(UpdateGoogleUser user)
         {
             try
