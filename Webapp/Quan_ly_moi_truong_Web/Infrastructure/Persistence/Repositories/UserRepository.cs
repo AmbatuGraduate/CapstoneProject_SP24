@@ -142,7 +142,6 @@ namespace Infrastructure.Persistence.Repositories
                 // Retrieve the current user data
                 var currentUser = await service.Users.Get(user_id).ExecuteAsync();
 
-                // Update the fields you want to change
                 if (!string.IsNullOrEmpty(user.Name))
                 {
                     currentUser.Name.GivenName = user.Name;

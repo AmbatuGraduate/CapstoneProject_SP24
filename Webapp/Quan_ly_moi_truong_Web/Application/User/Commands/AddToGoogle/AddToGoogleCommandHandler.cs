@@ -30,7 +30,6 @@ namespace Application.User.Commands.AddToGoogle
             };
 
             var userResult = await userRepository.AddGoogleUser(AddGoogleUser);
-
             return new AddGoogleUserRecord(userResult);
             // add to db
             // ...
