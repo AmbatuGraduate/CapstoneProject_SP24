@@ -1,4 +1,7 @@
-﻿using Domain.Entities.User;
+﻿using Application.User.Common.Add;
+using Application.User.Common.List;
+using Application.User.Common.UpdateUser;
+using Domain.Entities.User;
 
 namespace Application.Common.Interfaces.Persistence
 {
@@ -13,8 +16,12 @@ namespace Application.Common.Interfaces.Persistence
         void Add(Users user);
 
         void Update(Users user);
+        
+        Task<List<GoogleUser>> GetGoogleUsers(string accessToken);
 
-        // Get all schedules for a user
-        //List<ScheduleTreeTrims> GetSchedulesByUserId(Guid userId);
+        Task<AddGoogleUser> AddGoogleUser(AddGoogleUser user);
+
+        Task<UpdateGoogleUser> UpdateGoogleUser(UpdateGoogleUser user);
+
     }
 }
