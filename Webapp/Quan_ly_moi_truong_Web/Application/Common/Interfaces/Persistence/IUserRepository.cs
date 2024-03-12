@@ -1,4 +1,6 @@
-﻿using Application.User.Common;
+﻿using Application.User.Common.Add;
+using Application.User.Common.List;
+using Application.User.Common.UpdateUser;
 using Domain.Entities.User;
 
 namespace Application.Common.Interfaces.Persistence
@@ -16,6 +18,10 @@ namespace Application.Common.Interfaces.Persistence
         void Update(Users user);
         
         Task<List<GoogleUser>> GetGoogleUsers(string accessToken);
+
+        Task<AddGoogleUser> AddGoogleUser(AddGoogleUser user);
+
+        Task<UpdateGoogleUser> UpdateGoogleUser(UpdateGoogleUser user);
 
     }
 }

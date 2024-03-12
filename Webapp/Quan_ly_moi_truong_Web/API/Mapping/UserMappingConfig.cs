@@ -1,7 +1,10 @@
 ﻿using Application.User.Commands.Add;
 using Application.User.Commands.Udpate;
 using Application.User.Common;
+using Application.User.Common.List;
+using Application.User.Common.UpdateUser;
 using Contract.User;
+using Contract.User.Google;
 using Mapster;
 
 namespace API.Mapping
@@ -25,6 +28,7 @@ namespace API.Mapping
                 .Map(dest => dest.Email, src => src.googleUser.Email)
                 .Map(dest => dest.Name, src => src.googleUser.Name)
                 .Map(dest => dest.Picture, src => src.googleUser.Picture);
+
         }
     }
 }

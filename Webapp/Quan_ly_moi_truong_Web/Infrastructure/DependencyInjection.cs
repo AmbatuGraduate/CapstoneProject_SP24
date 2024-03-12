@@ -54,7 +54,6 @@ namespace Infrastructure
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
-            services.AddScoped<IScheduleTreeTrimRepository, ScheduleTreeTrimRepository>();
             services.AddScoped<IStreetRepository, StreetRepository>();
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
             services.AddScoped<ICultivarRepository, CultivarRepository>();

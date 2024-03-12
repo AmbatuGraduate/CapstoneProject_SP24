@@ -1,4 +1,4 @@
-﻿using Application.User.Common;
+﻿using Application.User.Common.List;
 using ErrorOr;
 using MediatR;
 

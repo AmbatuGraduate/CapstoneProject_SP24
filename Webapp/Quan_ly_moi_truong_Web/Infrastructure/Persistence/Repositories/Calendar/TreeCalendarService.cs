@@ -271,10 +271,10 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 var service = _calendarServiceFactory(credential);
 
                 var listRequest = service.Events.List(calendarId);
-                listRequest.TimeMaxDateTimeOffset = DateTime.Now;
-                listRequest.ShowDeleted = false;
+/*                listRequest.TimeMaxDateTimeOffset = DateTime.Now;
+*/                listRequest.ShowDeleted = false;
                 listRequest.SingleEvents = true;
-                listRequest.MaxResults = 10;
+                listRequest.MaxResults = 250;
                 listRequest.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
 
                 var events = await listRequest.ExecuteAsync();

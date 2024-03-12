@@ -1,6 +1,4 @@
-﻿
-
-namespace Application.User.Common
+﻿namespace Application.User.Common.List
 {
     public class GoogleUser
     {
