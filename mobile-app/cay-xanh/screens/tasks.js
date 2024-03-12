@@ -20,7 +20,7 @@ export default function TasksList({ navigation }) {
         try {
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('http://vesinhdanang.xyz/AmbatuGraduate_API/api/ScheduleTreeTrim/GetCalendarEvents/' + atoken,
+                    fetch('http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/GetCalendarEvents/' + atoken,
                         {
                             method: 'GET',
                             headers: {
