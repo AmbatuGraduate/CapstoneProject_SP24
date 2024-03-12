@@ -20,9 +20,7 @@ namespace API.Mapping
             config.NewConfig<AddUserRequest, AddUserCommand>();
 
             config.NewConfig<UserResult, UserResponse>()
-                .Map(dest => dest, src => src.user)
-                .Map(dest => dest.Phone, src => src.user.PhoneNumber)
-                .Map(dest => dest.Status, src => src.user.LockoutEnabled);
+                .Map(dest => dest, src => src.user);
 
             config.NewConfig<GoogleUserRecord, GoogleUserResponse>()
                 .Map(dest => dest.Email, src => src.googleUser.Email)

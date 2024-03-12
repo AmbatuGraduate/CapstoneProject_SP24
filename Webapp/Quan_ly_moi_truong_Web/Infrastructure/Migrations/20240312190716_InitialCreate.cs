@@ -116,28 +116,11 @@ namespace Infrastructure.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    DepartmentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -211,7 +194,7 @@ namespace Infrastructure.Migrations
                     Content = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Feedback = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FeedbackBy = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
@@ -231,7 +214,7 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     UserRefreshTokenId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Expire = table.Column<long>(type: "bigint", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -325,9 +308,9 @@ namespace Infrastructure.Migrations
                 columns: new[] { "DepartmentId", "CreateBy", "CreateDate", "DepartmentName", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("bc2f24de-1b9b-489a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9508), "Cat tia cay", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9509) },
-                    { new Guid("bc2f24de-2b9b-429a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9502), "Thu gom rac", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9503) },
-                    { new Guid("bc2f24de-2b9b-489a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9483), "Quet don via he", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9484) }
+                    { new Guid("bc2f24de-1b9b-489a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5403), "Cat tia cay", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5404) },
+                    { new Guid("bc2f24de-2b9b-429a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5399), "Thu gom rac", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5400) },
+                    { new Guid("bc2f24de-2b9b-489a-a108-64a114d2b9be"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5386), "Quet don via he", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5386) }
                 });
 
             migrationBuilder.InsertData(
@@ -335,9 +318,9 @@ namespace Infrastructure.Migrations
                 columns: new[] { "DistrictId", "CreateBy", "CreateDate", "DistrictName", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("be7d62da-33ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2122), "Thanh Khe", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2123) },
-                    { new Guid("be7d62da-51ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2127), "Hai Chau", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2128) },
-                    { new Guid("be7d62da-53ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2102), "Ngu Hanh Son", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2104) }
+                    { new Guid("be7d62da-33ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7402), "Thanh Khe", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7403) },
+                    { new Guid("be7d62da-51ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7406), "Hai Chau", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7407) },
+                    { new Guid("be7d62da-53ea-46b0-b294-bb109eca92fc"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7220), "Ngu Hanh Son", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7221) }
                 });
 
             migrationBuilder.InsertData(
@@ -345,9 +328,9 @@ namespace Infrastructure.Migrations
                 columns: new[] { "RoleId", "CreateBy", "CreateDate", "RoleName", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("8977ef77-e554-4ef3-8353-3e01161f84d0"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(150), "Employee", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(151) },
-                    { new Guid("abccde85-c7dc-4f78-9e4e-b1b3e7abee84"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(58), "Manager", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(59) },
-                    { new Guid("cacd4b3a-8afe-43e9-b757-f57f5c61f8d8"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(142), "Leader", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(144) }
+                    { new Guid("8977ef77-e554-4ef3-8353-3e01161f84d0"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3997), "Employee", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3997) },
+                    { new Guid("abccde85-c7dc-4f78-9e4e-b1b3e7abee84"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3979), "Manager", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3980) },
+                    { new Guid("cacd4b3a-8afe-43e9-b757-f57f5c61f8d8"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3993), "Leader", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3993) }
                 });
 
             migrationBuilder.InsertData(
@@ -355,22 +338,22 @@ namespace Infrastructure.Migrations
                 columns: new[] { "StreetTypeId", "CreateBy", "CreateDate", "StreetTypeName", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(5756), "Duong Kinh Doanh", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(5757) },
-                    { new Guid("e3d44b7e-8ebe-434f-88ef-054a81951be1"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(5775), "Duong Dan Sinh", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(5776) }
+                    { new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(8168), "Duong Kinh Doanh", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(8169) },
+                    { new Guid("e3d44b7e-8ebe-434f-88ef-054a81951be1"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(8181), "Duong Dan Sinh", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(8182) }
                 });
 
             migrationBuilder.InsertData(
                 table: "TreeTypes",
                 columns: new[] { "TreeTypeId", "CreateBy", "CreateDate", "TreeTypeName", "UpdateBy", "UpdateDate" },
-                values: new object[] { new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 695, DateTimeKind.Local).AddTicks(814), "Cay than go", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 695, DateTimeKind.Local).AddTicks(815) });
+                values: new object[] { new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 575, DateTimeKind.Local).AddTicks(1683), "Cay than go", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 575, DateTimeKind.Local).AddTicks(1684) });
 
             migrationBuilder.InsertData(
                 table: "Cultivars",
                 columns: new[] { "CultivarId", "CreateBy", "CreateDate", "CultivarName", "TreeTypeId", "UpdateBy", "UpdateDate" },
                 values: new object[,]
                 {
-                    { new Guid("136514ac-99a2-221a-80e1-5351d9a9c4af"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(6108), "Giong cay phuong", new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(6109) },
-                    { new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(6084), "Giong cay bang", new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(6085) }
+                    { new Guid("136514ac-99a2-221a-80e1-5351d9a9c4af"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(3578), "Giong cay phuong", new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(3579) },
+                    { new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(3463), "Giong cay bang", new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(3464) }
                 });
 
             migrationBuilder.InsertData(
@@ -390,17 +373,17 @@ namespace Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "ResidentialGroups",
                 columns: new[] { "ResidentialGroupId", "CreateBy", "CreateDate", "ResidentialGroupName", "UpdateBy", "UpdateDate", "WardId" },
-                values: new object[] { new Guid("0a0e931d-d055-48a9-b8a4-2cf57ac2f6f5"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(7112), "Dong Tra", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(7113), new Guid("996c63bc-5f0a-44f6-8c9a-aad741b3beac") });
+                values: new object[] { new Guid("0a0e931d-d055-48a9-b8a4-2cf57ac2f6f5"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(2075), "Dong Tra", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(2076), new Guid("996c63bc-5f0a-44f6-8c9a-aad741b3beac") });
 
             migrationBuilder.InsertData(
                 table: "Streets",
                 columns: new[] { "StreetId", "CreateBy", "CreateDate", "NumberOfHouses", "ResidentialGroupId", "StreetLength", "StreetName", "StreetTypeId", "UpdateBy", "UpdateDate" },
-                values: new object[] { new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(3393), 20, new Guid("0a0e931d-d055-48a9-b8a4-2cf57ac2f6f5"), 10000f, "Duong Huynh Lam", new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"), "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(3394) });
+                values: new object[] { new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(6224), 20, new Guid("0a0e931d-d055-48a9-b8a4-2cf57ac2f6f5"), 10000f, "Duong Huynh Lam", new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"), "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(6225) });
 
             migrationBuilder.InsertData(
                 table: "Trees",
                 columns: new[] { "TreeId", "BodyDiameter", "CreateBy", "CreateDate", "CultivarId", "CutTime", "IntervalCutTime", "LeafLength", "Note", "PlantTime", "StreetId", "TreeCode", "UpdateBy", "UpdateDate", "isCut", "isExist" },
-                values: new object[] { new Guid("24b2ee45-d7c3-4cc7-9fac-406b4bac1d82"), 30f, "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(8315), new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"), new DateTime(2024, 6, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(8270), 3, 50f, "", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(8269), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "12_HL_HH_NHS", "Admin", new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(8317), true, true });
+                values: new object[] { new Guid("24b2ee45-d7c3-4cc7-9fac-406b4bac1d82"), 30f, "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(9724), new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"), new DateTime(2024, 6, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(9698), 3, 50f, "", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(9697), new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"), "12_HL_HH_NHS", "Admin", new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(9725), true, true });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cultivars_TreeTypeId",

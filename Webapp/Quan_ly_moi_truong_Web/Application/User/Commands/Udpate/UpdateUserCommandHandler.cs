@@ -22,10 +22,10 @@ namespace Application.User.Commands.Udpate
             await Task.CompletedTask;
 
             // Checking if user is null or not
-            if (userRepository.GetById(request.Id) is null)
-            {
-                return Errors.UpdateUser.UpdateUserFail;
-            }
+            //if (userRepository.GetById(request.Id) is null)
+            //{
+            //    return Errors.UpdateUser.UpdateUserFail;
+            //}
 
             //Update user
             Users user = new Users

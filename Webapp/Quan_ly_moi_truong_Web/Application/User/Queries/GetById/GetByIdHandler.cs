@@ -19,14 +19,14 @@ namespace Application.User.Queries.GetById
         {
             await Task.CompletedTask;
 
-            var user = userRepository.GetById(request.UserId);
+            //var user = userRepository.GetById(request.UserId);
 
-            if (user == null)
-            {
-                return Errors.GetUserById.getUserFail;
-            }
+            //if (user == null)
+            //{
+            //    return Errors.GetUserById.getUserFail;
+            //}
 
-            return new UserResult(user);
+            return new UserResult(new ());
         }
     }
 }

@@ -9,9 +9,9 @@ namespace Application.Common.Interfaces.Persistence
     {
         List<Users> GetAll();
 
-        Users GetById(Guid id);
+        Users GetById(string id);
 
-        Users? GetUserByPhone(string phoneNumber);
+        //Users? GetUserByPhone(string phoneNumber);
 
         void Add(Users user);
 

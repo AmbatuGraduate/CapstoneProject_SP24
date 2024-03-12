@@ -22,7 +22,7 @@ namespace Domain.Entities.Report
         public bool Status { get; set; }
 
         [DataMember]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         public virtual Users? Users { get; set; }
 

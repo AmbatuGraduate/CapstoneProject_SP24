@@ -63,21 +63,21 @@ namespace Infrastructure.Migrations
                         {
                             CultivarId = new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(6084),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(3463),
                             CultivarName = "Giong cay bang",
                             TreeTypeId = new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"),
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(6085)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(3464)
                         },
                         new
                         {
                             CultivarId = new Guid("136514ac-99a2-221a-80e1-5351d9a9c4af"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(6108),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(3578),
                             CultivarName = "Giong cay phuong",
                             TreeTypeId = new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"),
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(6109)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(3579)
                         });
                 });
 
@@ -117,28 +117,28 @@ namespace Infrastructure.Migrations
                         {
                             DepartmentId = new Guid("bc2f24de-2b9b-489a-a108-64a114d2b9be"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9483),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5386),
                             DepartmentName = "Quet don via he",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9484)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5386)
                         },
                         new
                         {
                             DepartmentId = new Guid("bc2f24de-2b9b-429a-a108-64a114d2b9be"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9502),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5399),
                             DepartmentName = "Thu gom rac",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9503)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5400)
                         },
                         new
                         {
                             DepartmentId = new Guid("bc2f24de-1b9b-489a-a108-64a114d2b9be"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9508),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5403),
                             DepartmentName = "Cat tia cay",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 692, DateTimeKind.Local).AddTicks(9509)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(5404)
                         });
                 });
 
@@ -178,28 +178,28 @@ namespace Infrastructure.Migrations
                         {
                             DistrictId = new Guid("be7d62da-53ea-46b0-b294-bb109eca92fc"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2102),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7220),
                             DistrictName = "Ngu Hanh Son",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2104)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7221)
                         },
                         new
                         {
                             DistrictId = new Guid("be7d62da-33ea-46b0-b294-bb109eca92fc"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2122),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7402),
                             DistrictName = "Thanh Khe",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2123)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7403)
                         },
                         new
                         {
                             DistrictId = new Guid("be7d62da-51ea-46b0-b294-bb109eca92fc"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2127),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7406),
                             DistrictName = "Hai Chau",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(2128)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 573, DateTimeKind.Local).AddTicks(7407)
                         });
                 });
 
@@ -233,8 +233,9 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ReportId");
 
@@ -284,10 +285,10 @@ namespace Infrastructure.Migrations
                         {
                             ResidentialGroupId = new Guid("0a0e931d-d055-48a9-b8a4-2cf57ac2f6f5"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(7112),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(2075),
                             ResidentialGroupName = "Dong Tra",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 693, DateTimeKind.Local).AddTicks(7113),
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(2076),
                             WardId = new Guid("996c63bc-5f0a-44f6-8c9a-aad741b3beac")
                         });
                 });
@@ -328,28 +329,28 @@ namespace Infrastructure.Migrations
                         {
                             RoleId = new Guid("abccde85-c7dc-4f78-9e4e-b1b3e7abee84"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(58),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3979),
                             RoleName = "Manager",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(59)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3980)
                         },
                         new
                         {
                             RoleId = new Guid("cacd4b3a-8afe-43e9-b757-f57f5c61f8d8"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(142),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3993),
                             RoleName = "Leader",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(144)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3993)
                         },
                         new
                         {
                             RoleId = new Guid("8977ef77-e554-4ef3-8353-3e01161f84d0"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(150),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3997),
                             RoleName = "Employee",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(151)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(3997)
                         });
                 });
 
@@ -405,14 +406,14 @@ namespace Infrastructure.Migrations
                         {
                             StreetId = new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(3393),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(6224),
                             NumberOfHouses = 20,
                             ResidentialGroupId = new Guid("0a0e931d-d055-48a9-b8a4-2cf57ac2f6f5"),
                             StreetLength = 10000f,
                             StreetName = "Duong Huynh Lam",
                             StreetTypeId = new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"),
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(3394)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(6225)
                         });
                 });
 
@@ -451,19 +452,19 @@ namespace Infrastructure.Migrations
                         {
                             StreetTypeId = new Guid("1be73957-b7e9-4304-9242-00e8b92a86f0"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(5756),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(8168),
                             StreetTypeName = "Duong Kinh Doanh",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(5757)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(8169)
                         },
                         new
                         {
                             StreetTypeId = new Guid("e3d44b7e-8ebe-434f-88ef-054a81951be1"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(5775),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(8181),
                             StreetTypeName = "Duong Dan Sinh",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(5776)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(8182)
                         });
                 });
 
@@ -538,17 +539,17 @@ namespace Infrastructure.Migrations
                             TreeId = new Guid("24b2ee45-d7c3-4cc7-9fac-406b4bac1d82"),
                             BodyDiameter = 30f,
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(8315),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(9724),
                             CultivarId = new Guid("136514ac-99a2-421a-80e1-5351d9a9c4af"),
-                            CutTime = new DateTime(2024, 6, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(8270),
+                            CutTime = new DateTime(2024, 6, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(9698),
                             IntervalCutTime = 3,
                             LeafLength = 50f,
                             Note = "",
-                            PlantTime = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(8269),
+                            PlantTime = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(9697),
                             StreetId = new Guid("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"),
                             TreeCode = "12_HL_HH_NHS",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 694, DateTimeKind.Local).AddTicks(8317),
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 574, DateTimeKind.Local).AddTicks(9725),
                             isCut = true,
                             isExist = true
                         });
@@ -590,88 +591,30 @@ namespace Infrastructure.Migrations
                         {
                             TreeTypeId = new Guid("ad98e780-ce3b-401b-a2ec-dd7ba8027642"),
                             CreateBy = "Admin",
-                            CreateDate = new DateTime(2024, 3, 9, 0, 47, 2, 695, DateTimeKind.Local).AddTicks(814),
+                            CreateDate = new DateTime(2024, 3, 13, 2, 7, 16, 575, DateTimeKind.Local).AddTicks(1683),
                             TreeTypeName = "Cay than go",
                             UpdateBy = "Admin",
-                            UpdateDate = new DateTime(2024, 3, 9, 0, 47, 2, 695, DateTimeKind.Local).AddTicks(815)
+                            UpdateDate = new DateTime(2024, 3, 13, 2, 7, 16, 575, DateTimeKind.Local).AddTicks(1684)
                         });
                 });
 
             modelBuilder.Entity("Domain.Entities.User.Users", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("DepartmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
                     b.Property<string>("UserCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -713,8 +656,9 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserRefreshTokenId");
 

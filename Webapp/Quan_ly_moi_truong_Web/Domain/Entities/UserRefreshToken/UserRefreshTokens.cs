@@ -10,7 +10,7 @@ namespace Domain.Entities.UserRefreshToken
         public Guid UserRefreshTokenId { get; set; }
 
         [DataMember]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         [DataMember]
         public string RefreshToken { get; set; }
