@@ -29,13 +29,11 @@ namespace API
                     builder =>
                     {
                         builder
-                        .WithOrigins("http://localhost:3000", "http://localhost:5500")
+                        .WithOrigins("http://localhost:3000", "http://localhost:5500", "http://vesinhdanang.xyz:3000/", "http://vesinhdanang.xyz/")
                         //.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials()
-
-                        ;
+                        .AllowCredentials();
 
                     });
             });

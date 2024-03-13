@@ -25,7 +25,7 @@ namespace Domain.Entities.User
         public virtual Roles? Role { get; set; }
 
         [DataMember]
-        public Guid DepartmentId { get; set; }
+        public string DepartmentId { get; set; }
 
         public virtual Departments? Departments { get; set; }
 
