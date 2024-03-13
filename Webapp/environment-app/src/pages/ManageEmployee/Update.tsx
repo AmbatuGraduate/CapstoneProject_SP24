@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { CULTIVAR_DETAIL, useApi } from "../../api";
 import { Field, FormBase } from "../../components/FormBase";
 
-
 type Input = {
   cultivarName?: string;
   note?: string;
@@ -12,7 +11,9 @@ export const UpdateCultivar = () => {
 
   const fetch = async () => {
     try {
-      const data = await useApi.get(CULTIVAR_DETAIL.replace(":id", "cultivarName"));
+      const data = await useApi.get(
+        CULTIVAR_DETAIL.replace(":id", "cultivarName")
+      );
       console.log(data);
     } catch (error) {
       console.log(error);

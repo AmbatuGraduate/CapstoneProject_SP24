@@ -3,7 +3,6 @@ import { Field, FormBase } from "../../components/FormBase";
 import { useNavigate } from "react-router-dom";
 import { CULTIVAR_DETAIL, useApi } from "../../api";
 
-
 type Input = {
   cultivarName?: string;
 };
@@ -13,12 +12,14 @@ export const DetailCultivar = () => {
 
   const fetch = async () => {
     try {
-      const data = await useApi.get(CULTIVAR_DETAIL.replace(":id", "cultivarName"));
+      const data = await useApi.get(
+        CULTIVAR_DETAIL.replace(":id", "cultivarName")
+      );
       console.log(data);
     } catch (error) {
       console.log(error);
     }
-    setData({ cultivarName: "ASAJSA_@!@_13123"});
+    setData({ cultivarName: "ASAJSA_@!@_13123" });
     // TODO response data to setData
   };
 
@@ -51,7 +52,9 @@ export const DetailCultivar = () => {
       fields={fields}
       mode="view"
       onCancel={() => navigate("/manage-cultivar")}
-      navigateUpdate={() => navigate(`/manage-cultivar/${data?.cultivarName}/update`)}
+      navigateUpdate={() =>
+        navigate(`/manage-cultivar/${data?.cultivarName}/update`)
+      }
     />
   );
 };
