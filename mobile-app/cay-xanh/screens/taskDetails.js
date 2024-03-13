@@ -20,7 +20,7 @@ export default function TaskDetails({ route }) {
     const updateStatus = () => {
         try {
             AsyncStorage.getItem("@accessToken").then(token => {
-                const url = new URL('http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus');
+                const url = new URL('http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/UpdateJobWorkingStatus');
                 url.searchParams.append('token', token);
                 url.searchParams.append('jobWorkingStatus', 2); // 2 corresponds to 'Done' in enum
                 url.searchParams.append('eventId', key);
