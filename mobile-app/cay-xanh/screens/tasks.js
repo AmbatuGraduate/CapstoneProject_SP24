@@ -15,7 +15,8 @@ export default function TasksList({ navigation }) {
     const [pressedDate, setPressedDate] = useState(null);
 
 
-    // local test: 'http://192.168.1.40:45456/api/ScheduleTreeTrim/GetCalendarEvents/' + atoken
+    // local test: 'http://192.168.1.40:45456/api/Calendar/GetCalendarEvents/' + atoken
+    // server: 'http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/GetCalendarEvents/' + atoken
     const getEvents = async () => {
         try {
             AsyncStorage.getItem("@accessToken").then(atoken => {
@@ -35,9 +36,15 @@ export default function TasksList({ navigation }) {
                             }
                         })
                         .then((json) => {
-                            const jsonEvents = json.value.map(item => item.myEvent);
+                            const jsonEvents = json.value.map(item => {
+                                // add extended properties in the event object
+                                const event = {
+                                    ...item.myEvent,
+                                    extendedProperties: item.myEvent.extendedProperties,
+                                };
+                                return event;
+                            });
                             setEvents(jsonEvents);
-                            console.log('jsonEvents', jsonEvents);
                         })
                         .catch((error) => {
                             console.log('There has been a problem with fetch operation: ', error.message);
@@ -109,6 +116,7 @@ export default function TasksList({ navigation }) {
                                 description: item.description,
                                 address: item.location,
                                 start: item.date,
+                                status: item.extendedProperties.privateProperties?.JobWorkingStatus,
                                 img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg'
                             });
                         }}
@@ -131,6 +139,12 @@ export default function TasksList({ navigation }) {
                             <Text style={styles.itemLabel}>Địa chỉ:</Text>
                             <Text style={styles.itemText}>{item.location}</Text>
                         </View>
+                        {item.extendedProperties.privateProperties?.JobWorkingStatus && (
+                            <View style={styles.itemContainer}>
+                                <Text style={styles.itemLabel}>Trạng thái:</Text>
+                                <Text style={styles.itemText}>{item.extendedProperties.privateProperties.JobWorkingStatus}</Text>
+                            </View>
+                        )}
                     </TouchableOpacity>
                 )}
             />
