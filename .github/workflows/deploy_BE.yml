@@ -36,7 +36,8 @@ jobs:
           password: ${{ secrets.AZURE_VM_PASSWORD }}
           port: 22
           script: |
-            rm -rf C:\inetpub\wwwroot\AmbatuGraduate\BE/*
+            del /F /Q C:\inetpub\wwwroot\AmbatuGraduate\BE\*
+            for /D %%i in (C:\inetpub\wwwroot\AmbatuGraduate\BE\*) do rmdir /S /Q "%%i"
             
       - name: Copy files to Azure VM
         uses: appleboy/scp-action@master
