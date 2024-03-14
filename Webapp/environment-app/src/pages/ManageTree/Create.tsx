@@ -1,25 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { Field, FormBase } from "../../Components/FormBase";
 import {
   CULTIVAR_LIST,
   STREET_LIST,
   TREE_ADD,
   TREE_TYPE_LIST,
-  TREE_UPDATE,
   useApi,
 } from "../../Api";
-import { useState } from "react";
-import { dayFormat } from "../../utils";
+import { Field, FormBase } from "../../Components/FormBase";
 
 export const CreateTree = () => {
   const navigate = useNavigate();
-  const CalendarComponent = () => {
-    const [calendar, setCalendar] = useState("");
-    const handleSelect = (date) => {
-      console.log(date);
-      setCalendar(dayFormat(date));
-    };
-  };
 
   const fields: Field[] = [
     {
@@ -82,7 +72,7 @@ export const CreateTree = () => {
     },
     {
       label: "Thời gian trồng",
-      formType: "input",
+      formType: "date",
       key: "plantTime",
     },
     {
