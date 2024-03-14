@@ -1,4 +1,4 @@
-name: CI/CD Deploy project
+name: CI/CD Deploy project for BE
 
 # Event trigger git action
 on:
@@ -8,10 +8,6 @@ on:
     paths: 
       - 'Webapp/Quan_ly_moi_truong_Web/**'
       
-env: 
-   # For run build react => can not run build becasue CI = true
-  CI: false
-
 jobs:
   #Job deploy back-end to the server
   deploy-be:
