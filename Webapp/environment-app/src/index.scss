@@ -87,18 +87,15 @@ body {
 
 .container-fluid {
   position: relative;
-  width: 98vw;
-  height: 97vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bgColor);
   overflow: hidden;
   border-radius: 1rem;
-  box-shadow: 2px 2px 8px var(--greyText);
 }
 
-/* hide the scroll thumb
-::-webkit-scrollbar{
-    display: none;
-} */
+hide the scroll thumb ::-webkit-scrollbar {
+  display: none;
+}

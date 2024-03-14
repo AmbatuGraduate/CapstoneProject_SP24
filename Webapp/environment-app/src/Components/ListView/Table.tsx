@@ -48,7 +48,6 @@ function Table(props: Props) {
         <table className="table table-striped">
           <thead className="thread-primary ">
             <tr>
-              <th>Chỉnh sửa</th>
               {columns.map((c, index) => (
                 <th key={index}>{c.header}</th>
               ))}

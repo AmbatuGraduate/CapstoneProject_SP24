@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Layout } from "./components/Layout";
+import { Layout } from "./Components/Layout";
 import { Login } from "./pages/Login";
 import { Manage } from "./pages/Manage";
 import { ManageEmployee } from "./pages/ManageEmployee";

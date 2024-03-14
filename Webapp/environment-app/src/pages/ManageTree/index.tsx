@@ -1,11 +1,11 @@
 import { Button } from "react-bootstrap";
 import { BiSolidEdit } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { TREE_LIST } from "../../api";
-import { ListView } from "../../components/ListView";
-import { Column } from "../../components/ListView/Table";
-import ModalDelete from "../../components/Modals/ModalDelete";
+import { TREE_LIST } from "../../Api";
+import { ListView } from "../../Components/ListView";
+import { Column } from "../../Components/ListView/Table";
 import { dayFormat } from "../../utils";
+import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageTree = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ export const ManageTree = () => {
                 <BiSolidEdit />
               </button>
             </Link>
-            <button onClick={() => {}}>
+            <button type="button" className="btn btn-click" onClick={() => { }}>
               <ModalDelete />
             </button>
           </div>
@@ -32,7 +32,7 @@ export const ManageTree = () => {
     {
       header: "Mã số cây",
       accessorFn(row) {
-        return <Link to={`/manage-tree/${row.treeCode}`}>{row.treeCode}</Link>;
+        return <Link className="treeCode" to={`/manage-tree/${row.treeCode}`}>{row.treeCode}</Link>;
       },
     },
     { header: "Tuyến đường", accessorKey: "streetName", align: "left" },
