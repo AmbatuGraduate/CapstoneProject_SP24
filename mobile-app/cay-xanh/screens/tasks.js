@@ -40,7 +40,7 @@ export default function TasksList({ navigation }) {
                                 // add extended properties in the event object
                                 const event = {
                                     ...item.myEvent,
-                                    extendedProperties: item.myEvent.extendedProperties,
+                                    extendedProperties: item.myEvent.extendedProperties || {},
                                 };
                                 return event;
                             });
