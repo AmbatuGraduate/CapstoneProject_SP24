@@ -4,6 +4,7 @@ import {
   CULTIVAR_LIST,
   STREET_LIST,
   TREE_ADD,
+  TREE_TYPE_LIST,
   TREE_UPDATE,
   useApi,
 } from "../../Api";
@@ -95,6 +96,16 @@ export const CreateTree = () => {
       key: "intervalCutTime",
     },
     {
+      label: "Loại cây",
+      formType: "select",
+      key: "treeTypeId",
+      optionExtra: {
+        url: TREE_TYPE_LIST,
+        _key: "treeTypeName",
+        _value: "treeTypeId",
+      },
+    },
+    {
       label: "Giống cây",
       formType: "select",
       key: "cultivarId",
@@ -125,20 +136,20 @@ export const CreateTree = () => {
       key: "updateDate",
     },
     {
-      label: "Trạng thái",
-      formType: "input",
+      label: "Tình trạng cây",
+      formType: "select",
       key: "isExist",
-      // defaultValue: 2,
-      // options: [
-      //   {
-      //     key: "Cần cắt",
-      //     value: 1,
-      //   },
-      //   {
-      //     key: "Đã cắt",
-      //     value: 2,
-      //   },
-      // ],
+      defaultValue: 2,
+      options: [
+        {
+          key: "Cần cắt",
+          value: 1,
+        },
+        {
+          key: "Đã cắt",
+          value: 2,
+        },
+      ],
     },
   ];
 
