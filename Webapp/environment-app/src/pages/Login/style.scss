@@ -1,25 +1,3 @@
-/* Colors and Styles (Defauly) */
-:root {
-    --PrimanyColor: hsl(94, 59%, 35%);
-    --HoverColor: #bdf094;
-    --paleGreen: hsl(96, 75%, 89%);
-    --whiteColor: hsl(0, 0%, 100%);
-    --blackColor: hsl(0, 0%, 18%);
-    --textColor: hsl(240, 1%, 48%);
-    --bgColor: hsl(220, 10%, 94%);
-    --greyText: rgb(190, 190, 190);
-    --inputColor: hsl(330, 12%, 97%);
-
-    /* Font and Typography */
-    --biggestFontSize: 2.5rem;
-    --h1FontSize: 1.5rem;
-    --h2FontSize: 1.25rem;
-    --h3FontSize: 1rem;
-    --normalFontSize: 0.938rem;
-    --smallFontSize: 0.813rem;
-    --smallestFontSize: 0.75rem;
-}
-
 .login-page {
     background-color: #eeeff1;
     position: relative;
@@ -63,7 +41,7 @@
             h6 {
                 font-weight: bold;
                 font-size: 32px;
-                padding-bottom: 80px;
+                padding-bottom: 20px;
             }
 
             button {
@@ -75,6 +53,7 @@
                 font-size: var(--h2FontSize);
                 font-weight: 500;
                 border: none;
+                box-shadow: 2px var(--inputColor);
                 &:hover {
                     background-color: var(--paleGreen);
                     transition: 0.3s ease;
