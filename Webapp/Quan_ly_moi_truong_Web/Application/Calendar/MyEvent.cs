@@ -11,6 +11,7 @@ namespace Application.Calendar
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public List<UserResult> Attendees { get; set; }
+        public EventExtendedProperties ExtendedProperties { get; set; }
     }
 
     public class MyAddedEvent
@@ -56,6 +57,6 @@ namespace Application.Calendar
 
     public class EventExtendedProperties
     {
-        Dictionary<string, string> PrivateProperties { get; set; }
+        public Dictionary<string, string> PrivateProperties { get; set; }
     }
 }
