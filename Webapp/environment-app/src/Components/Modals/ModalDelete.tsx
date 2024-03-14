@@ -1,25 +1,24 @@
-import axios from "axios";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { TREE_DELETE, useApi } from "../../Api";
-import { useParams } from "react-router-dom";
 
-function ModalDelete() {
+type Props = {
+  handleDelete: () => void;
+  title?: string;
+  description?: string;
+};
+
+function ModalDelete(props: Props) {
+  const { title, description, handleDelete } = props;
   const [show, setShow] = useState(false);
-  const { id = "" } = useParams();
-  const [data, setData] = useState<any>();
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   const onDelete = async () => {
-    try {
-      const data = await useApi.get(TREE_DELETE.replace(":id", id));
-      setData(data.data);
-      console.log("Tree deleted successfully");
-    } catch (error) {
-      console.error("Error deleting item:", error);
-    }
+    handleDelete && handleDelete();
+    handleClose();
   };
 
   return (
@@ -35,9 +34,9 @@ function ModalDelete() {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Alert</Modal.Title>
+          <Modal.Title>{title || "Alert"}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Bạn có chắc chắn muốn xóa?</Modal.Body>
+        <Modal.Body>{description || "Bạn có chắc chắn muốn xóa?"}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
