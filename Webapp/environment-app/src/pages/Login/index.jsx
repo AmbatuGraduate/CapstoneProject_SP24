@@ -8,6 +8,7 @@ export const Login = () => {
 
     const handleSuccess = (response) => {
         const authCode = response.code;
+        console.log('Authentication successful, auth code: ' + authCode);
         fetch('https://localhost:7024/api/auth/google', {
             credentials: 'include',
             method: 'POST',
@@ -39,6 +40,8 @@ export const Login = () => {
     const gglogin = useGoogleLogin({
         onSuccess: handleSuccess,
         flow: 'auth-code',
+        scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/userinfo.profile openid profile email',
+
     });
 
     const getEvents = () => {

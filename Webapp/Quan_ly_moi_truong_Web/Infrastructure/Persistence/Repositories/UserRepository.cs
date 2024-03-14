@@ -225,10 +225,8 @@ namespace Infrastructure.Persistence.Repositories
         public async Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail)
         {
             try
-            {   string[] Scopes = { "https://www.googleapis.com/auth/admin.directory.group",
-                    "https://www.googleapis.com/auth/admin.directory.group.readonly"
-                };
-                var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
+            {  
+                var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _directoryServiceFactory(credential);
 
                 // Retrieve the group
