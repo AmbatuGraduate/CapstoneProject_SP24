@@ -111,10 +111,10 @@ export default function TaskDetails({ route }) {
                     bottom: 10,
                     left: 0,
                     right: 0
-                }} text='Hoàn thành' onPress={() => updateStatus()}></FlatButton>
+                }} text='Hoàn thành' iconName="check" onPress={() => updateStatus()}></FlatButton>
 
             </View>
-            <Toast ref={(ref) => Toast.setRef(ref)} />
+            <Toast />
 
         </ScrollView>
 

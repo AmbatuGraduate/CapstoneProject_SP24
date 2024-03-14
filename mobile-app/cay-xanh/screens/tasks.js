@@ -15,13 +15,13 @@ export default function TasksList({ navigation }) {
     const [pressedDate, setPressedDate] = useState(null);
 
 
-    // local test: 'http://192.168.1.40:45456/api/Calendar/GetCalendarEvents/' + atoken
+    // local test: 'http://192.168.1.7:45455/api/Calendar/GetCalendarEvents/' + atoken
     // server: 'http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/GetCalendarEvents/' + atoken
     const getEvents = async () => {
         try {
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/GetCalendarEvents/' + atoken,
+                    fetch('http://192.168.1.7:45455/api/Calendar/GetCalendarEvents/' + atoken,
                         {
                             method: 'GET',
                             headers: {
@@ -40,7 +40,7 @@ export default function TasksList({ navigation }) {
                                 // add extended properties in the event object
                                 const event = {
                                     ...item.myEvent,
-                                    extendedProperties: item.myEvent.extendedProperties || {},
+                                    extendedProperties: item.myEvent.extendedProperties,
                                 };
                                 return event;
                             });
@@ -62,8 +62,15 @@ export default function TasksList({ navigation }) {
 
     // Events list not change when add new data, only change if  reload
     useEffect(() => {
-        getEvents();
-    }, []);
+        const unsubscribe = navigation.addListener('focus', () => {
+            // The screen is focused
+            // Call any action
+            getEvents();
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
 
     useEffect(() => {
         if (Array.isArray(events)) {
@@ -108,7 +115,12 @@ export default function TasksList({ navigation }) {
                 renderItem={({ item }) => (
                     <TouchableOpacity
                         // Apply styles to the TouchableOpacity.
-                        style={styles.records}
+                        style={[
+                            styles.records,
+                            item.extendedProperties.privateProperties?.JobWorkingStatus === 'Done' ? styles.doneBackground :
+                                item.extendedProperties.privateProperties?.JobWorkingStatus === 'In Progress' ? styles.inProgressBackground :
+                                    (item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Start' || !item.extendedProperties.privateProperties?.JobWorkingStatus) ? styles.notStartBackground : null
+                        ]}
                         // When the TouchableOpacity is pressed, navigate to the 'TaskDetails' screen.
                         onPress={() => {
                             navigation.navigate('TaskDetails', {
@@ -116,7 +128,7 @@ export default function TasksList({ navigation }) {
                                 description: item.description,
                                 address: item.location,
                                 start: item.date,
-                                status: item.extendedProperties.privateProperties?.JobWorkingStatus,
+                                status: item.extendedProperties.privateProperties?.JobWorkingStatus || 'Not Started',
                                 img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg'
                             });
                         }}
@@ -139,12 +151,17 @@ export default function TasksList({ navigation }) {
                             <Text style={styles.itemLabel}>Địa chỉ:</Text>
                             <Text style={styles.itemText}>{item.location}</Text>
                         </View>
-                        {item.extendedProperties.privateProperties?.JobWorkingStatus && (
-                            <View style={styles.itemContainer}>
-                                <Text style={styles.itemLabel}>Trạng thái:</Text>
-                                <Text style={styles.itemText}>{item.extendedProperties.privateProperties.JobWorkingStatus}</Text>
-                            </View>
-                        )}
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemLabel}>Trạng thái:</Text>
+                            <Text style={[
+                                styles.itemText,
+                                item.extendedProperties.privateProperties?.JobWorkingStatus === 'In Progress' ? styles.strongBlue :
+                                    item.extendedProperties.privateProperties?.JobWorkingStatus === 'Done' ? styles.strongGreen :
+                                        (!item.extendedProperties.privateProperties?.JobWorkingStatus || item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Started') ? styles.strongRed : null
+                            ]}>
+                                {item.extendedProperties.privateProperties?.JobWorkingStatus || 'Not Started'}
+                            </Text>
+                        </View>
                     </TouchableOpacity>
                 )}
             />
@@ -235,6 +252,29 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#999',
         textAlign: 'center',
+    },
+
+    // background color for different status
+    doneBackground: {
+        backgroundColor: 'lightgreen',
+    },
+    inProgressBackground: {
+        backgroundColor: '#FDFA72',
+    },
+    notStartBackground: {
+        backgroundColor: '#E2C0BF', // light red
+    },
+    strongBlue: {
+        color: 'darkblue',
+        fontWeight: 'bold',
+    },
+    strongGreen: {
+        color: 'green',
+        fontWeight: 'bold',
+    },
+    strongRed: {
+        color: 'coral',
+        fontWeight: 'bold',
     },
 });
 

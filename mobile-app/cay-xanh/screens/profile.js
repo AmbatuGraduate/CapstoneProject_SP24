@@ -84,7 +84,7 @@ export default function Profile({ navigation }) {
 
             {/* ------------------------------------------------------------------- */}
             {/* Edit profile Container */}
-            <FlatButton text='Chỉnh sửa' onPress={() => { navigation.navigate('EditProfile') }}></FlatButton>
+            <FlatButton text='Chỉnh sửa' iconName="edit" onPress={() => { navigation.navigate('EditProfile') }}></FlatButton>
         </View >
     )
 }
