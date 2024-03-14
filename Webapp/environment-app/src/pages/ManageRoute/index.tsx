@@ -23,7 +23,7 @@ export const ManageRoute = () => {
               </button>
             </Link>
             <button type="button" className="btn btn-click" onClick={() => {}}>
-              <ModalDelete />
+              <ModalDelete handleDelete={() => {}} />
             </button>
           </div>
         );
