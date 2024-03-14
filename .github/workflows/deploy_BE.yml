@@ -6,12 +6,8 @@ on:
   push: # when push to branch
     branches: [ "dev" ]  # choose branch dev
     paths: 
-      - 'Webapp/**'
-  pull_request: # when pull from branch
-    branches: [ "dev" ] # choose branch dev
-    paths: 
-      - 'Webapp/**'
-
+      - 'Webapp/Quan_ly_moi_truong_Web/**'
+      
 env: 
    # For run build react => can not run build becasue CI = true
   CI: false
@@ -35,6 +31,17 @@ jobs:
           dotnet build ./Webapp/Quan_ly_moi_truong_Web/API/API.csproj --configuration Release
           dotnet publish ./Webapp/Quan_ly_moi_truong_Web/API/API.csproj --configuration Release -o ./BE
           
+      - name: Remove existing files and folders on Azure VM
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.AZURE_VM_IP }}
+          username: ${{ secrets.AZURE_VM_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          password: ${{ secrets.AZURE_VM_PASSWORD }}
+          port: 22
+          script: |
+            rm -rf C:\inetpub\wwwroot\AmbatuGraduate\BE/*
+            
       - name: Copy files to Azure VM
         uses: appleboy/scp-action@master
         with:
@@ -46,35 +53,3 @@ jobs:
           source: "BE/**"
           target: C:\inetpub\wwwroot\AmbatuGraduate\BE
           strip_components: 1
-          
-  #Job deploy front-end to the server
-  deploy-fe:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20.x'
-
-      - name: Build React app
-        run: | 
-          cd Webapp/environment-app
-          npm cache clean --force
-          npm i
-          npm run build
-          
-      - name: Copy files to Azure VM
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.AZURE_VM_IP }}
-          username: ${{ secrets.AZURE_VM_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          password: ${{secrets.AZURE_VM_PASSWORD}}
-          port: 22
-          source: "./Webapp/environment-app/build/**"
-          target: C:\inetpub\wwwroot\AmbatuGraduate\FE
-          strip_components: 3
