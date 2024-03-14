@@ -29,7 +29,7 @@ namespace API
                     builder =>
                     {
                         builder
-                        .WithOrigins("http://localhost:3000", "http://localhost:5500" /*, "http://localhost:5173"*/)
+                        .WithOrigins("http://localhost:3000", "http://localhost:5500" , "http://localhost:5173")
                         //.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
