@@ -2,8 +2,10 @@
 using Application.User.Commands.Udpate;
 using Application.User.Commands.UpdateGoogle;
 using Application.User.Common;
+using Application.User.Common.Group;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
+using Application.User.Queries.GetGroup;
 using Application.User.Queries.List;
 using Contract.User;
 using Contract.User.Google;
@@ -127,5 +129,20 @@ namespace API.Controllers
             // write code to return without mapping
             return Ok(updateResult.Value);
         }
+
+        [HttpGet("groupEmail")]
+        public async Task<IActionResult> GetGroupByGroupEmail(string accessToken, string groupEmail)
+        {
+            ErrorOr<GroupResult> groupResult = await mediator.Send(new GetGroupByGroupEmailQuery(accessToken, groupEmail));
+
+            if (groupResult.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
+            }
+
+            return Ok(groupResult);
+        }
+
+        
     }
 }
