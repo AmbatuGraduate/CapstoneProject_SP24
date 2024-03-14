@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useApi } from "../../Api";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./style.scss";
+import { log } from "console";
 
 export type Field = {
   label: string;
   key: string;
   defaultValue?: any;
   placeholder?: string;
-  formType: "input" | "select" | "textarea" | "number";
+  formType: "input" | "select" | "textarea" | "number" | "date";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
@@ -48,6 +52,8 @@ export const FormBase = (props: Props) => {
     const { formType, options, key, disabled, optionExtra, ...rest } = props;
     const _disabled = mode == "view" ? true : disabled;
     const [_options, setOptions] = useState<Option[]>();
+    const [startDate, setStartDate] = useState<Date | null>(new Date());
+
     useEffect(() => {
       if (optionExtra) {
         fetchDataForFormSelect(optionExtra);
@@ -97,6 +103,20 @@ export const FormBase = (props: Props) => {
             ))}
           </Form.Select>
         );
+
+      case "date":
+        return (
+          <div>
+            <DatePicker
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              className="datepicker"
+              name={key}
+              disabled={_disabled}
+              dateFormat="dd/MM/yyyy"
+            />
+          </div>
+        );
       default:
         return (
           <Form.Control type="text" {...rest} name={key} disabled={_disabled} />
@@ -110,11 +130,12 @@ export const FormBase = (props: Props) => {
     fields.forEach((f) => {
       data[f.key] = (e.target as any)?.[f.key].value;
     });
+    console.log(data);
     onSave && onSave(data);
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className="form-base">
       {fields.map((f, idx) => {
         return (
           <Form.Group className="mb-3" controlId={f.key} key={idx}>
