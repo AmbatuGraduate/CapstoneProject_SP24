@@ -29,6 +29,7 @@ jobs:
       - name: Build React app
         run: | 
           cd Webapp/environment-app
+          rm -rf package-lock.json
           npm cache clean --force
           npm i
           npm run build
