@@ -1,10 +1,10 @@
 import { Button } from "react-bootstrap";
 import { BiSolidEdit } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { TREE_LIST } from "../../api";
-import { ListView } from "../../components/ListView";
-import { Column } from "../../components/ListView/Table";
-import ModalDelete from "../../components/Modals/ModalDelete";
+import { TREE_LIST } from "../../Api";
+import { ListView } from "../../Components/ListView";
+import { Column } from "../../Components/ListView/Table";
+import ModalDelete from "../../Components/Modals/ModalDelete";
 import { dayFormat } from "../../utils";
 
 export const ManageTree = () => {

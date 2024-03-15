@@ -1,9 +1,9 @@
 import React from "react";
-import { BiSolidEdit } from "react-icons/bi";
+// import { BiSolidEdit } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-import ModalDelete from "../Modals/ModalDelete";
+// import ModalDelete from "../Modals/ModalDelete";
 import "./table.scss";
 
 export type Column = {

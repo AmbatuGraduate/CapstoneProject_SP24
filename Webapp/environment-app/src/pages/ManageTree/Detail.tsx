@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { TREE_DETAIL, useApi } from "../../api";
-import { Field, FormBase } from "../../components/FormBase";
+import { TREE_DETAIL, useApi } from "../../Api";
+import { Field, FormBase } from "../../Components/FormBase";
 import { useNavigate, useParams } from "react-router-dom";
 import { dayFormat } from "../../utils";
 

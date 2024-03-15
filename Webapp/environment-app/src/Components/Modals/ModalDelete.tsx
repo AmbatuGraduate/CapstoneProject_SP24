@@ -1,5 +1,5 @@
 import axios from "axios";
-import React from "react";
+// import React from "react";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -13,7 +13,7 @@ function ModalDelete() {
   const onDelete = (treeCode) => {
     axios
       .delete(`your_api_endpoint/${treeCode}`)
-      .then((response) => {
+      .then((/*response*/) => {
         console.log("Item deleted successfully");
         // loadListData();
       })

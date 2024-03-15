@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import /*React,*/ { useState } from "react";
 import "./top.scss";
 
 // imported Icon
@@ -10,7 +10,7 @@ const Top = () => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  const [token, setToken] = useCookies(["accessToken"]);
+  const [token/*, setToken*/] = useCookies(["accessToken"]);
   const LogOut = async () => {
     await fetch("https://localhost:7024/api/auth/googlelogout", {
       method: "GET",
