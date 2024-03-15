@@ -1,4 +1,5 @@
 ﻿using Application.Calendar;
+using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Persistence.Schedules;
 using Application.User.Common;
 using Azure.Core;
@@ -15,34 +16,38 @@ namespace Infrastructure.Persistence.Repositories.Calendar
     public class TreeCalendarService : ITreeCalendarService
     {
         private readonly Func<GoogleCredential, CalendarService> _calendarServiceFactory;
+        private readonly ITreeRepository _treeRepository;
+        private readonly IStreetRepository _streetRepository;
 
-        public TreeCalendarService(Func<GoogleCredential, CalendarService> calendarServiceFactory)
+        public TreeCalendarService(Func<GoogleCredential, CalendarService> calendarServiceFactory, ITreeRepository treeRepository, IStreetRepository streetRepository)
         {
             _calendarServiceFactory = calendarServiceFactory;
+            _treeRepository = treeRepository;
+            _streetRepository = streetRepository;
         }
 
         public async Task<MyAddedEvent> AddEvent(string accessToken, string calendarId, MyAddedEvent myEvent)
         {
             string[] Scopes = { CalendarService.Scope.Calendar };
             try
-            {
+            {   
+                var treeinfo = _treeRepository.GetTreeByTreeCode(myEvent.TreeId);
                 var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
                 var service = _calendarServiceFactory(credential);
                 var addedEvent = new Event()
                 {
-                    Id = myEvent.Id,
                     Summary = myEvent.Summary,
                     Description = myEvent.Description,
-                    Location = "800 Howard St., San Francisco, CA 94103",
+                    Location = _streetRepository.GetStreetById(treeinfo.StreetId).StreetName,
                     Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
                         DateTime = DateTime.Parse(myEvent.Start.DateTime),
-                        TimeZone = "America/Los_Angeles"
+                        TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City"
                     },
                     End = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
                         DateTime = DateTime.Parse(myEvent.End.DateTime),
-                        TimeZone = "America/Los_Angeles"
+                        TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City"
                     },
                     Attendees = myEvent.Attendees
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
@@ -51,7 +56,8 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     {
                         Private__ = new Dictionary<string, string>
                         {
-                            {"JobWorkingStatus", ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart) }
+                            {"JobWorkingStatus", ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart) },
+                            {"Tree", myEvent.TreeId}
                         }
                     }
                 };
@@ -128,12 +134,12 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     retrievedEvent.Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
                         DateTime = DateTime.Parse(myEvent.Start.DateTime),
-                        TimeZone = "America/Los_Angeles"
+                        TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City"
                     };
                     retrievedEvent.End = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
                         DateTime = DateTime.Parse(myEvent.End.DateTime),
-                        TimeZone = "America/Los_Angeles"
+                        TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City"
                     };
                     retrievedEvent.Attendees = myEvent.Attendees
                         .Select(attendee => new EventAttendee { Email = attendee.Email })

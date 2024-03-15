@@ -16,10 +16,13 @@ namespace Application.Calendar
 
     public class MyAddedEvent
     {
-        public string Id { get; set; }
+        /*        public string Id { get; set; }
+        */
         public string Summary { get; set; }
         public string Description { get; set; }
-        public string Location { get; set; }
+        /*        public string Location { get; set; }
+        */
+        public string TreeId { get; set; }
         public EventDateTime Start { get; set; }
         public EventDateTime End { get; set; }
         public List<User> Attendees { get; set; }
@@ -52,7 +55,6 @@ namespace Application.Calendar
     public class EventDateTime
     {
         public string DateTime { get; set; }
-        public string TimeZone { get; set; }
     }
 
     public class EventExtendedProperties
