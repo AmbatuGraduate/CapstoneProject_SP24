@@ -15,7 +15,7 @@ export const Login = () => {
 
   const handleSuccess = (response: any) => {
     const authCode = response.code;
-    fetch("http://vesinhdanang.xyz:7024/api/auth/google", {
+    fetch("http://vesinhdanang.xyz/api/auth/google", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
