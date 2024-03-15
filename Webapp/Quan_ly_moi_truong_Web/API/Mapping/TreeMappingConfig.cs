@@ -53,7 +53,8 @@ namespace API.Mapping
                 .Map(dest => dest.LeafLength, src => src.LeafLength)
                 .Map(dest => dest.CutTime, src => src.CutTime)
                 .Map(dest => dest.Cultivar, src => src.Cultivar)
-                .Map(dest => dest.isCut, src => src.isCut);
+                .Map(dest => dest.isCut, src => src.isCut)
+                .Map(dest => dest.isExist, src => src.isExist);
 
             config.NewConfig<TreeDetailResult, DetailTreeResponse>()
                 .Map(dest => dest.TreeCode, src => src.TreeCode)

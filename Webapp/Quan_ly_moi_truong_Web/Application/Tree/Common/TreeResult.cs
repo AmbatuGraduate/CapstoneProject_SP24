@@ -9,5 +9,6 @@ namespace Application.Tree.Common
     float BodyDiameter,
     float LeafLength,
     DateTime CutTime,
-    bool isCut);
+    bool isCut,
+    bool isExist);
 }
