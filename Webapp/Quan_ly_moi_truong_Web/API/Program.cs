@@ -31,12 +31,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     
 }
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
+
 app.UseSession();
 app.UseExceptionHandler("/error");
 app.UseCors("AllowAllHeaders");
 app.UseHttpsRedirection();
-
-
 
 app.UseAuthentication();
 app.UseAuthorization();
