@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '../shared/header';
 import TasksList from '../screens/tasks';
 import TaskDetails from '../screens/taskDetails';
+import { Image, View } from 'react-native';
 
 /*************************************************************
 **________________ TASK NAVIGATION OF APP __________________**
@@ -23,9 +24,25 @@ function TaskStackRouting() {
                         title: 'Chi tiết công việc',
                         headerTintColor: '#333',
                         headerStyle: {
-                            backgroundColor: '#cffdbc',
                             height: 60,
-                        }
+                        },
+                        headerBackground: () => (
+                            <React.Fragment>
+                                <Image
+                                    style={{ width: '100%', height: '100%', position: 'absolute' }}
+                                    source={require('../assets/game_bg.png')}
+                                />
+                                <View
+                                    style={{
+                                        backgroundColor: '#C5FCEA',
+                                        opacity: 0.6,
+                                        position: 'absolute',
+                                        width: '100%',
+                                        height: '100%',
+                                    }}
+                                />
+                            </React.Fragment>
+                        )
 
                     }
                 }></Stack.Screen>

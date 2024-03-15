@@ -2,9 +2,35 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
+import { LocaleConfig } from 'react-native-calendars';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// cau hinh tieng viet
+LocaleConfig.locales['vi'] = {
+    monthNames: [
+        'Tháng 1',
+        'Tháng 2',
+        'Tháng 3',
+        'Tháng 4',
+        'Tháng 5',
+        'Tháng 6',
+        'Tháng 7',
+        'Tháng 8',
+        'Tháng 9',
+        'Tháng 10',
+        'Tháng 11',
+        'Tháng 12'
+    ],
+    monthNamesShort: ['Tháng 1.', 'Tháng 2.', 'Tháng 3.', 'Tháng 4.', 'Tháng 5.', 'Tháng 6.', 'Tháng 7.', 'Tháng 8.', 'Tháng 9.', 'Tháng 10.', 'Tháng 11.', 'Tháng 12.'],
+    dayNames: ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+    dayNamesShort: ['CN.', 'T2.', 'T3.', 'T4.', 'T5.', 'T6.', 'T7.'],
+    today: "Hôm nay"
+};
+
+LocaleConfig.defaultLocale = 'vi';
 
 export default function TasksList({ navigation }) {
     const [events, setEvents] = useState([]);
@@ -15,13 +41,13 @@ export default function TasksList({ navigation }) {
     const [pressedDate, setPressedDate] = useState(null);
 
 
-    // local test: 'http://192.168.1.40:45456/api/Calendar/GetCalendarEvents/' + atoken
+    // local test: 'http://192.168.1.7:45455/api/Calendar/GetCalendarEvents/' + atoken
     // server: 'http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/GetCalendarEvents/' + atoken
     const getEvents = async () => {
         try {
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/GetCalendarEvents/' + atoken,
+                    fetch('http://vesinhdanang.xyz/api/Calendar/GetCalendarEvents/' + atoken,
                         {
                             method: 'GET',
                             headers: {
@@ -40,7 +66,7 @@ export default function TasksList({ navigation }) {
                                 // add extended properties in the event object
                                 const event = {
                                     ...item.myEvent,
-                                    extendedProperties: item.myEvent.extendedProperties || {},
+                                    extendedProperties: item.myEvent.extendedProperties,
                                 };
                                 return event;
                             });
@@ -62,8 +88,15 @@ export default function TasksList({ navigation }) {
 
     // Events list not change when add new data, only change if  reload
     useEffect(() => {
-        getEvents();
-    }, []);
+        const unsubscribe = navigation.addListener('focus', () => {
+            // The screen is focused
+            // Call any action
+            getEvents();
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
 
     useEffect(() => {
         if (Array.isArray(events)) {
@@ -99,55 +132,61 @@ export default function TasksList({ navigation }) {
         }
 
         return (
-            <FlatList
-                // The data prop is the array of tasks for the selected date.
-                data={items}
-                // The keyExtractor prop is a function that returns a unique identifier for each task.
-                keyExtractor={(item) => item.id.toString()}
-                // The renderItem prop is a function that returns a component for each task.
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        // Apply styles to the TouchableOpacity.
-                        style={styles.records}
-                        // When the TouchableOpacity is pressed, navigate to the 'TaskDetails' screen.
-                        onPress={() => {
-                            navigation.navigate('TaskDetails', {
-                                key: item.id,
-                                description: item.description,
-                                address: item.location,
-                                start: item.date,
-                                status: item.extendedProperties.privateProperties?.JobWorkingStatus,
-                                img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg'
-                            });
-                        }}
-                    >
-                        {/* <Text style={styles.itemText}>Loai Cay: {item.type}</Text>
+            <LinearGradient
+                colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+            >
+                <FlatList
+                    // The data prop is the array of tasks for the selected date.
+                    data={items}
+                    // The keyExtractor prop is a function that returns a unique identifier for each task.
+                    keyExtractor={(item) => item.id.toString()}
+                    // The renderItem prop is a function that returns a component for each task.
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            // Apply styles to the TouchableOpacity.
+                            style={[
+                                styles.records,
+                                item.extendedProperties.privateProperties?.JobWorkingStatus === 'Done' ? styles.doneBackground :
+                                    item.extendedProperties.privateProperties?.JobWorkingStatus === 'In Progress' ? styles.inProgressBackground :
+                                        (item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Start' || !item.extendedProperties.privateProperties?.JobWorkingStatus) ? styles.notStartBackground : null
+                            ]}
+                            // When the TouchableOpacity is pressed, navigate to the 'TaskDetails' screen.
+                            onPress={() => {
+                                navigation.navigate('TaskDetails', {
+                                    key: item.id,
+                                    description: item.description,
+                                    address: item.location,
+                                    start: item.date,
+                                    status: item.extendedProperties.privateProperties?.JobWorkingStatus || 'Not Started',
+                                    img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg'
+                                });
+                            }}
+                        >
+                            {/* <Text style={styles.itemText}>Loai Cay: {item.type}</Text>
                         <Text style={styles.itemText}>Dia chi: {item.street}</Text> */}
-                        <View style={styles.itemContainer}>
-                            <Text style={styles.itemLabel}>Nhiệm vụ:</Text>
-                            <Text style={styles.itemText}>{item.summary}</Text>
-                        </View>
-                        <View style={styles.itemContainer}>
-                            <Text style={styles.itemLabel}>Ngày:</Text>
-                            <Text style={styles.itemText}>{item.date}</Text>
-                        </View>
-                        <View style={styles.itemContainer}>
-                            <Text style={styles.itemLabel}>Giờ:</Text>
-                            <Text style={styles.itemText}>{item.time}</Text>
-                        </View>
-                        <View style={styles.itemContainer}>
-                            <Text style={styles.itemLabel}>Địa chỉ:</Text>
-                            <Text style={styles.itemText}>{item.location}</Text>
-                        </View>
-                        {item.extendedProperties.privateProperties?.JobWorkingStatus && (
                             <View style={styles.itemContainer}>
-                                <Text style={styles.itemLabel}>Trạng thái:</Text>
-                                <Text style={styles.itemText}>{item.extendedProperties.privateProperties.JobWorkingStatus}</Text>
+                                <Text style={styles.itemLabel}>{item.summary}</Text>
                             </View>
-                        )}
-                    </TouchableOpacity>
-                )}
-            />
+                            <View style={styles.itemContainer}>
+                                <Text style={styles.itemText}>{item.location}</Text>
+                            </View>
+                            <View style={styles.itemContainer}>
+                                {/* <Text style={styles.itemLabel}>Trạng thái:</Text> */}
+                                <Text style={[
+                                    styles.itemText,
+                                    item.extendedProperties.privateProperties?.JobWorkingStatus === 'In Progress' ? styles.strongBlue :
+                                        item.extendedProperties.privateProperties?.JobWorkingStatus === 'Done' ? styles.strongGreen :
+                                            (!item.extendedProperties.privateProperties?.JobWorkingStatus || item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Started') ? styles.strongRed : null
+                                ]}>
+                                    {item.extendedProperties.privateProperties?.JobWorkingStatus || 'Not Started'}
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
+            </LinearGradient>
         );
     };
     // handle day press
@@ -198,6 +237,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         flex: 1,
         borderRadius: 5,
+        borderWidth: 2,
+        borderColor: 'lightgray',
         padding: 10,
         marginHorizontal: 20,
         marginVertical: 10,
@@ -215,9 +256,10 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     itemLabel: {
-        fontSize: 16,
+        fontSize: 20,
+        fontFamily: 'nunito-regular',
         fontWeight: 'bold',
-        flex: 0.25,
+        letterSpacing: 1,
     },
     itemText: {
         fontSize: 16,
@@ -235,6 +277,29 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#999',
         textAlign: 'center',
+    },
+
+    // background color for different status
+    doneBackground: {
+        backgroundColor: '#E2FFE3',
+    },
+    inProgressBackground: {
+        backgroundColor: '#FDFA72',
+    },
+    notStartBackground: {
+        backgroundColor: '#FFD1DF', // light red
+    },
+    strongBlue: {
+        color: 'darkblue',
+        fontWeight: 'bold',
+    },
+    strongGreen: {
+        color: 'green',
+        fontWeight: 'bold',
+    },
+    strongRed: {
+        color: 'coral',
+        fontWeight: 'bold',
     },
 });
 
