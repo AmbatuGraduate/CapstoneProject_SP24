@@ -3,6 +3,8 @@ import { View, Text, Image, StyleSheet, Dimensions, TouchableHighlight, Touchabl
 import { MaterialIcons } from '@expo/vector-icons';
 import FlatButton from "../shared/button";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
+
 
 /*************************************************************
 **_________________ PROFILE SCREEN OF APP __________________**
@@ -24,7 +26,12 @@ export default function Profile({ navigation }) {
 
 
     return (
-        <View style={styles.container}>
+        <LinearGradient
+            colors={['rgba(255, 255, 255, 0.6)', 'rgba(197, 252, 234, 0.5)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            style={styles.container}
+        >
 
             {/* ------------------------------------------------------------------- */}
             {/* PROFILE PICTURE Container*/}
@@ -45,7 +52,6 @@ export default function Profile({ navigation }) {
 
             <View style={styles.nameContainer}>
                 <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{user?.name}</Text>
-                <Text style={{ fontSize: 16 }}>Ngu Hanh Son, Da Nang</Text>
             </View>
 
             {/* ------------------------------------------------------------------- */}
@@ -85,71 +91,83 @@ export default function Profile({ navigation }) {
             {/* ------------------------------------------------------------------- */}
             {/* Edit profile Container */}
             <FlatButton text='Chỉnh sửa' iconName="edit" onPress={() => { navigation.navigate('EditProfile') }}></FlatButton>
-        </View >
+        </LinearGradient>
     )
 }
+
+const colors = {
+    primary: '#98BD98',
+    secondary: '#d3d3d3',
+    text: '#777D7E',
+    background: 'white',
+};
+
+const spacing = {
+    small: 10,
+    medium: 20,
+    large: 30,
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
-        paddingVertical: 30,
+        backgroundColor: colors.background,
+        paddingVertical: spacing.large,
         justifyContent: 'space-between',
-        paddingHorizontal: 20,
+        paddingHorizontal: spacing.medium,
     },
     nameContainer: {
         alignItems: 'center',
-        marginBottom: 20,
+        marginBottom: spacing.medium,
     },
     imageContainer: {
         alignSelf: 'center',
         overflow: 'hidden',
-        shadowColor: "#333",
+        shadowColor: colors.secondary,
         shadowOffset: {
             width: 0,
-            height: 6,
+            height: spacing.small,
         },
         shadowOpacity: 0.37,
         shadowRadius: 7.49,
         elevation: 12,
-        backgroundColor: 'white',
+        backgroundColor: colors.background,
         width: Dimensions.get('window').width * 0.33,
         height: Dimensions.get('window').width * 0.33,
         borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-        marginBottom: 20,
+        marginBottom: spacing.medium,
     },
     img: {
         width: '100%',
         height: '100%',
     },
     icon: {
-        color: '#98BD98',
-        marginRight: 36,
-        marginLeft: 10
+        color: colors.primary,
+        marginRight: spacing.large,
+        marginLeft: spacing.small
     },
     iconBtn: {
-        color: '#98BD98',
+        color: colors.primary,
     },
-    // information
     infoContainer: {
-        marginTop: 20,
+        marginTop: spacing.medium,
     },
     infoSection: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        borderBottomColor: '#d3d3d3',
+        borderBottomColor: colors.secondary,
         borderBottomWidth: 1,
         paddingHorizontal: 0,
-        paddingVertical: 15,
+        paddingVertical: spacing.medium,
     },
     info: {
         flex: 1,
         fontSize: 16,
-        color: '#777D7E',
+        color: colors.text,
         fontFamily: 'nunito-regular',
-        flexWrap: 'nowrap', // Prevent text from wrapping
-        overflow: 'hidden', // Hide overflow text
-        width: '90%', // Set a specific width
+        flexWrap: 'nowrap',
+        overflow: 'hidden',
+        width: '90%',
     },
 });
