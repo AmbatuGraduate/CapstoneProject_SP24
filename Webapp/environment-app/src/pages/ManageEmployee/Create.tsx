@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Field, FormBase } from "../../components/FormBase";
+import { Field, FormBase } from "../../Components/FormBase";
 
 export const CreateCultivar = () => {
   const navigate = useNavigate();

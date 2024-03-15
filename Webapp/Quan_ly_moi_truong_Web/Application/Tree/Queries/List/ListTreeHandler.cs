@@ -29,7 +29,7 @@ namespace Application.Tree.Queries.List
             {
                 var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
                 var cultivar = cultivarRepository.GetCultivarById(tree.CultivarId).CultivarName;
-                var result = new TreeResult(tree.TreeCode, streetName, cultivar, tree.BodyDiameter, tree.LeafLength, tree.CutTime, tree.isCut);
+                var result = new TreeResult(tree.TreeCode, streetName, cultivar, tree.BodyDiameter, tree.LeafLength, tree.CutTime, tree.isCut, tree.isExist);
 
                 treeResults.Add(result);
             }

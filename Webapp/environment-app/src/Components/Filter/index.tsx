@@ -3,7 +3,7 @@ import "./style.scss";
 
 // Imported icon
 import { FiFilter } from "react-icons/fi";
-import React from "react";
+// import React from "react";
 
 export const Filter = () => {
   const [showFilter, setShowFilter] = useState(false);
