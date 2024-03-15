@@ -15,12 +15,14 @@ export const Login = () => {
 
   const handleSuccess = (response: any) => {
     const authCode = response.code;
-    fetch("https://localhost:7024/api/auth/google", {
+    fetch("http://vesinhdanang.xyz/api/auth/google", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true"
       },
+      credentials: "include",
       body: JSON.stringify({ AuthCode: authCode }),
     })
       .then((res) => {
@@ -47,35 +49,35 @@ export const Login = () => {
     flow: "auth-code",
   });
 
-  const getEvents = () => {
-    fetch(
-      "https://localhost:7024/api/ScheduleTreeTrim/GetCalendarEvents/" +
-        token.accessToken,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json(); // This returns a Promise
-        } else {
-          console.error("Failed to get events:", res.statusText);
-          // Handle authentication failure
-        }
-      })
-      .then((events) => {
-        // This block will be executed after the Promise resolves
-        console.log("Events:", events);
-        // Do something with the events
-      })
-      .catch((error) => {
-        console.log(error);
-        // Handle errors here
-      });
-  };
+  // const getEvents = () => {
+  //   fetch(
+  //     "https://localhost:7024/api/ScheduleTreeTrim/GetCalendarEvents/" +
+  //       token.accessToken,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     }
+  //   )
+  //     .then((res) => {
+  //       if (res.ok) {
+  //         return res.json(); // This returns a Promise
+  //       } else {
+  //         console.error("Failed to get events:", res.statusText);
+  //         // Handle authentication failure
+  //       }
+  //     })
+  //     .then((events) => {
+  //       // This block will be executed after the Promise resolves
+  //       console.log("Events:", events);
+  //       // Do something with the events
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       // Handle errors here
+  //     });
+  // };
 
   return (
     <div className="login-page">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { TREE_DETAIL, TREE_UPDATE, useApi } from "../../api";
-import { Field, FormBase } from "../../components/FormBase";
+import { TREE_DETAIL, TREE_UPDATE, useApi } from "../../Api";
+import { Field, FormBase } from "../../Components/FormBase";
 import { dayFormat } from "../../utils";
 
 export const UpdateTree = () => {

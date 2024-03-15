@@ -78,8 +78,6 @@ namespace Infrastructure
             // calendar service registration
             services.AddScoped<ITreeCalendarService, TreeCalendarService>();
 
-            services.AddScoped<AuthenticationService>();
-
             return services;
         }
 
@@ -154,8 +152,8 @@ namespace Infrastructure
                 })
                 .AddGoogle(options =>
                 {
-                    options.ClientId = configuration["Authentication:Google:ClientId"];
-                    options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+                    options.ClientId = googleApiSettings.ClientId;
+                    options.ClientSecret = googleApiSettings.ClientSecret;
                     options.Scope.Add("https://www.googleapis.com/auth/calendar");
                 });
 

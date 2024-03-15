@@ -1,5 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Layout } from "./components/Layout";
+import { Layout } from "./Components/Layout";
 import { Login } from "./pages/Login";
 import { Manage } from "./pages/Manage";
 import { ManageEmployee } from "./pages/ManageEmployee";
@@ -8,7 +8,7 @@ import { ManageTree } from "./pages/ManageTree";
 import { CreateTree } from "./pages/ManageTree/Create";
 import { DetailTree } from "./pages/ManageTree/Detail";
 import { UpdateTree } from "./pages/ManageTree/Update";
-import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
+// import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
 
 function App() {
   const router = createBrowserRouter([

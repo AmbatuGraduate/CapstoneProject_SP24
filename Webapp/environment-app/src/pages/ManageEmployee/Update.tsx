@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { CULTIVAR_DETAIL, useApi } from "../../api";
-import { Field, FormBase } from "../../components/FormBase";
+import { CULTIVAR_DETAIL, useApi } from "../../Api";
+import { Field, FormBase } from "../../Components/FormBase";
 
 type Input = {
   cultivarName?: string;

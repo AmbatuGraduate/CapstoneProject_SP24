@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useApi } from "../../api";
+import { useApi } from "../../Api";
 import { Filter } from "../Filter";
 import SearchBar from "../SearchBar";
 import Table, { Column } from "./Table";

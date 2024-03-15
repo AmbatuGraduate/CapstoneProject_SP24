@@ -17,6 +17,39 @@ import axios from 'axios';
 **                  CREATED BY: LE ANH QUAN                 **
 ***************************************************************/
 
+// Create an axios instance
+const api = axios.create();
+
+// Add a response interceptor
+api.interceptors.response.use(
+    response => response, // Simply return the response if it's successful
+    async error => {
+        const originalRequest = error.config;
+        // If the server responded with a 401 status (Unauthorized) and the request was not a token refresh, refresh the token
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            const refreshToken = await AsyncStorage.getItem("@refreshToken");
+            const response = await axios.get(`http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+            const newTokenData = response.data.value;
+            const loggedUser = await AsyncStorage.getItem("@user");
+            const userData = JSON.parse(loggedUser);
+            const updatedUser = {
+                ...userData,
+                token: newTokenData.token,
+                token_received_at: Date.now() / 1000,
+                expire_in: newTokenData.expire_in
+            };
+            await AsyncStorage.setItem("@user", JSON.stringify(updatedUser));
+            await AsyncStorage.setItem("@accessToken", newTokenData.token);
+            setUser(updatedUser);
+            // Update the token in the original request and retry it
+            originalRequest.headers['Authorization'] = 'Bearer ' + newTokenData.token;
+            return api(originalRequest);
+        }
+        return Promise.reject(error);
+    }
+);
+
 const Drawer = createDrawerNavigator();
 function Routes() {
 
@@ -59,7 +92,12 @@ function Routes() {
             if (Date.now() / 1000 >= expireTimestamp) {
                 // Token is expired, refresh it
                 const refreshToken = await AsyncStorage.getItem("@refreshToken");
-                const response = await axios.get(`http://vesinhdanang.xyz/AmbatuGraduate_API/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+
+                // local test: http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}
+                // server: 'https://192.168.1.7/api/auth/RefreshMobile?refreshToken=${refreshToken}'
+
+                // const response = await axios.get(`http://192.168.1.7:45455/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+                const response = await api.get(`http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
                 const newTokenData = response.data.value;
                 // Update the user data with the new token
                 const updatedUser = {
