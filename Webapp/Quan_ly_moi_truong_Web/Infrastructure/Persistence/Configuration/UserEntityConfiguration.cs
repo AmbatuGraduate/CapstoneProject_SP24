@@ -30,15 +30,6 @@ namespace Infrastructure.Persistence.Configuration
 
             builder.Property(user => user.UserCode)
                    .IsRequired();
-            builder.Property(user => user.Name)
-                   .HasMaxLength(50)
-                   .IsRequired();
-            builder.Property(user => user.Address)
-                   .HasMaxLength(50)
-                   .IsRequired();
-            builder.Property(user => user.PhoneNumber)
-                   .HasMaxLength(11)
-                   .IsRequired();
         }
     }
 }
