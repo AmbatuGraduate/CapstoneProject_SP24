@@ -1,11 +1,14 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.User.Common.Add;
+using Application.User.Common.Group;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
 using Domain.Entities.User;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Calendar.v3;
+using static System.Net.WebRequestMethods;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -56,10 +59,14 @@ namespace Infrastructure.Persistence.Repositories
         // get google users list
         public async Task<List<GoogleUser>> GetGoogleUsers(string accessToken)
         {
+            string[] Scopes = {
+                            DirectoryService.Scope.AdminDirectoryUserReadonly,
+                            DirectoryService.Scope.AdminDirectoryGroupReadonly
+                };
             List<GoogleUser> users = new List<GoogleUser>();
             try
             {
-                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
                 var service = _directoryServiceFactory(credential);
                 var request = service.Users.List();
                 request.Domain = "vesinhdanang.xyz";
@@ -75,6 +82,22 @@ namespace Infrastructure.Persistence.Repositories
                             Name = user.Name.FullName,
                             Picture = user.ThumbnailPhotoUrl
                         });
+                    }
+                }
+
+                foreach (var user in result.UsersValue)
+                {
+                    Console.WriteLine($"User: {user.PrimaryEmail}");
+
+                    // List groups for each user
+                    var groupsRequest = service.Members.List(user.Id);
+                    groupsRequest.IncludeDerivedMembership = true;
+                    var groups = groupsRequest.Execute().MembersValue;
+
+                    // Iterate through groups
+                    foreach (var group in groups)
+                    {
+                        Console.WriteLine($"   Group: {group.Email}");
                     }
                 }
             }
@@ -196,6 +219,36 @@ namespace Infrastructure.Persistence.Repositories
             {
                 // Handle exception
                 return $"Failed to get user ID: {e.Message}";
+            }
+        }
+
+        public async Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail)
+        {
+            try
+            {  
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+
+                // Retrieve the group
+                var request = service.Groups.Get(groupEmail);
+                var group = await request.ExecuteAsync();
+
+                var groupDto = new GroupResult
+                {
+                    Id = group.Id,
+                    Email = group.Email,
+                    Name = group.Name,
+                    Description = group.Description,
+                    AdminCreated = (bool)group.AdminCreated,
+                    DirectMembersCount = (long)group.DirectMembersCount
+                };
+
+                return groupDto;
+            }
+            catch (Exception e)
+            {
+                // Handle exception
+                throw;
             }
         }
     }
