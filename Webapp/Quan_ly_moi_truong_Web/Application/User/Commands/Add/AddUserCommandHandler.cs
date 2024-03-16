@@ -21,10 +21,10 @@ namespace Application.User.Commands.Add
             await Task.CompletedTask;
 
             // Check if user already exist
-            if (userRepository.GetUserByPhone(request.Phone) is not null)
-            {
-                return Domain.Common.Errors.Errors.User.DuplicateUser;
-            }
+            //if (userRepository.GetUserByPhone(request.Phone) is not null)
+            //{
+            //    return Domain.Common.Errors.Errors.User.DuplicateUser;
+            //}
 
             // Create user (generate unique id) & persist to DB
             Users user = new Users

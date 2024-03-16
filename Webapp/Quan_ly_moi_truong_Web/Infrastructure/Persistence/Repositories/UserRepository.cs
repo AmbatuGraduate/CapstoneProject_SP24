@@ -34,10 +34,10 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // get user by phone from db
-        public Domain.Entities.User.Users? GetUserByPhone(string phoneNumber)
-        {
-            return webDbContext.Users.SingleOrDefault(u => u.PhoneNumber == phoneNumber);
-        }
+        //public Domain.Entities.User.Users? GetUserByPhone(string phoneNumber)
+        //{
+        //    return webDbContext.Users.SingleOrDefault(u => u.PhoneNumber == phoneNumber);
+        //}
 
         // update user in db
         public void Update(Domain.Entities.User.Users user)
@@ -48,7 +48,7 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // get user by id from db
-        public Domain.Entities.User.Users GetById(Guid id)
+        public Domain.Entities.User.Users GetById(string id)
         {
             return webDbContext.Users.SingleOrDefault(u => u.Id == id);
         }

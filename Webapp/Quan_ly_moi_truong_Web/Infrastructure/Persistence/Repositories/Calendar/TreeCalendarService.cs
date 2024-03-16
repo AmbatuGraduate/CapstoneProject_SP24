@@ -197,7 +197,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     Attendees = (retrievenedEvent.Attendees != null) ? retrievenedEvent.Attendees
                             .Select(attendee => new UserResult(new Users
                             {
-                                Name = attendee.DisplayName,
+                                //Name = attendee.DisplayName,
                                 Email = attendee.Email,
                             }
                             ))
@@ -244,7 +244,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         Attendees = (returnEvent.Attendees != null) ? returnEvent.Attendees
                             .Select(attendee => new UserResult(new Users
                             {
-                                Name = attendee.DisplayName,
+                                //Name = attendee.DisplayName,
                                 Email = attendee.Email,
                             }
                             ))
@@ -293,7 +293,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         Attendees = (eventItem.Attendees != null) ? eventItem.Attendees
                             .Select(attendee => new UserResult(new Users
                             {
-                                Name = attendee.DisplayName,
+                                //Name = attendee.DisplayName,
                                 Email = attendee.Email,
                             }
                             ))

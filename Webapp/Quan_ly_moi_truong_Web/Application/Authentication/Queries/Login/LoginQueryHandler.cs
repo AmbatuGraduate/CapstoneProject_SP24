@@ -24,8 +24,8 @@ namespace Application.Authentication.Queries.Login
         {
             await Task.CompletedTask;
             // Check if user already exist
-            if (userRepository.GetUserByPhone(query.Phone) is not Users user)
-                return Errors.Authentication.InvalidCredentials;
+            //if (userRepository.GetUserByPhone(query.Phone) is not Users user)
+            //    return Errors.Authentication.InvalidCredentials;
 
             // Valid the password is correct
             //if (user.Password != query.Password)
