@@ -43,5 +43,5 @@ jobs:
           password: ${{secrets.AZURE_VM_PASSWORD}}
           port: 22
           source: "./Webapp/environment-app/dist/**"
-          target: C:\nginx\html
+          target: C:\inetpub\wwwroot\AmbatuGraduate\FE
           strip_components: 3
