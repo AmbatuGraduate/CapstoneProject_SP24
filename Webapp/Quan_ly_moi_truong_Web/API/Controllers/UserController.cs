@@ -1,9 +1,17 @@
 ﻿using Application.User.Commands.Add;
+using Application.User.Commands.AddToGoogle;
 using Application.User.Commands.Udpate;
 using Application.User.Commands.UpdateGoogle;
 using Application.User.Common;
+using Application.User.Common.Add;
+using Application.User.Common.Delele;
+using Application.User.Common.Group;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
+using Application.User.DeleteGoogle;
+using Application.User.Queries.GetByEmail;
+using Application.User.Queries.GetById;
+using Application.User.Queries.GetGroup;
 using Application.User.Queries.List;
 using Contract.User;
 using Contract.User.Google;
@@ -111,6 +119,21 @@ namespace API.Controllers
             return Ok(users);
         }
 
+        [HttpGet("Email")]
+        public async Task<IActionResult> GetGoogleUser(string accessToken, string email)
+        {
+            ErrorOr<GoogleUserRecord> userResult = await mediator.Send(new GetByEmailQuery(accessToken, email));
+
+            if (userResult.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: userResult.FirstError.Description);
+            }
+
+            var user = mapper.Map<GoogleUserResponse>(userResult.Value);
+
+            return Ok(user);
+        }
+
         // update google user
         [HttpPut("accessToken")]
         public async Task<IActionResult> UpdateGoogleUser(UpdateGoogleUserRequest request)
@@ -127,5 +150,50 @@ namespace API.Controllers
             // write code to return without mapping
             return Ok(updateResult.Value);
         }
+
+        [HttpDelete("accessToken")]
+        public async Task<IActionResult> DeleteGoogleUser(string accessToken, string userEmail)
+        {
+            ErrorOr<DeleteGoogleUserRecord> deleteResult = await mediator.Send(new DeleteGoogleCommand(accessToken, userEmail));
+
+            if (deleteResult.IsError && deleteResult.FirstError == Errors.UpdateGoogle.UpdateGoogleUserFail)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: deleteResult.FirstError.Description);
+            }
+
+            // write code to return without mapping
+            return Ok(deleteResult.Value);
+        }
+
+        [HttpPost("accessToken")]
+        public async Task<IActionResult> AddGoogleUser(AddGoogleUserRequest request)
+        {
+            var command = mapper.Map<AddToGoogleCommand>((request));
+
+            ErrorOr<AddGoogleUserRecord> addResult = await mediator.Send(command);
+
+            if (addResult.IsError && addResult.FirstError == Errors.UpdateGoogle.UpdateGoogleUserFail)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: addResult.FirstError.Description);
+            }
+
+            // write code to return without mapping
+            return Ok(addResult.Value);
+        }
+
+        [HttpGet("groupEmail")]
+        public async Task<IActionResult> GetGroupByGroupEmail(string accessToken, string groupEmail)
+        {
+            ErrorOr<GroupResult> groupResult = await mediator.Send(new GetGroupByGroupEmailQuery(accessToken, groupEmail));
+
+            if (groupResult.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
+            }
+
+            return Ok(groupResult);
+        }
+
+        
     }
 }

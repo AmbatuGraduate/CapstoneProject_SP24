@@ -1,11 +1,14 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.User.Common.Add;
+using Application.User.Common.Group;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
 using Domain.Entities.User;
+using Domain.Enums;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Calendar.v3;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -29,8 +32,14 @@ namespace Infrastructure.Persistence.Repositories
         // add user to db
         public void Add(Domain.Entities.User.Users user)
         {
-            webDbContext.Add(user);
+            webDbContext.Users.Add(user);
             webDbContext.SaveChanges();
+        }
+
+        public void Delete(string userEmail)
+        {
+            webDbContext.Users.Remove(GetByEmail(userEmail));
+            webDbContext.SaveChanges(); 
         }
 
         // get user by phone from db
@@ -51,6 +60,36 @@ namespace Infrastructure.Persistence.Repositories
         public Domain.Entities.User.Users GetById(string id)
         {
             return webDbContext.Users.SingleOrDefault(u => u.Id == id);
+        }
+
+        public Domain.Entities.User.Users GetByEmail(string email)
+        {
+            return webDbContext.Users.SingleOrDefault(u => u.Email == email);
+        }
+
+        public async Task<GoogleUser> GetGoogleUserByEmail(string accessToken, string userEmail)
+        {
+            GoogleUser userResult = null;
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+
+                var request = service.Users.Get(userEmail);
+                var user = await request.ExecuteAsync();
+                userResult = new GoogleUser
+                {
+                    Id = user.Id,
+                    Name = user.Name.FullName,
+                    Email = user.PrimaryEmail,
+                    Picture = user.ThumbnailPhotoUrl
+                };
+                return userResult;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         // get google users list
@@ -75,6 +114,22 @@ namespace Infrastructure.Persistence.Repositories
                             Name = user.Name.FullName,
                             Picture = user.ThumbnailPhotoUrl
                         });
+                    }
+                }
+
+                foreach (var user in result.UsersValue)
+                {
+                    Console.WriteLine($"User: {user.PrimaryEmail}");
+
+                    // List groups for each user
+                    var groupsRequest = service.Members.List(user.Id);
+                    groupsRequest.IncludeDerivedMembership = true;
+                    var groups = groupsRequest.Execute().MembersValue;
+
+                    // Iterate through groups
+                    foreach (var group in groups)
+                    {
+                        Console.WriteLine($"   Group: {group.Email}");
                     }
                 }
             }
@@ -111,10 +166,25 @@ namespace Infrastructure.Persistence.Repositories
                 var request = service.Users.Insert(googleUser);
                 var newUser = await request.ExecuteAsync();
 
+                var userDB = GetById(newUser.Id);
+
+                if (newUser != null && userDB == null)
+                {
+                    Domain.Entities.User.Users dbUser = new Domain.Entities.User.Users
+                    {
+                        Id = newUser.Id,
+                        UserCode = ConvertToUserCodeString(UserCode.EM_NHS_QD),
+                        Email = newUser.PrimaryEmail,
+                        RoleId = new Guid(ConvertToUserRoleId(UserRole.Employee)),
+                        DepartmentId = "03bj1y382j5l78b"
+                    };
+                    Add(dbUser);
+                }
+
                 AddGoogleUser addGoogleUser = new AddGoogleUser
                 {
                     Email = newUser.PrimaryEmail,
-                    Name = newUser.Name.FullName,
+                    Name = newUser.Name.GivenName + newUser.Name.FamilyName,
                     FamilyName = newUser.Name.FamilyName,
                     Password = user.Password
                 };
@@ -126,6 +196,24 @@ namespace Infrastructure.Persistence.Repositories
                 // Handle exception
                 throw;
             }
+        }
+
+        public string ConvertToUserCodeString(UserCode userCode)
+        {
+            return userCode switch
+            {
+                UserCode.EM_NHS_QD => "EM_NHS_QD"
+            };
+        }
+
+        public string ConvertToUserRoleId(UserRole role)
+        {
+            return role switch
+            {
+                UserRole.Employee => "8977EF77-E554-4EF3-8353-3E01161F84D0",
+                UserRole.Manager => "ABCCDE85-C7DC-4F78-9E4E-B1B3E7ABEE84",
+                UserRole.Leader => "CACD4B3A-8AFE-43E9-B757-F57F5C61F8D8"
+            };
         }
 
         // update google user
@@ -162,15 +250,43 @@ namespace Infrastructure.Persistence.Repositories
                 var request = service.Users.Update(currentUser, user_id);
                 var updatedUser = await request.ExecuteAsync();
 
-                UpdateGoogleUser addGoogleUser = new UpdateGoogleUser
+                var userDb = GetById(user_id);
+
+                if (updatedUser != null && userDb != null)
+                {
+                    userDb.Email = updatedUser.PrimaryEmail;
+                    Update(userDb);
+                }
+
+            UpdateGoogleUser addGoogleUser = new UpdateGoogleUser
                 {
                     Email = updatedUser.PrimaryEmail,
-                    Name = updatedUser.Name.FullName,
+                    Name = updatedUser.Name.GivenName + updatedUser.Name.FamilyName,
                     FamilyName = updatedUser.Name.FamilyName,
                     Password = updatedUser.Password
                 };
 
                 return addGoogleUser;
+            }
+            catch (Exception e)
+            {
+                // Handle exception
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteGoogleUser(string accessToken, string userEmail)
+        {
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+
+                var request = service.Users.Delete(userEmail);
+                var user = await request.ExecuteAsync();
+
+                Delete(userEmail);
+                return true;
             }
             catch (Exception e)
             {
@@ -196,6 +312,36 @@ namespace Infrastructure.Persistence.Repositories
             {
                 // Handle exception
                 return $"Failed to get user ID: {e.Message}";
+            }
+        }
+
+        public async Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail)
+        {
+            try
+            {  
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+
+                // Retrieve the group
+                var request = service.Groups.Get(groupEmail);
+                var group = await request.ExecuteAsync();
+
+                var groupDto = new GroupResult
+                {
+                    Id = group.Id,
+                    Email = group.Email,
+                    Name = group.Name,
+                    Description = group.Description,
+                    AdminCreated = (bool)group.AdminCreated,
+                    DirectMembersCount = (long)group.DirectMembersCount
+                };
+
+                return groupDto;
+            }
+            catch (Exception e)
+            {
+                // Handle exception
+                throw;
             }
         }
     }

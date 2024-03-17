@@ -30,6 +30,8 @@ namespace Infrastructure.Persistence.Configuration
 
             builder.Property(user => user.UserCode)
                    .IsRequired();
+
+            builder.Property(user => user.DepartmentId).IsRequired(false);
         }
     }
 }
