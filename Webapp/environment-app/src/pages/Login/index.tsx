@@ -47,6 +47,8 @@ export const Login = () => {
   const gglogin = useGoogleLogin({
     onSuccess: handleSuccess,
     flow: "auth-code",
+    scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/userinfo.profile openid profile email',
+
   });
 
   // const getEvents = () => {
