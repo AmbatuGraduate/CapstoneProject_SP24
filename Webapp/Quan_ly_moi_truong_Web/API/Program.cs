@@ -38,10 +38,12 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 });
 
-app.UseSession();
+
 app.UseExceptionHandler("/error");
 app.UseCors("AllowAllHeaders");
 app.UseHttpsRedirection();
+
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
