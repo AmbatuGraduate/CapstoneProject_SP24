@@ -7,7 +7,7 @@ namespace Domain.Entities.Deparment
     public class Departments
     {
         [DataMember]
-        public Guid DepartmentId { get; set; }
+        public string DepartmentId { get; set; }
 
         [DataMember]
         public string DepartmentName { get; set; }

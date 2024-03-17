@@ -23,6 +23,7 @@ namespace API.Mapping
                 .Map(dest => dest, src => src.user);
 
             config.NewConfig<GoogleUserRecord, GoogleUserResponse>()
+                .Map(dest => dest.Id, src => src.googleUser.Id)
                 .Map(dest => dest.Email, src => src.googleUser.Email)
                 .Map(dest => dest.Name, src => src.googleUser.Name)
                 .Map(dest => dest.Picture, src => src.googleUser.Picture);

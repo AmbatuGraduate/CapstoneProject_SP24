@@ -20,9 +20,13 @@ namespace Application.Common.Interfaces.Persistence
         
         Task<List<GoogleUser>> GetGoogleUsers(string accessToken);
 
+        Task<GoogleUser> GetGoogleUserByEmail(string accessToken, string email);
+
         Task<AddGoogleUser> AddGoogleUser(AddGoogleUser user);
 
         Task<UpdateGoogleUser> UpdateGoogleUser(UpdateGoogleUser user);
+
+        Task<bool> DeleteGoogleUser(string accessToken, string userEmail);
 
         Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail);
 
