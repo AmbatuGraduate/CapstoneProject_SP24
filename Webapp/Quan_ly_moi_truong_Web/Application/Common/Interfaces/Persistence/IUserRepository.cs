@@ -30,5 +30,7 @@ namespace Application.Common.Interfaces.Persistence
 
         Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail);
 
+        Task<List<GroupResult>> GetAllGoogleGroupByUserEmail(string accessToken, string userEmail);
+
     }
 }
