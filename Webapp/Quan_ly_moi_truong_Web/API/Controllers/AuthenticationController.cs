@@ -1,5 +1,4 @@
-﻿using Application.Authentication.Common;
-using Application.Authentication.Queries.Login;
+﻿
 using Contract.Authentication;
 using Contracts.Authentication;
 using Domain.Common.Errors;
@@ -13,10 +12,10 @@ using Infrastructure.Authentication;
 using Microsoft.Extensions.Options;
 using Application.Common.Interfaces.Authentication;
 using Application.GoogleAuthentication.Common;
-using Application.GoogleAuthentication.Queries.GoogleLogin;
 using Application.GoogleAuthentication.Queries.GoogleRefresh;
 using Microsoft.AspNetCore.Cors;
 using Application.GoogleAuthentication.Queries.GoogleRefreshMobile;
+using Application.GoogleAuthentication.Commands.GoogleLogin;
 
 namespace API.Controllers
 {
@@ -37,43 +36,22 @@ namespace API.Controllers
         private readonly IMediator mediator;
         private readonly IMapper mapper;
         //Chứa thông tin về google api
-        private readonly GoogleApiSettings googelApiSettings;
         private readonly ISessionService _sessionService;
 
 
 
-        public AuthenticationController(IMediator mediator, IMapper mapper, IOptions<GoogleApiSettings> googelApiSettings, ISessionService sessionService)
+        public AuthenticationController(IMediator mediator, IMapper mapper, ISessionService sessionService)
         {
             this.mediator = mediator;
             this.mapper = mapper;
-            this.googelApiSettings = googelApiSettings.Value;
             _sessionService = sessionService;
         }
-
-        // [HttpPost("login")]
-        // public async Task<IActionResult> Login(LoginRequest request)
-        // {
-        //     var query = mapper.Map<LoginQuery>(request);
-
-        //     ErrorOr<AuthenticationResult> authResult = await mediator.Send(query);
-
-        //     if (authResult.IsError
-        //         && authResult.FirstError == Errors.Authentication.InvalidCredentials)
-        //     {
-        //         return Problem(statusCode: StatusCodes.Status401Unauthorized, title: authResult.FirstError.Description);
-        //     }
-
-        //     return authResult.Match(
-        //             authResult => Ok(mapper.Map<AuthenticationResponse>(authResult)),
-        //             errors => Problem(errors)
-        //         );
-        // }
 
 
         [HttpPost("google")]
         public async Task<IActionResult> Google([FromBody] GoogleAuthRequest request)
         {
-            var query = mapper.Map<GoogleLoginQuery>(request);
+            var query = mapper.Map<GoogleLoginCommand>(request);
 
             ErrorOr<GoogleAuthenticationResult> authResult = await mediator.Send(query);
 
@@ -84,21 +62,12 @@ namespace API.Controllers
             Response.Cookies.Append("u_tkn", authResult.Value.token, new CookieOptions()
             {
                 IsEssential = true,
-                Expires = authResult.Value.expire_in.AddDays(1),
+                Expires = authResult.Value.expire_in.AddHours(1),
                 Secure = true,
                 HttpOnly = true,
                 SameSite = SameSiteMode.None
             });
 
-            //Refresh nên được set ở 1 nơi an toàn
-            Response.Cookies.Append("refresh_tkn", authResult.Value.refresh_tkn, new CookieOptions()
-            {
-                IsEssential = true,
-                Expires = authResult.Value.expire_in.AddMonths(6),
-                Secure = true,
-                HttpOnly = true,
-                SameSite = SameSiteMode.None
-            });
 
             return authResult.Match(
                     authResult => Ok(mapper.Map<AuthenticationResponse>(authResult)),
@@ -117,10 +86,9 @@ namespace API.Controllers
         [Authorize]
         public async Task<IActionResult> Refresh()
         {
-            var tokenAuth = Request.Cookies["u_tkn"];
-            var refresh_tkn = Request.Cookies["refresh_tkn"];
+            var token = Request.Cookies["u_tkn"];
 
-            var query = mapper.Map<GoogleRefreshQuery>((refresh_tkn, tokenAuth));
+            var query = mapper.Map<GoogleRefreshQuery>(token);
 
             ErrorOr<GoogleRefreshResult> authResult = await mediator.Send(query);
 
@@ -130,7 +98,7 @@ namespace API.Controllers
             Response.Cookies.Append("u_tkn", authResult.Value.token, new CookieOptions()
             {
                 IsEssential = true,
-                Expires = authResult.Value.expire_in.AddDays(1),
+                Expires = authResult.Value.expire_in.AddHours(1),
                 Secure = true,
                 HttpOnly = true,
                 SameSite = SameSiteMode.None

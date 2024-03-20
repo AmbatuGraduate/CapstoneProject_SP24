@@ -53,6 +53,7 @@ namespace Infrastructure
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
             services.AddScoped<IStreetRepository, StreetRepository>();
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
