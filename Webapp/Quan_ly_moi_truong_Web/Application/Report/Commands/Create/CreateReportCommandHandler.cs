@@ -2,6 +2,7 @@
 
 using Application.Common.Interfaces.Persistence;
 using Application.Report.Common;
+using Domain.Entities.Report;
 using ErrorOr;
 using MediatR;
 
@@ -28,7 +29,16 @@ namespace Application.Report.Commands.Create
                 ReportBody = request.ReportBody
             };
 
+            // add to google
             var reportResult = await reportRepository.CreateReport(createReport);
+
+            // add to db
+            reportRepository.AddReport(new Reports
+            {
+                ReportId = reportResult.Id,
+                IssuerGmail = request.IssuerEmail,
+            });
+
             return new ReportFormatRecord(reportResult);
         }
     }

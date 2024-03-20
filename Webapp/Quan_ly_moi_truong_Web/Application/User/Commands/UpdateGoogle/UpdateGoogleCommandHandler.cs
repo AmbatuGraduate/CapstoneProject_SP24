@@ -32,9 +32,11 @@ namespace Application.User.Commands.UpdateGoogle
 
             var userResult = await userRepository.UpdateGoogleUser(updateGoogleUser);
 
-            return new UpdateGoogleUserRecord(userResult);
+
             // add to db
             // ...
+
+            return new UpdateGoogleUserRecord(userResult);
         }
     }
 }
