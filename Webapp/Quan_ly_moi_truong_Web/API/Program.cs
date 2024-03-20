@@ -33,11 +33,6 @@ if (app.Environment.IsDevelopment())
     
 }
 
-app.UseForwardedHeaders(new ForwardedHeadersOptions
-{
-    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-});
-
 
 app.UseExceptionHandler("/error");
 app.UseCors("AllowAllHeaders");

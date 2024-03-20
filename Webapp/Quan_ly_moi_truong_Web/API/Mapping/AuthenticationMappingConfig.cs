@@ -1,6 +1,6 @@
-﻿using Application.Authentication.Queries.Login;
+﻿
+using Application.GoogleAuthentication.Commands.GoogleLogin;
 using Application.GoogleAuthentication.Common;
-using Application.GoogleAuthentication.Queries.GoogleLogin;
 using Application.GoogleAuthentication.Queries.GoogleRefresh;
 using Contract.Authentication;
 using Contracts.Authentication;
@@ -15,17 +15,13 @@ namespace API.Mapping
     {
         public void Register(TypeAdapterConfig config)
         {
-            config.NewConfig<LoginRequest, LoginQuery>();
 
-            config.NewConfig<GoogleAuthRequest, GoogleLoginQuery>()
+            config.NewConfig<GoogleAuthRequest, GoogleLoginCommand>()
                   .Map(dest => dest.authCode, src => src.AuthCode);
 
-            config.NewConfig<(string, string), GoogleRefreshQuery>()
-                  .MapWith(dest => new GoogleRefreshQuery(dest.Item1, dest.Item2));
+            config.NewConfig<string, GoogleRefreshQuery>()
+                  .Map(dest => dest.jwt, src => src);
 
-            //config.NewConfig<AuthenticationResult, AuthenticationResponse>()
-            //    .Map(dest => dest, src => src.User)
-            //    .Map(dest => dest.Phone, src => src.User.PhoneNumber);
 
             config.NewConfig<GoogleAuthenticationResult, AuthenticationResponse>()
                   .Map(dest => dest.Name, src => src.name)

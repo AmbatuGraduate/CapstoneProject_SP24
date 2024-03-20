@@ -78,12 +78,6 @@ namespace Infrastructure.Persistence
                         .HasForeignKey(e => e.DepartmentId)
                         .IsRequired();
 
-            //Relationship entity Users - Reports => 1 - n
-            modelBuilder.Entity<Users>()
-                        .HasMany(e => e.Reports)
-                        .WithOne(e => e.Users)
-                        .HasForeignKey(e => e.UserId)
-                        .IsRequired();
 
             //Relationship entity Users - UserRefreshTokens => 1 - n
             modelBuilder.Entity<Users>()

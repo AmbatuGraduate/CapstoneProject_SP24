@@ -1,5 +1,10 @@
-﻿using Domain.Entities.User;
+﻿using Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Domain.Entities.Report
 {
@@ -7,29 +12,12 @@ namespace Domain.Entities.Report
     public class Reports
     {
         [DataMember]
-        public Guid ReportId { get; set; }
+        public string ReportId { get; set; }
 
         [DataMember]
-        public string Title { get; set; }
+        public string IssuerGmail { get; set; }
 
         [DataMember]
-        public string Content { get; set; }
-
-        [DataMember]
-        public string Image { get; set; }
-
-        [DataMember]
-        public bool Status { get; set; }
-
-        [DataMember]
-        public string UserId { get; set; }
-
-        public virtual Users? Users { get; set; }
-
-        [DataMember]
-        public string Feedback { get; set; }
-
-        [DataMember]
-        public string FeedbackBy { get; set; }
+        public ReportStatus Status { get; set; }
     }
 }

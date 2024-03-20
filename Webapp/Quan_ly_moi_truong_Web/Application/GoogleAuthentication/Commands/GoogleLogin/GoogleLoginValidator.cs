@@ -1,8 +1,8 @@
 ﻿using FluentValidation;
 
-namespace Application.GoogleAuthentication.Queries.GoogleLogin
+namespace Application.GoogleAuthentication.Commands.GoogleLogin
 {
-    public class GoogleLoginValidator : AbstractValidator<GoogleLoginQuery>
+    public class GoogleLoginValidator : AbstractValidator<GoogleLoginCommand>
     {
         public GoogleLoginValidator()
         {

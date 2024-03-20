@@ -17,11 +17,13 @@ namespace API
             services.AddControllers();
             services.AddHttpClient();
             services.AddDistributedMemoryCache();
+
             services.AddSession(cfg =>
             {
                 cfg.Cookie.Name = "tokenv2";
-                cfg.IdleTimeout = new TimeSpan(0, 60, 0);
+                cfg.IdleTimeout = new TimeSpan(0, 60, 0) ;
             });
+
             services.AddSingleton<ProblemDetailsFactory, WebProblemDetailFactory>();
             services.AddCors(opt =>
             {

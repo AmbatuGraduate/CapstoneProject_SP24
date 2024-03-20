@@ -1,6 +1,11 @@
 ﻿using Domain.Entities.Report;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Configuration
 {
@@ -16,17 +21,9 @@ namespace Infrastructure.Persistence.Configuration
             builder.ToTable("Reports")
                    .HasKey(reports => reports.ReportId);
 
-            builder.Property(reports => reports.Title)
+            builder.Property(reports => reports.IssuerGmail)
                    .HasMaxLength(50)
                    .IsRequired();
-            builder.Property(reports => reports.Content)
-                   .HasMaxLength(50)
-                   .IsRequired();
-            builder.Property(report => report.Feedback)
-                   .IsRequired(false);
-            builder.Property(reports => reports.FeedbackBy)
-                   .HasMaxLength(50)
-                   .IsRequired(false);
         }
     }
 }

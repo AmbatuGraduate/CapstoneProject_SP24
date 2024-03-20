@@ -67,7 +67,8 @@ namespace API.Mapping
                 .Map(dest => dest.Note, src => src.Note);
 
 
-            config.NewConfig<AddTreeResult, AddTreeResponse>();
+            config.NewConfig<AddTreeResult, AddTreeResponse>()
+                  .Map(dest => dest.TreeCode, src => src.TreeCode);
         }
     }
 }

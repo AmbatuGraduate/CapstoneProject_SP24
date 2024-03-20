@@ -6,6 +6,7 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
     {
         public GoogleRefreshValidator()
         {
+            RuleFor(x => x.jwt).Null().Empty();
         }
     }
 }

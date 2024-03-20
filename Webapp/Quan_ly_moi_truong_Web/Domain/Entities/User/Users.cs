@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.Deparment;
-using Domain.Entities.Report;
 using Domain.Entities.Role;
 using Domain.Entities.UserRefreshToken;
 using Microsoft.AspNetCore.Identity;
@@ -29,8 +28,6 @@ namespace Domain.Entities.User
         public string? DepartmentId { get; set; }
 
         public virtual Departments? Departments { get; set; }
-
-        public ICollection<Reports>? Reports { get; set; }
         public ICollection<UserRefreshTokens>? UserRefreshTokens { get; set; }
     }
 }
