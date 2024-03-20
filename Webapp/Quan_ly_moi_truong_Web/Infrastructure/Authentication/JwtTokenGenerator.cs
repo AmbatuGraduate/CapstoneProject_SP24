@@ -33,12 +33,24 @@ namespace Infrastructure.Authentication
             return payload;
         }
 
+        public string DecodeTokenToGetAccessToken(string jwt)
+        {
+            var access_token = DecodeToken(jwt).Claims.First(claim => claim.Type == "atkn").Value;
+            return access_token;
+        }
+
+        public string DecodeTokenToGetUserId(string jwt)
+        {
+            var user_id = DecodeToken(jwt).Subject;
+            return user_id;
+        }
+
         /// <summary>
         /// Create a token for user when login or register
         /// </summary>
         /// <param name="user">The data of user login or register</param>
         /// <returns>String token</returns>
-        public string GenerateToken(string id,string access_token, DateTime expire)
+        public string GenerateToken(string id, string access_token, DateTime expire)
         {
             var signingCredential = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),

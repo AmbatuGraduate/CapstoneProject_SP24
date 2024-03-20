@@ -6,7 +6,7 @@ namespace Application.Tree.Commands.Add
 {
     public record AddTreeCommand(
         string TreeCode,
-        Guid StreetId,
+        string TreeLocation,
         float BodyDiameter,
         float LeafLength,
         DateTime PlantTime,

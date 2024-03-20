@@ -6,7 +6,7 @@ namespace Application.Tree.Commands.Update
 {
     public record UpdateTreeCommand(
         string TreeCode,
-        Guid StreetId,
+        string TreeLocation,
         float BodyDiameter,
         float LeafLength,
         DateTime PlantTime,

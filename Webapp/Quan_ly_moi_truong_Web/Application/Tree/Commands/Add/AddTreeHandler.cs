@@ -20,7 +20,7 @@ namespace Application.Tree.Commands.Add
         public async Task<ErrorOr<AddTreeResult>> Handle(AddTreeCommand request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
-            if(treeRepository.GetTreeByTreeCode(request.TreeCode) != null)
+            if (treeRepository.GetTreeByTreeCode(request.TreeCode) != null)
             {
                 return Errors.AddTree.DuplicateTreeCode;
             }
@@ -28,7 +28,8 @@ namespace Application.Tree.Commands.Add
             {
                 TreeId = Guid.NewGuid(),
                 TreeCode = request.TreeCode,
-                StreetId = request.StreetId,
+                //StreetId = request.StreetId,
+                TreeLocation = request.TreeLocation,
                 BodyDiameter = request.BodyDiameter,
                 LeafLength = request.LeafLength,
                 PlantTime = request.PlantTime,
