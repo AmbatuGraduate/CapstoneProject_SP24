@@ -1,6 +1,7 @@
 ﻿
 using Application.Common.Interfaces.Persistence;
 using Application.Report.Common;
+using Domain.Entities.Report;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Gmail.v1.Data;
@@ -14,12 +15,22 @@ namespace Infrastructure.Persistence.Repositories
     {
 
         private readonly Func<GoogleCredential, GmailService> _gmailServiceFactory;
+        private readonly WebDbContext context;
 
-        public ReportService(Func<GoogleCredential, GmailService> gmailServiceFactory)
+        public ReportService(Func<GoogleCredential, GmailService> gmailServiceFactory, WebDbContext webDbContext)
         {
             _gmailServiceFactory = gmailServiceFactory;
+            context = webDbContext;
         }
 
+        // add report to db
+        public void AddReport(Reports report)
+        {
+            context.Reports.Add(report);
+            context.SaveChanges();
+        }
+
+        // create report
         public async Task<ReportFormat> CreateReport(ReportFormat reportFormat)
         {
             try
@@ -38,11 +49,11 @@ namespace Infrastructure.Persistence.Repositories
                 {
                     From = new MailAddress(reportFormat.IssuerEmail),
                     Subject = $"[AmbatuReport] {reportFormat.ReportSubject} ({reportFormat.ReportStatus})",
-                    Body = emailBody.ToString()
+                    Body = reportFormat.ReportBody
                 };
                 email.To.Add("ambatuadmin@vesinhdanang.xyz");
                 ReportFormat r = await SendEmail(email, reportFormat.AccessToken);
-
+                r.IssuerEmail = reportFormat.IssuerEmail;
                 return r;
             }
             catch (Exception ex)
@@ -51,11 +62,33 @@ namespace Infrastructure.Persistence.Repositories
             }
         }
 
-        public Task<ReportFormat> GetReportById(string accessToken, string id)
+        // get report by id
+        public async Task<ReportFormat> GetReportById(string accessToken, string id)
         {
-            throw new NotImplementedException();
+            var credential = GoogleCredential.FromAccessToken(accessToken);
+            var service = _gmailServiceFactory(credential);
+
+            // get email details
+            var request = service.Users.Messages.Get("me", id);
+            var response = await request.ExecuteAsync();
+            var reportFormat = new ReportFormat
+            {
+                Id = response.Id,
+
+                IssuerEmail = response.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
+                ReportSubject = response.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
+                ReportBody = response.Snippet,
+            };
+            return reportFormat;
         }
 
+        // get all reports id from db
+        public List<Reports> GetAllReports()
+        {
+            return context.Reports.ToList();
+        }
+
+        // get all report 
         public async Task<List<ReportFormat>> GetReportFormats(string accessToken)
         {
             var credential = GoogleCredential.FromAccessToken(accessToken);
@@ -63,7 +96,6 @@ namespace Infrastructure.Persistence.Repositories
 
             // Create a request to get report (subject)
             var request = service.Users.Messages.List("me");
-            request.Q = "subject:AmbatuReport";
 
             // get the response
             var response = await request.ExecuteAsync();
@@ -72,27 +104,44 @@ namespace Infrastructure.Persistence.Repositories
 
             foreach (var message in response.Messages)
             {
-                // Get the details of the message
-                var messageRequest = service.Users.Messages.Get("me", message.Id);
-                var messageDetail = await messageRequest.ExecuteAsync();
-
-                var reportFormat = new ReportFormat
+                // check if report id is in db
+                if (ReportExist(message.Id))
                 {
-                    Id = messageDetail.Id,
-                    IssuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
-                    ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
-                    ReportBody = messageDetail.Snippet,
-                };
+                    // Get the details of the message
+                    var messageRequest = service.Users.Messages.Get("me", message.Id);
+                    var messageDetail = await messageRequest.ExecuteAsync();
 
-                reportFormats.Add(reportFormat);
+                    var reportFormat = new ReportFormat
+                    {
+                        Id = messageDetail.Id,
+                        IssuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
+                        ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
+                        ReportBody = messageDetail.Snippet,
+                    };
+
+                    reportFormats.Add(reportFormat);
+                }
             }
 
             return reportFormats;
         }
 
-        public Task<List<ReportFormat>> GetReportsByUser(string accessToken, string gmail)
+        public async Task<List<ReportFormat>> GetReportsByUser(string accessToken, string gmail)
         {
-            throw new NotImplementedException();
+/*            // get all reports by user email from db
+            var credential = GoogleCredential.FromAccessToken(accessToken);
+            var service = _gmailServiceFactory(credential);*/
+
+            List<Reports> list = GetReportsByUser(gmail);
+            var reportFormats = new List<ReportFormat>();
+
+            foreach (var report in list)
+            {
+                var reportFormat = await GetReportById(accessToken, report.ReportId);
+
+                reportFormats.Add(reportFormat);
+            }
+            return await Task.FromResult(reportFormats);
         }
 
         public Task<ReportFormat> ReponseReport(ReportFormat reportFormat)
@@ -119,14 +168,30 @@ namespace Infrastructure.Persistence.Repositories
                 var message = new Message { Raw = raw };
 
                 var request = service.Users.Messages.Send(message, "me");
-                await request.ExecuteAsync();
+                var response = await request.ExecuteAsync();
+                ReportFormat returnId = new ReportFormat
+                {
+                    Id = response.Id
+                };
 
-                return new ReportFormat();
+                return returnId;
             }
             catch (Exception ex)
             {
                 throw;
             }
+        }
+
+        // check if report exist in db
+        private bool ReportExist(string id)
+        {
+            return context.Reports.Any(e => e.ReportId == id);
+        }
+        
+        // get all reports by user email from db
+        private List<Reports> GetReportsByUser(string gmail)
+        {
+            return context.Reports.Where(e => e.IssuerGmail == gmail).ToList();
         }
     }
 }

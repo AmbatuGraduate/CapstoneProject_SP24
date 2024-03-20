@@ -1,7 +1,10 @@
 ﻿
 using Application.Common.Interfaces.Persistence;
 using Application.Report.Commands.Create;
+using Application.Report.Queries.GetById;
 using Application.Report.Queries.List;
+using Application.Report.Queries.ListByUser;
+using Application.Report.Queries.ListFromDb;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -29,6 +32,7 @@ namespace API.Controllers
             _reportService = reportService;
         }
 
+        // create, send & save report
         [HttpPost]
         public async Task<IActionResult> CreateReport([FromBody] CreateReportCommand command)
         {
@@ -41,6 +45,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        // get all emails from google
         [HttpGet]
         public async Task<IActionResult> GetReportFormats(string accessToken)
         {
@@ -53,16 +58,42 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        // get report by id
         [HttpGet]
         public async Task<IActionResult> GetReportById(string accessToken, string id)
         {
-            var result = await _reportService.GetReportById(accessToken, id);
-            if (result == null)
+            var result = await mediator.Send(new GetByIdQuery(accessToken, id));
+            if (result.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "Report not found");
             }
 
             return Ok(result);
         }
+
+        // get all reports from db
+        [HttpGet]
+        public IActionResult GetAllReports()
+        {
+            var result = mediator.Send(new ListFromDbQuery());
+            if (result == null)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
+            }
+            return Ok(result);
+        }
+
+        // get reports by user
+        [HttpGet]
+        public async Task<IActionResult> GetReportsByUser(string accessToken, string email)
+        {
+            var result = await mediator.Send(new ListByEmailQuery(accessToken, email));
+            if (result.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
+            }
+            return Ok(result);
+        }
+
     }
 }

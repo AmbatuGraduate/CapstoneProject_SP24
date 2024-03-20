@@ -4,12 +4,10 @@ using Application.User.Common.Group;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
 using Domain.Entities.Deparment;
-using Domain.Entities.User;
 using Domain.Enums;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
-using Google.Apis.Calendar.v3;
 
 namespace Infrastructure.Persistence.Repositories
 {
