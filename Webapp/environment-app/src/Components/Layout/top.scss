@@ -16,27 +16,6 @@
       }
     }
 
-    // .searchBar {
-    //     padding: 1rem 2rem;
-    //     background: var(--whiteColor);
-    //     border-radius: 5px;
-    //     gap: 1rem;
-    //     box-shadow: 0 2px 4px var(--inputColor);
-
-    //     input {
-    //         border: none;
-    //         outline: none;
-    //         background: none;
-    //     }
-
-    //     .icon {
-    //         color: var(--textColor);
-    //         &:hover {
-    //             color: var(--PrimanyColor);
-    //         }
-    //     }
-    // }
-
     .adminDiv {
       gap: 1rem;
 
@@ -50,22 +29,49 @@
       }
 
       .adminImage {
+        display: inline-block;
         border: 3px solid var(--whiteColor);
         border-radius: 10px;
         width: 2.5rem;
         overflow: hidden;
         box-shadow: 0 2px 4px var(--inputColor);
 
-        button {
+        .dropbtn {
           border: none;
           outline: none;
           background: none;
+          cursor: pointer;
         }
 
         img {
           width: 100%;
           height: 100%;
           border-radius: 10px;
+        }
+
+        .dropdown-menu {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          background-color: var(--whiteColor);
+          padding: 0.25rem;
+          right: 2rem;
+          top: 6.5rem;
+          border: none;
+          box-shadow: 0 2px 4px var(--inputColor);
+
+          button {
+            border: none;
+            background-color: var(--whiteColor);
+            font-size: var(--normalFontSize);
+            padding: 0.25rem;
+          }
+          button:hover {
+            color: var(--PrimaryColor);
+          }
+          .menuLine {
+            margin: 0;
+          }
         }
       }
     }

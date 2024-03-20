@@ -6,7 +6,6 @@ import { FaTreeCity } from "react-icons/fa6";
 import { GiTreeBranch } from "react-icons/gi";
 import { GrUserManager } from "react-icons/gr";
 import { LuTrees } from "react-icons/lu";
-import { MdOutlineMap } from "react-icons/md";
 import { PiTrashSimpleBold } from "react-icons/pi";
 import { TbLayoutDashboard } from "react-icons/tb";
 
@@ -22,12 +21,6 @@ const Sidebar = () => {
       <hr className="line" />
       <div className="menuDiv p-0">
         <ul className="menuLists grid">
-          {/* <li className="listItem">
-            <NavLink to="/login" className="menuLink flex">
-              <TbLayoutDashboard className="icon" />
-              <span className="smallText d-none d-md-inline ">Log in</span>
-            </NavLink>
-          </li> */}
 
           <li className="listItem">
             <NavLink to="/" className="menuLink flex">
@@ -57,16 +50,7 @@ const Sidebar = () => {
           </li>
 
           <li className="listItem">
-            <NavLink to="/manage-route" className="menuLink flex">
-              <MdOutlineMap className="icon" />
-              <span className="smallText d-none d-md-inline">
-                Quản lý tuyến đường
-              </span>
-            </NavLink>
-          </li>
-
-          <li className="listItem">
-            <NavLink to="/" className="menuLink flex">
+            <NavLink to="/manage-treetrim-schedule" className="menuLink flex">
               <GiTreeBranch className="icon" />
               <span className="smallText d-none d-md-inline">
                 Quản lý lịch cắt tỉa

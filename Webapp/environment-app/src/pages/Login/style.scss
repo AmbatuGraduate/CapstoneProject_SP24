@@ -6,13 +6,13 @@
     .container {
         padding: 0;
         overflow: hidden;
-        width: 900px;
-        height: 600px;
+        width: 800px;
+        height: 500px;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        border-radius: 20px;
+        border-radius: 2rem;
         background-color: white;
         display: flex;
 
@@ -38,16 +38,15 @@
             justify-content: center;
             align-items: center;
 
-            h6 {
+            h1 {
                 font-weight: bold;
-                font-size: 32px;
-                padding-bottom: 20px;
+                padding-bottom: 2rem;
             }
 
             button {
                 background-color: white;
                 color: var(--PrimanyColor);
-                border-radius: 10px;
+                border-radius: 1rem;
                 width: 80%;
                 height: 50px;
                 font-size: var(--h2FontSize);

@@ -19,6 +19,9 @@
             min-width: 3rem;
         }
     }
+    .line {
+        margin: 1rem;
+    }
     .menuDiv,
     .settingDiv {
         .menuLists {
@@ -37,7 +40,7 @@
                     bottom: 0;
                     border-top-right-radius: 10px;
                     border-bottom-right-radius: 10px;
-                    background: var(--PrimanyColor);
+                    background: var(--PrimaryColor);
                 }
 
                 .menuLink {
@@ -51,7 +54,7 @@
                 }
 
                 &:hover .menuLink {
-                    color: var(--PrimanyColor);
+                    color: var(--PrimaryColor);
                     transition: 0;
                 }
 
@@ -60,9 +63,6 @@
                     transition: 0.3s ease;
                 }
 
-                // &:active .menuLink {
-                //     color: var(--blackColor);
-                // }
                 .active {
                     color: var(--blackColor);
                     font-weight: 700;
@@ -120,7 +120,7 @@
             }
             .btn:hover {
                 background: var(--paleGreen);
-                color: var(--PrimanyColor);
+                color: var(--PrimaryColor);
             }
 
             .circle1,
