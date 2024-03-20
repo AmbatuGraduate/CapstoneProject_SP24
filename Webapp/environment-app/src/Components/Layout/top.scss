@@ -54,7 +54,8 @@
           flex-direction: column;
           position: absolute;
           background-color: var(--whiteColor);
-          padding: 0.25rem;
+          padding: 0;
+          min-width: auto;
           right: 2rem;
           top: 6.5rem;
           border: none;
@@ -64,10 +65,23 @@
             border: none;
             background-color: var(--whiteColor);
             font-size: var(--normalFontSize);
-            padding: 0.25rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+
+            h6 {
+              font-size: var(--h3FontSize);
+              margin: 0;
+              padding-left: 0.5rem;
+            }
+
+            .dropIcon {
+              font-size: var(--h1FontSize);
+            }
           }
           button:hover {
+            background-color: var(--paleGreen);
             color: var(--PrimaryColor);
+            border: var(--paleGreen);
           }
           .menuLine {
             margin: 0;

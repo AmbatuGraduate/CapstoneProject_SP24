@@ -4,6 +4,8 @@ import "./top.scss";
 // imported Icon
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useCookies } from "react-cookie";
+import { ImProfile } from "react-icons/im";
+import { MdLogout } from "react-icons/md";
 
 const Top = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,9 +56,9 @@ const Top = () => {
             </button>
             {isOpen && (
               <div className="dropdown-menu">
-                <button>Thông tin cá nhân</button>
+                <button className="flex"><ImProfile className="dropIcon" /> <h6>Hồ sơ</h6></button>
                 <hr className="menuLine" />
-                <button onClick={LogOut}>Đăng xuất</button>
+                <button className="flex" onClick={LogOut}><MdLogout className="dropIcon" /> <h6>Đăng xuất</h6></button>
               </div>
             )}
           </div>
