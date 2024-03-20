@@ -17,6 +17,8 @@ namespace Infrastructure.Authentication
         private string clientSecret;
         private readonly string[] scopes = { "https://www.googleapis.com/auth/calendar" ,
             "https://www.googleapis.com/auth/admin.directory.group",
+            "https://www.googleapis.com/auth/admin.directory.group.member",
+            "https://www.googleapis.com/auth/admin.directory.group.member.readonly",
                                           "https://www.googleapis.com/auth/userinfo.email",
                                           "https://www.googleapis.com/auth/admin.directory.user",
                                           "https://www.googleapis.com/auth/userinfo.profile",

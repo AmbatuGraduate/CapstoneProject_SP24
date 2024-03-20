@@ -72,11 +72,11 @@ namespace Infrastructure.Persistence
                         .IsRequired();
 
             //Relationship entity Departments - Users =>  1- n
-            modelBuilder.Entity<Departments>()
-                        .HasMany(e => e.Users)
-                        .WithOne(e => e.Departments)
-                        .HasForeignKey(e => e.DepartmentId)
-                        .IsRequired();
+            //modelBuilder.Entity<Departments>()
+                       // .HasMany(e => e.Users)
+                       // .WithOne(e => e.Departments)
+                       // .HasForeignKey(e => e.DepartmentId)
+                       // .IsRequired();
 
 
             //Relationship entity Users - UserRefreshTokens => 1 - n

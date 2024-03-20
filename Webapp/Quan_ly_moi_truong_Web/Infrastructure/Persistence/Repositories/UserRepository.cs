@@ -3,6 +3,7 @@ using Application.User.Common.Add;
 using Application.User.Common.Group;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
+using Domain.Entities.Deparment;
 using Domain.Entities.User;
 using Domain.Enums;
 using Google.Apis.Admin.Directory.directory_v1;
@@ -27,6 +28,11 @@ namespace Infrastructure.Persistence.Repositories
         public List<Domain.Entities.User.Users> GetAll()
         {
             return webDbContext.Users.ToList();
+        }
+
+        public List<Departments> GetAllGroups()
+        {
+            return webDbContext.Departments.ToList();
         }
 
         // add user to db
@@ -114,22 +120,6 @@ namespace Infrastructure.Persistence.Repositories
                             Name = user.Name.FullName,
                             Picture = user.ThumbnailPhotoUrl
                         });
-                    }
-                }
-
-                foreach (var user in result.UsersValue)
-                {
-                    Console.WriteLine($"User: {user.PrimaryEmail}");
-
-                    // List groups for each user
-                    var groupsRequest = service.Members.List(user.Id);
-                    groupsRequest.IncludeDerivedMembership = true;
-                    var groups = groupsRequest.Execute().MembersValue;
-
-                    // Iterate through groups
-                    foreach (var group in groups)
-                    {
-                        Console.WriteLine($"   Group: {group.Email}");
                     }
                 }
             }
@@ -337,6 +327,48 @@ namespace Infrastructure.Persistence.Repositories
                 };
 
                 return groupDto;
+            }
+            catch (Exception e)
+            {
+                // Handle exception
+                throw;
+            }
+        }
+
+        public async Task<List<GroupResult>> GetAllGoogleGroupByUserEmail(string accessToken, string userEmail)
+        {
+            var groupResult = new List<GroupResult>();  
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+                var dbGroups = GetAllGroups();
+
+                foreach(var group in dbGroups)
+                {
+                    try
+                    {
+                        var memberRequest = service.Members.Get(group.DepartmentEmail, userEmail);
+                        var member = memberRequest.Execute();
+                        if(member != null)
+                        {
+                            groupResult.Add(new GroupResult
+                            {
+                                Id = member.Id,
+                                Email = member.Email,
+                                Name = group.DepartmentName,
+                                Description = group.Description,
+                                AdminCreated = group.AdminCreated,
+                                DirectMembersCount= (long)group.DirectMembersCount
+                            });
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"An error occurred: {e.Message}");
+                    }
+                }
+                return groupResult;
             }
             catch (Exception e)
             {

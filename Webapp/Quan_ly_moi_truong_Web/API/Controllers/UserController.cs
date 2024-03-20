@@ -9,6 +9,7 @@ using Application.User.Common.Group;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
 using Application.User.DeleteGoogle;
+using Application.User.Queries.GetAllGroupsByUserEmail;
 using Application.User.Queries.GetByEmail;
 using Application.User.Queries.GetById;
 using Application.User.Queries.GetGroup;
@@ -181,7 +182,7 @@ namespace API.Controllers
             return Ok(addResult.Value);
         }
 
-        [HttpGet("groupEmail")]
+        [HttpGet(nameof(GetGroupByGroupEmail))]
         public async Task<IActionResult> GetGroupByGroupEmail(string accessToken, string groupEmail)
         {
             ErrorOr<GroupResult> groupResult = await mediator.Send(new GetGroupByGroupEmailQuery(accessToken, groupEmail));
@@ -194,6 +195,17 @@ namespace API.Controllers
             return Ok(groupResult);
         }
 
-        
+        [HttpGet(nameof(GetAllGroupsByUserEmail))]
+        public async Task<IActionResult> GetAllGroupsByUserEmail(string accessToken, string userEmail)
+        {
+            ErrorOr<List<GroupResult>> groupResult = await mediator.Send(new GetAllGroupsByUserEmailQuery(accessToken, userEmail));
+
+            if (groupResult.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
+            }
+
+            return Ok(groupResult);
+        }
     }
 }
