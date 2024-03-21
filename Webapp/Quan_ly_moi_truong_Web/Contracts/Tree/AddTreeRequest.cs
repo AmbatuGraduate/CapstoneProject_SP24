@@ -3,7 +3,8 @@
     public record AddTreeRequest
     (
         string TreeCode,
-        Guid StreetId,
+        string TreeLocation,
+        //Guid StreetId,
         float BodyDiameter,
         float LeafLength,
         DateTime PlantTime,

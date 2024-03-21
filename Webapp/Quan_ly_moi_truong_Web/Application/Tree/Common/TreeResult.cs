@@ -1,6 +1,4 @@
-﻿using Domain.Entities.Tree;
-
-namespace Application.Tree.Common
+﻿namespace Application.Tree.Common
 {
     public record TreeResult(
     string TreeCode,

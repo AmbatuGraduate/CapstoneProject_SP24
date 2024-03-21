@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Contract.Cultivar
+﻿namespace Contract.Cultivar
 {
     public record ListCultivarRepsone
     (
+        Guid CultivarId,
         string CultivarName,
         Guid TreeTypeId
     );

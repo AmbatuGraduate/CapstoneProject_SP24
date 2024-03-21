@@ -1,10 +1,9 @@
-﻿
-namespace Contract.Tree
+﻿namespace Contract.Tree
 
 {
     public record UpdateTreeRequest
     (
-        Guid StreetId,
+        string TreeLocation,
         float BodyDiameter,
         float LeafLength,
         DateTime PlantTime,

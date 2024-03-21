@@ -1,6 +1,7 @@
 using API;
 using Application;
 using Infrastructure;
+using Infrastructure.Persistence.Repositories.Notification;
 using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,15 +34,21 @@ if (app.Environment.IsDevelopment())
     
 }
 
-
 app.UseExceptionHandler("/error");
 app.UseCors("AllowAllHeaders");
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<NotifyHub>("/chatHub");
+});
 
 app.MapControllers();
 

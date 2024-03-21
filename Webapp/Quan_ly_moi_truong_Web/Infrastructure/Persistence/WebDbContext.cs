@@ -72,12 +72,11 @@ namespace Infrastructure.Persistence
                         .IsRequired();
 
             //Relationship entity Departments - Users =>  1- n
-            //modelBuilder.Entity<Departments>()
-                       // .HasMany(e => e.Users)
-                       // .WithOne(e => e.Departments)
-                       // .HasForeignKey(e => e.DepartmentId)
-                       // .IsRequired();
-
+            modelBuilder.Entity<Departments>()
+                        .HasMany(e => e.Users)
+                        .WithOne(e => e.Departments)
+                        .HasForeignKey(e => e.DepartmentId)
+                        .IsRequired();
 
             //Relationship entity Users - UserRefreshTokens => 1 - n
             modelBuilder.Entity<Users>()
@@ -100,12 +99,12 @@ namespace Infrastructure.Persistence
                         .HasForeignKey(e => e.CultivarId)
                         .IsRequired();
 
-            //Relationship entity Trees - Streets => n - 1
-            modelBuilder.Entity<Trees>()
-                        .HasOne(e => e.Streets)
-                        .WithMany(e => e.Trees)
-                        .HasForeignKey(e => e.StreetId)
-                        .IsRequired();
+            ////Relationship entity Trees - Streets => n - 1
+            //modelBuilder.Entity<Trees>()
+            //            .HasOne(e => e.Streets)
+            //            .WithMany(e => e.Trees)
+            //            .HasForeignKey(e => e.StreetId)
+            //            .IsRequired();
 
             //Relationship entity Streets - StreetType => n - 1
             modelBuilder.Entity<Streets>()

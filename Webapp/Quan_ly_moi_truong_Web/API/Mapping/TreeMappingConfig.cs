@@ -29,7 +29,7 @@ namespace API.Mapping
             config.NewConfig<(string, UpdateTreeRequest), UpdateTreeCommand>()
                 .MapWith(dest => new UpdateTreeCommand(
                     dest.Item1,
-                    dest.Item2.StreetId, dest.Item2.BodyDiameter,
+                    dest.Item2.TreeLocation, dest.Item2.BodyDiameter,
                     dest.Item2.LeafLength, dest.Item2.PlantTime,
                     dest.Item2.IntervalCutTime, dest.Item2.CultivarId,
                     dest.Item2.Note, dest.Item2.UpdateBy,
@@ -65,7 +65,6 @@ namespace API.Mapping
                 .Map(dest => dest.CutTime, src => src.CutTime)
                 .Map(dest => dest.Cultivar, src => src.Cultivar)
                 .Map(dest => dest.Note, src => src.Note);
-
 
             config.NewConfig<AddTreeResult, AddTreeResponse>()
                   .Map(dest => dest.TreeCode, src => src.TreeCode);

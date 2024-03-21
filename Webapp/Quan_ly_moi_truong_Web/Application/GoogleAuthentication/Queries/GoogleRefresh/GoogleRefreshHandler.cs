@@ -5,8 +5,6 @@ using Domain.Common.Errors;
 using ErrorOr;
 using Google.Apis.Auth;
 using MediatR;
-using Newtonsoft.Json;
-using System.Xml.Linq;
 
 namespace Application.GoogleAuthentication.Queries.GoogleRefresh
 {
@@ -31,7 +29,8 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
             //Check jwt is not null
             if (request.jwt != null)
             {
-                var userId = jwtTokenGenerator.DecodeToken(request.jwt).Subject;
+                var userId = jwtTokenGenerator.DecodeTokenToGetUserId(request.jwt);
+                var jwt_expire = jwtTokenGenerator.DecodeToken(request.jwt).Claims.First(claim => claim.Type == "exp").Value;
                 var refresh_tkn = userRefreshTokenRepository.GetRefreshRokenByUserId(userId);
 
                 //Check refresh token is exist or not
@@ -39,18 +38,21 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
                 {
                     if (DateTime.Now.CompareTo(new DateTime(refresh_tkn.Expire)) <= 0)
                     {
-                        System.Diagnostics.Debug.WriteLine("REFRESH : " + "NEW TOKEN");
+                        if (DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwt_expire)).LocalDateTime.CompareTo(DateTime.UtcNow) > 0)
+                        {
+                            System.Diagnostics.Debug.WriteLine("REFRESH : " + "NEW TOKEN");
 
-                        var tokenData = await authenticationService.RefreshTokenWithGoogle(refresh_tkn.RefreshToken);
+                            var tokenData = await authenticationService.RefreshTokenWithGoogle(refresh_tkn.RefreshToken);
 
-                        // get new payload
-                        GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(tokenData.id_token);
+                            // get new payload
+                            GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(tokenData.id_token);
 
-                        //generate new jwt token authen
-                        DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
-                        var token = jwtTokenGenerator.GenerateToken(payload.Subject, tokenData.access_token, date);
+                            //generate new jwt token authen
+                            DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
+                            var token = jwtTokenGenerator.GenerateToken(payload.Subject, tokenData.access_token, date);
 
-                        return new GoogleRefreshResult(payload.Subject, payload.Name, payload.Picture, date, token);
+                            return new GoogleRefreshResult(payload.Subject, payload.Name, payload.Picture, date, token);
+                        }
                     }
                 }
             }
