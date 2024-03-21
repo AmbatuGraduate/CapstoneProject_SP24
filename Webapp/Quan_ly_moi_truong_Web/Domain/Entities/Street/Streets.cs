@@ -31,7 +31,7 @@ namespace Domain.Entities.Street
 
         public virtual ResidentialGroups? ResidentialGroup { get; set; }
 
-        public ICollection<Trees>? Trees { get; set; }
+        //public ICollection<Trees>? Trees { get; set; }
 
         [DataMember]
         public DateTime CreateDate { get; set; } = DateTime.Now;

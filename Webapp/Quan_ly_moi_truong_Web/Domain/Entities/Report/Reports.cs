@@ -19,5 +19,14 @@ namespace Domain.Entities.Report
 
         [DataMember]
         public ReportStatus Status { get; set; }
+
+        [DataMember]
+        public ReportImpact ReportImpact { get; set; }
+        [DataMember]
+        public DateTime ExpectedResolutionDate { get; set; }
+        [DataMember]
+        public DateTime ActualResolutionDate { get; set; }
+        [DataMember]
+        public string  ResponseId { get; set; }
     }
 }
