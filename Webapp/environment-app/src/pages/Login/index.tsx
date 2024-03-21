@@ -32,12 +32,12 @@ export const Login = () => {
           throw new Error(res.statusText);
         }
       })
-      // .then((accessToken) => {
-      //   // This block will be executed after the Promise resolves
-      //   console.log("Authentication successful, access token: " + accessToken);
-      //   setToken("accessToken", accessToken); // Save the access token
-      //   // navigate("/");
-      // })
+      .then((accessToken) => {
+        // This block will be executed after the Promise resolves
+        console.log("Authentication successful, access token: " + accessToken);
+        setToken("accessToken", JSON.stringify(accessToken)); // Save the access token
+        navigate("/");
+      })
       .catch((error) => {
         console.log(error);
         // Handle errors here

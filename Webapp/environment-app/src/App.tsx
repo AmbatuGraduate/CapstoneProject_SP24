@@ -7,7 +7,7 @@ import { ManageTree } from "./pages/ManageTree";
 import { CreateTree } from "./pages/ManageTree/Create";
 import { DetailTree } from "./pages/ManageTree/Detail";
 import { UpdateTree } from "./pages/ManageTree/Update";
-// import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
+import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
 
 function App() {
   const router = createBrowserRouter([

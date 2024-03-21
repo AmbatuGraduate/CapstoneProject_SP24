@@ -6,9 +6,10 @@ import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
+import { useCookies } from "react-cookie";
 
 export const ManageTreeTrimSchedule = () => {
-  const [token/*, setToken*/] = useCookies(["accessToken"]);
+  const [token /*, setToken*/] = useCookies(["accessToken"]);
   const navigate = useNavigate();
   // TODO get list
 
@@ -17,13 +18,13 @@ export const ManageTreeTrimSchedule = () => {
       header: "Chỉnh sửa",
       accessorFn(row) {
         return (
-          <div >
+          <div>
             <Link to={`/manage-tree/${row?.treeCode}/update`}>
               <button type="button" className="btn btn-click">
                 <BiSolidEdit />
               </button>
             </Link>
-            <button type="button" className="btn btn-click" onClick={() => { }}>
+            <button type="button" className="btn btn-click" onClick={() => {}}>
               <ModalDelete />
             </button>
           </div>
@@ -39,7 +40,11 @@ export const ManageTreeTrimSchedule = () => {
     {
       header: "Tiêu đề",
       accessorFn(row) {
-        return <Link className="linkCode" to={`/manage-tree/${row.treeCode}`}>{row.treeCode}</Link>;
+        return (
+          <Link className="linkCode" to={`/manage-tree/${row.treeCode}`}>
+            {row.treeCode}
+          </Link>
+        );
       },
     },
     { header: "Vị trí", accessorKey: "streetName", align: "left" },
@@ -62,7 +67,11 @@ export const ManageTreeTrimSchedule = () => {
         bottom={
           <Button
             variant="success"
-            style={{ backgroundColor: "hsl(94, 59%, 35%)", border: "none", padding: "0.5rem 1rem" }}
+            style={{
+              backgroundColor: "hsl(94, 59%, 35%)",
+              border: "none",
+              padding: "0.5rem 1rem",
+            }}
             onClick={() => navigate("/manage-tree/create")}
           >
             Thêm lịch
