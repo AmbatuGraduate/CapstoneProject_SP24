@@ -1,12 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import {
-  CULTIVAR_LIST,
-  STREET_LIST,
-  TREE_ADD,
-  TREE_TYPE_LIST,
-  useApi,
-} from "../../Api";
+import { CULTIVAR_LIST, TREE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
+import { dateConstructor, user } from "../../utils";
 
 export const CreateTree = () => {
   const navigate = useNavigate();
@@ -52,13 +47,8 @@ export const CreateTree = () => {
     // },
     {
       label: "Tuyến đường",
-      formType: "select",
-      key: "streetId",
-      optionExtra: {
-        url: STREET_LIST,
-        _key: "streetName",
-        _value: "streetId",
-      },
+      formType: "input",
+      key: "treeLocation",
     },
     {
       label: "Đường kính thân",
@@ -77,7 +67,7 @@ export const CreateTree = () => {
     },
     {
       label: "Thời gian cắt",
-      formType: "input",
+      formType: "date",
       key: "cutTime",
     },
     {
@@ -85,16 +75,16 @@ export const CreateTree = () => {
       formType: "input",
       key: "intervalCutTime",
     },
-    {
-      label: "Loại cây",
-      formType: "select",
-      key: "treeTypeId",
-      optionExtra: {
-        url: TREE_TYPE_LIST,
-        _key: "treeTypeName",
-        _value: "treeTypeId",
-      },
-    },
+    // {
+    //   label: "Loại cây",
+    //   formType: "select",
+    //   key: "treeTypeId",
+    //   optionExtra: {
+    //     url: TREE_TYPE_LIST,
+    //     _key: "treeTypeName",
+    //     _value: "treeTypeId",
+    //   },
+    // },
     {
       label: "Giống cây",
       formType: "select",
@@ -102,7 +92,7 @@ export const CreateTree = () => {
       optionExtra: {
         url: CULTIVAR_LIST,
         _key: "cultivarName",
-        _value: "treeTypeId",
+        _value: "cultivarId",
       },
     },
     {
@@ -110,49 +100,29 @@ export const CreateTree = () => {
       formType: "input",
       key: "note",
     },
-    {
-      label: "Người tạo",
-      formType: "input",
-      key: "createBy",
-    },
-    {
-      label: "Cập nhật bởi",
-      formType: "input",
-      key: "updateBy",
-    },
-    {
-      label: "Ngày tạo",
-      formType: "input",
-      key: "updateDate",
-    },
-    {
-      label: "Tình trạng cây",
-      formType: "select",
-      key: "isExist",
-      defaultValue: 2,
-      options: [
-        {
-          key: "Cần cắt",
-          value: 1,
-        },
-        {
-          key: "Đã cắt",
-          value: 2,
-        },
-      ],
-    },
   ];
 
-  const handleSubmit = async (data: Record<string, unknown>) => {
-    await useApi.post(TREE_ADD, data);
+  const handleSubmit = async (data: Record<string, any>) => {
+    const u = user();
+    await useApi.post(TREE_ADD, {
+      ...data,
+      cutTime: dateConstructor(data.cutTime),
+      plantTime: dateConstructor(data.plantTime),
+      updateDate: new Date(),
+      updateBy: u?.name,
+      createBy: u?.name,
+    });
     console.log("CreateTree", data);
   };
 
   return (
-    <FormBase
-      fields={fields}
-      onSave={handleSubmit}
-      onCancel={() => navigate("/manage-tree")}
-    />
+    <div className="form-cover">
+      <h4>Create tree</h4>
+      <FormBase
+        fields={fields}
+        onSave={handleSubmit}
+        onCancel={() => navigate("/manage-tree")}
+      />
+    </div>
   );
 };

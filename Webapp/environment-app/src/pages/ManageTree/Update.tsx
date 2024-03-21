@@ -87,13 +87,13 @@ export const UpdateTree = () => {
     },
     {
       label: "Thời điểm trồng",
-      formType: "input",
+      formType: "date",
       key: "plantTime",
       defaultValue: dayFormat(data?.plantTime),
     },
     {
       label: "Thời điểm cắt tỉa gần nhất",
-      formType: "input",
+      formType: "date",
       key: "cutTime",
       defaultValue: dayFormat(data?.cutTime),
     },
