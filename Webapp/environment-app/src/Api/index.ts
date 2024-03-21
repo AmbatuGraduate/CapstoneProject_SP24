@@ -1,4 +1,4 @@
-import axiosClient from "./axiosClient";
+import axiosClient from "../Api/axiosClient";
 export const useApi = axiosClient;
 
 export const TREE_LIST = "/Tree/Get";

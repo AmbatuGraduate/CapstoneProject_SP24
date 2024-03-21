@@ -3,6 +3,7 @@ using Application.Session.Token;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Flows;
 using Microsoft.Extensions.Options;
+using static System.Net.WebRequestMethods;
 
 namespace Infrastructure.Authentication
 {
@@ -14,15 +15,22 @@ namespace Infrastructure.Authentication
         private string clientId;
 
         private string clientSecret;
-        private string[] scopes = { "https://www.googleapis.com/auth/calendar" ,
+        private readonly string[] scopes = { "https://www.googleapis.com/auth/calendar" ,
+            "https://www.googleapis.com/auth/admin.directory.group",
+            "https://www.googleapis.com/auth/admin.directory.group.member",
+            "https://www.googleapis.com/auth/admin.directory.group.member.readonly",
                                           "https://www.googleapis.com/auth/userinfo.email",
                                           "https://www.googleapis.com/auth/admin.directory.user",
                                           "https://www.googleapis.com/auth/userinfo.profile",
+                                          "https://www.googleapis.com/auth/admin.directory.user.readonly",
+                                           "https://mail.google.com/",
+                                           "https://www.googleapis.com/auth/gmail.send",
                                           "openid", "profile", "email"};
-        private string[] mobileScopes = { "https://www.googleapis.com/auth/calendar" , 
+        private string[] mobileScopes = { "https://www.googleapis.com/auth/calendar" ,
                                           "https://www.googleapis.com/auth/userinfo.email",
-                                          "https://www.googleapis.com/auth/admin.directory.user", 
+                                          "https://www.googleapis.com/auth/admin.directory.user",
                                           "https://www.googleapis.com/auth/userinfo.profile",
+                                           "https://mail.google.com/",
                                           "openid", "profile", "email"};
         private string redirect_Uri = "postmessage";
 
@@ -49,7 +57,7 @@ namespace Infrastructure.Authentication
         public async Task<TokenData> AuthenticateWithGoogle(string authCode)
         {
             var tokenRespone = await CreateFlow().ExchangeCodeForTokenAsync("", authCode, redirect_Uri, CancellationToken.None);
-
+            System.Diagnostics.Debug.WriteLine("scopes: " + tokenRespone.Scope);
             return new TokenData(tokenRespone.AccessToken,
                                 (long)tokenRespone.ExpiresInSeconds,
                                 tokenRespone.RefreshToken,

@@ -5,6 +5,7 @@ using Application.Common.Interfaces.Services;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
+using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
@@ -53,10 +54,12 @@ namespace Infrastructure
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
             services.AddScoped<IStreetRepository, StreetRepository>();
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
             services.AddScoped<ICultivarRepository, CultivarRepository>();
+            services.AddScoped<IReportService, ReportService>();
             services.AddScoped<Func<GoogleCredential, CalendarService>>(provider => (credential) =>
             {
                 return new CalendarService(new BaseClientService.Initializer
@@ -75,10 +78,17 @@ namespace Infrastructure
                 });
             });
 
+            services.AddScoped<Func<GoogleCredential, GmailService>>(provider => (credential) =>
+            {
+                return new GmailService(new BaseClientService.Initializer
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = "cay-xanh"
+                });
+            });
+
             // calendar service registration
             services.AddScoped<ITreeCalendarService, TreeCalendarService>();
-
-            services.AddScoped<AuthenticationService>();
 
             return services;
         }
@@ -154,8 +164,8 @@ namespace Infrastructure
                 })
                 .AddGoogle(options =>
                 {
-                    options.ClientId = configuration["Authentication:Google:ClientId"];
-                    options.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+                    options.ClientId = googleApiSettings.ClientId;
+                    options.ClientSecret = googleApiSettings.ClientSecret;
                     options.Scope.Add("https://www.googleapis.com/auth/calendar");
                 });
 

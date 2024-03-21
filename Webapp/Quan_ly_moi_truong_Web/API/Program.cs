@@ -1,6 +1,7 @@
 using API;
 using Application;
 using Infrastructure;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,12 +32,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     
 }
-app.UseSession();
+
+
 app.UseExceptionHandler("/error");
 app.UseCors("AllowAllHeaders");
 app.UseHttpsRedirection();
 
-
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

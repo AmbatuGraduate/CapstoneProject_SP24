@@ -10,7 +10,7 @@ namespace Domain.Entities.UserRefreshToken
         public Guid UserRefreshTokenId { get; set; }
 
         [DataMember]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         [DataMember]
         public string RefreshToken { get; set; }
@@ -20,16 +20,6 @@ namespace Domain.Entities.UserRefreshToken
 
         public virtual Users? User { get; set; }
 
-        [DataMember]
-        public DateTime CreateDate { get; set; } = DateTime.Now;
 
-        [DataMember]
-        public string CreateBy { get; set; }
-
-        [DataMember]
-        public DateTime UpdateDate { get; set; }
-
-        [DataMember]
-        public string UpdateBy { get; set; }
     }
 }

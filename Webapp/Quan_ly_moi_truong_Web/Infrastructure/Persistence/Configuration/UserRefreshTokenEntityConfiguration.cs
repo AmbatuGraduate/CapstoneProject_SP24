@@ -17,14 +17,10 @@ namespace Infrastructure.Persistence.Configuration
                    .HasKey(userRefreshTokens => userRefreshTokens.UserRefreshTokenId);
 
             builder.Property(userRefreshTokens => userRefreshTokens.RefreshToken)
-                   .HasMaxLength(100)
+                   .HasMaxLength(250)
                    .IsRequired();
             builder.Property(userRefreshTokens => userRefreshTokens.Expire)
                    .IsRequired();
-            builder.Property(userRefreshTokens => userRefreshTokens.CreateBy)
-                   .HasMaxLength(50);
-            builder.Property(userRefreshTokens => userRefreshTokens.UpdateBy)
-                   .HasMaxLength(50);
         }
     }
 }

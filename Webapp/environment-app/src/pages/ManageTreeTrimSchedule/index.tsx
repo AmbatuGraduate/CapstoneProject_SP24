@@ -8,6 +8,7 @@ import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageTreeTrimSchedule = () => {
+  const [token/*, setToken*/] = useCookies(["accessToken"]);
   const navigate = useNavigate();
   // TODO get list
 

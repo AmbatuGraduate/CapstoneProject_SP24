@@ -4,7 +4,7 @@ namespace Application.Common.Interfaces.Authentication
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(string name, string id, string access_token, string image, DateTime expire);
+        string GenerateToken( string id, string access_token, DateTime expire);
 
         JwtSecurityToken DecodeToken(string jwt);
     }

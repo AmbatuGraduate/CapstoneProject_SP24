@@ -7,10 +7,22 @@ namespace Domain.Entities.Deparment
     public class Departments
     {
         [DataMember]
-        public Guid DepartmentId { get; set; }
+        public string DepartmentId { get; set; }
 
         [DataMember]
         public string DepartmentName { get; set; }
+
+        [DataMember]
+        public string DepartmentEmail { get; set; }
+
+        [DataMember]
+        public string Description { get; set; }
+
+        [DataMember]
+        public bool AdminCreated { get; set; }
+
+        [DataMember]
+        public long DirectMembersCount { get; set; }
 
         public ICollection<Users>? Users { get; set; }
 

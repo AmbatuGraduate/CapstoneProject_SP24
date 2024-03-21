@@ -20,7 +20,9 @@ export const Login = () => {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
       },
+      credentials: "include",
       body: JSON.stringify({ AuthCode: authCode }),
     })
       .then((res) => {
@@ -30,12 +32,12 @@ export const Login = () => {
           throw new Error(res.statusText);
         }
       })
-      .then((accessToken) => {
-        // This block will be executed after the Promise resolves
-        console.log("Authentication successful, access token: " + accessToken);
-        setToken("accessToken", accessToken); // Save the access token
-        navigate("/");
-      })
+      // .then((accessToken) => {
+      //   // This block will be executed after the Promise resolves
+      //   console.log("Authentication successful, access token: " + accessToken);
+      //   setToken("accessToken", accessToken); // Save the access token
+      //   // navigate("/");
+      // })
       .catch((error) => {
         console.log(error);
         // Handle errors here
@@ -45,7 +47,38 @@ export const Login = () => {
   const gglogin = useGoogleLogin({
     onSuccess: handleSuccess,
     flow: "auth-code",
+    scope:
+      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/userinfo.profile openid profile email https://mail.google.com/ https://www.googleapis.com/auth/gmail.send",
   });
+
+  const refreshHandler = () => {
+    fetch("https://localhost:7024/api/auth/refresh", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
+      },
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json(); // This returns a Promise
+        } else {
+          console.error("Failed to get events:", res.statusText);
+          // Handle authentication failure
+        }
+      })
+      .then((events) => {
+        // This block will be executed after the Promise resolves
+        console.log("Events:", events);
+        // Do something with the events
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle errors here
+      });
+  };
 
   return (
     <div className="login-page">
@@ -56,6 +89,7 @@ export const Login = () => {
         <div className="right">
           <h1>Xin chào!</h1>
           <button onClick={() => gglogin()}>Đăng nhập với Google</button>
+          <button onClick={() => refreshHandler()}>Refresh</button>
         </div>
       </div>
     </div>

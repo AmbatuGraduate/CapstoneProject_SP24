@@ -6,7 +6,6 @@
         string name,
         string avatar,
         DateTime expire_in,
-        string token,
-        string refresh_tkn
+        string token
     );
 }

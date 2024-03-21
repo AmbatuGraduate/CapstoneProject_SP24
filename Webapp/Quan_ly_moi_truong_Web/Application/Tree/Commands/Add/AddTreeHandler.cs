@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Tree.Common;
+using Domain.Common.Errors;
 using Domain.Entities.Tree;
 using ErrorOr;
 using MediatR;
@@ -19,7 +20,10 @@ namespace Application.Tree.Commands.Add
         public async Task<ErrorOr<AddTreeResult>> Handle(AddTreeCommand request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
-
+            if(treeRepository.GetTreeByTreeCode(request.TreeCode) != null)
+            {
+                return Errors.AddTree.DuplicateTreeCode;
+            }
             var tree = new Trees
             {
                 TreeId = Guid.NewGuid(),

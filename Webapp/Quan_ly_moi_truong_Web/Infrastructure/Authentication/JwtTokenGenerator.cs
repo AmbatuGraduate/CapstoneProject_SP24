@@ -38,7 +38,7 @@ namespace Infrastructure.Authentication
         /// </summary>
         /// <param name="user">The data of user login or register</param>
         /// <returns>String token</returns>
-        public string GenerateToken(string id, string name, string access_token, string image, DateTime expire)
+        public string GenerateToken(string id,string access_token, DateTime expire)
         {
             var signingCredential = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
@@ -48,8 +48,6 @@ namespace Infrastructure.Authentication
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, id),
-                new Claim(JwtRegisteredClaimNames.Name,name),
-                new Claim("img", image),
                 new Claim("atkn", access_token),
                 //new Claim(ClaimTypes.Role, user.Role),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())

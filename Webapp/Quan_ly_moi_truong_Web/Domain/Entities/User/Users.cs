@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.Deparment;
-using Domain.Entities.Report;
 using Domain.Entities.Role;
 using Domain.Entities.UserRefreshToken;
 using Microsoft.AspNetCore.Identity;
@@ -8,25 +7,17 @@ using System.Runtime.Serialization;
 namespace Domain.Entities.User
 {
     [DataContract]
-    public class Users : IdentityUser<Guid>
-    {
+    public class Users
+    { 
         [DataMember]
-        public override Guid Id { get; set; } = Guid.NewGuid();
+        public string Id { get; set; }
 
         [DataMember]
         public string UserCode { get; set; }
 
-        [DataMember]
-        public string Name { get; set; } = null!;
 
         [DataMember]
-        public string Address { get; set; } = null!;
-
-        [DataMember]
-        public override string PhoneNumber { get; set; } = null!;
-
-        [DataMember]
-        public string Password { get; set; } = null!;
+        public string Email { get; set; } = null!;
 
         [DataMember]
         public Guid RoleId { get; set; }
@@ -34,14 +25,9 @@ namespace Domain.Entities.User
         public virtual Roles? Role { get; set; }
 
         [DataMember]
-        public Guid DepartmentId { get; set; }
+        public string? DepartmentId { get; set; }
 
         public virtual Departments? Departments { get; set; }
-
-        [DataMember]
-        public string Image { get; set; } = null!;
-
-        public ICollection<Reports>? Reports { get; set; }
         public ICollection<UserRefreshTokens>? UserRefreshTokens { get; set; }
     }
 }

@@ -11,14 +11,18 @@ namespace Application.Calendar
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public List<UserResult> Attendees { get; set; }
+        public EventExtendedProperties ExtendedProperties { get; set; }
     }
 
     public class MyAddedEvent
     {
-        public string Id { get; set; }
+        /*        public string Id { get; set; }
+        */
         public string Summary { get; set; }
         public string Description { get; set; }
-        public string Location { get; set; }
+        /*        public string Location { get; set; }
+        */
+        public string TreeId { get; set; }
         public EventDateTime Start { get; set; }
         public EventDateTime End { get; set; }
         public List<User> Attendees { get; set; }
@@ -51,11 +55,10 @@ namespace Application.Calendar
     public class EventDateTime
     {
         public string DateTime { get; set; }
-        public string TimeZone { get; set; }
     }
 
     public class EventExtendedProperties
     {
-        Dictionary<string, string> PrivateProperties { get; set; }
+        public Dictionary<string, string> PrivateProperties { get; set; }
     }
 }

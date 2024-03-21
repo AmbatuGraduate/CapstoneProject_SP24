@@ -1,10 +1,12 @@
 ﻿using Application.Common.Interfaces.Authentication;
+using Application.Common.Interfaces.Persistence;
 using Application.GoogleAuthentication.Common;
 using Domain.Common.Errors;
 using ErrorOr;
 using Google.Apis.Auth;
 using MediatR;
 using Newtonsoft.Json;
+using System.Xml.Linq;
 
 namespace Application.GoogleAuthentication.Queries.GoogleRefresh
 {
@@ -13,34 +15,13 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
     {
         private readonly IJwtTokenGenerator jwtTokenGenerator;
         private readonly IAuthenticationService authenticationService;
+        private readonly IUserRefreshTokenRepository userRefreshTokenRepository;
 
-        public GoogleRefreshHandler(IJwtTokenGenerator jwtTokenGenerator, IAuthenticationService authenticationService)
+        public GoogleRefreshHandler(IJwtTokenGenerator jwtTokenGenerator, IAuthenticationService authenticationService, IUserRefreshTokenRepository userRefreshTokenRepository)
         {
             this.authenticationService = authenticationService;
             this.jwtTokenGenerator = jwtTokenGenerator;
-        }
-
-        private async Task<ErrorOr<GoogleRefreshResult>> ReturnGoogleRefreshResult(string refresh_tkn)
-        {
-            //Check refresh token is expire or not
-            if (refresh_tkn != null)
-            {
-                System.Diagnostics.Debug.WriteLine("REFRESH : " + "NEW TOKEN");
-
-                var tokenData = await authenticationService.RefreshTokenWithGoogle(refresh_tkn);
-
-                // get new payload
-                GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(tokenData.id_token);
-
-                //generate new jwt token authen
-                DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
-                var token = jwtTokenGenerator.GenerateToken(payload.Subject, payload.Name, tokenData.access_token, payload.Picture, date);
-
-                return new GoogleRefreshResult(payload.Subject, payload.Name, payload.Picture, date, token);
-            }
-            System.Diagnostics.Debug.WriteLine("REFRESH : " + "EXPIRE");
-
-            return new[] { Errors.Authentication.ExpireRefreshToken };
+            this.userRefreshTokenRepository = userRefreshTokenRepository;
         }
 
         public async Task<ErrorOr<GoogleRefreshResult>> Handle(GoogleRefreshQuery request, CancellationToken cancellationToken)
@@ -50,49 +31,31 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
             //Check jwt is not null
             if (request.jwt != null)
             {
-                //Check jwt expire
-                if (DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwtTokenGenerator.DecodeToken(request.jwt).Claims.First(c => c.Type == "exp").Value)).LocalDateTime.CompareTo(DateTime.UtcNow) >= 0)
+                var userId = jwtTokenGenerator.DecodeToken(request.jwt).Subject;
+                var refresh_tkn = userRefreshTokenRepository.GetRefreshRokenByUserId(userId);
+
+                //Check refresh token is exist or not
+                if (refresh_tkn != null)
                 {
-                    System.Diagnostics.Debug.WriteLine("JWT CHECK: " + "NOT EXPIRE");
-                    // Check access token is expire or not
-                    using (var httpClient = new HttpClient())
+                    if (DateTime.Now.CompareTo(new DateTime(refresh_tkn.Expire)) <= 0)
                     {
-                        var requestUrl = $"https://www.googleapis.com/oauth2/v3/tokeninfo?access_token={jwtTokenGenerator.DecodeToken(request.jwt).Claims.First(c => c.Type == "atkn").Value}";
-                        var response = await httpClient.GetAsync(requestUrl);
-                        var tokenRespone = await response.Content.ReadAsStringAsync();
-                        var accessTokenData = JsonConvert.DeserializeObject<AccessTokenData>(tokenRespone);
+                        System.Diagnostics.Debug.WriteLine("REFRESH : " + "NEW TOKEN");
 
-                        if (accessTokenData != null)
-                        {
-                            System.Diagnostics.Debug.WriteLine("ACCESS TKN CHECK: " + "NOT NULL");
+                        var tokenData = await authenticationService.RefreshTokenWithGoogle(refresh_tkn.RefreshToken);
 
-                            DateTime expire = DateTimeOffset.FromUnixTimeSeconds(accessTokenData.exp).LocalDateTime;
+                        // get new payload
+                        GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(tokenData.id_token);
 
-                            //Check if access token is expire or not
-                            if (expire.CompareTo(DateTime.UtcNow) == -1)
-                            {
-                                System.Diagnostics.Debug.WriteLine("ACCESS TKN EXPIRE: " + "TRUE");
+                        //generate new jwt token authen
+                        DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
+                        var token = jwtTokenGenerator.GenerateToken(payload.Subject, tokenData.access_token, date);
 
-                                return await ReturnGoogleRefreshResult(request.refresh_tkn);
-                            }
-                            else
-                            {
-                                System.Diagnostics.Debug.WriteLine("ACCESS TKN NOT EXPIRE: " + "OLD TOKEN");
-
-                                var id = jwtTokenGenerator.DecodeToken(request.jwt).Subject;
-                                var name = jwtTokenGenerator.DecodeToken(request.jwt).Claims.First(c => c.Type == "name").Value;
-                                var img = jwtTokenGenerator.DecodeToken(request.jwt).Claims.First(c => c.Type == "img").Value;
-                                var date = DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwtTokenGenerator.DecodeToken(request.jwt).Claims.First(c => c.Type == "exp").Value)).LocalDateTime;
-
-                                //Return back the old token
-                                return new GoogleRefreshResult(id, name, img, date, request.jwt);
-                            }
-                        }
+                        return new GoogleRefreshResult(payload.Subject, payload.Name, payload.Picture, date, token);
                     }
                 }
             }
 
-            return await ReturnGoogleRefreshResult(request.refresh_tkn);
+            return new[] { Errors.Authentication.ExpireRefreshToken };
         }
     }
 }
