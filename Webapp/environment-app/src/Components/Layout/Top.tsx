@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./top.scss";
 
 // imported Icon
 import { IoNotificationsOutline } from "react-icons/io5";
 import { useCookies } from "react-cookie";
+import { ImProfile } from "react-icons/im";
+import { MdLogout } from "react-icons/md";
 
 const Top = () => {
   const [isOpen, setIsOpen] = useState(false);
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -45,26 +48,17 @@ const Top = () => {
           <h1>Chào mừng tới với Ambatu</h1>
           <p>Xin chào Thăng</p>
         </div>
-
-        {/* <div className="searchBar flex">
-                    <input type="text" placeholder='Tìm kiếm' />
-                    <BiSearchAlt className='icon' />
-                </div> */}
-        {/* <div className='searchBar flex'>
-                    <SearchBar />
-                </div> */}
-
         <div className="adminDiv flex">
           <IoNotificationsOutline className="icon" />
           <div className="adminImage">
-            <button onClick={toggleDropdown}>
+            <button onClick={toggleDropdown} className="dropbtn">
               <img src="/assets/imgs/adminImg.jpg" alt="Admin Image" />
             </button>
             {isOpen && (
               <div className="dropdown-menu">
-                <button>Thông tin cá nhân</button>
-                <button>Cài đặt</button>
-                <button onClick={LogOut}>Đăng xuất</button>
+                <button className="flex"><ImProfile className="dropIcon" /> <h6>Hồ sơ</h6></button>
+                <hr className="menuLine" />
+                <button className="flex" onClick={LogOut}><MdLogout className="dropIcon" /> <h6>Đăng xuất</h6></button>
               </div>
             )}
           </div>

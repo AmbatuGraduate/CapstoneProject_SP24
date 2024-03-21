@@ -47,36 +47,6 @@ export const Login = () => {
     flow: "auth-code",
   });
 
-  const getEvents = () => {
-    fetch(
-      "https://localhost:7024/api/ScheduleTreeTrim/GetCalendarEvents/" +
-        token.accessToken,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    )
-      .then((res) => {
-        if (res.ok) {
-          return res.json(); // This returns a Promise
-        } else {
-          console.error("Failed to get events:", res.statusText);
-          // Handle authentication failure
-        }
-      })
-      .then((events) => {
-        // This block will be executed after the Promise resolves
-        console.log("Events:", events);
-        // Do something with the events
-      })
-      .catch((error) => {
-        console.log(error);
-        // Handle errors here
-      });
-  };
-
   return (
     <div className="login-page">
       <div className="container">
@@ -84,7 +54,7 @@ export const Login = () => {
           <img src="/assets/imgs/logo.jpg" alt="Image" />
         </div>
         <div className="right">
-          <h6>Xin chào!</h6>
+          <h1>Xin chào!</h1>
           <button onClick={() => gglogin()}>Đăng nhập với Google</button>
         </div>
       </div>

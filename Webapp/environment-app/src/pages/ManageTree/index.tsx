@@ -39,11 +39,7 @@ export const ManageTree = () => {
     {
       header: "Mã số cây",
       accessorFn(row) {
-        return (
-          <Link className="linkCode" to={`/manage-tree/${row.treeCode}`}>
-            {row.treeCode}
-          </Link>
-        );
+        return <Link className="linkCode" to={`/manage-tree/${row.treeCode}`}>{row.treeCode}</Link>;
       },
     },
     { header: "Tuyến đường", accessorKey: "streetName", align: "left" },
