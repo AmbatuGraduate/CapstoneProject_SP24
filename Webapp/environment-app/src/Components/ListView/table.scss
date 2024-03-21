@@ -39,7 +39,7 @@
         vertical-align: middle;
       }
       .linkCode {
-        color: var(--PrimanyColor);
+        color: var(--PrimaryColor);
         text-decoration: none;
       }
 
@@ -50,7 +50,7 @@
         box-shadow: none;
       }
       .btn:hover {
-        color: var(--PrimanyColor);
+        color: var(--PrimaryColor);
       }
     }
   }
@@ -70,7 +70,7 @@
 }
 
 .green-text {
-  color: var(--PrimanyColor) !important;
+  color: var(--PrimaryColor) !important;
 }
 
 .red-text {
@@ -96,7 +96,7 @@
   .page-item.active {
     .page-link {
       color: var(--whiteColor) !important;
-      background-color: var(--PrimanyColor) !important;
+      background-color: var(--PrimaryColor) !important;
     }
   }
 }

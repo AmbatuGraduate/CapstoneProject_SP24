@@ -19,6 +19,33 @@
 }
 .form-base {
     font-size: 17px;
-    max-width: 500px;
+    width: 100%;
     font-weight: 600;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    >div {
+        width: 400px;
+    }
+    div:last-child {
+        width: 100%;
+    }
+    button {
+        min-width: 100px;
+        margin-right: 10px;
+    }
+}
+
+.form-cover {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    min-height: calc(100vh - 150px);
+    h4 {
+        border-bottom: 1px solid rgb(212, 212, 212);
+        padding-bottom: 12px;
+    }
+    >form {
+        padding-top: 10px;
+    }
 }

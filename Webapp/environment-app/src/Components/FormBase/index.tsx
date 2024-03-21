@@ -106,16 +106,14 @@ export const FormBase = (props: Props) => {
 
       case "date":
         return (
-          <div>
             <DatePicker
               selected={startDate}
               onChange={(date) => setStartDate(date)}
-              className="datepicker"
+              // className="datepicker"
               name={key}
               disabled={_disabled}
               dateFormat="dd/MM/yyyy"
             />
-          </div>
         );
       default:
         return (
@@ -145,23 +143,23 @@ export const FormBase = (props: Props) => {
         );
       })}
       {mode == "create&update" ? (
-        <>
+        <div>
           <Button variant="success" type="submit">
             Lưu
           </Button>
           <Button variant="danger" onClick={onCancel}>
             Hủy
           </Button>
-        </>
+        </div>
       ) : (
-        <>
+        <div>
           <Button variant="info" onClick={navigateUpdate}>
             Cập nhật
           </Button>
           <Button variant="danger" onClick={backPage}>
             Trở về
           </Button>
-        </>
+        </div>
       )}
     </Form>
   );

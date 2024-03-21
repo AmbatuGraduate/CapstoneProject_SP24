@@ -13,38 +13,6 @@ export const CreateTree = () => {
       key: "treeCode",
       required: true,
     },
-    // {
-    //   label: "Quận",
-    //   formType: "select",
-    //   key: "quan",
-    //   defaultValue: 6,
-    //   options: [
-    //     {
-    //       key: "Thanh Khê",
-    //       value: 1,
-    //     },
-    //     {
-    //       key: "Hải Châu",
-    //       value: 2,
-    //     },
-    //     {
-    //       key: "Ngũ Hành Sơn",
-    //       value: 3,
-    //     },
-    //     {
-    //       key: "Sơn Trà",
-    //       value: 4,
-    //     },
-    //     {
-    //       key: "Liên Chiểu",
-    //       value: 5,
-    //     },
-    //     {
-    //       key: "Cẩm Lệ",
-    //       value: 6,
-    //     },
-    //   ],
-    // },
     {
       label: "Tuyến đường",
       formType: "input",
@@ -117,7 +85,7 @@ export const CreateTree = () => {
 
   return (
     <div className="form-cover">
-      <h4>Create tree</h4>
+      <h4>Thêm cây</h4>
       <FormBase
         fields={fields}
         onSave={handleSubmit}
