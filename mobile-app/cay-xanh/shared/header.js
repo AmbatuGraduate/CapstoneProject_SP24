@@ -8,7 +8,7 @@ import { StyleSheet, Text, View, ImageBackground } from "react-native";
 *************************************************************/
 
 
-export default function Header({ navigation, title }) {
+export default function Header({ navigation, title, customDrawerProp }) {
     const openMenu = () => {
         navigation.openDrawer();
     }
