@@ -10,13 +10,12 @@ namespace Application.Tree.Queries.GetById
         IRequestHandler<GetByIdQuery, ErrorOr<TreeDetailResult>>
     {
         private readonly ITreeRepository treeRepository;
-        private readonly IStreetRepository streetRepository;
         private readonly ICultivarRepository cultivarRepository;
 
-        public GetByIdHandler(ITreeRepository treeRepository,  IStreetRepository streetRepository, ICultivarRepository cultivarRepository)
+        public GetByIdHandler(ITreeRepository treeRepository,  /*IStreetRepository streetRepository,*/ ICultivarRepository cultivarRepository)
         {
             this.treeRepository = treeRepository;
-            this.streetRepository = streetRepository;
+            //this.streetRepository = streetRepository;
             this.cultivarRepository = cultivarRepository;
         }
 
@@ -31,9 +30,9 @@ namespace Application.Tree.Queries.GetById
                 return Errors.GetTreeById.getTreeFail;
             }
 
-            var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
+            //var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
             var cultivar = cultivarRepository.GetCultivarById(tree.CultivarId).CultivarName;
-            var result = new TreeDetailResult(tree.TreeCode, streetName, cultivar, tree.BodyDiameter, tree.LeafLength,tree.PlantTime ,tree.CutTime, tree.Note);
+            var result = new TreeDetailResult(tree.TreeCode, /*streetName*/ tree.TreeLocation, cultivar, tree.BodyDiameter, tree.LeafLength, tree.PlantTime, tree.CutTime, tree.Note);
 
             return result;
         }

@@ -8,7 +8,7 @@ namespace Application.Tree.Commands.Update
         public UpdateTreeValidator()
         {
             RuleFor(x => x.TreeCode).NotEmpty();
-            RuleFor(x => x.StreetId).NotEmpty();
+            RuleFor(x => x.TreeLocation).NotEmpty();
             RuleFor(x => x.BodyDiameter).NotEmpty();
             RuleFor(x => x.LeafLength).NotEmpty();
             RuleFor(x => x.PlantTime).NotEmpty();

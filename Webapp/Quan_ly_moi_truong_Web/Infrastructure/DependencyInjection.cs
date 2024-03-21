@@ -11,10 +11,10 @@ using Infrastructure.Authentication;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Persistence.Repositories.Calendar;
+using Infrastructure.Persistence.Repositories.Notification;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,10 +23,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ConfigurationManager = Microsoft.Extensions.Configuration.ConfigurationManager;
 
-
 namespace Infrastructure
 {
-
     // Update At: 17/02/2024
     // Update By: Dang Nguyen Khanh Vu
     // Changes:
@@ -48,9 +46,10 @@ namespace Infrastructure
             services.AddHttpContextAccessor();
             services.AddSession();
 
-
             // Add repositories dependency injection
-           services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<INotifyService, NotifyService>();
+            services.AddScoped<NotifyService>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -104,6 +103,8 @@ namespace Infrastructure
                 opts.UseSqlServer("Server=20.2.70.147,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=ad;Password=Urban123;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;");
                 opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
+
+            services.AddSignalR();
             return services;
         }
 
@@ -127,7 +128,6 @@ namespace Infrastructure
                 {
                     opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     opts.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-
                 })
                 .AddCookie()
                 .AddJwtBearer(opts =>

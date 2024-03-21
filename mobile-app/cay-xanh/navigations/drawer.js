@@ -1,15 +1,16 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from '@react-navigation/native';
-import HomeStackRouting from "./homeStack";
-import ProfileStackRouting from "./profileStack";
-import TaskStackRouting from "./taskStack";
 import React, { useState, useEffect } from 'react';
-
-import LoginScreen from "../screens/login";
-import LogoutScreen from "../screens/logout";
-import LoadingScreen from "../screens/loadingScreen";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeStackRouting from './homeStack';
+import ProfileStackRouting from './profileStack';
+import TaskStackRouting from './taskStack';
+import LoginScreen from '../screens/login';
+import LogoutScreen from '../screens/logout';
+import LoadingScreen from '../screens/loadingScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { Icon } from '@rneui/themed';
+import ReportStackRouting from './reportStack';
 
 
 /***************************************************************
@@ -116,13 +117,63 @@ function Routes() {
         }
     }
 
+    // -------------------------------------------------------------------
+    // Drawer navigation
     function DrawerNavigator() {
         return (
             <Drawer.Navigator screenOptions={{ headerShown: false }}>
-                <Drawer.Screen name="Trang chủ" component={HomeStackRouting} />
-                <Drawer.Screen name="Hồ sơ" component={ProfileStackRouting} />
-                <Drawer.Screen name="Lịch trình" component={TaskStackRouting} />
-                <Drawer.Screen name="Logout">
+
+                {/* Home */}
+                <Drawer.Screen name="Home"
+                    component={HomeStackRouting}
+                    options={{
+                        drawerLabel: 'Trang chủ',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="home" type='font-awesome' color="#ff6b9b" size={size} />
+                        ),
+                    }} />
+
+                {/* Profile */}
+                <Drawer.Screen name="Profile"
+                    component={ProfileStackRouting}
+                    options={{
+                        drawerLabel: 'Hồ sơ',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="user-circle-o" type='font-awesome' color="#ff6b9b" size={size} />
+                        ),
+                    }} />
+
+                {/* Schedule */}
+                <Drawer.Screen component={TaskStackRouting}
+                    name="Tasks"
+                    options={{
+                        drawerLabel: 'Lịch trình',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="calendar" type='font-awesome' color="#ff6b9b" size={size} />
+                        ),
+                    }} />
+
+                {/* report */}
+                <Drawer.Screen
+                    name="Report"
+                    options={{
+                        drawerLabel: 'Báo cáo',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="file-text" type='font-awesome' color="#ff6b9b" size={size} />
+                        ),
+                    }}>
+                    {props => <ReportStackRouting {...props} />}
+                </Drawer.Screen>
+
+                {/* logout */}
+                <Drawer.Screen
+                    name="Logout"
+                    options={{
+                        drawerLabel: 'Logout',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="logout" color="#ff6b9b" size={size} />
+                        ),
+                    }}>
                     {props => <LogoutScreen {...props} setUser={setUser} />}
                 </Drawer.Screen>
             </Drawer.Navigator>

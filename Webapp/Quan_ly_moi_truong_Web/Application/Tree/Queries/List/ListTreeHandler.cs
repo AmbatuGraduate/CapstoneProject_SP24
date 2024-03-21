@@ -8,13 +8,14 @@ namespace Application.Tree.Queries.List
     public class ListTreeHandler : IRequestHandler<ListTreeQuery, ErrorOr<List<TreeResult>>>
     {
         private readonly ITreeRepository treeRepository;
-        private readonly IStreetRepository streetRepository;
+
+        //private readonly IStreetRepository streetRepository;
         private readonly ICultivarRepository cultivarRepository;
 
-        public ListTreeHandler(ITreeRepository treeRepository, IStreetRepository streetRepository, ICultivarRepository cultivarRepository)
+        public ListTreeHandler(ITreeRepository treeRepository, /*IStreetRepository streetRepository,*/ ICultivarRepository cultivarRepository)
         {
             this.treeRepository = treeRepository;
-            this.streetRepository = streetRepository;
+            //this.streetRepository = streetRepository;
             this.cultivarRepository = cultivarRepository;
         }
 
@@ -27,11 +28,22 @@ namespace Application.Tree.Queries.List
 
             foreach (var tree in trees)
             {
-                var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
+                //var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
                 var cultivar = cultivarRepository.GetCultivarById(tree.CultivarId).CultivarName;
-                var result = new TreeResult(tree.TreeCode, streetName, cultivar, tree.BodyDiameter, tree.LeafLength, tree.CutTime, tree.isCut, tree.isExist);
 
-                treeResults.Add(result);
+                if (tree.CutTime.CompareTo(DateTime.Now) >= 0)
+                {
+                    tree.isCut = false;
+                    var treeUpdate = treeRepository.UpdateTree(tree);
+                    var result = new TreeResult(treeUpdate.TreeCode, treeUpdate.TreeLocation, cultivar, treeUpdate.BodyDiameter, treeUpdate.LeafLength, treeUpdate.CutTime, treeUpdate.isCut, treeUpdate.isExist);
+                    treeResults.Add(result);
+                }
+                else
+                {
+                    var result = new TreeResult(tree.TreeCode, tree.TreeLocation, cultivar, tree.BodyDiameter, tree.LeafLength, tree.CutTime, tree.isCut, tree.isExist);
+                    treeResults.Add(result);
+                }
+
             }
 
             return treeResults;

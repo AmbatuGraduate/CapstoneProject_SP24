@@ -30,7 +30,8 @@ namespace Application.Tree.Commands.Update
             {
                 TreeId = treeRepository.GetTreeByTreeCode(request.TreeCode).TreeId,
                 TreeCode = request.TreeCode,
-                StreetId = request.StreetId,
+                TreeLocation = request.TreeLocation,
+                //StreetId = request.StreetId,
                 BodyDiameter = request.BodyDiameter,
                 LeafLength = request.LeafLength,
                 PlantTime = request.PlantTime,
