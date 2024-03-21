@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, FlatList, Image } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image, Modal } from 'react-native';
 
 
 /*************************************************************
@@ -30,6 +30,11 @@ export default function Home() {
                 )}>
 
             </FlatList>
+            <Modal visible={false}>
+                <View style={styles.modelContent}>
+                    <Text>Model</Text>
+                </View>
+            </Modal>
         </View>
     )
 }
@@ -43,5 +48,13 @@ const styles = StyleSheet.create({
         margin: 20,
         padding: 16
 
+    },
+    modelContent: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        padding: 40,
+        margin: 20
     }
 })

@@ -2,14 +2,11 @@
 using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Persistence.Schedules;
 using Application.User.Common;
-using Azure.Core;
 using Domain.Entities.User;
 using Domain.Enums;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
-using System.Linq;
-using System.Security.Cryptography.Xml;
 
 namespace Infrastructure.Persistence.Repositories.Calendar
 {
@@ -17,20 +14,20 @@ namespace Infrastructure.Persistence.Repositories.Calendar
     {
         private readonly Func<GoogleCredential, CalendarService> _calendarServiceFactory;
         private readonly ITreeRepository _treeRepository;
-        private readonly IStreetRepository _streetRepository;
+        //private readonly IStreetRepository _streetRepository;
 
-        public TreeCalendarService(Func<GoogleCredential, CalendarService> calendarServiceFactory, ITreeRepository treeRepository, IStreetRepository streetRepository)
+        public TreeCalendarService(Func<GoogleCredential, CalendarService> calendarServiceFactory, ITreeRepository treeRepository/*, IStreetRepository streetRepository*/)
         {
             _calendarServiceFactory = calendarServiceFactory;
             _treeRepository = treeRepository;
-            _streetRepository = streetRepository;
+            //_streetRepository = streetRepository;
         }
 
         public async Task<MyAddedEvent> AddEvent(string accessToken, string calendarId, MyAddedEvent myEvent)
         {
             string[] Scopes = { CalendarService.Scope.Calendar };
             try
-            {   
+            {
                 var treeinfo = _treeRepository.GetTreeByTreeCode(myEvent.TreeId);
                 var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
                 var service = _calendarServiceFactory(credential);
@@ -38,7 +35,8 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 {
                     Summary = myEvent.Summary,
                     Description = myEvent.Description,
-                    Location = _streetRepository.GetStreetById(treeinfo.StreetId).StreetName,
+                    //Location = _streetRepository.GetStreetById(treeinfo.StreetId).StreetName,
+                    Location = treeinfo.TreeLocation,
                     Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
                         DateTime = DateTime.Parse(myEvent.Start.DateTime),
@@ -113,7 +111,6 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 JobWorkingStatus.Done => "Done",
                 JobWorkingStatus.DoneWithIssue => "Done With Issue",
             };
-
         }
 
         public async Task<MyUpdatedEvent> UpdateEvent(string accessToken, string calendarId, MyUpdatedEvent myEvent, string eventId)
@@ -208,7 +205,6 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                             }
                             ))
                             .ToList() : new List<UserResult>()
-
                 };
                 return myEvent;
             }

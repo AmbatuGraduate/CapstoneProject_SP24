@@ -1,9 +1,7 @@
-﻿
-using Application.GoogleAuthentication.Commands.GoogleLogin;
+﻿using Application.GoogleAuthentication.Commands.GoogleLogin;
 using Application.GoogleAuthentication.Common;
 using Application.GoogleAuthentication.Queries.GoogleRefresh;
 using Contract.Authentication;
-using Contracts.Authentication;
 using Mapster;
 
 namespace API.Mapping
@@ -15,13 +13,11 @@ namespace API.Mapping
     {
         public void Register(TypeAdapterConfig config)
         {
-
             config.NewConfig<GoogleAuthRequest, GoogleLoginCommand>()
                   .Map(dest => dest.authCode, src => src.AuthCode);
 
             config.NewConfig<string, GoogleRefreshQuery>()
-                  .Map(dest => dest.jwt, src => src);
-
+                  .MapWith(dest => new GoogleRefreshQuery(dest));
 
             config.NewConfig<GoogleAuthenticationResult, AuthenticationResponse>()
                   .Map(dest => dest.Name, src => src.name)

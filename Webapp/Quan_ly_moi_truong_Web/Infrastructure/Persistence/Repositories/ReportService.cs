@@ -105,8 +105,8 @@ namespace Infrastructure.Persistence.Repositories
             foreach (var message in response.Messages)
             {
                 // check if report id is in db
-                if (ReportExist(message.Id))
-                {
+/*                if (ReportExist(message.Id))
+                {*/
                     // Get the details of the message
                     var messageRequest = service.Users.Messages.Get("me", message.Id);
                     var messageDetail = await messageRequest.ExecuteAsync();
@@ -120,8 +120,8 @@ namespace Infrastructure.Persistence.Repositories
                     };
 
                     reportFormats.Add(reportFormat);
-                }
-            }
+/*                }
+*/            }
 
             return reportFormats;
         }

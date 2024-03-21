@@ -1,5 +1,4 @@
 ﻿using Domain.Entities.Cultivar;
-using Domain.Entities.Street;
 using System.Runtime.Serialization;
 
 namespace Domain.Entities.Tree
@@ -14,9 +13,12 @@ namespace Domain.Entities.Tree
         public string TreeCode { get; set; }
 
         [DataMember]
-        public Guid StreetId { get; set; }
+        public string TreeLocation { get; set; }
 
-        public virtual Streets? Streets { get; set; }
+        //[DataMember]
+        //public Guid StreetId { get; set; }
+
+        //public virtual Streets? Streets { get; set; }
 
         [DataMember]
         public float BodyDiameter { get; set; }

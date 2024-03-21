@@ -19,6 +19,9 @@ namespace Infrastructure.Persistence.Configuration
             builder.Property(tree => tree.TreeCode)
                    .HasMaxLength(50)
                    .IsRequired();
+            builder.Property(tree => tree.TreeLocation)
+                   .HasMaxLength(50)
+                   .IsRequired();
             builder.Property(tree => tree.BodyDiameter)
                    .IsRequired();
             builder.Property(tree => tree.LeafLength)
@@ -41,7 +44,7 @@ namespace Infrastructure.Persistence.Configuration
             {
                 TreeId = Guid.Parse("24b2ee45-d7c3-4cc7-9fac-406b4bac1d82"),
                 TreeCode = "12_HL_HH_NHS",
-                StreetId = Guid.Parse("0c0187dc-c7e2-4aa9-ae35-a5e2d60dfa24"),
+                TreeLocation = "18 Nam Kỳ Khởi Nghĩa, Quận Ngũ hành sơn",
                 BodyDiameter = 30,
                 LeafLength = 50,
                 PlantTime = DateTime.Now,

@@ -39,9 +39,8 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                 if (payload != null)
                 {
                     //Check if user is exist in DB
-/*                    if (userRepository.GetById(payload.Subject) == null)
-                        return Errors.Authentication.InvalidCredentials;*/
-
+                    if (userRepository.GetById(payload.Subject) == null)
+                        return Errors.Authentication.InvalidCredentials;
 
                     //Kiểm tra hạn của id token
                     DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
@@ -51,7 +50,7 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
 
                         System.Diagnostics.Debug.WriteLine("tkn " + token);
 
-                       /* var refreshToken = new UserRefreshTokens
+                        var refreshToken = new UserRefreshTokens
                         {
                             UserRefreshTokenId = new Guid(),
                             UserId = payload.Subject,
@@ -60,7 +59,7 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                         };
 
                         //Save refresh token to DB
-                        userRefreshTokenRepository.AddRefreshRoken(refreshToken);*/
+                        userRefreshTokenRepository.AddRefreshRoken(refreshToken);
 
                         return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, token);
                     }
