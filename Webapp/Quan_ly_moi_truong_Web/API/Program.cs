@@ -35,12 +35,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandler("/error");
-app.UseCors("AllowAllHeaders");
+
 app.UseHttpsRedirection();
 
 app.UseRouting();
 
 app.UseSession();
+app.UseCors("AllowAllHeaders");
 
 app.UseAuthentication();
 app.UseAuthorization();
