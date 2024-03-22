@@ -15,3 +15,5 @@ export const STREET_LIST = "Street/Get"
 export const LOGIN = "/auth/google"
 
 export const ROUTE_LIST =  "/Street/Get"
+export const REPORT_LIST =  "/Report/GetAllReports"
+
