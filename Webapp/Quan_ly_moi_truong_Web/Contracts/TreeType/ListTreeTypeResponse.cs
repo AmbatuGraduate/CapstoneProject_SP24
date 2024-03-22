@@ -2,6 +2,7 @@
 {
     public record ListTreeTypeResponse
     (
+        Guid TreeTypeId,
         string TreeTypeName
     );
 }
