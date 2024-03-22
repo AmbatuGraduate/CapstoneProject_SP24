@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./top.scss";
 
 // imported Icon
@@ -6,39 +6,32 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { useCookies } from "react-cookie";
 import { ImProfile } from "react-icons/im";
 import { MdLogout } from "react-icons/md";
+import { user } from "../../utils";
 
 const Top = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const u = user();
+  const [, , removeCookie] = useCookies(["accessToken"]);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
   const [token/*, setToken*/] = useCookies(["accessToken"]);
   const LogOut = async () => {
-    await fetch("https://localhost:7024/api/auth/googlelogout", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token.accessToken}`,
-      },
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json(); // This returns a Promise
-        } else {
-          console.error("Failed to get events:", res.statusText);
-          // Handle authentication failure
-        }
-      })
-      .then((events) => {
-        // This block will be executed after the Promise resolves
-        console.log("Events:", events);
-        // Do something with the events
-      })
-      .catch((error) => {
-        console.log(error);
-        // Handle errors here
+    try {
+      await fetch("https://localhost:7024/api/auth/googlelogout", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token.accessToken}`,
+        },
       });
+
+      removeCookie("accessToken"); // Xóa cookie khi đăng xuất thành công
+    } catch (error) {
+      console.log(error);
+      // Xử lý lỗi
+    }
   };
 
   return (
@@ -46,7 +39,7 @@ const Top = () => {
       <div className="headerSection flex">
         <div className="title">
           <h1>Chào mừng tới với Ambatu</h1>
-          <p>Xin chào Thăng</p>
+          <p>Xin chào {u?.name}</p>
         </div>
         <div className="adminDiv flex">
           <IoNotificationsOutline className="icon" />
