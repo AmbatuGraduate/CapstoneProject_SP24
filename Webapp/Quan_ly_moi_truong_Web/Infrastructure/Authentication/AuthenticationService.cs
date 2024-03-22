@@ -24,6 +24,9 @@ namespace Infrastructure.Authentication
                                              "https://www.googleapis.com/auth/userinfo.profile",
                                              "https://www.googleapis.com/auth/admin.directory.user.readonly",
                                              "https://mail.google.com/",
+                                             "https://www.googleapis.com/auth/gmail.readonly",
+                                             "https://www.googleapis.com/auth/gmail.compose",
+                                             "https://www.googleapis.com/auth/gmail.labels",
                                              "https://www.googleapis.com/auth/gmail.send",
                                              "openid", "profile", "email"};
         private string[] mobileScopes = { "https://www.googleapis.com/auth/calendar" ,
