@@ -98,7 +98,7 @@ export default function TaskDetails({ route }) {
 
     return (
         <LinearGradient
-            colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
+            colors={['rgba(197, 252, 234, 0.5)', 'lightgray']}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
             style={styles.content}
@@ -180,18 +180,17 @@ const styles = StyleSheet.create({
     img: {
         width: '100%',
         height: 200,
-        borderWidth: 1,
-        borderColor: "gray"
+
     },
     detailsContainer: {
         marginTop: 10,
         padding: 4,
         paddingHorizontal: 20,
         marginBottom: 5,
-        backgroundColor: 'white',
+        backgroundColor: 'whitesmoke',
         borderRadius: 10,
         borderWidth: 1,
-        borderColor: '#rgb(196,252,234)',
+        borderColor: 'skyblue',
     },
     nameText: {
         fontSize: 18,

@@ -21,22 +21,30 @@ namespace Application.Report.Commands.Create
         {
             await Task.CompletedTask;
 
+            var reportDbId = Guid.NewGuid().ToString();
             ReportFormat createReport = new ReportFormat
             {
+                Id = reportDbId,
                 AccessToken = request.AccessToken,
                 IssuerEmail = request.IssuerEmail,
                 ReportSubject = request.ReportSubject,
-                ReportBody = request.ReportBody
+                ReportBody = request.ReportBody,
+                ExpectedResolutionDate = request.ExpectedResolutionDate,
+                ReportImpact = request.ReportImpact
             };
 
             // add to google
             var reportResult = await reportRepository.CreateReport(createReport);
 
             // add to db
+           
             reportRepository.AddReport(new Reports
             {
-                ReportId = reportResult.Id,
+                ReportId = reportDbId,
                 IssuerGmail = request.IssuerEmail,
+                ReportImpact = request.ReportImpact,
+                ExpectedResolutionDate = request.ExpectedResolutionDate,
+                ResponseId = "",
             });
 
             return new ReportFormatRecord(reportResult);

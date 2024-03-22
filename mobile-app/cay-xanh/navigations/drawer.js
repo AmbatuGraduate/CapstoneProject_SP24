@@ -97,8 +97,8 @@ function Routes() {
                 // local test: http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}
                 // server: 'https://192.168.1.7/api/auth/RefreshMobile?refreshToken=${refreshToken}'
 
-                // const response = await axios.get(`http://192.168.1.7:45455/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
-                const response = await api.get(`http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+                const response = await axios.get(`http://192.168.1.7:45455/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+                // const response = await api.get(`http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
                 const newTokenData = response.data.value;
                 // Update the user data with the new token
                 const updatedUser = {
@@ -169,7 +169,7 @@ function Routes() {
                 <Drawer.Screen
                     name="Logout"
                     options={{
-                        drawerLabel: 'Logout',
+                        drawerLabel: 'Đăng xuất',
                         drawerIcon: ({ color, size }) => (
                             <Icon name="logout" color="#ff6b9b" size={size} />
                         ),

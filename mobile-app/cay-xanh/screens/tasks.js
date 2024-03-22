@@ -167,7 +167,7 @@ export default function TasksList({ navigation }) {
                             {/* <Text style={styles.itemText}>Loai Cay: {item.type}</Text>
                         <Text style={styles.itemText}>Dia chi: {item.street}</Text> */}
                             <View style={styles.itemContainer}>
-                                <Text style={styles.itemLabel}>{item.summary}</Text>
+                                <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>{item.summary}</Text>
                             </View>
                             <View style={styles.itemContainer}>
                                 <Text style={styles.itemText}>{item.location}</Text>
@@ -256,13 +256,14 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     itemLabel: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'nunito-regular',
         fontWeight: 'bold',
         letterSpacing: 1,
+        flex: 0.75,
     },
     itemText: {
-        fontSize: 16,
+        fontSize: 14,
         flex: 0.75,
     },
     emptyContainer: {

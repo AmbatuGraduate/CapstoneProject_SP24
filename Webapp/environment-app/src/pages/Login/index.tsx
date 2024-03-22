@@ -48,7 +48,7 @@ export const Login = () => {
     onSuccess: handleSuccess,
     flow: "auth-code",
     scope:
-      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/userinfo.profile openid profile email https://mail.google.com/ https://www.googleapis.com/auth/gmail.send",
+      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/userinfo.profile openid profile email https://mail.google.com/ https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.compose",
   });
 
   const refreshHandler = () => {

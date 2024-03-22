@@ -3,6 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Icon } from '@rneui/themed';
 
 
 // --------------------------------------------------------------------------------------------
@@ -10,6 +11,7 @@ export default function Report({ navigation }) {
 
     const [reports, setReports] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const [transformedData, setTransformedData] = useState({});
 
 
     // get reports from the server
@@ -32,6 +34,7 @@ export default function Report({ navigation }) {
                             }
                         })
                         .then((json) => {
+                            console.log('json', JSON.stringify(json));
                             const jsonReports = json.value.map(item => {
                                 const report = {
                                     ...item.reportFormat,
@@ -65,8 +68,51 @@ export default function Report({ navigation }) {
         return unsubscribe;
     }, [navigation]);
 
+    useEffect(() => {
+        if (Array.isArray(reports)) {
+            const data = {};
+            reports.forEach(item => {
+                const [date, time] = item.expectedResolutionDate.split("T");
+                const currentDate = date;
+                if (!data[currentDate]) {
+                    data[currentDate] = [];
+                }
+                data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
+            });
+            setTransformedData(data);
+        }
+    }, [reports]);
+
+    const impactLevels = {
+        0: 'Low',
+        1: 'Medium',
+        2: 'High'
+    };
+    const impactColors = {
+        0: '#ADF35B',
+        1: 'orange',
+        2: 'red'
+    };
+
+    function formatDate(dateString) {
+        const months = [
+            'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+            'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+        ];
+        const date = new Date(dateString);
+        return `${date.getDate()} ${months[date.getMonth()]} năm ${date.getFullYear()}`;
+    }
+
+
     // render reports
     const renderReports = () => {
+        if (reports.length === 0) {
+            return (
+                <View style={styles.emptyContainer}>
+                    <Text style={styles.emptyText}>Chưa có báo cáo nào</Text>
+                </View>
+            );
+        }
         return (
             <LinearGradient
                 colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
@@ -86,21 +132,30 @@ export default function Report({ navigation }) {
                             }}
                         >
                             <View style={styles.itemContainer}>
-                                <Text style={styles.itemLabel}>{item.id}</Text>
+                                <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>
+                                    {item.reportSubject}
+                                </Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Icon style={{ marginRight: 5 }} name="warning" type="Ionicons" size={16} color={impactColors[item.reportImpact]} />
+                                    <Icon name="chevron-right" size={18} color="grey" />
+                                </View>
+
                             </View>
                             <View style={styles.itemContainer}>
-                                <Text style={styles.itemText}>{item.reportSubject}</Text>
+                                <Text style={styles.itemTextSmall}>{item.reportStatus}</Text>
                             </View>
                             <View style={styles.itemContainer}>
-                                <Text style={styles.itemText}>{item.reportBody}</Text>
+                                <Text style={styles.itemText}>Cần giải quyết trước: </Text>
                             </View>
                             <View style={styles.itemContainer}>
-                                <Text style={styles.itemText}>{item.reportStatus}</Text>
+                                <Text style={styles.itemTextSmall}>{formatDate(item.expectedResolutionDate)}</Text>
                             </View>
                         </TouchableOpacity>
                     )}
                 />
+
             </LinearGradient>
+
         );
     }
 
@@ -112,11 +167,51 @@ export default function Report({ navigation }) {
             ) : (
                 renderReports()
             )}
+            <TouchableOpacity
+                style={styles.filterFab}
+                onPress={() => {
+                    // handle press
+                }}
+            >
+                <Icon name="filter" size={30} color="#FFF" />
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.fab}
+                onPress={() => {
+                    // handle press
+                }}
+            >
+                <Icon name="add" size={30} color="#FFF" />
+            </TouchableOpacity>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    filterFab: {
+        position: 'absolute',
+        width: 56,
+        height: 56,
+        alignItems: 'center',
+        justifyContent: 'center',
+        left: 20,
+        bottom: 20,
+        backgroundColor: '#03A9F4',
+        borderRadius: 30,
+        elevation: 8
+    },
+    fab: {
+        position: 'absolute',
+        width: 56,
+        height: 56,
+        alignItems: 'center',
+        justifyContent: 'center',
+        right: 20,
+        bottom: 20,
+        backgroundColor: '#03A9F4',
+        borderRadius: 30,
+        elevation: 8
+    },
     modelContent: {
         flex: 1,
         justifyContent: 'center',
@@ -146,15 +241,33 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'row',
         marginBottom: 5,
+        justifyContent: 'space-between',
     },
     itemLabel: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'nunito-regular',
         fontWeight: 'bold',
-        letterSpacing: 1,
+        flex: 0.75
+    },
+    itemTextSmall: {
+        fontSize: 14,
     },
     itemText: {
-        fontSize: 16,
+        fontSize: 13,
         flex: 0.75,
+        color: 'gray'
+    },
+    emptyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f2f2f2',
+        padding: 20,
+    },
+    emptyText: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: '#999',
+        textAlign: 'center',
     },
 })
