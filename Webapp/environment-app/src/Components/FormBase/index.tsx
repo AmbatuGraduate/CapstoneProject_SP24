@@ -4,7 +4,6 @@ import { useApi } from "../../Api";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./style.scss";
-import { log } from "console";
 
 export type Field = {
   label: string;
@@ -106,14 +105,14 @@ export const FormBase = (props: Props) => {
 
       case "date":
         return (
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              // className="datepicker"
-              name={key}
-              disabled={_disabled}
-              dateFormat="dd/MM/yyyy"
-            />
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            className="datepicker"
+            name={key}
+            disabled={_disabled}
+            dateFormat="dd/MM/yyyy"
+          />
         );
       default:
         return (

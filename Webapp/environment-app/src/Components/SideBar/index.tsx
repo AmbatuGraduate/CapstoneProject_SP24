@@ -21,9 +21,8 @@ const Sidebar = () => {
       <hr className="line" />
       <div className="menuDiv p-0">
         <ul className="menuLists grid">
-
           <li className="listItem">
-            <NavLink to="/" className="menuLink flex">
+            <NavLink to="manage-report" className="menuLink flex">
               <TbLayoutDashboard className="icon" />
               <span className="smallText d-none d-md-inline ">
                 Quản lý báo cáo
@@ -59,7 +58,7 @@ const Sidebar = () => {
           </li>
 
           <li className="listItem">
-            <NavLink to="/" className="menuLink flex">
+            <NavLink to="/manage-clean-schedule" className="menuLink flex">
               <FaTreeCity className="icon" />
               <span className="smallText d-none d-md-inline">
                 Quản lý lịch vệ sinh đô thị

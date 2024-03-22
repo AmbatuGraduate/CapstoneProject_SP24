@@ -23,7 +23,10 @@
     font-weight: 600;
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 30px;
+    margin-top: 40px;
+    justify-content: space-evenly;
+    align-items: center;
     >div {
         width: 400px;
     }
@@ -32,7 +35,14 @@
     }
     button {
         min-width: 100px;
-        margin-right: 10px;
+        margin-right: 50px;
+        float: right;
+    }
+    input {
+        height: 50px;
+    }
+    input:hover{
+        box-shadow: 0 0 5px rgba(0, 128, 0, 0.5);
     }
 }
 
@@ -41,6 +51,7 @@
     padding: 24px;
     border-radius: 16px;
     min-height: calc(100vh - 150px);
+    box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
     h4 {
         border-bottom: 1px solid rgb(212, 212, 212);
         padding-bottom: 12px;
