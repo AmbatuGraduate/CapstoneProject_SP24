@@ -2,17 +2,20 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TREE_DETAIL, useApi } from "../../Api";
 import { dayFormat } from "../../utils";
-import "./style.scss"
+import "./style.scss";
 import { ClipLoader } from "react-spinners";
+import { Button } from "react-bootstrap";
 
 export const DetailTree = () => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
+  const handleNavigate = () => {
+    navigate("/manage-tree");
+  };
 
   useEffect(() => {
-    
     const fetchData = async () => {
       try {
         const response = await useApi.get(TREE_DETAIL.replace(":id", id));
@@ -35,40 +38,63 @@ export const DetailTree = () => {
       size={60}
     />
   ) : (
-    <div>
+    <div className="form-cover">
       <div className="main-layout">
-        <div className="tree-detail-img">
+        {/* <div className="tree-detail-img">
           <img src="/assets/imgs/imgcondau4.jpg" alt="Admin Image" />
-        </div>
+        </div> */}
         <div className="tree-detail-content">
           <div className="tree-detail-content-parent">
             <div className="tree-detail-content-child-label">Mã số cây: </div>
-            <div className="tree-detail-content-child-value">{data?.treeCode}</div>
+            <div className="tree-detail-content-child-value">
+              {data?.treeCode}
+            </div>
           </div>
           <div className="tree-detail-content-parent">
             <div className="tree-detail-content-child-label">Tên đường: </div>
-            <div className="tree-detail-content-child-value">{data?.streetName}</div>
+            <div className="tree-detail-content-child-value">
+              {data?.streetName}
+            </div>
           </div>
           <div className="tree-detail-content-parent">
             <div className="tree-detail-content-child-label">Giống cây: </div>
-            <div className="tree-detail-content-child-value">{data?.cultivar}</div>
+            <div className="tree-detail-content-child-value">
+              {data?.cultivar}
+            </div>
           </div>
           <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Đường kính thân: </div>
-            <div className="tree-detail-content-child-value">{data?.bodyDiameter}</div>
+            <div className="tree-detail-content-child-label">
+              Đường kính thân:{" "}
+            </div>
+            <div className="tree-detail-content-child-value">
+              {data?.bodyDiameter}
+            </div>
           </div>
           <div className="tree-detail-content-parent">
             <div className="tree-detail-content-child-label">Tán lá: </div>
-            <div className="tree-detail-content-child-value">{data?.leafLength}</div>
+            <div className="tree-detail-content-child-value">
+              {data?.leafLength}
+            </div>
           </div>
           <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Thời điểm trồng: </div>
-            <div className="tree-detail-content-child-value">{dayFormat(data?.plantTime)}</div>
+            <div className="tree-detail-content-child-label">
+              Thời điểm trồng:{" "}
+            </div>
+            <div className="tree-detail-content-child-value">
+              {dayFormat(data?.plantTime)}
+            </div>
           </div>
           <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Thời điểm cắt: </div>
-            <div className="tree-detail-content-child-value">{dayFormat(data?.cutTime)}</div>
+            <div className="tree-detail-content-child-label">
+              Thời điểm cắt:{" "}
+            </div>
+            <div className="tree-detail-content-child-value">
+              {dayFormat(data?.cutTime)}
+            </div>
           </div>
+          <Button className="btn-back" variant="danger" onClick={handleNavigate}>
+            Trở về
+          </Button>
         </div>
       </div>
     </div>

@@ -10,7 +10,7 @@
             width: 350px;
             height: 500px;
             border-radius: 15px;
-            box-shadow: rgb(189, 240, 148) 5px 5px 18px 4px;
+            box-shadow: rgb(214, 207, 212) 5px 5px 18px 4px;
         }
     }
 
@@ -30,5 +30,13 @@
                 font-weight: 1000;
             }
         }
+    }
+    .btn-back {
+        width: 100px;
+        height: 40px;
+        margin-right: 10px;
+        font-size: var(--normalFontSize);
+        font-family: "Nunito", sans-serif;
+        font-weight: bold;
     }
 }
