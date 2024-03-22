@@ -8,6 +8,8 @@ import { CreateTree } from "./pages/ManageTree/Create";
 import { DetailTree } from "./pages/ManageTree/Detail";
 import { UpdateTree } from "./pages/ManageTree/Update";
 import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
+import { ManageReport } from "./pages/ManageReport";
+import { ManageCleanSchedule } from "./pages/ManageCleanSchedule";
 
 function App() {
   const router = createBrowserRouter([
@@ -42,6 +44,14 @@ function App() {
         {
           path: "manage-treetrim-schedule",
           element: <ManageTreeTrimSchedule />,
+        },
+        {
+          path: "manage-report",
+          element: <ManageReport />,
+        },
+        {
+          path: "manage-clean-schedule",
+          element: <ManageCleanSchedule />,
         },
       ],
     },
