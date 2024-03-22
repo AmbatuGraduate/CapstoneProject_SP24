@@ -14,6 +14,8 @@ using Application.Calendar.TreeCalendar.Commands.Delete;
 using Application.Calendar.TreeCalendar.Queries.GetByAttendeeId;
 using Domain.Enums;
 using Application.Calendar.TreeCalendar.Commands.UpdateJobStatus;
+using Application.GoogleAuthentication.Queries.GoogleAccessToken;
+using Application.GoogleAuthentication.Common;
 
 namespace API.Controllers
 {
@@ -39,11 +41,13 @@ namespace API.Controllers
         }
 
         // get google calendar events
-        [HttpGet("{token}")]
-        public async Task<IActionResult> GetCalendarEvents(string token)
+        [HttpGet()]
+        public async Task<IActionResult> GetAllCalendarEvents()
         {
-            System.Diagnostics.Debug.WriteLine("token: " + token);
-            ErrorOr<List<MyEventResult>> list = await mediator.Send(new ListTreeCalendarQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+            var jwt = Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("token: " + jwt);
+            ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+            ErrorOr<List<MyEventResult>> list = await mediator.Send(new ListTreeCalendarQuery(token.Value.accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -53,10 +57,12 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> GetCalendarEventsByAttendeeEmail(string token, string attendeeEmail)
+        public async Task<IActionResult> GetCalendarEventsByAttendeeEmail(string attendeeEmail)
         {
-            System.Diagnostics.Debug.WriteLine("token: " + token);
-            ErrorOr<List<MyEventResult>> list = await mediator.Send(new GetByAttendeeEmailQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", attendeeEmail));
+            var jwt = Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("token: " + jwt);
+            ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+            ErrorOr<List<MyEventResult>> list = await mediator.Send(new GetByAttendeeEmailQuery(token.Value.accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", attendeeEmail));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -66,9 +72,12 @@ namespace API.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> AddCalendarEvent(string token, MyAddedEvent? myEvent)
+        public async Task<IActionResult> AddCalendarEvent(MyAddedEvent? myEvent)
         {
-            ErrorOr<MyAddedEventResult> list = await mediator.Send(new AddCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent));
+            var jwt = Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("token: " + jwt);
+            ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+            ErrorOr<MyAddedEventResult> list = await mediator.Send(new AddCalendarCommand(token.Value.accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -78,9 +87,12 @@ namespace API.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> UpdateCalendarEvent(string token, MyUpdatedEvent? myEvent, string eventId)
+        public async Task<IActionResult> UpdateCalendarEvent(MyUpdatedEvent? myEvent, string eventId)
         {
-            ErrorOr<MyUpdatedEventResult> list = await mediator.Send(new UpdateCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent, eventId));
+            var jwt = Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("token: " + jwt);
+            ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+            ErrorOr<MyUpdatedEventResult> list = await mediator.Send(new UpdateCalendarCommand(token.Value.accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent, eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -90,9 +102,12 @@ namespace API.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> UpdateJobWorkingStatus(string token, JobWorkingStatus jobWorkingStatus, string eventId)
+        public async Task<IActionResult> UpdateJobWorkingStatus(JobWorkingStatus jobWorkingStatus, string eventId)
         {
-            ErrorOr<MyUpdatedJobStatusResult> list = await mediator.Send(new UpdateJobStatusCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", jobWorkingStatus, eventId));
+            var jwt = Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("token: " + jwt);
+            ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+            ErrorOr<MyUpdatedJobStatusResult> list = await mediator.Send(new UpdateJobStatusCommand(token.Value.accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", jobWorkingStatus, eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -102,9 +117,12 @@ namespace API.Controllers
         }
 
         [HttpDelete()]
-        public async Task<IActionResult> DeleteCalendarEvent(string token, string eventId)
+        public async Task<IActionResult> DeleteCalendarEvent(string eventId)
         {
-            ErrorOr<MyDeletedEventResult> list = await mediator.Send(new DeleteCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", eventId));
+            var jwt = Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("token: " + jwt);
+            ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+            ErrorOr<MyDeletedEventResult> list = await mediator.Send(new DeleteCalendarCommand(token.Value.accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
