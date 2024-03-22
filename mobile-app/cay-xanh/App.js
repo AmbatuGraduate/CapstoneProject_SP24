@@ -27,6 +27,7 @@ export default function App() {
         await Font.loadAsync({
           'nunito-regular': require('./assets/fonts/static/NunitoSans_7pt-Regular.ttf'),
           'nunito-bold': require('./assets/fonts/static/NunitoSans_7pt-SemiBold.ttf'),
+          'quolibet': require('./assets/fonts/static/QuodlibetSans-Regular.ttf'),
         });
       } catch (e) {
         console.warn(e);

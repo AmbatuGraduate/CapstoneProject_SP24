@@ -1,4 +1,4 @@
-import { Text, View, Modal, StyleSheet, TouchableOpacity, FlatList } from "react-native";
+import { Text, View, Modal, StyleSheet, TouchableOpacity, FlatList, TextInput } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
 
@@ -12,14 +12,18 @@ export default function Report({ navigation }) {
     const [reports, setReports] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [transformedData, setTransformedData] = useState({});
+    const [filteredReports, setFilteredReports] = useState([]);
 
+    // search
+    const [searchInput, setSearchInput] = useState(''); // search input
 
     // get reports from the server
     const getReports = async () => {
         try {
+            var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('http://192.168.1.7:45455/api/Report/GetReportFormats?accessToken=' + atoken,
+                    fetch('http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=' + atoken + '&email=' + useremail,
                         {
                             method: 'GET',
                             headers: {
@@ -34,7 +38,6 @@ export default function Report({ navigation }) {
                             }
                         })
                         .then((json) => {
-                            console.log('json', JSON.stringify(json));
                             const jsonReports = json.value.map(item => {
                                 const report = {
                                     ...item.reportFormat,
@@ -83,6 +86,16 @@ export default function Report({ navigation }) {
         }
     }, [reports]);
 
+
+    // search
+    useEffect(() => {
+        if (searchInput === '') {
+            setFilteredReports(reports);
+        } else {
+            setFilteredReports(reports.filter(report => report.reportSubject.toLowerCase().includes(searchInput.toLowerCase())));
+        }
+    }, [searchInput, reports]);
+
     const impactLevels = {
         0: 'Low',
         1: 'Medium',
@@ -114,47 +127,48 @@ export default function Report({ navigation }) {
             );
         }
         return (
-            <LinearGradient
-                colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-            >
-                <FlatList
-                    data={reports}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={styles.records}
-                            onPress={() => {
-                                navigation.navigate('ReportDetails', {
-                                    reportId: item.id,
-                                });
-                            }}
-                        >
-                            <View style={styles.itemContainer}>
-                                <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>
-                                    {item.reportSubject}
-                                </Text>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <Icon style={{ marginRight: 5 }} name="warning" type="Ionicons" size={16} color={impactColors[item.reportImpact]} />
-                                    <Icon name="chevron-right" size={18} color="grey" />
-                                </View>
 
+            <FlatList
+                data={filteredReports}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <TouchableOpacity
+                        style={styles.records}
+                        onPress={() => {
+                            navigation.navigate('ReportDetails', {
+                                reportId: item.id,
+                                reportBody: item.reportBody,
+                                reportSubject: item.reportSubject,
+                                reportImpact: item.reportImpact,
+                                reportStatus: item.reportStatus,
+                                reportResponse: item.reportResponse,
+                                expectedResolutionDate: formatDate(item.expectedResolutionDate),
+                            });
+                        }}
+                    >
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>
+                                {item.reportSubject}
+                            </Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Icon style={{ marginRight: 5 }} name="warning" type="Ionicons" size={16} color={impactColors[item.reportImpact]} />
+                                <Icon name="chevron-right" size={18} color="grey" />
                             </View>
-                            <View style={styles.itemContainer}>
-                                <Text style={styles.itemTextSmall}>{item.reportStatus}</Text>
-                            </View>
-                            <View style={styles.itemContainer}>
-                                <Text style={styles.itemText}>Cần giải quyết trước: </Text>
-                            </View>
-                            <View style={styles.itemContainer}>
-                                <Text style={styles.itemTextSmall}>{formatDate(item.expectedResolutionDate)}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                />
 
-            </LinearGradient>
+                        </View>
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemTextSmall}>{item.reportStatus}</Text>
+                        </View>
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemText}>Cần giải quyết trước: </Text>
+                        </View>
+                        <View style={styles.itemContainer}>
+                            <Text style={styles.itemTextSmall}>{formatDate(item.expectedResolutionDate)}</Text>
+                        </View>
+                    </TouchableOpacity>
+                )}
+            />
+
 
         );
     }
@@ -162,19 +176,40 @@ export default function Report({ navigation }) {
     // --------------------------------------------------------------------------------------------
     return (
         <View style={{ flex: 1 }}>
-            {isLoading ? (
-                <Text>Loading...</Text>
-            ) : (
-                renderReports()
-            )}
-            <TouchableOpacity
-                style={styles.filterFab}
-                onPress={() => {
-                    // handle press
-                }}
+            <LinearGradient
+                colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
             >
-                <Icon name="filter" size={30} color="#FFF" />
-            </TouchableOpacity>
+                <View style={styles.searchContainer}>
+                    {/* filter button */}
+                    <TouchableOpacity
+                        style={styles.filterButton}
+                        onPress={() => {
+                            // handle press
+                        }}
+                    >
+                        <Icon name="filter" type="font-awesome" size={24} color="#333" />
+                    </TouchableOpacity>
+
+                    {/* search input */}
+                    <View style={styles.searchInput}>
+                        <Icon name="search" size={20} color="grey" />
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Tìm kiếm..."
+                            onChangeText={text => setSearchInput(text)}
+                        />
+                    </View>
+                </View>
+                {isLoading ? (
+                    <Text>Loading...</Text>
+                ) : (
+
+                    renderReports()
+                )}
+
+            </LinearGradient>
             <TouchableOpacity
                 style={styles.fab}
                 onPress={() => {
@@ -184,21 +219,40 @@ export default function Report({ navigation }) {
                 <Icon name="add" size={30} color="#FFF" />
             </TouchableOpacity>
         </View>
+
     );
 }
 
 const styles = StyleSheet.create({
-    filterFab: {
-        position: 'absolute',
-        width: 56,
-        height: 56,
+    searchContainer: {
+        width: '94%',
+        alignSelf: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginVertical: 10,
+        paddingHorizontal: 10,
+
+    },
+    filterButton: {
+        marginRight: 5,
+        borderRadius: 8,
+        width: 32,
+        height: 32,
         alignItems: 'center',
         justifyContent: 'center',
-        left: 20,
-        bottom: 20,
-        backgroundColor: '#03A9F4',
+    },
+    searchInput: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingLeft: 10,
+        backgroundColor: '#FFF',
         borderRadius: 30,
-        elevation: 8
+    },
+    input: {
+        flex: 1,
+        marginLeft: 10,
     },
     fab: {
         position: 'absolute',

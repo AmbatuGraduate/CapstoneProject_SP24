@@ -15,8 +15,8 @@ function ReportStackRouting() {
             </Stack.Screen>
             <Stack.Screen name="ReportDetails" component={ReportDetails}
                 options={{
-                    title: 'Chi tiết báo cáo đã gửi',
-                    headerTintColor: 'palegreen'
+                    title: 'Chi tiết báo cáo',
+                    headerTintColor: 'green'
                 }}>
             </Stack.Screen>
         </Stack.Navigator>
