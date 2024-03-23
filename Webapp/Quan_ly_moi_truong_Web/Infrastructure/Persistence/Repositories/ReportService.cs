@@ -191,70 +191,77 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<List<ReportFormat>> GetReportsByUser(string accessToken, string gmail)
         {
-            var credential = GoogleCredential.FromAccessToken(accessToken);
-            var service = _gmailServiceFactory(credential);
-
-            // Create a request to get report (subject)
-            var request = service.Users.Messages.List("me");
-            request.Q = "subject:Report";
-            // get the response
-            var response = await request.ExecuteAsync();
-
-            var reportFormats = new List<ReportFormat>();
-
-            // get matching email
-            List<Reports> list = GetReportsByUser(gmail);
-            var listIndex = 0;
-
-            foreach (var message in response.Messages)
+            try
             {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _gmailServiceFactory(credential);
 
-                // get the details of the message
-                var messageRequest = service.Users.Messages.Get("me", message.Id);
-                var messageDetail = await messageRequest.ExecuteAsync();
+                // Create a request to get report (subject)
+                var request = service.Users.Messages.List("me");
+                request.Q = "subject:Report";
+                // get the response
+                var response = await request.ExecuteAsync();
 
-                // extract id from body
-                var base64Url = messageDetail.Payload.Body.Data;
-                var base64 = base64Url.Replace('-', '+').Replace('_', '/');
-                var bodyBytes = Convert.FromBase64String(base64);
-                var body = Encoding.UTF8.GetString(bodyBytes);
+                var reportFormats = new List<ReportFormat>();
 
-                var reportID = list[listIndex].ReportId;
-                // get report from db
-                var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == reportID);
+                // get matching email
+                List<Reports> list = GetReportsByUser(gmail);
 
-                // report format
-                var issuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value;
-
-                if (issuerEmail == gmail)
+                if (list.Count == 0)
                 {
-                    var reportFormat = new ReportFormat
+                    return reportFormats;
+                }
+                var listIndex = 0;
+
+                foreach (var message in response.Messages)
+                {
+
+                    // get the details of the message
+                    var messageRequest = service.Users.Messages.Get("me", message.Id);
+                    var messageDetail = await messageRequest.ExecuteAsync();
+
+                    // extract id from body
+                    var base64Url = messageDetail.Payload.Body.Data;
+                    var base64 = base64Url.Replace('-', '+').Replace('_', '/');
+                    var bodyBytes = Convert.FromBase64String(base64);
+                    var body = Encoding.UTF8.GetString(bodyBytes);
+
+                    var reportIDMatch = Regex.Match(body, @"Report ID: (.*)");
+                    var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
+
+                    // get report from db
+                    var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == reportID);
+
+                    if (reportDb != null && reportDb.IssuerGmail == gmail)
                     {
-                        Id = reportID,
-                        IssuerEmail = issuerEmail,
-                        ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
-                        ReportBody = body,
-                        ReportStatus = reportDb.Status.ToString(),
-                        ReportImpact = reportDb.ReportImpact,
-                        ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
-                        ReportResponse = reportDb.ResponseId
-                    };
+                        var reportFormat = new ReportFormat
+                        {
+                            Id = reportID,
+                            IssuerEmail = gmail,
+                            ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
+                            ReportBody = body,
+                            ReportStatus = reportDb.Status.ToString(),
+                            ReportImpact = reportDb.ReportImpact,
+                            ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
+                            ReportResponse = reportDb.ResponseId
+                        };
 
-                    reportFormats.Add(reportFormat);
-                    listIndex++;
-                } else
-                {
-                    continue;
-                }
+                        reportFormats.Add(reportFormat);
+                        listIndex++;
+                    }
 
-                if (listIndex == list.Count)
-                {
-                    break;
+                    if (listIndex == list.Count)
+                    {
+                        break;
+                    }
+
                 }
-               
+                return reportFormats;
             }
-
-            return await Task.FromResult(reportFormats);
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         public Task<ReportFormat> ReponseReport(ReportFormat reportFormat)

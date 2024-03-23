@@ -4,7 +4,6 @@ import FlatButton from "../shared/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
 import { Icon } from '@rneui/themed';
-import { LinearGradient } from 'expo-linear-gradient';
 
 
 /*************************************************************
@@ -141,8 +140,17 @@ export default function TaskDetails({ route }) {
                 <Toast />
 
             </ScrollView>
-            <FlatButton style={{
-            }} text='Hoàn thành' iconName="check" onPress={() => updateStatus()}></FlatButton>
+            {
+                updatedStatus !== 'Done' &&
+                <FlatButton style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    width: '100%',
+                    backgroundColor: '#2282F3',
+                    borderRadius: 0,
+                }} text='Hoàn thành' iconName="check" onPress={() => updateStatus()}></FlatButton>
+            }
+
         </View>
     );
 }

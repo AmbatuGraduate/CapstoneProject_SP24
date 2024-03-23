@@ -1,24 +1,48 @@
-import { Text, View, Modal, StyleSheet, TouchableOpacity, FlatList, TextInput } from "react-native";
+import { Text, View, Modal, StyleSheet, TouchableOpacity, FlatList, TextInput, ActivityIndicator } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
-
+import Header from '../shared/header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Icon } from '@rneui/themed';
+import ReportForm from "./reportForm";
+import Toast from 'react-native-toast-message';
+
 
 
 // --------------------------------------------------------------------------------------------
 export default function Report({ navigation }) {
 
+    // states
     const [reports, setReports] = useState([]);
     const [isLoading, setLoading] = useState(true);
     const [transformedData, setTransformedData] = useState({});
     const [filteredReports, setFilteredReports] = useState([]);
 
+
+    const [modalOpen, setModalOpen] = useState(false); // modal open/close
     // search
     const [searchInput, setSearchInput] = useState(''); // search input
 
+    // data refresh
+    const [data, setData] = useState([]);
+
+    const refreshData = async () => {
+        await getReports();
+        setModalOpen(false);
+        Toast.show({
+            type: 'success',
+            text1: 'Thành công',
+            text2: 'Gửi báo cáo thành công!',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: 30,
+            bottomOffset: 40,
+        });
+    };
+
     // get reports from the server
     const getReports = async () => {
+        setLoading(true);
         try {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             AsyncStorage.getItem("@accessToken").then(atoken => {
@@ -45,6 +69,18 @@ export default function Report({ navigation }) {
                                 return report;
                             });
                             setReports(jsonReports);
+
+                            // Transform data here
+                            const data = {};
+                            jsonReports.forEach(item => {
+                                const [date, time] = item.expectedResolutionDate.split("T");
+                                const currentDate = date;
+                                if (!data[currentDate]) {
+                                    data[currentDate] = [];
+                                }
+                                data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
+                            });
+                            setTransformedData(data);
                         })
                         .catch((error) => {
                             console.log('There has been a problem with fetch operation: ', error.message);
@@ -127,55 +163,59 @@ export default function Report({ navigation }) {
             );
         }
         return (
+            <View style={{ paddingBottom: 100 }}>
+                <FlatList
+                    data={filteredReports}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            style={styles.records}
+                            onPress={() => {
+                                navigation.navigate('ReportDetails', {
+                                    reportId: item.id,
+                                    reportBody: item.reportBody,
+                                    reportSubject: item.reportSubject,
+                                    reportImpact: item.reportImpact,
+                                    reportStatus: item.reportStatus,
+                                    reportResponse: item.reportResponse,
+                                    expectedResolutionDate: formatDate(item.expectedResolutionDate),
+                                });
+                            }}
+                        >
+                            <View style={styles.itemContainer}>
+                                <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>
+                                    {item.reportSubject}
+                                </Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                    <Icon style={{ marginRight: 5 }} name="warning" type="Ionicons" size={16} color={impactColors[item.reportImpact]} />
+                                    <Icon name="chevron-right" size={18} color="grey" />
+                                </View>
 
-            <FlatList
-                data={filteredReports}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        style={styles.records}
-                        onPress={() => {
-                            navigation.navigate('ReportDetails', {
-                                reportId: item.id,
-                                reportBody: item.reportBody,
-                                reportSubject: item.reportSubject,
-                                reportImpact: item.reportImpact,
-                                reportStatus: item.reportStatus,
-                                reportResponse: item.reportResponse,
-                                expectedResolutionDate: formatDate(item.expectedResolutionDate),
-                            });
-                        }}
-                    >
-                        <View style={styles.itemContainer}>
-                            <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>
-                                {item.reportSubject}
-                            </Text>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Icon style={{ marginRight: 5 }} name="warning" type="Ionicons" size={16} color={impactColors[item.reportImpact]} />
-                                <Icon name="chevron-right" size={18} color="grey" />
                             </View>
-
-                        </View>
-                        <View style={styles.itemContainer}>
-                            <Text style={styles.itemTextSmall}>{item.reportStatus}</Text>
-                        </View>
-                        <View style={styles.itemContainer}>
-                            <Text style={styles.itemText}>Cần giải quyết trước: </Text>
-                        </View>
-                        <View style={styles.itemContainer}>
-                            <Text style={styles.itemTextSmall}>{formatDate(item.expectedResolutionDate)}</Text>
-                        </View>
-                    </TouchableOpacity>
-                )}
-            />
-
+                            <View style={styles.itemContainer}>
+                                <Text style={styles.itemTextSmall}>{
+                                    item.reportStatus === 'UnResolved'
+                                        ? <Text style={{ color: 'red', fontWeight: '500' }}>Chưa xử lý</Text>
+                                        : <Text style={{ color: 'green', fontWeight: '500' }}>Đã xử lý</Text>
+                                }</Text>
+                            </View>
+                            <View style={styles.itemContainer}>
+                                <Text style={styles.itemText}>Cần giải quyết trước: </Text>
+                            </View>
+                            <View style={styles.itemContainer}>
+                                <Text style={styles.itemTextSmall}>{formatDate(item.expectedResolutionDate)}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                />
+            </View>
 
         );
     }
 
     // --------------------------------------------------------------------------------------------
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, }}>
             <LinearGradient
                 colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
                 start={{ x: 0, y: 0 }}
@@ -203,9 +243,8 @@ export default function Report({ navigation }) {
                     </View>
                 </View>
                 {isLoading ? (
-                    <Text>Loading...</Text>
+                    <ActivityIndicator size="large" color="lightgreen" />
                 ) : (
-
                     renderReports()
                 )}
 
@@ -213,11 +252,39 @@ export default function Report({ navigation }) {
             <TouchableOpacity
                 style={styles.fab}
                 onPress={() => {
-                    // handle press
+                    setModalOpen(true);
                 }}
             >
                 <Icon name="add" size={30} color="#FFF" />
             </TouchableOpacity>
+
+            {/* modal */}
+            <Modal visible={modalOpen} animationType='slide'>
+                <View style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    paddingHorizontal: 15,
+                    backgroundColor: '#F6F6F6',
+                    paddingVertical: 15,
+                }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            setModalOpen(false);
+                        }}
+                    >
+                        <Icon name="remove" type="font-awesome" size={30} color="#2282F3" />
+                    </TouchableOpacity>
+                    <Text style={styles.modalHeaderText}>Báo cáo vấn đề</Text>
+
+                    <View>
+                    </View>
+
+
+                </View>
+                <ReportForm onFormSuccess={refreshData} />
+
+            </Modal>
+            <Toast />
         </View>
 
     );
@@ -266,14 +333,6 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         elevation: 8
     },
-    modelContent: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        padding: 40,
-        margin: 20
-    },
     records: {
         backgroundColor: 'white',
         flex: 1,
@@ -305,6 +364,8 @@ const styles = StyleSheet.create({
     },
     itemTextSmall: {
         fontSize: 14,
+        fontWeight: '500',
+        color: 'grey'
     },
     itemText: {
         fontSize: 13,
@@ -323,5 +384,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#999',
         textAlign: 'center',
+    },
+    modalHeaderText: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#333',
     },
 })

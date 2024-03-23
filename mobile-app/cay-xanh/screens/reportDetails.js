@@ -93,10 +93,11 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     subject: {
-        fontSize: 24,
+        fontSize: 22,
         fontFamily: 'quolibet',
         fontWeight: 'bold',
         marginBottom: 10,
+        textAlign: 'center',
     },
     statusText: {
         fontSize: 16,
