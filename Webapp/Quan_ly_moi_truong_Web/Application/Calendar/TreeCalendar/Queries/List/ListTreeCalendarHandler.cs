@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Calendar.TreeCalendar.Queries.List
 {
-    public class ListTreeCalendarHandler : IRequestHandler<ListTreeCalendarQuery, ErrorOr<List<MyEventResult>>>
+    public class ListTreeCalendarHandler : IRequestHandler<ListTreeCalendarQuery, ErrorOr<List<MyEvent>>>
     {
         private readonly ITreeCalendarService _treeCalendarService;
 
@@ -14,22 +14,22 @@ namespace Application.Calendar.TreeCalendar.Queries.List
             _treeCalendarService = treeCalendarService;
         }
 
-        public async Task<ErrorOr<List<MyEventResult>>> Handle(ListTreeCalendarQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<List<MyEvent>>> Handle(ListTreeCalendarQuery request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
             List<MyEventResult> treeEventResults = new List<MyEventResult>();
 
             var events = await _treeCalendarService.GetEvents(request.accessToken, request.calendarId);
 
-            if (events != null)
-            {
-                foreach (var treeEvent in events)
-                {
-                    treeEventResults.Add(new MyEventResult(treeEvent));
-                }
-            }
+            //if (events != null)
+            //{
+            //    foreach (var treeEvent in events)
+            //    {
+            //        treeEventResults.Add(new MyEventResult(treeEvent));
+            //    }
+            //}
 
-            return treeEventResults;
+            return events;
         }
     }
 }
