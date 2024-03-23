@@ -97,7 +97,7 @@ namespace Infrastructure.Authentication
             });
 
             var tokenRespone = await flow.RefreshTokenAsync("", refreshToken, CancellationToken.None);
-
+            System.Diagnostics.Debug.WriteLine("refreshed");
             return new TokenData(tokenRespone.AccessToken,
                     (long)tokenRespone.ExpiresInSeconds,
                     tokenRespone.RefreshToken,

@@ -78,14 +78,14 @@ export default function Profile({ navigation }) {
                 </View>
                 {/* Functional Features */}
                 {/* Password  */}
-                <TouchableOpacity style={styles.infoSection} onPress={() => { navigation.navigate('ChangePassword') }}>
+                {/* <TouchableOpacity style={styles.infoSection} onPress={() => { navigation.navigate('ChangePassword') }}>
                     <MaterialIcons style={styles.icon} size={24} name="lock" ></MaterialIcons>
                     <Text style={styles.info}>Đổi mật khẩu </Text>
                     <View></View>
                     <View></View>
                     <View></View>
                     <MaterialIcons style={styles.iconBtn} size={24} name="cached" ></MaterialIcons>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
 
             {/* ------------------------------------------------------------------- */}

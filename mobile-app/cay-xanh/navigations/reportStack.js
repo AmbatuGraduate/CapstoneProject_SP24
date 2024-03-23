@@ -10,13 +10,13 @@ function ReportStackRouting() {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Bao cao" component={Report} options={({ navigation }) => ({
-                headerTitle: () => <Header navigation={navigation} title='Báo cáo vấn đề' />,
+                headerTitle: () => <Header navigation={navigation} title='Danh sách báo cáo đã gửi' />,
             })}>
             </Stack.Screen>
             <Stack.Screen name="ReportDetails" component={ReportDetails}
                 options={{
-                    title: 'Chi tiết báo cáo đã gửi',
-                    headerTintColor: 'palegreen'
+                    title: 'Chi tiết báo cáo',
+                    headerTintColor: 'skyblue',
                 }}>
             </Stack.Screen>
         </Stack.Navigator>

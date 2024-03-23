@@ -156,11 +156,12 @@ export default function TasksList({ navigation }) {
                             onPress={() => {
                                 navigation.navigate('TaskDetails', {
                                     key: item.id,
+                                    summary: item.summary,
                                     description: item.description,
                                     address: item.location,
                                     start: item.date,
                                     status: item.extendedProperties.privateProperties?.JobWorkingStatus || 'Not Started',
-                                    img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg'
+                                    trees: item.extendedProperties.privateProperties?.Tree,
                                 });
                             }}
                         >

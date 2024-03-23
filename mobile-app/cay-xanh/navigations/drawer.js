@@ -157,7 +157,7 @@ function Routes() {
                 <Drawer.Screen
                     name="Report"
                     options={{
-                        drawerLabel: 'Báo cáo',
+                        drawerLabel: 'Báo cáo vấn đề',
                         drawerIcon: ({ color, size }) => (
                             <Icon name="file-text" type='font-awesome' color="#ff6b9b" size={size} />
                         ),
