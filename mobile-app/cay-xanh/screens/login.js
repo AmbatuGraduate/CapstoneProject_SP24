@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
         height: '100%',
         position: 'absolute',
         top: 0,
-        opacity: 0.5,
+        opacity: 0.8,
     },
     title: {
         fontSize: 40,

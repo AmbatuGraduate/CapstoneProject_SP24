@@ -18,15 +18,15 @@ import ReportStackRouting from './reportStack';
 **                  CREATED BY: LE ANH QUAN                 **
 ***************************************************************/
 
-// Create an axios instance
+// create axios 
 const api = axios.create();
 
 // Add a response interceptor
 api.interceptors.response.use(
-    response => response, // Simply return the response if it's successful
+    response => response,
     async error => {
         const originalRequest = error.config;
-        // If the server responded with a 401 status (Unauthorized) and the request was not a token refresh, refresh the token
+        // if  401  (unauthorized) and the request was not a token refresh, refresh the token
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = await AsyncStorage.getItem("@refreshToken");
@@ -43,7 +43,7 @@ api.interceptors.response.use(
             await AsyncStorage.setItem("@user", JSON.stringify(updatedUser));
             await AsyncStorage.setItem("@accessToken", newTokenData.token);
             setUser(updatedUser);
-            // Update the token in the original request and retry it
+            // replace the token in the original request and retry
             originalRequest.headers['Authorization'] = 'Bearer ' + newTokenData.token;
             return api(originalRequest);
         }
