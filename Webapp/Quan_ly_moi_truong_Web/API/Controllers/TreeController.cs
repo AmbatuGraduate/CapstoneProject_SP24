@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Tree.Commands.Add;
+using Application.Tree.Commands.AutoUpdate;
 using Application.Tree.Commands.Delete;
 using Application.Tree.Commands.Update;
 using Application.Tree.Common;
@@ -14,6 +15,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace API.Controllers
 {
@@ -123,6 +125,27 @@ namespace API.Controllers
             return updateResult.Match(
                 updateResult => Ok(mapper.Map<AddTreeResponse>(updateResult)),
                 errors => Problem(errors));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> AutoUpdate()
+        {
+            var command = mapper.Map<AutoUpdateTreeCommand>(new AutoUpdateTreeCommand());
+
+            ErrorOr<List<AddTreeResult>> autoUpdateResult = await mediator.Send(command);
+
+            if (autoUpdateResult.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: autoUpdateResult.FirstError.Description);
+            }
+
+            List<ListTreeResponse> trees = new List<ListTreeResponse>();
+            foreach (var tree in autoUpdateResult.Value)
+            {
+                trees.Add(mapper.Map<ListTreeResponse>(tree));
+            }
+
+            return Ok(trees);
         }
     }
 }

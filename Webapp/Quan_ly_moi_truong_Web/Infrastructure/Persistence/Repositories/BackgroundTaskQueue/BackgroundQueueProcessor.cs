@@ -17,12 +17,9 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
     {
         private Timer _timer;
         private readonly HttpClient _httpClient;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        public BackgroundQueueProcessor(HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
+        public BackgroundQueueProcessor(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _httpContextAccessor = httpContextAccessor;
-
         }
 
         public  Task StartAsync(CancellationToken cancellationToken)
@@ -38,7 +35,7 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
                 await Task.Delay(TimeSpan.FromMinutes(1));
 
                 // Prepare the HTTP request
-                var request = new HttpRequestMessage(HttpMethod.Put, "");
+                var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7024/api/tree/AutoUpdate");
 
 
                 // Send the request and get the response

@@ -61,7 +61,8 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                             UserRefreshTokenId = new Guid(),
                             UserId = payload.Subject,
                             RefreshToken = tokenData.refresh_token,
-                            Expire = DateTime.Now.AddMonths(6).Ticks
+                            Expire = DateTime.Now.AddMonths(6).Ticks,
+                            CreateAt = DateTime.Now
                         };
 
                         //Save refresh token to DB

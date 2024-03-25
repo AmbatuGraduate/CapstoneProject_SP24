@@ -26,24 +26,13 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
         public async Task<ErrorOr<List<MyAddedEventResult>>> Handle(AutoAddTreeCalendarCommand request, CancellationToken cancellationToken)
         {
 
-            //var accessToken = jwtTokenGenerator.DecodeTokenToGetAccessToken(request.accessToken);
-
-
             List<MyAddedEventResult> eventResults = new List<MyAddedEventResult>();
 
-            var getAllTree = _treeRepository.GetAllTrees();
-            var cutTree = new List<Trees>();
-            // check and auto update status isCut of tree
-            foreach (var tree in getAllTree)
-            {
-                if (!tree.isCut)
-                {
-                    cutTree.Add(tree);
-                }
-            }
+            var getAllTree = _treeRepository.GetAllTrees().Where(tree => !tree.isCut);
 
 
-            var treeByAddress = cutTree
+
+            var treeByAddress = getAllTree
                 .GroupBy(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty))
                 .ToDictionary(
                     group => group.Key,
