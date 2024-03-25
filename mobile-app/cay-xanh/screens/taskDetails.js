@@ -24,7 +24,7 @@ export default function TaskDetails({ route }) {
             AsyncStorage.getItem("@accessToken").then(token => {
                 // local test: http://vesinhdanang.xyz/AmbatuGraduate_API/
                 // server: https://192.168.1.7:45455/
-                const url = new URL('http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus');
+                const url = new URL('https://vesinhdanang.xyz:7024/api/Calendar/UpdateJobWorkingStatus');
 
                 fetch(url, {
                     method: 'POST',
