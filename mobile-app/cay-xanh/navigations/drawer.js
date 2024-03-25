@@ -30,7 +30,11 @@ api.interceptors.response.use(
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = await AsyncStorage.getItem("@refreshToken");
-            const response = await axios.get(`http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+            const response = await axios.get(`https:/vesinhdanang.xyz:7024/api/auth/RefreshMobile`, {
+                headers: {
+                    'Authorization': `Bearer ${refreshToken}`
+                }
+            });
             const newTokenData = response.data.value;
             const loggedUser = await AsyncStorage.getItem("@user");
             const userData = JSON.parse(loggedUser);
@@ -85,10 +89,10 @@ function Routes() {
             const userData = JSON.parse(loggedUser);
             const { token_received_at, expire_in, token } = userData;
 
-            // Calculate the expiration timestamp
+            //  expiration timestamp
             const expireTimestamp = token_received_at + expire_in;
             console.log('expireTimestamp', expireTimestamp);
-            // Check if the token is expired
+            // check expired token
 
             if (Date.now() / 1000 >= expireTimestamp) {
                 // Token is expired, refresh it
@@ -97,7 +101,11 @@ function Routes() {
                 // local test: http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}
                 // server: 'https://192.168.1.7/api/auth/RefreshMobile?refreshToken=${refreshToken}'
 
-                const response = await axios.get(`http://192.168.1.7:45455/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+                const response = await axios.get(`https:/vesinhdanang.xyz:7024/api/auth/RefreshMobile`, {
+                    headers: {
+                        'Authorization': `Bearer ${refreshToken}`
+                    }
+                });
                 // const response = await api.get(`http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
                 const newTokenData = response.data.value;
                 // Update the user data with the new token

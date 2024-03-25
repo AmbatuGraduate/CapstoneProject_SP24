@@ -22,8 +22,7 @@ export default function TaskDetails({ route }) {
             AsyncStorage.getItem("@accessToken").then(token => {
                 // local test: http://vesinhdanang.xyz/AmbatuGraduate_API/
                 // server: https://192.168.1.7:45455/
-                const url = new URL('http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus');
-                url.searchParams.append('token', token);
+                const url = new URL('https:/vesinhdanang.xyz:7024/api/Calendar/UpdateJobWorkingStatus');
                 url.searchParams.append('jobWorkingStatus', 2); // 2 corresponds to 'Done' in enum
                 url.searchParams.append('eventId', key);
 
@@ -32,7 +31,8 @@ export default function TaskDetails({ route }) {
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        "Client-Type": "Mobile"
                     },
                 })
                     .then(response => response.json())

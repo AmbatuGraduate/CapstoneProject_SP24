@@ -47,12 +47,13 @@ export default function TasksList({ navigation }) {
         try {
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('http://192.168.1.7:45455/api/Calendar/GetCalendarEvents/',
+                    fetch('https:/vesinhdanang.xyz:7024/api/Calendar/GetAllCalendarEvents',
                         {
                             method: 'GET',
                             headers: {
                                 "Content-Type": "application/json",
-                                "Authorization": `Bearer ${atoken}`
+                                "Authorization": `Bearer ${atoken}`,
+                                "Client-Type": "Mobile"
                             },
                         })
                         .then((res) => {
@@ -63,11 +64,10 @@ export default function TasksList({ navigation }) {
                             }
                         })
                         .then((json) => {
-                            const jsonEvents = json.value.map(item => {
-                                // add extended properties in the event object
+                            const jsonEvents = json.map(item => {
                                 const event = {
-                                    ...item.myEvent,
-                                    extendedProperties: item.myEvent.extendedProperties,
+                                    ...item,
+                                    extendedProperties: item.extendedProperties,
                                 };
                                 return event;
                             });

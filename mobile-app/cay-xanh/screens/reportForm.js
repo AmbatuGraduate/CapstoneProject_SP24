@@ -43,7 +43,7 @@ export default function ReportForm({ onFormSuccess }) {
                     const user = JSON.parse(await AsyncStorage.getItem("@user"));
                     const issuerEmail = user?.email;
 
-                    fetch('http://192.168.1.7:45455/api/Report/CreateReport', {
+                    fetch('https:/vesinhdanang.xyz:7024/api/Report/CreateReport', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

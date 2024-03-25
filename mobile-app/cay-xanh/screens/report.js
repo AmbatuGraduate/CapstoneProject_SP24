@@ -47,7 +47,7 @@ export default function Report({ navigation }) {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=' + atoken + '&email=' + useremail,
+                    fetch('https://vesinhdanang.xyz:7024/api/Report/GetReportsByUser?accessToken=' + atoken + '&email=' + useremail,
                         {
                             method: 'GET',
                             headers: {
