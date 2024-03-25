@@ -16,6 +16,8 @@ export default function TaskDetails({ route }) {
 
     const [updatedStatus, setUpdatedStatus] = useState(route.params.status); // Create a state variable for the status
 
+    var key = route.params.key;
+
     // ----------------- Update task status -----------------
     const updateStatus = () => {
         try {
@@ -52,7 +54,16 @@ export default function TaskDetails({ route }) {
                         }
                     })
                     .catch(error => {
-                        console.error(error);
+                        Toast.show({
+                            type: 'error',
+                            text1: 'Lỗi xảy ra',
+                            text2: 'Vui lòng thử lại sau',
+                            visibilityTime: 3000,
+                            autoHide: true,
+                            topOffset: 30,
+                            bottomOffset: 40,
+                        });
+                        setUpdatedStatus('Done');
                     });
             });
         } catch (error) {
@@ -67,10 +78,10 @@ export default function TaskDetails({ route }) {
     treeArray = treeArray.filter(item => item);
 
     const dateObject = new Date(start);
-    const monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+    const monthNames = ["01", "02", "03", "04", "05", "06",
+        "07", "08", "09", "10", "11", "12"
     ];
-    const formattedDate = `${dateObject.getDate()} / ${monthNames[dateObject.getMonth()]} / ${dateObject.getFullYear()}`;
+    const formattedDate = `${dateObject.getDate()} - ${monthNames[dateObject.getMonth()]} - ${dateObject.getFullYear()}`;
 
     const getStatusColor = (status) => {
         switch (status) {
