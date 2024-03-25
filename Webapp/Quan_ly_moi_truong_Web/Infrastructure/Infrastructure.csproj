@@ -15,6 +15,8 @@
     <PackageReference Include="Google.Apis.Gmail.v1" Version="1.66.0.3287" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.66.0.1869" />
     <PackageReference Include="GoogleApi" Version="5.3.1" />
+    <PackageReference Include="Hangfire" Version="1.8.11" />
+    <PackageReference Include="Hangfire.InMemory" Version="0.8.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.26" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.25" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="7.0.14" />
@@ -34,6 +36,7 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="7.4.0" />
     <PackageReference Include="MimeKit" Version="4.4.0" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
   </ItemGroup>
 
   <ItemGroup>

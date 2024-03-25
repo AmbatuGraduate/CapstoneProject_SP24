@@ -17,11 +17,11 @@ namespace API.Mapping
                   .Map(dest => dest.TreeTypeId, src => src);
 
             config.NewConfig<(Guid, UpdateTreeTypeRequest), UpdateTreeTypeCommand>()
-                  .MapWith(dest => new UpdateTreeTypeCommand(dest.Item1, dest.Item2.TreeTypeName, dest.Item2.UpdateBy));
+                  .MapWith(dest => new UpdateTreeTypeCommand(dest.Item1, dest.Item2.TreeTypeName));
 
             config.NewConfig<TreeTypeResult, ListTreeTypeResponse>()
                   .Map(dest => dest.TreeTypeName, src => src.treeTypeResults.TreeTypeName)
-                  .Map(dest => dest.TreeTypeId, src => src.treeTypeResults.TreeTypeId);
+                  .Map(dest => dest.TreeTypeName, src => src.treeTypeResults.TreeTypeId);
         }
     }
 }

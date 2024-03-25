@@ -4,7 +4,7 @@ namespace Domain.Enums
 {
     public enum JobWorkingStatus
     {
-        None = -1,
+        Late = -1,
         NotStart = 0,
         InProgress = 1,
         Done = 2,

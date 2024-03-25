@@ -10,15 +10,14 @@ namespace Application.Tree.Queries.GetByTreeCode
         IRequestHandler<GetByTreeCodeQuery, ErrorOr<TreeDetailResult>>
     {
         private readonly ITreeRepository treeRepository;
+        private readonly ITreeTypeRepository treeTypeRepository;
+        private readonly IUserRepository userRepository;
 
-        //private readonly IStreetRepository streetRepository;
-        private readonly ICultivarRepository cultivarRepository;
-
-        public GetByTreeCodeHandler(ITreeRepository treeRepository, /*IStreetRepository streetRepository,*/ ICultivarRepository cultivarRepository)
+        public GetByTreeCodeHandler(ITreeRepository treeRepository, ITreeTypeRepository treeTypeRepository, IUserRepository userRepository)
         {
             this.treeRepository = treeRepository;
-            //this.streetRepository = streetRepository;
-            this.cultivarRepository = cultivarRepository;
+            this.treeTypeRepository = treeTypeRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<ErrorOr<TreeDetailResult>> Handle(GetByTreeCodeQuery request, CancellationToken cancellationToken)
@@ -32,9 +31,9 @@ namespace Application.Tree.Queries.GetByTreeCode
                 return Errors.GetTreeById.getTreeFail;
             }
 
-            //var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
-            var cultivar = cultivarRepository.GetCultivarById(tree.CultivarId).CultivarName;
-            var result = new TreeDetailResult(tree.TreeCode, /*streetName*/ tree.TreeLocation, cultivar, tree.BodyDiameter, tree.LeafLength, tree.PlantTime, tree.CutTime, tree.Note);
+            var treeType = treeTypeRepository.GetTreeTypeById(tree.TreeTypeId).TreeTypeName;
+            var user = userRepository.GetById(tree.UserId).Email;
+            var result = new TreeDetailResult(tree.TreeCode, tree.TreeLocation, treeType, tree.BodyDiameter, tree.LeafLength, tree.PlantTime, tree.IntervalCutTime, tree.CutTime, tree.isCut, user, tree.Note);
 
             return result;
         }

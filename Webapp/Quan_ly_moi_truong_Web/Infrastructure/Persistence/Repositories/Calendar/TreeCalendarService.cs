@@ -14,7 +14,6 @@ namespace Infrastructure.Persistence.Repositories.Calendar
     {
         private readonly Func<GoogleCredential, CalendarService> _calendarServiceFactory;
         private readonly ITreeRepository _treeRepository;
-        //private readonly IStreetRepository _streetRepository;
 
         public TreeCalendarService(Func<GoogleCredential, CalendarService> calendarServiceFactory, ITreeRepository treeRepository/*, IStreetRepository streetRepository*/)
         {
@@ -25,10 +24,11 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
         public async Task<MyAddedEvent> AddEvent(string accessToken, string calendarId, MyAddedEvent myEvent)
         {
+            await Task.CompletedTask;
             string[] Scopes = { CalendarService.Scope.Calendar };
             try
             {
-                var treeinfo = _treeRepository.GetTreeByTreeCode(myEvent.TreeId);
+                //var treeinfo = _treeRepository.GetTreeByTreeCode(myEvent.TreeId);
                 var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
                 var service = _calendarServiceFactory(credential);
                 var addedEvent = new Event()
@@ -36,7 +36,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     Summary = myEvent.Summary,
                     Description = myEvent.Description,
                     //Location = _streetRepository.GetStreetById(treeinfo.StreetId).StreetName,
-                    Location = treeinfo.TreeLocation,
+                    Location = /*treeinfo.TreeLocation*/ myEvent.location,
                     Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
                         DateTime = DateTime.Parse(myEvent.Start.DateTime),
@@ -52,9 +52,10 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         .ToList(),
                     ExtendedProperties = new Event.ExtendedPropertiesData
                     {
+
                         Private__ = new Dictionary<string, string>
                         {
-                            {"JobWorkingStatus", ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart) },
+                            {"JobWorkingStatus", ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart)},
                             {"Tree", myEvent.TreeId}
                         }
                     }
@@ -73,6 +74,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
         public async Task<bool> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
         {
+            await Task.CompletedTask;
             string[] Scopes = { CalendarService.Scope.Calendar };
             try
             {
@@ -105,7 +107,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         {
             return jobWorkingStatus switch
             {
-                JobWorkingStatus.None => "None",
+                JobWorkingStatus.Late => "Late",
                 JobWorkingStatus.NotStart => "Not Start",
                 JobWorkingStatus.InProgress => "In Progress",
                 JobWorkingStatus.Done => "Done",
@@ -115,6 +117,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
         public async Task<MyUpdatedEvent> UpdateEvent(string accessToken, string calendarId, MyUpdatedEvent myEvent, string eventId)
         {
+            await Task.CompletedTask;
             string[] Scopes = { CalendarService.Scope.Calendar };
             try
             {
@@ -156,6 +159,8 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
         public async Task<bool> DeleteEvent(string accessToken, string calendarId, string eventId)
         {
+            await Task.CompletedTask;
+            await Task.CompletedTask;
             string[] Scopes = { CalendarService.Scope.Calendar };
             try
             {
@@ -180,6 +185,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
         public async Task<MyEvent> GetEventById(string accessToken, string calendarId, string eventId)
         {
+            await Task.CompletedTask;
             MyEvent myEvent = new MyEvent();
             try
             {

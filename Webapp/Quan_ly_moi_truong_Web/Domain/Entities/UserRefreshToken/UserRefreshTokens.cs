@@ -18,6 +18,9 @@ namespace Domain.Entities.UserRefreshToken
         [DataMember]
         public long Expire { get; set; }
 
+        [DataMember]
+        public DateTime CreateAt { get; set; }
+
         public virtual Users? User { get; set; }
 
 

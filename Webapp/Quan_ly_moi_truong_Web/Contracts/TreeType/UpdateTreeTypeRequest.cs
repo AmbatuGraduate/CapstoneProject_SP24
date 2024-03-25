@@ -2,7 +2,6 @@
 {
     public record UpdateTreeTypeRequest
     (
-        string TreeTypeName,
-        string UpdateBy
+        string TreeTypeName
     );
 }

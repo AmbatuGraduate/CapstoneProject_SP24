@@ -1,25 +1,29 @@
-﻿namespace Application.Common.Interfaces.Authentication
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Application.Common.Interfaces.Authentication
 {
     public interface ISessionService
     {
-        string getAccessToken();
+        //string getAccessToken();
 
-        void setAccessToken(string accesstoken);
+        //void setAccessToken(string accesstoken);
 
-        string getRefreshToken();
+        //string getRefreshToken();
 
-        void setRefreshToken(string refreshToken);
+        //void setRefreshToken(string refreshToken);
 
-        int getExpiresIn();
+        //int getExpiresIn();
 
-        void setExpiresIn(int expiresIn);
+        //void setExpiresIn(int expiresIn);
 
-        string getIdToken();
+        //string getIdToken();
 
-        void setIdToken(string idToken);
+        //void setIdToken(string idToken);
 
-        string getScope();
+        //string getScope();
 
-        void setScope(string scope);
+        //void setScope(string scope);
+
+        HttpContext HttpContext { get; }
     }
 }

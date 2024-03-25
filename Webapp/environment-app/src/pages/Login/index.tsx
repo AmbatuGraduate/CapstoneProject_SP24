@@ -9,8 +9,8 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token.accessToken) navigate("/");
-    return;
+    // if (token.accessToken) navigate("/");
+    // return;
   }, [token.accessToken]);
 
   const handleSuccess = (response: any) => {

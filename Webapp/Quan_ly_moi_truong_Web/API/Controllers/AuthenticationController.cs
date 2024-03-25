@@ -16,6 +16,7 @@ using Application.GoogleAuthentication.Queries.GoogleRefresh;
 using Microsoft.AspNetCore.Cors;
 using Application.GoogleAuthentication.Queries.GoogleRefreshMobile;
 using Application.GoogleAuthentication.Commands.GoogleLogin;
+using Microsoft.Net.Http.Headers;
 
 namespace API.Controllers
 {
@@ -37,14 +38,15 @@ namespace API.Controllers
         private readonly IMapper mapper;
         //Chứa thông tin về google api
         private readonly ISessionService _sessionService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-
-        public AuthenticationController(IMediator mediator, IMapper mapper, ISessionService sessionService)
+        public AuthenticationController(IMediator mediator, IMapper mapper, ISessionService sessionService, IHttpContextAccessor httpContextAccessor)
         {
             this.mediator = mediator;
             this.mapper = mapper;
             _sessionService = sessionService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -59,13 +61,13 @@ namespace API.Controllers
                 && authResult.FirstError == Errors.Authentication.InvalidCredentials)
                 return Problem(statusCode: StatusCodes.Status401Unauthorized, title: authResult.FirstError.Description);
 
-            Response.Cookies.Append("u_tkn", authResult.Value.token, new CookieOptions()
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("u_tkn", authResult.Value.token, new CookieOptions()
             {
                 IsEssential = true,
-                Expires = authResult.Value.expire_in.AddHours(1),
+                Expires = authResult.Value.expire_in.AddDays(1),
                 Secure = true,
                 HttpOnly = true,
-                SameSite = SameSiteMode.None
+                SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None
             });
 
 
@@ -86,7 +88,10 @@ namespace API.Controllers
         [Authorize]
         public async Task<IActionResult> Refresh()
         {
-            var token = Request.Cookies["u_tkn"];
+            if( !_httpContextAccessor.HttpContext.Request.Cookies.TryGetValue("u_tkn", out var token))
+            {
+                return Problem(statusCode: StatusCodes.Status404NotFound, title: "Cookie is null");
+            }
 
             var query = mapper.Map<GoogleRefreshQuery>(token);
 
@@ -95,14 +100,16 @@ namespace API.Controllers
             if (authResult.IsError && authResult.FirstError == Errors.Authentication.ExpireRefreshToken)
                 return Problem(statusCode: StatusCodes.Status404NotFound, title: authResult.FirstError.Description);
 
-            Response.Cookies.Append("u_tkn", authResult.Value.token, new CookieOptions()
+
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("u_tkn", authResult.Value.token, new CookieOptions()
             {
                 IsEssential = true,
-                Expires = authResult.Value.expire_in.AddHours(1),
+                Expires = authResult.Value.expire_in.AddDays(1),
                 Secure = true,
                 HttpOnly = true,
-                SameSite = SameSiteMode.None
+                SameSite = Microsoft.AspNetCore.Http.SameSiteMode.None
             });
+
 
             return authResult.Match(
                     authResult => Ok(mapper.Map<AuthenticationResponse>(authResult)),

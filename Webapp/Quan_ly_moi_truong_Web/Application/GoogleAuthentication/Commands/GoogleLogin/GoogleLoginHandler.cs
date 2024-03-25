@@ -6,18 +6,24 @@ using Domain.Entities.UserRefreshToken;
 using ErrorOr;
 using Google.Apis.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.GoogleAuthentication.Commands.GoogleLogin
 {
     public class GoogleLoginHandler :
         IRequestHandler<GoogleLoginCommand, ErrorOr<GoogleAuthenticationResult>>
     {
+
         private readonly IJwtTokenGenerator jwtTokenGenerator;
         private readonly IAuthenticationService authenticationService;
         private readonly IUserRepository userRepository;
         private readonly IUserRefreshTokenRepository userRefreshTokenRepository;
 
-        public GoogleLoginHandler(IJwtTokenGenerator jwtTokenGenerator, IAuthenticationService authenticationService, IUserRepository userRepository, IUserRefreshTokenRepository userRefreshTokenRepository)
+        public GoogleLoginHandler(IJwtTokenGenerator jwtTokenGenerator, 
+            IAuthenticationService authenticationService, 
+            IUserRepository userRepository, 
+            IUserRefreshTokenRepository userRefreshTokenRepository, 
+            IHttpContextAccessor httpContextAccessor)
         {
             this.authenticationService = authenticationService;
             this.jwtTokenGenerator = jwtTokenGenerator;
@@ -55,7 +61,8 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                             UserRefreshTokenId = new Guid(),
                             UserId = payload.Subject,
                             RefreshToken = tokenData.refresh_token,
-                            Expire = DateTime.Now.AddMonths(6).Ticks
+                            Expire = DateTime.Now.AddMonths(6).Ticks,
+                            CreateAt = DateTime.Now
                         };
 
                         //Save refresh token to DB

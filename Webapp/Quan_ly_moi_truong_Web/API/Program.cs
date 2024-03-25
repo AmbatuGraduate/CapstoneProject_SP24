@@ -1,8 +1,9 @@
 using API;
+using API.Controllers;
 using Application;
+using Hangfire;
 using Infrastructure;
 using Infrastructure.Persistence.Repositories.Notification;
-using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services
     .AddPresentation()
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
+
 
 builder.Services.AddSession(options =>
 {
@@ -26,22 +28,22 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
+    
 }
 
 app.UseExceptionHandler("/error");
-
+app.UseRouting();
 app.UseHttpsRedirection();
 
-app.UseRouting();
-app.UseCors();
-app.UseSession();
+
 app.UseCors("AllowAllHeaders");
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

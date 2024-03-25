@@ -20,9 +20,8 @@ namespace Application.Calendar
         */
         public string Summary { get; set; }
         public string Description { get; set; }
-        /*        public string Location { get; set; }
-        */
-        public string TreeId { get; set; }
+        public string location { get; set; }
+        public string TreeId { get; set; } //List of tree, seprate with comma
         public EventDateTime Start { get; set; }
         public EventDateTime End { get; set; }
         public List<User> Attendees { get; set; }

@@ -7,17 +7,21 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
+using Hangfire;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
+using Infrastructure.Persistence.Repositories.BackgroundTaskQueue;
 using Infrastructure.Persistence.Repositories.Calendar;
 using Infrastructure.Persistence.Repositories.Notification;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -47,6 +51,11 @@ namespace Infrastructure
             services.AddSession();
 
             // Add repositories dependency injection
+            services.AddSingleton<IHostedService, BackgroundQueueProcessor>();
+            services.AddHttpClient<BackgroundQueueProcessor>();
+
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<INotifyService, NotifyService>();
             services.AddScoped<NotifyService>();
@@ -55,9 +64,7 @@ namespace Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
-            services.AddScoped<IStreetRepository, StreetRepository>();
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
-            services.AddScoped<ICultivarRepository, CultivarRepository>();
             services.AddScoped<IReportService, ReportService>();
             services.AddScoped<Func<GoogleCredential, CalendarService>>(provider => (credential) =>
             {
@@ -104,6 +111,13 @@ namespace Infrastructure
                 opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             });
 
+            //GlobalConfiguration.Configuration.UseInMemoryStorage();
+            //services.AddHangfire(config =>
+            //{
+            //    config.UseInMemoryStorage();
+            //});
+            //services.AddHangfireServer();
+
             services.AddSignalR();
             return services;
         }
@@ -113,6 +127,7 @@ namespace Infrastructure
             ConfigurationManager configuration
             )
         {
+
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings.SectionName, jwtSettings);
 
@@ -153,7 +168,7 @@ namespace Infrastructure
                         {
                             var request = context.HttpContext.Request;
                             var cookies = request.Cookies;
-                            if (cookies.TryGetValue("token_v2",
+                            if (cookies.TryGetValue("u_tkn",
                                 out var accessTokenValue))
                             {
                                 context.Token = accessTokenValue;

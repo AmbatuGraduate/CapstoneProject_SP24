@@ -3,7 +3,7 @@
     public record TreeResult(
     string TreeCode,
     string StreetName,
-    string Cultivar,
+    string TreeType,
     float BodyDiameter,
     float LeafLength,
     DateTime CutTime,

@@ -335,6 +335,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public async Task<List<GroupResult>> GetAllGoogleGroupByUserEmail(string accessToken, string userEmail)
         {
+            await Task.CompletedTask;
             var groupResult = new List<GroupResult>();  
             try
             {

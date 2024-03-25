@@ -6,7 +6,6 @@ namespace Application.TreeType.Commands.Update
 {
     public record UpdateTreeTypeCommand(
         Guid TreeTypeId,
-        string TreeTypeName,
-        string UpdateBy
+        string TreeTypeName
     ) : IRequest<ErrorOr<TreeTypeResult>>;
 }

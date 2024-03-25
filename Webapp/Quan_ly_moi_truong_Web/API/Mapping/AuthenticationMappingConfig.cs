@@ -21,7 +21,8 @@ namespace API.Mapping
 
             config.NewConfig<GoogleAuthenticationResult, AuthenticationResponse>()
                   .Map(dest => dest.Name, src => src.name)
-                  .Map(dest => dest.Image, src => src.avatar);
+                  .Map(dest => dest.Image, src => src.avatar)
+                  .Map(dest => dest.token, src => src.token);
 
             config.NewConfig<GoogleRefreshResult, AuthenticationResponse>()
                   .Map(dest => dest.Name, src => src.name)

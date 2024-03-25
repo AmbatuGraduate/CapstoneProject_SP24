@@ -7,8 +7,6 @@ namespace Application.TreeType.Commands.Add
         public AddTreeTypeValidator()
         {
             RuleFor(x => x.TreeTypeName).NotEmpty();
-            RuleFor(x => x.UpdateBy).NotEmpty();
-            RuleFor(x => x.CreateBy).NotEmpty();
         }
     }
 }
