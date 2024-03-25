@@ -3,9 +3,9 @@
   z-index: 1;
 
   .btn {
-    background-color: var(--PrimanyColor);
+    background-color: var(--PrimaryColor);
     color: var(--whiteColor);
-    border-radius: 5px;
+    border-radius: 1rem;
     box-shadow: 0 2px 4px var(--inputColor);
     align-items: center;
     padding: 1rem;
@@ -73,7 +73,7 @@
         }
 
         &.apply {
-          background-color: var(--PrimanyColor);
+          background-color: var(--PrimaryColor);
           color: #fff;
 
           &:hover {

@@ -38,7 +38,7 @@ function Table(props: Props) {
   return loading ? (
     <ClipLoader
       className="spinner"
-      color={"#0fb34b"}
+      color={"hsl(94, 59%, 35%)"}
       loading={loading}
       size={60}
     />
@@ -48,7 +48,6 @@ function Table(props: Props) {
         <table className="table table-striped">
           <thead className="thread-primary ">
             <tr>
-              <th>Chỉnh sửa</th>
               {columns.map((c, index) => (
                 <th key={index}>{c.header}</th>
               ))}

@@ -1,0 +1,42 @@
+.main-layout {
+    margin-top: 100px;
+    margin-left: 100px;
+    display: flex;
+
+    .tree-detail-img {
+        margin-right: 150px;
+
+        img {
+            width: 350px;
+            height: 500px;
+            border-radius: 15px;
+            box-shadow: rgb(214, 207, 212) 5px 5px 18px 4px;
+        }
+    }
+
+    .tree-detail-content {
+        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+        font-size: 25px;
+        display: flex;
+        flex-direction: column;
+        .tree-detail-content-parent {
+            width: 500px;
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 10px;
+            justify-content: space-between;
+
+            .tree-detail-content-child-label {
+                font-weight: 1000;
+            }
+        }
+    }
+    .btn-back {
+        width: 100px;
+        height: 40px;
+        margin-right: 10px;
+        font-size: var(--normalFontSize);
+        font-family: "Nunito", sans-serif;
+        font-weight: bold;
+    }
+}

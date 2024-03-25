@@ -1,7 +1,7 @@
 .spinner {
   position: fixed;
   top: 50%;
-  left: 50%;
+  right: 42.5%;
 }
 
 .bd-form {
@@ -10,7 +10,7 @@
   margin-top: 25px;
   min-width: 60rem;
   .table {
-    border-radius: 5px;
+    border-radius: 1rem;
     background-color: var(--whiteColor);
     thead {
       &.thread-primary {
@@ -18,7 +18,7 @@
         caption-side: bottom;
         tr {
           th {
-            border-radius: 5px;
+            border-radius: 1rem;
             border-bottom: 2px solid darken(#f2f3f8, 6%);
             padding: 2rem;
             padding-top: 1rem;
@@ -34,9 +34,13 @@
       td {
         text-align: center;
         border: none;
-        padding: 0.9rem;
+        padding: 0.6rem;
         font-size: var(--normalFontSize);
         vertical-align: middle;
+      }
+      .linkCode {
+        color: var(--PrimaryColor);
+        text-decoration: none;
       }
 
       .btn {
@@ -46,7 +50,7 @@
         box-shadow: none;
       }
       .btn:hover {
-        color: var(--PrimanyColor);
+        color: var(--PrimaryColor);
       }
     }
   }
@@ -66,7 +70,7 @@
 }
 
 .green-text {
-  color: var(--PrimanyColor) !important;
+  color: var(--PrimaryColor) !important;
 }
 
 .red-text {
@@ -92,7 +96,7 @@
   .page-item.active {
     .page-link {
       color: var(--whiteColor) !important;
-      background-color: var(--PrimanyColor) !important;
+      background-color: var(--PrimaryColor) !important;
     }
   }
 }
@@ -100,4 +104,5 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
+  padding-right: 1rem;
 }

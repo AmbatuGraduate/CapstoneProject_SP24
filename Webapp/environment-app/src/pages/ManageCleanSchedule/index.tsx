@@ -1,22 +1,17 @@
 import { Button } from "react-bootstrap";
 import { BiSolidEdit } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { TREE_DELETE, TREE_LIST, useApi } from "../../Api";
+import { TREE_LIST } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { useRef } from "react";
+import { useCookies } from "react-cookie";
 
-export const ManageTree = () => {
+export const ManageCleanSchedule = () => {
+  const [token /*, setToken*/] = useCookies(["accessToken"]);
   const navigate = useNavigate();
-  const ref = useRef<any>();
   // TODO get list
-
-  const handleDelete = async (id: string) => {
-    await useApi.delete(TREE_DELETE.replace(":id", id));
-    ref.current?.reload();
-  };
 
   const columns: Column[] = [
     {
@@ -30,32 +25,34 @@ export const ManageTree = () => {
               </button>
             </Link>
             <button type="button" className="btn btn-click" onClick={() => {}}>
-              <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
+              <ModalDelete />
             </button>
           </div>
         );
       },
     },
     {
-      header: "Mã số cây",
-      accessorFn(row) {
-        return <Link className="linkCode" to={`/manage-tree/${row.treeCode}`}>{row.treeCode}</Link>;
-      },
-    },
-    { header: "Tuyến đường", accessorKey: "streetName", align: "left" },
-    { header: "Giống cây", accessorKey: "cultivar", align: "left" },
-    { header: "Đường kính thân", accessorKey: "bodyDiameter", align: "left" },
-    { header: "Tán lá", accessorKey: "leafLength", align: "left" },
-    {
-      header: "Thời điểm cắt tỉa gần nhất",
+      header: "Thời gian",
       accessorFn(row) {
         return <h6>{dayFormat(row.cutTime)}</h6>;
       },
     },
     {
+      header: "Tiêu đề",
+      accessorFn(row) {
+        return (
+          <Link className="linkCode" to={`/manage-tree/${row.treeCode}`}>
+            {row.treeCode}
+          </Link>
+        );
+      },
+    },
+    { header: "Vị trí", accessorKey: "streetName", align: "left" },
+
+    {
       header: "Trạng thái",
       accessorFn(row) {
-        const status = row.isCut ? "Đã cắt" : "Cần Cắt";
+        const status = row.isCut ? "Đã hoàn thành" : "Chưa hoàn thành";
         const color = row.isCut ? "green" : "red";
         return <span style={{ color, fontWeight: "bold" }}>{status}</span>;
       },
@@ -65,7 +62,6 @@ export const ManageTree = () => {
   return (
     <div>
       <ListView
-        ref={ref}
         listURL={TREE_LIST}
         columns={columns}
         bottom={
@@ -78,12 +74,9 @@ export const ManageTree = () => {
             }}
             onClick={() => navigate("/manage-tree/create")}
           >
-            Thêm cây
+            Thêm lịch
           </Button>
         }
-        filter={(row) => {
-          return row.isExist == true;
-        }}
       />
     </div>
   );

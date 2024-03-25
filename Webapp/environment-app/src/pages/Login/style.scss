@@ -1,22 +1,24 @@
 .login-page {
-    background-color: #EEEFF1;
+    background-color: #eeeff1;
     position: relative;
     width: 100vw;
     height: 100vh;
     .container {
         padding: 0;
         overflow: hidden;
-        width:900px;
-        height: 600px;
+        width: 800px;
+        height: 500px;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        border-radius: 20px;
+        border-radius: 2rem;
         background-color: white;
         display: flex;
 
-        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+        box-shadow:
+            rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+            rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
         div {
             width: 50%;
             height: 100%;
@@ -30,25 +32,31 @@
             }
         }
         .right {
-            background-color: #EEEFF1;
+            background-color: #eeeff1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
 
-            h6 {
+            h1 {
                 font-weight: bold;
-                font-size: 32px;
-                padding-bottom: 80px;
+                padding-bottom: 2rem;
             }
 
             button {
                 background-color: white;
-                border-radius: 10px;
+                color: var(--PrimanyColor);
+                border-radius: 1rem;
                 width: 80%;
                 height: 50px;
-                font-size: 18px;
+                font-size: var(--h2FontSize);
+                font-weight: 500;
                 border: none;
+                box-shadow: 2px var(--inputColor);
+                &:hover {
+                    background-color: var(--paleGreen);
+                    transition: 0.3s ease;
+                }
             }
         }
     }

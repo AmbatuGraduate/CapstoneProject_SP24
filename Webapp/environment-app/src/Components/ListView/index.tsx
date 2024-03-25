@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { useApi } from "../../Api";
 import { Filter } from "../Filter";
 import SearchBar from "../SearchBar";
@@ -15,9 +15,10 @@ type Props = {
   listURL: string;
   columns: Column[];
   bottom?: React.ReactNode;
+  filter?: (row: any) => boolean;
 };
-export const ListView = (props: Props) => {
-  const { listURL, columns, bottom } = props;
+export const ListView = forwardRef((props: Props, ref) => {
+  const { listURL, columns, bottom, filter } = props;
 
   const [data, setData] = useState<DataResponse | null>({
     data: [],
@@ -30,12 +31,18 @@ export const ListView = (props: Props) => {
     fetchData();
   }, []);
 
+  useImperativeHandle(ref, () => ({
+    reload() {
+      fetchData();
+    },
+  }));
+
   const fetchData = async () => {
     setLoading(true);
     try {
       const res = await useApi.get(listURL);
       const data = await res.data;
-      setData({ data: data, page: 1, size: 10 });
+      setData({ data: filter ? data.filter(filter) : data, page: 1, size: 10 });
     } catch (error) {
       console.log(error);
     }
@@ -65,4 +72,4 @@ export const ListView = (props: Props) => {
       <div className="success-button-container">{bottom}</div>
     </div>
   );
-};
+});

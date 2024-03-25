@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Field, FormBase } from "../../Components/FormBase";
+import { Field } from "../../Components/FormBase";
+import { FormBase } from "../../Components/FormBase";
 import { useNavigate } from "react-router-dom";
 import { CULTIVAR_DETAIL, useApi } from "../../Api";
 
