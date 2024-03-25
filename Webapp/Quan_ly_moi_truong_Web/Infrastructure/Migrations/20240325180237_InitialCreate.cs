@@ -39,7 +39,7 @@ namespace Infrastructure.Migrations
                     ReportImpact = table.Column<int>(type: "int", nullable: false),
                     ExpectedResolutionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ActualResolutionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ResponseId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ResponseId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

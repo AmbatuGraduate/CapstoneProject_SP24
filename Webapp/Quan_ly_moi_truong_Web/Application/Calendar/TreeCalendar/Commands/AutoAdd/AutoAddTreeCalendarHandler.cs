@@ -30,8 +30,6 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
 
             var getAllTree = _treeRepository.GetAllTrees().Where(tree => !tree.isCut);
 
-
-
             var treeByAddress = getAllTree
                 .GroupBy(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty))
                 .ToDictionary(
