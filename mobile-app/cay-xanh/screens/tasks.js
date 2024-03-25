@@ -47,11 +47,13 @@ export default function TasksList({ navigation }) {
         try {
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('http://vesinhdanang.xyz/api/Calendar/GetCalendarEvents/' + atoken,
+                    fetch('https://vesinhdanang.xyz:7024/api/Calendar/GetAllCalendarEvents',
                         {
                             method: 'GET',
                             headers: {
                                 "Content-Type": "application/json",
+                                "Authorization": `Bearer ${atoken}`,
+                                "Client-Type": "Mobile"
                             },
                         })
                         .then((res) => {
@@ -62,11 +64,10 @@ export default function TasksList({ navigation }) {
                             }
                         })
                         .then((json) => {
-                            const jsonEvents = json.value.map(item => {
-                                // add extended properties in the event object
+                            const jsonEvents = json.map(item => {
                                 const event = {
-                                    ...item.myEvent,
-                                    extendedProperties: item.myEvent.extendedProperties,
+                                    ...item,
+                                    extendedProperties: item.extendedProperties,
                                 };
                                 return event;
                             });
@@ -156,18 +157,19 @@ export default function TasksList({ navigation }) {
                             onPress={() => {
                                 navigation.navigate('TaskDetails', {
                                     key: item.id,
+                                    summary: item.summary,
                                     description: item.description,
                                     address: item.location,
                                     start: item.date,
                                     status: item.extendedProperties.privateProperties?.JobWorkingStatus || 'Not Started',
-                                    img: 'https://www.canhquan.net/Content/Images/FileUpload/2018/2/p1030345_500_03%20(1)-1.jpg'
+                                    trees: item.extendedProperties.privateProperties?.Tree,
                                 });
                             }}
                         >
                             {/* <Text style={styles.itemText}>Loai Cay: {item.type}</Text>
                         <Text style={styles.itemText}>Dia chi: {item.street}</Text> */}
                             <View style={styles.itemContainer}>
-                                <Text style={styles.itemLabel}>{item.summary}</Text>
+                                <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>{item.summary}</Text>
                             </View>
                             <View style={styles.itemContainer}>
                                 <Text style={styles.itemText}>{item.location}</Text>
@@ -256,13 +258,14 @@ const styles = StyleSheet.create({
         marginBottom: 5,
     },
     itemLabel: {
-        fontSize: 20,
+        fontSize: 16,
         fontFamily: 'nunito-regular',
         fontWeight: 'bold',
         letterSpacing: 1,
+        flex: 0.75,
     },
     itemText: {
-        fontSize: 16,
+        fontSize: 14,
         flex: 0.75,
     },
     emptyContainer: {

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, Image, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import FlatButton from "../shared/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
 import { Icon } from '@rneui/themed';
-import { LinearGradient } from 'expo-linear-gradient';
 
 
 /*************************************************************
@@ -17,14 +16,15 @@ export default function TaskDetails({ route }) {
 
     const [updatedStatus, setUpdatedStatus] = useState(route.params.status); // Create a state variable for the status
 
+    const { key, summary, description, address, start, status, trees } = route.params;
+
     // ----------------- Update task status -----------------
     const updateStatus = () => {
         try {
             AsyncStorage.getItem("@accessToken").then(token => {
                 // local test: http://vesinhdanang.xyz/AmbatuGraduate_API/
                 // server: https://192.168.1.7:45455/
-                const url = new URL('http://vesinhdanang.xyz/api/Calendar/UpdateJobWorkingStatus');
-                url.searchParams.append('token', token);
+                const url = new URL('https://vesinhdanang.xyz:7024/api/Calendar/UpdateJobWorkingStatus');
                 url.searchParams.append('jobWorkingStatus', 2); // 2 corresponds to 'Done' in enum
                 url.searchParams.append('eventId', key);
 
@@ -33,7 +33,8 @@ export default function TaskDetails({ route }) {
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `Bearer ${token}`,
+                        "Client-Type": "Mobile"
                     },
                 })
                     .then(response => response.json())
@@ -53,7 +54,16 @@ export default function TaskDetails({ route }) {
                         }
                     })
                     .catch(error => {
-                        console.error(error);
+                        Toast.show({
+                            type: 'error',
+                            text1: 'Lỗi xảy ra',
+                            text2: 'Vui lòng thử lại sau',
+                            visibilityTime: 3000,
+                            autoHide: true,
+                            topOffset: 30,
+                            bottomOffset: 40,
+                        });
+                        setUpdatedStatus('Done');
                     });
             });
         } catch (error) {
@@ -63,12 +73,15 @@ export default function TaskDetails({ route }) {
 
 
     // ----------------- GET DATA FROM PREVIOUS SCREEN -----------------
-    const { key, description, address, start, status, img } = route.params;
+
+    let treeArray = trees.split(",");
+    treeArray = treeArray.filter(item => item);
+
     const dateObject = new Date(start);
-    const monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6",
-        "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"
+    const monthNames = ["01", "02", "03", "04", "05", "06",
+        "07", "08", "09", "10", "11", "12"
     ];
-    const formattedDate = `${dateObject.getDate()} / ${monthNames[dateObject.getMonth()]} / ${dateObject.getFullYear()}`;
+    const formattedDate = `${dateObject.getDate()} - ${monthNames[dateObject.getMonth()]} - ${dateObject.getFullYear()}`;
 
     const getStatusColor = (status) => {
         switch (status) {
@@ -97,22 +110,21 @@ export default function TaskDetails({ route }) {
     }
 
     return (
-        <LinearGradient
-            colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={styles.content}
-        >
+        <View style={{ flex: 1 }}>
             <ScrollView contentContainerStyle={styles.content}>
 
                 <View style={styles.content}>
                     {/* ANH */}
-                    <View style={styles.imageContainer}>
-                        <Image
-                            style={styles.img}
-                            source={{ uri: img }}
-                        />
+
+                    <View style={styles.detailsContainer}>
+                        <Text style={styles.subject}>{summary}</Text>
+                        {treeArray.map((item, index) => (
+                            <Text key={index} style={styles.infoText}>{item}</Text>
+                        ))}
+                        <Text style={styles.infoText}>{formattedDate}</Text>
+
                     </View>
+
                     {/* DIA CHI */}
                     <View style={styles.detailsContainer}>
                         <Text style={styles.nameText}>Địa chỉ</Text>
@@ -120,16 +132,11 @@ export default function TaskDetails({ route }) {
                         <Text style={styles.infoText}>{address}</Text>
                     </View>
 
-                    {/* THONG TIN CHI TIET */}
+                    {/* Ghi chu */}
                     <View style={styles.detailsContainer}>
-                        <Text style={styles.nameText}>Thông tin chi tiết</Text>
-                        <Text style={styles.infoText}>{description}</Text>
-                    </View>
+                        <Text style={styles.nameText}>Ghi chú</Text>
 
-                    {/* THONG TIN CHI TIET */}
-                    <View style={styles.detailsContainer}>
-                        <Text style={styles.nameText}>Thời gian</Text>
-                        <Text style={styles.infoText}>{formattedDate}</Text>
+                        <Text style={styles.infoText}>{description}</Text>
                     </View>
 
                     {/* TRANG THAI */}
@@ -140,48 +147,51 @@ export default function TaskDetails({ route }) {
                             {updatedStatus === 'Done' && <Icon name='check' type='font-awesome' color='green' />}
                         </View>
                     </View>
-
-
-                    <FlatButton style={{
-                        bottom: 10,
-                        left: 0,
-                        right: 0
-                    }} text='Hoàn thành' iconName="check" onPress={() => updateStatus()}></FlatButton>
-
                 </View>
                 <Toast />
 
             </ScrollView>
+            {
+                updatedStatus !== 'Done' &&
+                <FlatButton style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    width: '100%',
+                    backgroundColor: '#2282F3',
+                    borderRadius: 0,
+                }} text='Hoàn thành' iconName="check" onPress={() => updateStatus()}></FlatButton>
+            }
 
-        </LinearGradient>
-
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    subject: {
+        fontSize: 20,
+        fontFamily: 'quolibet',
+        fontWeight: 'bold',
+        marginBottom: 10,
+        color: '#2282F3',
+    },
     content: {
         padding: 10,
     },
     imageContainer: {
-        margin: 15,
-        marginBottom: 30,
-        overflow: 'hidden',
-        shadowColor: "#aaa",
-        shadowOffset: {
-            width: 0,
-            height: 6,
-        },
-        shadowOpacity: 0.37,
-        shadowRadius: 7.49,
-        elevation: 12,
         backgroundColor: 'white',
-        borderRadius: 15
+        padding: 20,
+        marginBottom: 12,
+        borderRadius: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 5,
     },
     img: {
         width: '100%',
         height: 200,
-        borderWidth: 1,
-        borderColor: "gray"
+
     },
     detailsContainer: {
         marginTop: 10,
@@ -190,17 +200,23 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         backgroundColor: 'white',
         borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#rgb(196,252,234)',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 5,
     },
     nameText: {
+        color: '#2282F3',
         fontSize: 18,
-        color: 'green',
-        textTransform: 'uppercase',
-        fontFamily: 'nunito-bold'
+        fontFamily: 'quolibet',
+        fontWeight: '700',
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee',
+        paddingBottom: 10,
     },
     infoText: {
-        fontSize: 16,
+        fontSize: 14,
         letterSpacing: 1.5,
         color: '#333',
         marginVertical: 10,

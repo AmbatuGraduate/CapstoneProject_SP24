@@ -27,7 +27,15 @@ const LoginScreen = ({ setUser }) => {
             'https://www.googleapis.com/auth/calendar',
             'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/admin.directory.user',
-            'https://www.googleapis.com/auth/userinfo.profile'
+            'https://www.googleapis.com/auth/userinfo.profile',
+            'https://www.googleapis.com/auth/admin.directory.group',
+            'https://www.googleapis.com/auth/admin.directory.group.member.readonly',
+            'https://mail.google.com/',
+            'https://www.googleapis.com/auth/gmail.send',
+            'https://www.googleapis.com/auth/gmail.readonly',
+            'https://www.googleapis.com/auth/gmail.labels',
+            'https://www.googleapis.com/auth/gmail.compose',
+
         ],
     }, discovery);
 
@@ -102,7 +110,7 @@ const styles = StyleSheet.create({
         height: '100%',
         position: 'absolute',
         top: 0,
-        opacity: 0.5,
+        opacity: 0.8,
     },
     title: {
         fontSize: 40,

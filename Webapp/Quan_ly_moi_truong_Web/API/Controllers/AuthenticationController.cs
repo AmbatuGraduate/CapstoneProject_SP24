@@ -117,9 +117,19 @@ namespace API.Controllers
                 );
         }
 
-        [HttpGet("RefreshMobile")]
-        public async Task<IActionResult> RefreshMobile(string refreshToken)
+        [HttpGet()]
+        public async Task<IActionResult> RefreshMobile()
         {
+            // declare accesstoken
+            string refreshToken;
+
+            var authHeader = Request.Headers["Authorization"];
+            if (String.IsNullOrEmpty(authHeader))
+            {
+                return BadRequest("Authorization header is missing");
+            }
+            refreshToken = authHeader.ToString().Replace("Bearer ", "");
+
             var refreshQuery = new GoogleRefreshQueryMobile(refreshToken);
 
             System.Diagnostics.Debug.WriteLine("controller level: " + refreshQuery.refresh_tk);

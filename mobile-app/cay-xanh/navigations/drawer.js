@@ -1,15 +1,16 @@
-import { createDrawerNavigator } from "@react-navigation/drawer";
-import { NavigationContainer } from '@react-navigation/native';
-import HomeStackRouting from "./homeStack";
-import ProfileStackRouting from "./profileStack";
-import TaskStackRouting from "./taskStack";
 import React, { useState, useEffect } from 'react';
-
-import LoginScreen from "../screens/login";
-import LogoutScreen from "../screens/logout";
-import LoadingScreen from "../screens/loadingScreen";
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer } from '@react-navigation/native';
+import HomeStackRouting from './homeStack';
+import ProfileStackRouting from './profileStack';
+import TaskStackRouting from './taskStack';
+import LoginScreen from '../screens/login';
+import LogoutScreen from '../screens/logout';
+import LoadingScreen from '../screens/loadingScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { Icon } from '@rneui/themed';
+import ReportStackRouting from './reportStack';
 
 
 /***************************************************************
@@ -17,19 +18,23 @@ import axios from 'axios';
 **                  CREATED BY: LE ANH QUAN                 **
 ***************************************************************/
 
-// Create an axios instance
+// create axios 
 const api = axios.create();
 
 // Add a response interceptor
 api.interceptors.response.use(
-    response => response, // Simply return the response if it's successful
+    response => response,
     async error => {
         const originalRequest = error.config;
-        // If the server responded with a 401 status (Unauthorized) and the request was not a token refresh, refresh the token
+        // if  401  (unauthorized) and the request was not a token refresh, refresh the token
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = await AsyncStorage.getItem("@refreshToken");
-            const response = await axios.get(`http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+            const response = await axios.get(`https://vesinhdanang.xyz:7024/api/auth/RefreshMobile`, {
+                headers: {
+                    'Authorization': `Bearer ${refreshToken}`
+                }
+            });
             const newTokenData = response.data.value;
             const loggedUser = await AsyncStorage.getItem("@user");
             const userData = JSON.parse(loggedUser);
@@ -42,7 +47,7 @@ api.interceptors.response.use(
             await AsyncStorage.setItem("@user", JSON.stringify(updatedUser));
             await AsyncStorage.setItem("@accessToken", newTokenData.token);
             setUser(updatedUser);
-            // Update the token in the original request and retry it
+            // replace the token in the original request and retry
             originalRequest.headers['Authorization'] = 'Bearer ' + newTokenData.token;
             return api(originalRequest);
         }
@@ -84,10 +89,10 @@ function Routes() {
             const userData = JSON.parse(loggedUser);
             const { token_received_at, expire_in, token } = userData;
 
-            // Calculate the expiration timestamp
+            //  expiration timestamp
             const expireTimestamp = token_received_at + expire_in;
             console.log('expireTimestamp', expireTimestamp);
-            // Check if the token is expired
+            // check expired token
 
             if (Date.now() / 1000 >= expireTimestamp) {
                 // Token is expired, refresh it
@@ -96,8 +101,12 @@ function Routes() {
                 // local test: http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}
                 // server: 'https://192.168.1.7/api/auth/RefreshMobile?refreshToken=${refreshToken}'
 
-                // const response = await axios.get(`http://192.168.1.7:45455/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
-                const response = await api.get(`http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
+                const response = await axios.get(`https://vesinhdanang.xyz:7024/api/auth/RefreshMobile`, {
+                    headers: {
+                        'Authorization': `Bearer ${refreshToken}`
+                    }
+                });
+                // const response = await api.get(`http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}`);
                 const newTokenData = response.data.value;
                 // Update the user data with the new token
                 const updatedUser = {
@@ -116,13 +125,63 @@ function Routes() {
         }
     }
 
+    // -------------------------------------------------------------------
+    // Drawer navigation
     function DrawerNavigator() {
         return (
             <Drawer.Navigator screenOptions={{ headerShown: false }}>
-                <Drawer.Screen name="Trang chủ" component={HomeStackRouting} />
-                <Drawer.Screen name="Hồ sơ" component={ProfileStackRouting} />
-                <Drawer.Screen name="Lịch trình" component={TaskStackRouting} />
-                <Drawer.Screen name="Logout">
+
+                {/* Home */}
+                <Drawer.Screen name="Home"
+                    component={HomeStackRouting}
+                    options={{
+                        drawerLabel: 'Trang chủ',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="home" type='font-awesome' color="#ff6b9b" size={size} />
+                        ),
+                    }} />
+
+                {/* Profile */}
+                <Drawer.Screen name="Profile"
+                    component={ProfileStackRouting}
+                    options={{
+                        drawerLabel: 'Hồ sơ',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="user-circle-o" type='font-awesome' color="#ff6b9b" size={size} />
+                        ),
+                    }} />
+
+                {/* Schedule */}
+                <Drawer.Screen component={TaskStackRouting}
+                    name="Tasks"
+                    options={{
+                        drawerLabel: 'Lịch trình',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="calendar" type='font-awesome' color="#ff6b9b" size={size} />
+                        ),
+                    }} />
+
+                {/* report */}
+                <Drawer.Screen
+                    name="Report"
+                    options={{
+                        drawerLabel: 'Báo cáo vấn đề',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="file-text" type='font-awesome' color="#ff6b9b" size={size} />
+                        ),
+                    }}>
+                    {props => <ReportStackRouting {...props} />}
+                </Drawer.Screen>
+
+                {/* logout */}
+                <Drawer.Screen
+                    name="Logout"
+                    options={{
+                        drawerLabel: 'Đăng xuất',
+                        drawerIcon: ({ color, size }) => (
+                            <Icon name="logout" color="#ff6b9b" size={size} />
+                        ),
+                    }}>
                     {props => <LogoutScreen {...props} setUser={setUser} />}
                 </Drawer.Screen>
             </Drawer.Navigator>

@@ -16,21 +16,28 @@ namespace Infrastructure.Authentication
 
         private string clientSecret;
         private readonly string[] scopes = { "https://www.googleapis.com/auth/calendar" ,
-            "https://www.googleapis.com/auth/admin.directory.group",
-            "https://www.googleapis.com/auth/admin.directory.group.member",
-            "https://www.googleapis.com/auth/admin.directory.group.member.readonly",
-                                          "https://www.googleapis.com/auth/userinfo.email",
-                                          "https://www.googleapis.com/auth/admin.directory.user",
-                                          "https://www.googleapis.com/auth/userinfo.profile",
-                                          "https://www.googleapis.com/auth/admin.directory.user.readonly",
-                                           "https://mail.google.com/",
-                                           "https://www.googleapis.com/auth/gmail.send",
-                                          "openid", "profile", "email"};
+                                             "https://www.googleapis.com/auth/admin.directory.group",
+                                             "https://www.googleapis.com/auth/admin.directory.group.member",
+                                             "https://www.googleapis.com/auth/admin.directory.group.member.readonly",
+                                             "https://www.googleapis.com/auth/userinfo.email",
+                                             "https://www.googleapis.com/auth/admin.directory.user",
+                                             "https://www.googleapis.com/auth/userinfo.profile",
+                                             "https://www.googleapis.com/auth/admin.directory.user.readonly",
+                                             "https://mail.google.com/",
+                                             "https://www.googleapis.com/auth/gmail.readonly",
+                                             "https://www.googleapis.com/auth/gmail.compose",
+                                             "https://www.googleapis.com/auth/gmail.labels",
+                                             "https://www.googleapis.com/auth/gmail.send",
+                                             "openid", "profile", "email"};
         private string[] mobileScopes = { "https://www.googleapis.com/auth/calendar" ,
                                           "https://www.googleapis.com/auth/userinfo.email",
                                           "https://www.googleapis.com/auth/admin.directory.user",
                                           "https://www.googleapis.com/auth/userinfo.profile",
-                                           "https://mail.google.com/",
+                                          "https://mail.google.com/",
+                                          "https://www.googleapis.com/auth/admin.directory.group",
+                                          "https://www.googleapis.com/auth/admin.directory.group.member.readonly",
+                                          "https://mail.google.com/",
+                                          "https://www.googleapis.com/auth/gmail.send",
                                           "openid", "profile", "email"};
         private string redirect_Uri = "postmessage";
 
@@ -90,7 +97,7 @@ namespace Infrastructure.Authentication
             });
 
             var tokenRespone = await flow.RefreshTokenAsync("", refreshToken, CancellationToken.None);
-
+            System.Diagnostics.Debug.WriteLine("refreshed");
             return new TokenData(tokenRespone.AccessToken,
                     (long)tokenRespone.ExpiresInSeconds,
                     tokenRespone.RefreshToken,

@@ -34,6 +34,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    
 }
 
 app.UseExceptionHandler("/error");
@@ -43,10 +44,6 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAllHeaders");
 app.UseSession();
-
-//For background service
-//app.UseHangfireDashboard();
-//RecurringJob.AddOrUpdate<CalendarController>(x => x.AutoAddCalendarEvent(), Cron.MinuteInterval(10));
 
 app.UseAuthentication();
 app.UseAuthorization();

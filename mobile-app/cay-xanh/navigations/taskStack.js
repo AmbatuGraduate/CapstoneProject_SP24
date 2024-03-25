@@ -22,7 +22,7 @@ function TaskStackRouting() {
                 options={
                     {
                         title: 'Chi tiết công việc',
-                        headerTintColor: '#333',
+                        headerTintColor: 'green',
                         headerStyle: {
                             height: 60,
                         },
@@ -34,8 +34,6 @@ function TaskStackRouting() {
                                 />
                                 <View
                                     style={{
-                                        backgroundColor: '#C5FCEA',
-                                        opacity: 0.6,
                                         position: 'absolute',
                                         width: '100%',
                                         height: '100%',

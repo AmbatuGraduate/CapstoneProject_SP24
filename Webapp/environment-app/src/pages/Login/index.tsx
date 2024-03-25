@@ -33,10 +33,10 @@ export const Login = () => {
         }
       })
       .then((accessToken) => {
-      //   // This block will be executed after the Promise resolves
-        console.log("Authentication successful, access token: " +accessToken);
-        // setToken("accessToken", accessToken); // Save the access token
-        // navigate("/");
+        // This block will be executed after the Promise resolves
+        console.log("Authentication successful, access token: " + accessToken);
+        setToken("accessToken", JSON.stringify(accessToken)); // Save the access token
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -48,7 +48,7 @@ export const Login = () => {
     onSuccess: handleSuccess,
     flow: "auth-code",
     scope:
-      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/userinfo.profile openid profile email https://mail.google.com/ https://www.googleapis.com/auth/gmail.send",
+      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/userinfo.profile openid profile email https://mail.google.com/ https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.compose",
   });
 
   const refreshHandler = () => {
@@ -87,7 +87,7 @@ export const Login = () => {
           <img src="/assets/imgs/logo.jpg" alt="Image" />
         </div>
         <div className="right">
-          <h6>Xin chào!</h6>
+          <h1>Xin chào!</h1>
           <button onClick={() => gglogin()}>Đăng nhập với Google</button>
           <button onClick={() => refreshHandler()}>Refresh</button>
         </div>

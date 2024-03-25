@@ -1,6 +1,7 @@
 ﻿
 
 using Application.Report.Common;
+using Domain.Enums;
 using ErrorOr;
 using MediatR;
 
@@ -10,7 +11,9 @@ namespace Application.Report.Commands.Create
         string AccessToken,
         string IssuerEmail,
         string ReportSubject,
-        string ReportBody
+        string ReportBody,
+        DateTime ExpectedResolutionDate,
+        ReportImpact ReportImpact
 
      ) : IRequest<ErrorOr<ReportFormatRecord>>;
 }
