@@ -24,9 +24,7 @@ export default function TaskDetails({ route }) {
             AsyncStorage.getItem("@accessToken").then(token => {
                 // local test: http://vesinhdanang.xyz/AmbatuGraduate_API/
                 // server: https://192.168.1.7:45455/
-                const url = new URL('https://vesinhdanang.xyz:7024/api/Calendar/UpdateJobWorkingStatus');
-                url.searchParams.append('jobWorkingStatus', 2); // 2 corresponds to 'Done' in enum
-                url.searchParams.append('eventId', key);
+                const url = new URL('http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus');
 
                 fetch(url, {
                     method: 'POST',
@@ -36,6 +34,12 @@ export default function TaskDetails({ route }) {
                         'Authorization': `Bearer ${token}`,
                         "Client-Type": "Mobile"
                     },
+                    body: JSON.stringify({
+                        accessToken: "",
+                        calendarId: "",
+                        jobWorkingStatus: 2,
+                        eventId: key
+                    })
                 })
                     .then(response => response.json())
                     .then(responseJson => {
@@ -63,7 +67,6 @@ export default function TaskDetails({ route }) {
                             topOffset: 30,
                             bottomOffset: 40,
                         });
-                        setUpdatedStatus('Done');
                     });
             });
         } catch (error) {
