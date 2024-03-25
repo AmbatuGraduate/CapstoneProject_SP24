@@ -16,7 +16,7 @@ export default function TaskDetails({ route }) {
 
     const [updatedStatus, setUpdatedStatus] = useState(route.params.status); // Create a state variable for the status
 
-    var key = route.params.key;
+    const { key, summary, description, address, start, status, trees } = route.params;
 
     // ----------------- Update task status -----------------
     const updateStatus = () => {
@@ -73,7 +73,7 @@ export default function TaskDetails({ route }) {
 
 
     // ----------------- GET DATA FROM PREVIOUS SCREEN -----------------
-    const { key, summary, description, address, start, status, trees } = route.params;
+
     let treeArray = trees.split(",");
     treeArray = treeArray.filter(item => item);
 
