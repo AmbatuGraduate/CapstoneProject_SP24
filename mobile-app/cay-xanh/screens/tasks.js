@@ -47,7 +47,7 @@ export default function TasksList({ navigation }) {
         try {
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('https:/vesinhdanang.xyz:7024/api/Calendar/GetAllCalendarEvents',
+                    fetch('https://vesinhdanang.xyz:7024/api/Calendar/GetAllCalendarEvents',
                         {
                             method: 'GET',
                             headers: {
