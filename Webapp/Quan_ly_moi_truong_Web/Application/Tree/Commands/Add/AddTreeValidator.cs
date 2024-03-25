@@ -10,15 +10,14 @@ namespace Application.Tree.Commands.Add
         public AddTreeValidator()
         {
             RuleFor(x => x.TreeCode).NotEmpty();
-            //RuleFor(x => x.StreetId).NotEmpty();
             RuleFor(x => x.TreeLocation).NotEmpty();
             RuleFor(x => x.BodyDiameter).NotEmpty();
             RuleFor(x => x.PlantTime).NotEmpty();
             RuleFor(x => x.CutTime).NotEmpty();
             RuleFor(x => x.IntervalCutTime).NotEmpty();
-            RuleFor(x => x.CultivarId).NotEmpty();
-            RuleFor(x => x.CreateBy).NotEmpty();
-            RuleFor(x => x.UpdateBy).NotEmpty();
+            RuleFor(x => x.TreeTypeId).NotEmpty();
+            RuleFor(x => x.Note).NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }

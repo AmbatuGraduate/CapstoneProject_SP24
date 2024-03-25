@@ -9,8 +9,8 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (token.accessToken) navigate("/");
-    return;
+    // if (token.accessToken) navigate("/");
+    // return;
   }, [token.accessToken]);
 
   const handleSuccess = (response: any) => {
@@ -32,12 +32,12 @@ export const Login = () => {
           throw new Error(res.statusText);
         }
       })
-      // .then((accessToken) => {
+      .then((accessToken) => {
       //   // This block will be executed after the Promise resolves
-      //   console.log("Authentication successful, access token: " + accessToken);
-      //   setToken("accessToken", accessToken); // Save the access token
-      //   // navigate("/");
-      // })
+        console.log("Authentication successful, access token: " +accessToken);
+        // setToken("accessToken", accessToken); // Save the access token
+        // navigate("/");
+      })
       .catch((error) => {
         console.log(error);
         // Handle errors here

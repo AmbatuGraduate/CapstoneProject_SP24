@@ -3,6 +3,7 @@
     public record AuthenticationResponse
     (
         string Name,
-        string Image
+        string Image,
+        string token
     );
 }

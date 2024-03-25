@@ -22,7 +22,7 @@ namespace Infrastructure.Persistence.Configuration
                    .HasKey(reports => reports.ReportId);
 
             builder.Property(reports => reports.IssuerGmail)
-                   .HasMaxLength(50)
+                   .HasMaxLength(100)
                    .IsRequired();
         }
     }

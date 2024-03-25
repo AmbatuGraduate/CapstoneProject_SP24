@@ -12,10 +12,9 @@ namespace Application.Tree.Commands.Add
         DateTime PlantTime,
         DateTime CutTime,
         int IntervalCutTime,
-        Guid CultivarId,
+        Guid TreeTypeId,
         string Note,
-        string CreateBy,
-        string UpdateBy,
+        string UserId,
         bool isExist
         ) : IRequest<ErrorOr<AddTreeResult>>;
 }

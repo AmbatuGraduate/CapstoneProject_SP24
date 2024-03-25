@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.Deparment;
 using Domain.Entities.Role;
+using Domain.Entities.Tree;
 using Domain.Entities.UserRefreshToken;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.Serialization;
@@ -29,5 +30,6 @@ namespace Domain.Entities.User
 
         public virtual Departments? Departments { get; set; }
         public ICollection<UserRefreshTokens>? UserRefreshTokens { get; set; }
+        public ICollection<Trees>? trees { get; set; }
     }
 }

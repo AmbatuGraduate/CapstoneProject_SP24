@@ -26,8 +26,6 @@ namespace Application.TreeType.Commands.Update
                 return Errors.GetTreeTypeById.getTreeTypeFail;
 
             treeType.TreeTypeName = request.TreeTypeName;
-            treeType.UpdateDate = DateTime.Now;
-            treeType.UpdateBy = request.UpdateBy;
 
             if (treeTypeRepository.GetAllTreeTypes().FirstOrDefault(type => type.TreeTypeName == treeType.TreeTypeName) is not null)
                 return Errors.DuplicateTreeType.duplicationTreeType;

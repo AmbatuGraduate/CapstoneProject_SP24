@@ -1,4 +1,5 @@
 ﻿using API.Common.Errors;
+using API.Controllers;
 using API.Mapping;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
@@ -8,6 +9,7 @@ namespace API
     {
         public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.SameSite = SameSiteMode.None;
@@ -25,13 +27,14 @@ namespace API
             });
 
             services.AddSingleton<ProblemDetailsFactory, WebProblemDetailFactory>();
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("AllowAllHeaders",
                     builder =>
                     {
                         builder
-                        .WithOrigins("http://localhost:3000", "http://localhost:5500" , "https://vesinhdanang.xyz", "http://vesinhdanang.xyz")
+                        .WithOrigins("http://localhost:3000", "http://localhost:5500", "https://vesinhdanang.xyz", "http://vesinhdanang.xyz", "https://localhost:7024")
                         //.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
@@ -39,6 +42,7 @@ namespace API
 
                     });
             });
+
 
             services.AddMappings();
             services.AddControllers();

@@ -31,9 +31,8 @@ namespace API.Mapping
                     dest.Item1,
                     dest.Item2.TreeLocation, dest.Item2.BodyDiameter,
                     dest.Item2.LeafLength, dest.Item2.PlantTime,
-                    dest.Item2.IntervalCutTime, dest.Item2.CultivarId,
-                    dest.Item2.Note, dest.Item2.UpdateBy,
-                    dest.Item2.isExist));
+                    dest.Item2.IntervalCutTime, dest.Item2.TreeTypeId,
+                    dest.Item2.Note, dest.Item2.UserId));
 
             config.NewConfig<AddTreeRequest, AddTreeCommand>();
 
@@ -52,7 +51,7 @@ namespace API.Mapping
                 .Map(dest => dest.BodyDiameter, src => src.BodyDiameter)
                 .Map(dest => dest.LeafLength, src => src.LeafLength)
                 .Map(dest => dest.CutTime, src => src.CutTime)
-                .Map(dest => dest.Cultivar, src => src.Cultivar)
+                .Map(dest => dest.TreeType, src => src.TreeType)
                 .Map(dest => dest.isCut, src => src.isCut)
                 .Map(dest => dest.isExist, src => src.isExist);
 
@@ -63,7 +62,9 @@ namespace API.Mapping
                 .Map(dest => dest.LeafLength, src => src.LeafLength)
                 .Map(dest => dest.PlantTime, src => src.PlantTime)
                 .Map(dest => dest.CutTime, src => src.CutTime)
-                .Map(dest => dest.Cultivar, src => src.Cultivar)
+                .Map(dest => dest.IntervalCutTime, src => src.IntervalCutTime)
+                .Map(dest => dest.isCut, src => src.isCut)
+                .Map(dest => dest.User, src => src.User)
                 .Map(dest => dest.Note, src => src.Note);
 
             config.NewConfig<AddTreeResult, AddTreeResponse>()

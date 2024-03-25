@@ -1,4 +1,6 @@
-﻿using Domain.Entities.Cultivar;
+﻿
+using Domain.Entities.TreeType;
+using Domain.Entities.User;
 using System.Runtime.Serialization;
 
 namespace Domain.Entities.Tree
@@ -14,11 +16,6 @@ namespace Domain.Entities.Tree
 
         [DataMember]
         public string TreeLocation { get; set; }
-
-        //[DataMember]
-        //public Guid StreetId { get; set; }
-
-        //public virtual Streets? Streets { get; set; }
 
         [DataMember]
         public float BodyDiameter { get; set; }
@@ -36,9 +33,9 @@ namespace Domain.Entities.Tree
         public int IntervalCutTime { get; set; }
 
         [DataMember]
-        public Guid CultivarId { get; set; }
+        public Guid TreeTypeId { get; set; }
 
-        public virtual Cultivars? Cultivar { get; set; }
+        public virtual TreeTypes? TreeType { get; set; }
 
         [DataMember]
         public string Note { get; set; } = string.Empty;
@@ -50,15 +47,8 @@ namespace Domain.Entities.Tree
         public bool isExist { get; set; } = true;
 
         [DataMember]
-        public DateTime CreateDate { get; set; } = DateTime.Now;
+        public string UserId { get; set; }
+        public virtual Users? user { get; set; }
 
-        [DataMember]
-        public string CreateBy { get; set; }
-
-        [DataMember]
-        public DateTime UpdateDate { get; set; }
-
-        [DataMember]
-        public string UpdateBy { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Configuration
                    .HasMaxLength(50)
                    .IsRequired();
             builder.Property(tree => tree.TreeLocation)
-                   .HasMaxLength(50)
+                   .HasMaxLength(200)
                    .IsRequired();
             builder.Property(tree => tree.BodyDiameter)
                    .IsRequired();
@@ -35,27 +35,6 @@ namespace Infrastructure.Persistence.Configuration
             builder.Property(tree => tree.Note)
                    .HasMaxLength(180)
                    .IsRequired(false);
-            builder.Property(tree => tree.CreateBy)
-                   .HasMaxLength(50);
-            builder.Property(tree => tree.CreateBy)
-                   .HasMaxLength(50);
-
-            builder.HasData(new Trees
-            {
-                TreeId = Guid.Parse("24b2ee45-d7c3-4cc7-9fac-406b4bac1d82"),
-                TreeCode = "12_HL_HH_NHS",
-                TreeLocation = "18 Nam Kỳ Khởi Nghĩa, Quận Ngũ hành sơn",
-                BodyDiameter = 30,
-                LeafLength = 50,
-                PlantTime = DateTime.Now,
-                CutTime = DateTime.Now.AddMonths(3),
-                IntervalCutTime = 3,
-                CultivarId = Guid.Parse("136514ac-99a2-421a-80e1-5351d9a9c4af"),
-                CreateDate = DateTime.Now,
-                CreateBy = "Admin",
-                UpdateBy = "Admin",
-                UpdateDate = DateTime.Now
-            });
         }
     }
 }

@@ -6,8 +6,6 @@ namespace Application.TreeType.Commands.Add
 {
     public record AddTreeTypeCommand
     (
-        string TreeTypeName,
-        string CreateBy,
-        string UpdateBy
+        string TreeTypeName
     ) : IRequest<ErrorOr<TreeTypeResult>>;
 }

@@ -11,9 +11,8 @@ namespace Application.Tree.Commands.Update
         float LeafLength,
         DateTime PlantTime,
         int IntervalCutTime,
-        Guid CultivarId,
+        Guid TreeTypeId,
         string Note,
-        string UpdateBy,
-        bool isExist
+        string UserId
         ) : IRequest<ErrorOr<AddTreeResult>>;
 }

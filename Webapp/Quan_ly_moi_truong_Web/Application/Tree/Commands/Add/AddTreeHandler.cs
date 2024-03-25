@@ -28,17 +28,14 @@ namespace Application.Tree.Commands.Add
             {
                 TreeId = Guid.NewGuid(),
                 TreeCode = request.TreeCode,
-                //StreetId = request.StreetId,
                 TreeLocation = request.TreeLocation,
                 BodyDiameter = request.BodyDiameter,
                 LeafLength = request.LeafLength,
                 PlantTime = request.PlantTime,
                 CutTime = request.CutTime,
-                CultivarId = request.CultivarId,
+                TreeTypeId = request.TreeTypeId,
                 IntervalCutTime = request.IntervalCutTime,
-                CreateBy = request.CreateBy,
-                UpdateDate = DateTime.Now,
-                UpdateBy = request.UpdateBy,
+                UserId = request.UserId,
                 Note = request.Note,
             };
 

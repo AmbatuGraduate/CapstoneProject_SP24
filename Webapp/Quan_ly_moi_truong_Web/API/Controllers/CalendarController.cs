@@ -14,6 +14,11 @@ using Application.Calendar.TreeCalendar.Commands.Delete;
 using Application.Calendar.TreeCalendar.Queries.GetByAttendeeId;
 using Domain.Enums;
 using Application.Calendar.TreeCalendar.Commands.UpdateJobStatus;
+using Application.Calendar.TreeCalendar.Commands.AutoAdd;
+using GoogleApi.Entities.Search.Common;
+using System.Net;
+using Google.Apis.Calendar.v3.Data;
+using Microsoft.AspNetCore.Http;
 
 namespace API.Controllers
 {
@@ -23,19 +28,18 @@ namespace API.Controllers
     public class CalendarController : ApiController
     {
         private readonly IMediator mediator;
-        private readonly IMapper mapper;
+        //private readonly IMapper mapper;
 
-        private readonly HttpClient _httpClient;
-        private readonly ISessionService _sessionService;
-
+        //private readonly HttpClient _httpClient;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         // constructor
-        public CalendarController(IMediator mediator, IMapper mapper, IHttpClientFactory httpClientFactory, ISessionService sessionService)
+        public CalendarController(IMediator mediator, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             this.mediator = mediator;
-            this.mapper = mapper;
-            _httpClient = httpClientFactory.CreateClient();
-            _sessionService = sessionService;
+            //this.mapper = mapper;
+            //_httpClient = httpClientFactory.CreateClient();
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // get google calendar events
@@ -49,7 +53,7 @@ namespace API.Controllers
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
             }
 
-            return Ok(list);
+            return Ok(list.Value);
         }
 
         [HttpGet()]
@@ -62,8 +66,9 @@ namespace API.Controllers
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
             }
 
-            return Ok(list);
+            return Ok(list.Value);
         }
+
 
         [HttpPost()]
         public async Task<IActionResult> AddCalendarEvent(string token, MyAddedEvent? myEvent)
@@ -74,7 +79,25 @@ namespace API.Controllers
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
             }
 
-            return Ok(list);
+            return Ok(list.Value);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AutoAddCalendarEvent()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            //Access HttpContext
+            var token = httpContext.Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("Checking: " + token);
+
+            ErrorOr<List<MyAddedEventResult>>  list = await mediator.Send(new AutoAddTreeCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list.Value);
         }
 
         [HttpPost()]

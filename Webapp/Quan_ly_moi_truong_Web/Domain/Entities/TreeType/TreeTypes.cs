@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Cultivar;
+﻿
+using Domain.Entities.Tree;
 using System.Runtime.Serialization;
 
 namespace Domain.Entities.TreeType
@@ -11,19 +12,7 @@ namespace Domain.Entities.TreeType
 
         [DataMember]
         public string TreeTypeName { get; set; }
+        public ICollection<Trees>? trees { get; set; }
 
-        public ICollection<Cultivars>? Cultivars { get; set; }
-
-        [DataMember]
-        public DateTime CreateDate { get; set; } = DateTime.Now;
-
-        [DataMember]
-        public string CreateBy { get; set; }
-
-        [DataMember]
-        public DateTime UpdateDate { get; set; }
-
-        [DataMember]
-        public string UpdateBy { get; set; }
     }
 }

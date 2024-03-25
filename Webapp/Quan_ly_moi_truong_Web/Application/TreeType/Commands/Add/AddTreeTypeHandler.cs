@@ -30,10 +30,7 @@ namespace Application.TreeType.Commands.Add
             var treeType = new TreeTypes
             {
                 TreeTypeId = Guid.NewGuid(),
-                TreeTypeName = request.TreeTypeName,
-                CreateBy = request.CreateBy,
-                UpdateDate = DateTime.Now,
-                UpdateBy = request.UpdateBy,
+                TreeTypeName = request.TreeTypeName
             };
 
             var result = new TreeTypeResult(treeTypeRepository.CreateTreeType(treeType));

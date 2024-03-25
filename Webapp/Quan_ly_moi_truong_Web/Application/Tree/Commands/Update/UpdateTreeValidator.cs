@@ -13,6 +13,8 @@ namespace Application.Tree.Commands.Update
             RuleFor(x => x.LeafLength).NotEmpty();
             RuleFor(x => x.PlantTime).NotEmpty();
             RuleFor(x => x.IntervalCutTime).NotEmpty();
+            RuleFor(x => x.TreeTypeId).NotEmpty();
+            RuleFor(x => x.UserId).NotEmpty();
         }
     }
 }
