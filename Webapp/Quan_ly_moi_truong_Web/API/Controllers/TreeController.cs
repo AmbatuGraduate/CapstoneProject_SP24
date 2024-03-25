@@ -145,6 +145,8 @@ namespace API.Controllers
                 trees.Add(mapper.Map<ListTreeResponse>(tree));
             }
 
+            // Use signalR 
+
             return Ok(trees);
         }
     }
