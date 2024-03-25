@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import FlatButton from "../shared/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
@@ -20,6 +20,7 @@ export default function TaskDetails({ route }) {
 
     // ----------------- Update task status -----------------
     const updateStatus = () => {
+        console.log('Updating status...');
         try {
             AsyncStorage.getItem("@accessToken").then(token => {
                 // local test: http://vesinhdanang.xyz/AmbatuGraduate_API/
@@ -58,6 +59,7 @@ export default function TaskDetails({ route }) {
                         }
                     })
                     .catch(error => {
+                        console.error(error);
                         Toast.show({
                             type: 'error',
                             text1: 'Lỗi xảy ra',
@@ -156,13 +158,11 @@ export default function TaskDetails({ route }) {
             </ScrollView>
             {
                 updatedStatus !== 'Done' &&
-                <FlatButton style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    width: '100%',
-                    backgroundColor: '#2282F3',
-                    borderRadius: 0,
-                }} text='Hoàn thành' iconName="check" onPress={() => updateStatus()}></FlatButton>
+
+                <TouchableOpacity style={styles.submitButton} onPress={() => updateStatus()}>
+                    <Icon name="check" size={20} color="#fff" />
+                    <Text style={styles.submitButtonText}>Hoàn thành</Text>
+                </TouchableOpacity>
             }
 
         </View>
@@ -230,5 +230,23 @@ const styles = StyleSheet.create({
         letterSpacing: 1.5,
         marginVertical: 10,
         fontWeight: 'bold',
+    },
+    submitButton: {
+        width: '50%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#2282F3',
+        padding: 15,
+        borderRadius: 15,
+        marginBottom: 20,
+        alignSelf: 'center'
+    },
+    submitButtonText: {
+        color: '#fff',
+        marginLeft: 10,
+        fontSize: 18,
+        fontWeight: 'bold',
+
     },
 });
