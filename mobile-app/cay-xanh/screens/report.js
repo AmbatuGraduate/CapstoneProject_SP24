@@ -18,7 +18,6 @@ export default function Report({ navigation }) {
     const [transformedData, setTransformedData] = useState({});
     const [filteredReports, setFilteredReports] = useState([]);
 
-
     const [modalOpen, setModalOpen] = useState(false); // modal open/close
     // search
     const [searchInput, setSearchInput] = useState(''); // search input
@@ -83,18 +82,19 @@ export default function Report({ navigation }) {
                                 data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
                             });
                             setTransformedData(data);
+                            setLoading(false);
                         })
                         .catch((error) => {
                             console.log('There has been a problem with fetch operation: ', error.message);
+                            setLoading(false);
                         });
                 } else {
                     console.log('token null');
+                    setLoading(false);
                 }
             });
         } catch (error) {
             console.error(error);
-        } finally {
-            setLoading(false);
         }
     }
 
@@ -207,8 +207,8 @@ export default function Report({ navigation }) {
                     )}
                 />
             </View>
-
         );
+
     }
 
     // --------------------------------------------------------------------------------------------
@@ -220,15 +220,6 @@ export default function Report({ navigation }) {
                 end={{ x: 0, y: 1 }}
             >
                 <View style={styles.searchContainer}>
-                    {/* filter button */}
-                    <TouchableOpacity
-                        style={styles.filterButton}
-                        onPress={() => {
-                            // handle press
-                        }}
-                    >
-                        <Icon name="filter" type="font-awesome" size={24} color="#333" />
-                    </TouchableOpacity>
 
                     {/* search input */}
                     <View style={styles.searchInput}>
@@ -241,7 +232,17 @@ export default function Report({ navigation }) {
                     </View>
                 </View>
                 {isLoading ? (
-                    <ActivityIndicator size="large" color="lightgreen" />
+                    <View style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <ActivityIndicator size="large" color="lightgreen" />
+                    </View>
                 ) : (
                     renderReports()
                 )}

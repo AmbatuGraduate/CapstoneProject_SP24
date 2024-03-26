@@ -103,7 +103,7 @@ function Routes() {
 
                 // local test: http://192.168.1.7:45455/api/auth/RefreshMobile
                 // server: https://vesinhdanang.xyz:7024/api/auth/RefreshMobile
-                const response = await axios.get(`hhttp://192.168.1.7:45455/api/auth/RefreshMobile`, {
+                const response = await axios.get(`http://192.168.1.7:45455/api/auth/RefreshMobile`, {
                     headers: {
                         'Authorization': `Bearer ${refreshToken}`
                     }

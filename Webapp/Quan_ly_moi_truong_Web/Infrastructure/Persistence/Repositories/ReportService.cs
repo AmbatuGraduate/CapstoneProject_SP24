@@ -268,11 +268,10 @@ namespace Infrastructure.Persistence.Repositories
 
         public Task<ReportFormat> ReponseReport(string accessToken, string reportID, string response, ReportStatus reportStatus)
         {
-            var credential = GoogleCredential.FromAccessToken(accessToken);
-            var service = _gmailServiceFactory(credential);
 
             // get request report
             var report = context.Reports.FirstOrDefault(e => e.ReportId == reportID);
+
 
             report.ResponseId = response;
             report.ActualResolutionDate = DateTime.Now;
@@ -281,6 +280,9 @@ namespace Infrastructure.Persistence.Repositories
             // update in db
             context.Reports.Update(report);
             context.SaveChanges();
+
+            // notify user 
+            // ...
 
             return Task.FromResult(new ReportFormat { Id = reportID, ReportResponse = response });
         }

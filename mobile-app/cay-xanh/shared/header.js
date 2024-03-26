@@ -16,9 +16,7 @@ export default function Header({ navigation, title, customDrawerProp }) {
         <ImageBackground source={require('../assets/game_bg.png')} style={styles.header}>
             <MaterialIcons style={styles.icon} name="menu" size={28} onPress={openMenu} />
             <Text style={styles.headerText}>{title}</Text>
-            <View style={styles.notificationContainer}>
-                <MaterialIcons style={styles.icon} name="notifications" size={28} />
-            </View>
+            <View style={{ width: '12%' }}></View>
         </ImageBackground>
     )
 }
@@ -38,14 +36,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         letterSpacing: 1,
+        textAlign: 'center',
+        alignSelf: 'center',
+        flex: 1,
     },
     icon: {
         borderColor: '#333',
         color: '#f1356d',
     },
-    notificationContainer: {
-        width: 40,
-        alignItems: 'center',
-        marginRight: '5%',
-    },
+
 });
