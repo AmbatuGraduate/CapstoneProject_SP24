@@ -30,7 +30,9 @@ api.interceptors.response.use(
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             const refreshToken = await AsyncStorage.getItem("@refreshToken");
-            const response = await axios.get(`https://vesinhdanang.xyz:7024/api/auth/RefreshMobile`, {
+            // local test: http://192.168.1.7:45455/api/auth/RefreshMobile
+            // server: https://vesinhdanang.xyz:7024/api/auth/RefreshMobile
+            const response = await axios.get(`http://192.168.1.7:45455/api/auth/RefreshMobile`, {
                 headers: {
                     'Authorization': `Bearer ${refreshToken}`
                 }
@@ -98,10 +100,10 @@ function Routes() {
                 // Token is expired, refresh it
                 const refreshToken = await AsyncStorage.getItem("@refreshToken");
 
-                // local test: http://vesinhdanang.xyz/api/auth/RefreshMobile?refreshToken=${refreshToken}
-                // server: 'https://192.168.1.7/api/auth/RefreshMobile?refreshToken=${refreshToken}'
 
-                const response = await axios.get(`https://vesinhdanang.xyz:7024/api/auth/RefreshMobile`, {
+                // local test: http://192.168.1.7:45455/api/auth/RefreshMobile
+                // server: https://vesinhdanang.xyz:7024/api/auth/RefreshMobile
+                const response = await axios.get(`hhttp://192.168.1.7:45455/api/auth/RefreshMobile`, {
                     headers: {
                         'Authorization': `Bearer ${refreshToken}`
                     }

@@ -47,7 +47,9 @@ export default function Report({ navigation }) {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             AsyncStorage.getItem("@accessToken").then(atoken => {
                 if (atoken !== null) {
-                    fetch('https://vesinhdanang.xyz:7024/api/Report/GetReportsByUser?accessToken=' + atoken + '&email=' + useremail,
+                    // local test:  http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=
+                    // server:      https://vesinhdanang.xyz:7024/api/Report/GetReportsByUser?accessToken=
+                    fetch('http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=' + atoken + '&email=' + useremail,
                         {
                             method: 'GET',
                             headers: {
@@ -132,11 +134,6 @@ export default function Report({ navigation }) {
         }
     }, [searchInput, reports]);
 
-    const impactLevels = {
-        0: 'Low',
-        1: 'Medium',
-        2: 'High'
-    };
     const impactColors = {
         0: '#ADF35B',
         1: 'orange',
@@ -174,17 +171,18 @@ export default function Report({ navigation }) {
                                 navigation.navigate('ReportDetails', {
                                     reportId: item.id,
                                     reportBody: item.reportBody,
-                                    reportSubject: item.reportSubject,
+                                    reportSubject: item.reportSubject.replace('[Report]', '').trim(),
                                     reportImpact: item.reportImpact,
                                     reportStatus: item.reportStatus,
                                     reportResponse: item.reportResponse,
                                     expectedResolutionDate: formatDate(item.expectedResolutionDate),
+                                    actualResolutionDate: item.actualResolutionDate ? formatDate(item.actualResolutionDate) : '...',
                                 });
                             }}
                         >
                             <View style={styles.itemContainer}>
                                 <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>
-                                    {item.reportSubject}
+                                    {item.reportSubject.replace('[Report]', '').trim()}
                                 </Text>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon style={{ marginRight: 5 }} name="warning" type="Ionicons" size={16} color={impactColors[item.reportImpact]} />
