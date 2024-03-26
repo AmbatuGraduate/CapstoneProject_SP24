@@ -117,7 +117,7 @@ namespace API.Controllers
                 );
         }
 
-        [HttpGet()]
+        [HttpGet("RefreshMobile")]
         public async Task<IActionResult> RefreshMobile()
         {
             // declare accesstoken

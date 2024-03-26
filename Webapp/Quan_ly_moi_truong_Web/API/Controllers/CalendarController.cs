@@ -289,7 +289,7 @@ namespace API.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> UpdateJobWorkingStatus(JobWorkingStatus jobWorkingStatus, string eventId)
+        public async Task<IActionResult> UpdateJobWorkingStatus([FromBody] UpdateJobStatusCommand command)
         {
             var clientType = Request.Headers["Client-Type"];
 
@@ -320,7 +320,8 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-            ErrorOr<MyUpdatedJobStatusResult> list = await mediator.Send(new UpdateJobStatusCommand(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", jobWorkingStatus, eventId));
+
+            ErrorOr<MyUpdatedJobStatusResult> list = await mediator.Send(new UpdateJobStatusCommand(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", command.jobWorkingStatus, command.eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);

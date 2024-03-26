@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import FlatButton from "../shared/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
@@ -20,13 +20,12 @@ export default function TaskDetails({ route }) {
 
     // ----------------- Update task status -----------------
     const updateStatus = () => {
+        console.log('Updating status...');
         try {
             AsyncStorage.getItem("@accessToken").then(token => {
                 // local test: http://vesinhdanang.xyz/AmbatuGraduate_API/
                 // server: https://192.168.1.7:45455/
                 const url = new URL('https://vesinhdanang.xyz:7024/api/Calendar/UpdateJobWorkingStatus');
-                url.searchParams.append('jobWorkingStatus', 2); // 2 corresponds to 'Done' in enum
-                url.searchParams.append('eventId', key);
 
                 fetch(url, {
                     method: 'POST',
@@ -36,6 +35,12 @@ export default function TaskDetails({ route }) {
                         'Authorization': `Bearer ${token}`,
                         "Client-Type": "Mobile"
                     },
+                    body: JSON.stringify({
+                        accessToken: "",
+                        calendarId: "",
+                        jobWorkingStatus: 2,
+                        eventId: key
+                    })
                 })
                     .then(response => response.json())
                     .then(responseJson => {
@@ -54,6 +59,7 @@ export default function TaskDetails({ route }) {
                         }
                     })
                     .catch(error => {
+                        console.error(error);
                         Toast.show({
                             type: 'error',
                             text1: 'Lỗi xảy ra',
@@ -63,7 +69,6 @@ export default function TaskDetails({ route }) {
                             topOffset: 30,
                             bottomOffset: 40,
                         });
-                        setUpdatedStatus('Done');
                     });
             });
         } catch (error) {
@@ -153,13 +158,11 @@ export default function TaskDetails({ route }) {
             </ScrollView>
             {
                 updatedStatus !== 'Done' &&
-                <FlatButton style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    width: '100%',
-                    backgroundColor: '#2282F3',
-                    borderRadius: 0,
-                }} text='Hoàn thành' iconName="check" onPress={() => updateStatus()}></FlatButton>
+
+                <TouchableOpacity style={styles.submitButton} onPress={() => updateStatus()}>
+                    <Icon name="check" size={20} color="#fff" />
+                    <Text style={styles.submitButtonText}>Hoàn thành</Text>
+                </TouchableOpacity>
             }
 
         </View>
@@ -227,5 +230,23 @@ const styles = StyleSheet.create({
         letterSpacing: 1.5,
         marginVertical: 10,
         fontWeight: 'bold',
+    },
+    submitButton: {
+        width: '50%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#2282F3',
+        padding: 15,
+        borderRadius: 15,
+        marginBottom: 20,
+        alignSelf: 'center'
+    },
+    submitButtonText: {
+        color: '#fff',
+        marginLeft: 10,
+        fontSize: 18,
+        fontWeight: 'bold',
+
     },
 });
