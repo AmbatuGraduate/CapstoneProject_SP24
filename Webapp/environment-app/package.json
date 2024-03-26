@@ -1,0 +1,43 @@
+{
+  "name": "environment-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@picocss/pico": "^1.5.11",
+    "@react-oauth/google": "^0.12.1",
+    "@types/react-datepicker": "^6.2.0",
+    "axios": "^1.6.7",
+    "bootstrap": "^5.3.2",
+    "dayjs": "^1.11.10",
+    "react": "^18.2.0",
+    "react-bootstrap": "^2.9.1",
+    "react-cookie": "^7.1.0",
+    "react-datepicker": "^6.3.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.12.0",
+    "react-paginate": "^8.2.0",
+    "react-router-dom": "^6.21.1",
+    "react-spinners": "^0.13.8",
+    "sass": "^1.69.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.25",
+    "@types/react": "^18.2.56",
+    "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.4"
+  }
+}

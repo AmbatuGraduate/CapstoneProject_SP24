@@ -1,0 +1,63 @@
+.login-page {
+    background-color: #eeeff1;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    .container {
+        padding: 0;
+        overflow: hidden;
+        width: 800px;
+        height: 500px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 2rem;
+        background-color: white;
+        display: flex;
+
+        box-shadow:
+            rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+            rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+        div {
+            width: 50%;
+            height: 100%;
+        }
+        .left {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+                width: 80%;
+            }
+        }
+        .right {
+            background-color: #eeeff1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            h1 {
+                font-weight: bold;
+                padding-bottom: 2rem;
+            }
+
+            button {
+                background-color: white;
+                color: var(--PrimanyColor);
+                border-radius: 1rem;
+                width: 80%;
+                height: 50px;
+                font-size: var(--h2FontSize);
+                font-weight: 500;
+                border: none;
+                box-shadow: 2px var(--inputColor);
+                &:hover {
+                    background-color: var(--paleGreen);
+                    transition: 0.3s ease;
+                }
+            }
+        }
+    }
+}

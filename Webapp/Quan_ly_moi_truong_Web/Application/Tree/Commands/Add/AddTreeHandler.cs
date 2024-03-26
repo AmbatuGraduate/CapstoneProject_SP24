@@ -1,0 +1,47 @@
+﻿using Application.Common.Interfaces.Persistence;
+using Application.Tree.Common;
+using Domain.Common.Errors;
+using Domain.Entities.Tree;
+using ErrorOr;
+using MediatR;
+
+namespace Application.Tree.Commands.Add
+{
+    public class AddTreeHandler :
+        IRequestHandler<AddTreeCommand, ErrorOr<AddTreeResult>>
+    {
+        private readonly ITreeRepository treeRepository;
+
+        public AddTreeHandler(ITreeRepository treeRepository)
+        {
+            this.treeRepository = treeRepository;
+        }
+
+        public async Task<ErrorOr<AddTreeResult>> Handle(AddTreeCommand request, CancellationToken cancellationToken)
+        {
+            await Task.CompletedTask;
+            if (treeRepository.GetTreeByTreeCode(request.TreeCode) != null)
+            {
+                return Errors.AddTree.DuplicateTreeCode;
+            }
+            var tree = new Trees
+            {
+                TreeId = Guid.NewGuid(),
+                TreeCode = request.TreeCode,
+                TreeLocation = request.TreeLocation,
+                BodyDiameter = request.BodyDiameter,
+                LeafLength = request.LeafLength,
+                PlantTime = request.PlantTime,
+                CutTime = request.CutTime,
+                TreeTypeId = request.TreeTypeId,
+                IntervalCutTime = request.IntervalCutTime,
+                UserId = request.UserId,
+                Note = request.Note,
+            };
+
+            var result = new AddTreeResult(treeRepository.CreateTree(tree).TreeCode);
+
+            return result;
+        }
+    }
+}
