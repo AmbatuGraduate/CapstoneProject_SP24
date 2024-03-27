@@ -1,60 +1,91 @@
 import { Button } from "react-bootstrap";
-import { BiSolidEdit } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { TREE_LIST } from "../../Api";
+import { TREE_TRIM_SCHEDULE } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
-import { dayFormat } from "../../utils";
+import { taskStatus, timeFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { useCookies } from "react-cookie";
+import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageTreeTrimSchedule = () => {
-  const [token /*, setToken*/] = useCookies(["accessToken"]);
   const navigate = useNavigate();
-  // TODO get list
 
   const columns: Column[] = [
     {
-      header: "Chỉnh sửa",
+      header: "",
       accessorFn(row) {
         return (
           <div>
-            <Link to={`/manage-tree/${row?.treeCode}/update`}>
-              <button type="button" className="btn btn-click">
-                <BiSolidEdit />
-              </button>
-            </Link>
             <button type="button" className="btn btn-click" onClick={() => {}}>
               <ModalDelete />
             </button>
           </div>
         );
       },
+      width: "5%",
     },
     {
-      header: "Thời gian",
-      accessorFn(row) {
-        return <h6>{dayFormat(row.cutTime)}</h6>;
-      },
-    },
-    {
-      header: "Tiêu đề",
+      header: "Thời Gian",
       accessorFn(row) {
         return (
-          <Link className="linkCode" to={`/manage-tree/${row.treeCode}`}>
-            {row.treeCode}
-          </Link>
+          <h6 className="shortText">
+            {timeFormat(row.start) + "-" + timeFormat(row.end)}
+          </h6>
         );
       },
+      width: "10%",
     },
-    { header: "Vị trí", accessorKey: "streetName", align: "left" },
-
     {
-      header: "Trạng thái",
+      header: "Tiêu Đề",
       accessorFn(row) {
-        const status = row.isCut ? "Đã hoàn thành" : "Chưa hoàn thành";
-        const color = row.isCut ? "green" : "red";
-        return <span style={{ color, fontWeight: "bold" }}>{status}</span>;
+        return (
+          <h6 className="shortText">
+            <Link
+              className="linkCode"
+              style={{ fontWeight: "bold", textAlign: "center" }}
+              to={`/manage-tree/${row.treeCode}`}
+            >
+              {row.summary}
+            </Link>
+          </h6>
+        );
+      },
+      width: "10%",
+    },
+    {
+      header: "Nhân Viên Thực Hiện",
+      accessorFn(row) {
+        return <h6>{row.attendees}</h6>;
+      },
+      width: "20%",
+    },
+    {
+      header: "Địa Chỉ Cụ Thể",
+      accessorFn(row) {
+        return <h6>{row.location}</h6>;
+      },
+      width: "40%",
+    },
+    {
+      header: "Trạng Thái",
+      accessorFn(row) {
+        return (
+          <h6
+            className="shortText"
+            style={{
+              color: taskStatus(
+                row.extendedProperties.privateProperties.JobWorkingStatus
+              ).color,
+              fontWeight: "bold",
+            }}
+          >
+            {
+              taskStatus(
+                row.extendedProperties.privateProperties.JobWorkingStatus
+              ).text
+            }
+          </h6>
+        );
       },
     },
   ];
@@ -62,7 +93,7 @@ export const ManageTreeTrimSchedule = () => {
   return (
     <div>
       <ListView
-        listURL={TREE_LIST}
+        listURL={TREE_TRIM_SCHEDULE}
         columns={columns}
         bottom={
           <Button
@@ -74,6 +105,7 @@ export const ManageTreeTrimSchedule = () => {
             }}
             onClick={() => navigate("/manage-tree/create")}
           >
+            <MdAddCircleOutline className="iconAdd" />
             Thêm lịch
           </Button>
         }
