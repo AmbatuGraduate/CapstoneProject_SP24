@@ -9,12 +9,18 @@ export type Field = {
   label: string;
   key: string;
   defaultValue?: any;
+  affectValue?: any;
+  affectDate?: Date;
+  googleAddress?: boolean;
+  selected?: Date;
+  value?: any;
   placeholder?: string;
   formType: "input" | "select" | "textarea" | "number" | "date";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
   optionExtra?: OptionExtra;
+  onChange?: (event: React.ChangeEvent<any>) => void;
 };
 
 export type OptionExtra = {
@@ -51,7 +57,10 @@ export const FormBase = (props: Props) => {
     const { formType, options, key, disabled, optionExtra, ...rest } = props;
     const _disabled = mode == "view" ? true : disabled;
     const [_options, setOptions] = useState<Option[]>();
-    const [startDate, setStartDate] = useState<Date | null>(new Date());
+    const [startDate, setStartDate] = useState<Date | null>(
+      props.selected || new Date()
+    );
+    const [places, setPlaces] = useState([]);
 
     useEffect(() => {
       if (optionExtra) {
@@ -104,7 +113,6 @@ export const FormBase = (props: Props) => {
         console.log(places);
       }
     }, [props.value]);
-
 
     const fetchDataForFormSelect = async (option: OptionExtra) => {
       const res = await useApi.get(option.url);
@@ -196,19 +204,19 @@ export const FormBase = (props: Props) => {
       })}
       {mode == "create&update" ? (
         <div>
-          <Button variant="success" type="submit">
+          <Button className="btnSave" type="submit">
             Lưu
           </Button>
-          <Button variant="danger" onClick={onCancel}>
+          <Button className="btnCancel" variant="danger" onClick={onCancel}>
             Hủy
           </Button>
         </div>
       ) : (
         <div>
-          <Button variant="info" onClick={navigateUpdate}>
+          <Button className="btnSave" variant="info" onClick={navigateUpdate}>
             Cập nhật
           </Button>
-          <Button variant="danger" onClick={backPage}>
+          <Button className="btnCancel" variant="danger" onClick={backPage}>
             Trở về
           </Button>
         </div>
