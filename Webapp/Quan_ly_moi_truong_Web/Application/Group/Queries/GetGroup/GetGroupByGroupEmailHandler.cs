@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
-using Application.User.Common.Group;
+using Application.Group.Common;
 using Application.User.Common.List;
-using Application.User.Queries.GetGroup;
 using Application.User.Queries.List;
 using ErrorOr;
 using MediatR;
@@ -11,23 +10,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.User.Queries.GetGroup
+namespace Application.Group.Queries.GetGroup
 {
     public class GetGroupByGroupEmailHandler
     : IRequestHandler<GetGroupByGroupEmailQuery, ErrorOr<GroupResult>>
     {
-        private readonly IUserRepository userRepository;
+        private readonly IGroupRepository groupRepository;
 
-        public GetGroupByGroupEmailHandler(IUserRepository userRepository)
+        public GetGroupByGroupEmailHandler(IGroupRepository groupRepository)
         {
-            this.userRepository = userRepository;
+            this.groupRepository = groupRepository;
         }
 
         public async Task<ErrorOr<GroupResult>> Handle(GetGroupByGroupEmailQuery request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
 
-            var groupResult = await userRepository.GetGoogleGroupByEmail(request.accessToken, request.groupEmail);
+            var groupResult = await groupRepository.GetGoogleGroupByEmail(request.accessToken, request.groupEmail);
             return groupResult;
         }
     }
