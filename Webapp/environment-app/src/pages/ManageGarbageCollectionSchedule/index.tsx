@@ -31,58 +31,30 @@ export const ManageGarbageCollectionSchedule = () => {
     {
       header: "Thời gian",
       accessorFn(row) {
-        return (
-          <h6 className="shortText">
-            {timeFormat(row.myEvent.start) + "-" + timeFormat(row.myEvent.end)}
-          </h6>
-        );
+        return <h6 className="shortText" >{timeFormat(row.myEvent.start) + "-" + timeFormat(row.myEvent.end)}</h6>;
       },
+
     },
     {
       header: "Tiêu đề",
       accessorFn(row) {
-        return (
-          <h6 className="shortText">
-            <Link
-              className="linkCode"
-              style={{ fontWeight: "bold", textAlign: "center" }}
-              to={`/manage-tree/${row.treeCode}`}
-            >
-              {row.myEvent.summary}
-            </Link>
-          </h6>
-        );
+        return <h6 className="shortText"><Link className="linkCode" style={{ fontWeight: 'bold', textAlign: 'center' }} to={`/manage-tree/${row.treeCode}`}>{row.myEvent.summary}</Link></h6>;
       },
+
     },
     {
       header: "Vị trí",
       accessorFn(row) {
         return <h6>{row.myEvent.location}</h6>;
       },
+
     },
     {
       header: "Trạng thái",
       accessorFn(row) {
-        return (
-          <h6
-            className="shortText"
-            style={{
-              color: taskStatus(
-                row.myEvent.extendedProperties.privateProperties
-                  .JobWorkingStatus
-              ).color,
-              fontWeight: "bold",
-            }}
-          >
-            {
-              taskStatus(
-                row.myEvent.extendedProperties.privateProperties
-                  .JobWorkingStatus
-              ).text
-            }
-          </h6>
-        );
+        return <h6 className="shortText" style={{ color: taskStatus(row.myEvent.extendedProperties.privateProperties.JobWorkingStatus).color, fontWeight: "bold" }}>{taskStatus(row.myEvent.extendedProperties.privateProperties.JobWorkingStatus).text}</h6>;
       },
+
     },
   ];
 
@@ -94,11 +66,7 @@ export const ManageGarbageCollectionSchedule = () => {
         bottom={
           <Button
             variant="success"
-            style={{
-              backgroundColor: "hsl(94, 59%, 35%)",
-              border: "none",
-              padding: "0.5rem 1rem",
-            }}
+            style={{ backgroundColor: "hsl(94, 59%, 35%)", border: "none", padding: "0.5rem 1rem" }}
             onClick={() => navigate("/manage-tree/create")}
           >
             Thêm lịch
