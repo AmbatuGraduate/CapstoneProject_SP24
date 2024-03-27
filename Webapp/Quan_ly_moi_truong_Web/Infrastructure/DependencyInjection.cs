@@ -138,7 +138,11 @@ namespace Infrastructure
                     opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     opts.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
                 })
-                .AddCookie()
+                .AddCookie(opts =>
+                {
+                    opts.Cookie.Name = "u_tkn";
+                    opts.Cookie.Path = "/";
+                })
                 .AddJwtBearer(opts =>
                 {
                     opts.RequireHttpsMetadata = false;

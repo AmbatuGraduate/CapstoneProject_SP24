@@ -32,7 +32,7 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
         {
             try
             {
-                await Task.Delay(TimeSpan.FromMinutes(1));
+                await Task.Delay(TimeSpan.FromDays(1));
 
                 // Prepare the HTTP request
                 var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7024/api/tree/AutoUpdate");

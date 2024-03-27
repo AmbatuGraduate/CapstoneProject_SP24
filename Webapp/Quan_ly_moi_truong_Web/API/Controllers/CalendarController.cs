@@ -67,7 +67,7 @@ namespace API.Controllers
             }
             else // web client
             {
-                var jwt = Request.Cookies["u_tkn"];
+                var jwt = _httpContextAccessor.HttpContext.Request.Cookies["u_tkn"];
                 if (String.IsNullOrEmpty(jwt))
                 {
                     return BadRequest("u_tkn cookie is missing");

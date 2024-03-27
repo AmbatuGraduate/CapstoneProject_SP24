@@ -26,18 +26,24 @@ namespace API.Controllers
         private readonly IMediator mediator;
         private readonly IMapper mapper;
         private readonly INotifyService notifyService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
 
-        public TreeController(IMediator mediator, IMapper mapper, INotifyService notifyService)
+        public TreeController(IMediator mediator, IMapper mapper, INotifyService notifyService, IHttpContextAccessor httpContextAccessor)
         {
             this.mediator = mediator;
             this.mapper = mapper;
             this.notifyService = notifyService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            System.Diagnostics.Debug.WriteLine("after request");
+
+            var token = _httpContextAccessor.HttpContext.Request.Cookies["u_tkn"];
+
             ErrorOr<List<TreeResult>> list = await mediator.Send(new ListTreeQuery());
 
             if (list.IsError)
