@@ -14,6 +14,7 @@ namespace Application.Report.Common
         public string ReportStatus { get; set; }
         public ReportImpact ReportImpact { get; set; }
         public DateTime ExpectedResolutionDate { get; set; }
+        public DateTime ActualResolutionDate { get; set; }
         public string ReportResponse { get; set; }
     }
 }
