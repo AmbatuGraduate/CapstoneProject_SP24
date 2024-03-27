@@ -1,6 +1,7 @@
 ﻿
 using Application.Common.Interfaces.Persistence;
 using Application.Report.Commands.Create;
+using Application.Report.Commands.Response;
 using Application.Report.Queries.GetById;
 using Application.Report.Queries.List;
 using Application.Report.Queries.ListByUser;
@@ -96,6 +97,7 @@ namespace API.Controllers
             return Ok(result);
         }
 
+
         // get all reports that has been late
         [HttpGet]
         public async Task<IActionResult> GetAllLateReports(string accessToken)
@@ -108,5 +110,17 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        // response report
+        [HttpPost]
+        public async Task<IActionResult> ResponseReport([FromBody] ReponseReportCommand command)
+        {
+            var result = await mediator.Send(command);
+            if (result.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
+            }
+
+            return Ok(result);
+        }
     }
 }

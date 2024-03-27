@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
-import FlatButton from "../shared/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
 import { Icon } from '@rneui/themed';
+import { api } from "../shared/api";
+
 
 
 /*************************************************************
@@ -19,33 +20,29 @@ export default function TaskDetails({ route }) {
     const { key, summary, description, address, start, status, trees } = route.params;
 
     // ----------------- Update task status -----------------
+
     const updateStatus = () => {
         console.log('Updating status...');
         try {
             AsyncStorage.getItem("@accessToken").then(token => {
-                // local test: http://vesinhdanang.xyz/AmbatuGraduate_API/
-                // server: https://192.168.1.7:45455/
-                const url = new URL('https://vesinhdanang.xyz:7024/api/Calendar/UpdateJobWorkingStatus');
+                const url = 'http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus';
 
-                fetch(url, {
-                    method: 'POST',
+                api.post(url, {
+                    accessToken: "",
+                    calendarId: "",
+                    jobWorkingStatus: 2,
+                    eventId: key
+                }, {
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                         "Client-Type": "Mobile"
-                    },
-                    body: JSON.stringify({
-                        accessToken: "",
-                        calendarId: "",
-                        jobWorkingStatus: 2,
-                        eventId: key
-                    })
+                    }
                 })
-                    .then(response => response.json())
-                    .then(responseJson => {
-                        console.log(responseJson);
-                        if (!responseJson.isError) {
+                    .then(response => {
+                        console.log(response.data);
+                        if (!response.data.isError) {
                             Toast.show({
                                 type: 'success',
                                 text1: 'Thành công',
@@ -90,25 +87,36 @@ export default function TaskDetails({ route }) {
 
     const getStatusColor = (status) => {
         switch (status) {
-            case 'Not Started':
-                return '#FFD1DF';
+            case 'Not Start':
+                return '#F29B9B';
             case 'In Progress':
                 return '#FDFA72';
             case 'Done':
                 return '#E2FFE3';
+            case 'Late':
+                return '#F7AD86';
             default:
                 return '#E8E8E8';
         }
     }
 
+    const taskStatuses = {
+        'Done': 'Đã hoàn thành',
+        'Late': 'Quá hạn',
+        'In Progress': 'Đang thực hiện',
+        'Not Start': 'Chưa bắt đầu',
+    };
+
     const getStatusTextColor = (status) => {
         switch (status) {
-            case 'Not Started':
-                return 'coral';
+            case 'Not Start':
+                return '#840808';
             case 'In Progress':
                 return 'darkblue';
             case 'Done':
                 return 'green';
+            case 'Late':
+                return '#F76400';
             default:
                 return 'black';
         }
@@ -120,26 +128,41 @@ export default function TaskDetails({ route }) {
 
                 <View style={styles.content}>
                     {/* ANH */}
+                    <Text style={styles.subject}>{summary}</Text>
+                    <Text style={styles.dateText}>{formattedDate}</Text>
 
                     <View style={styles.detailsContainer}>
-                        <Text style={styles.subject}>{summary}</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                            <Icon name="leaf" type="font-awesome" size={20} color="green" />
+                            <Text style={styles.nameText}>Chi tiết công việc</Text>
+                        </View>
+
                         {treeArray.map((item, index) => (
                             <Text key={index} style={styles.infoText}>{item}</Text>
                         ))}
-                        <Text style={styles.infoText}>{formattedDate}</Text>
+
 
                     </View>
 
                     {/* DIA CHI */}
                     <View style={styles.detailsContainer}>
-                        <Text style={styles.nameText}>Địa chỉ</Text>
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                            <Icon name="map-marker" type="font-awesome" size={20} color="green" />
+                            <Text style={styles.nameText}>Địa chỉ</Text>
+                        </View>
+
 
                         <Text style={styles.infoText}>{address}</Text>
                     </View>
 
                     {/* Ghi chu */}
                     <View style={styles.detailsContainer}>
-                        <Text style={styles.nameText}>Ghi chú</Text>
+
+                        <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                            <Icon name="sticky-note" type="font-awesome" size={20} color="green" />
+                            <Text style={styles.nameText}>Ghi chú</Text>
+                        </View>
+
 
                         <Text style={styles.infoText}>{description}</Text>
                     </View>
@@ -148,7 +171,7 @@ export default function TaskDetails({ route }) {
                     <View style={[styles.detailsContainer, { backgroundColor: getStatusColor(updatedStatus) }]}>
                         <Text style={styles.nameText}>Trạng thái</Text>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={[styles.statusText, { color: getStatusTextColor(updatedStatus) }]}>{updatedStatus}</Text>
+                            <Text style={[styles.statusText, { color: getStatusTextColor(updatedStatus) }]}>{taskStatuses[updatedStatus]}</Text>
                             {updatedStatus === 'Done' && <Icon name='check' type='font-awesome' color='green' />}
                         </View>
                     </View>
@@ -176,6 +199,14 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 10,
         color: '#2282F3',
+        textAlign: 'center',
+    },
+    dateText: {
+        fontSize: 20,
+        fontFamily: 'quolibet',
+        color: '#333',
+        textAlign: 'center',
+        marginBottom: 10,
     },
     content: {
         padding: 10,
@@ -197,17 +228,13 @@ const styles = StyleSheet.create({
 
     },
     detailsContainer: {
-        marginTop: 10,
+        marginTop: 20,
         padding: 4,
         paddingHorizontal: 20,
         marginBottom: 5,
         backgroundColor: 'white',
         borderRadius: 10,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.3,
-        shadowRadius: 2,
-        elevation: 5,
+
     },
     nameText: {
         color: '#2282F3',
@@ -217,6 +244,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
         paddingBottom: 10,
+        marginLeft: 5,
     },
     infoText: {
         fontSize: 14,
@@ -236,14 +264,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#2282F3',
+        backgroundColor: 'lightgreen',
         padding: 15,
         borderRadius: 15,
         marginBottom: 20,
         alignSelf: 'center'
     },
     submitButtonText: {
-        color: '#fff',
+        color: 'whitesmoke',
         marginLeft: 10,
         fontSize: 18,
         fontWeight: 'bold',

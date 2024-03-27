@@ -1,5 +1,4 @@
 import { Button } from "react-bootstrap";
-import { BiSolidEdit } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { TREE_DELETE, TREE_LIST, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
@@ -8,57 +7,128 @@ import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { useRef } from "react";
 
+// import { BiSolidEdit } from "react-icons/bi";
+import { MdAddCircleOutline } from "react-icons/md";
+
 export const ManageTree = () => {
   const navigate = useNavigate();
+  // const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const ref = useRef<any>();
-  // TODO get list
 
+  // const handleCheckboxChange = (e, id) => {
+  //   const { checked } = e.target;
+  //   // Thêm hoặc xóa id của dòng khỏi danh sách được chọn tùy thuộc vào trạng thái của checkbox
+  //   setSelectedRows((prevSelectedRows) => {
+  //     if (checked) {
+  //       return [...prevSelectedRows, id];
+  //     } else {
+  //       return prevSelectedRows.filter((rowId) => rowId !== id);
+  //     }
+  //   });
+  // };
+  // const handleDeleteSelected = async () => {
+  //   // Thực hiện xóa các dòng được chọn
+  //   for (const id of selectedRows) {
+  //     await useApi.delete(TREE_DELETE.replace(":id", id));
+  //   }
+  //   // Sau khi xóa, làm mới dữ liệu
+  //   ref.current?.reload();
+  //   // Đặt lại danh sách dòng được chọn về trạng thái ban đầu
+  //   setSelectedRows([]);
+  // };
   const handleDelete = async (id: string) => {
     await useApi.delete(TREE_DELETE.replace(":id", id));
     ref.current?.reload();
   };
 
   const columns: Column[] = [
+    // {
+    //   header: "",
+    //   accessorFn(row) {
+    //     return (
+    //       <input
+    //         type="checkbox"
+    //         onChange={(e) => handleCheckboxChange(e, row.id)}
+    //         checked={selectedRows.includes(row.id)}
+    //       />
+    //     );
+    //   },
+    // },
     {
-      header: "Chỉnh sửa",
+      header: "",
       accessorFn(row) {
         return (
           <div>
-            <Link to={`/manage-tree/${row?.treeCode}/update`}>
-              <button type="button" className="btn btn-click">
-                <BiSolidEdit />
-              </button>
-            </Link>
             <button type="button" className="btn btn-click" onClick={() => {}}>
               <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
             </button>
           </div>
         );
       },
+      width: "2%",
     },
     {
-      header: "Mã số cây",
+      header: "Mã Số Cây",
       accessorFn(row) {
-        return <Link className="linkCode" to={`/manage-tree/${row.treeCode}`}>{row.treeCode}</Link>;
+        return (
+          <h6 className="shortText">
+            <Link
+              className="linkCode"
+              style={{ fontWeight: "bold" }}
+              to={`/manage-tree/${row.treeCode}`}
+            >
+              {row.treeCode}
+            </Link>
+          </h6>
+        );
       },
+      width: "10%",
     },
-    { header: "Tuyến đường", accessorKey: "streetName", align: "left" },
-    { header: "Giống cây", accessorKey: "cultivar", align: "left" },
-    { header: "Đường kính thân", accessorKey: "bodyDiameter", align: "left" },
-    { header: "Tán lá", accessorKey: "leafLength", align: "left" },
     {
-      header: "Thời điểm cắt tỉa gần nhất",
-      accessorFn(row) {
-        return <h6>{dayFormat(row.cutTime)}</h6>;
+      header: "Địa Chỉ Cụ Thể",
+      accessorFn(longRow) {
+        return <h6>{longRow.streetName}</h6>;
       },
+      width: "40%",
+    },
+    {
+      header: "Giống Cây",
+      accessorFn(row) {
+        return <h6 className="shortText">{row.cultivar}</h6>;
+      },
+      width: "15%",
+    },
+    // {
+    //   header: "Đường kính thân",
+    //   accessorFn(row) {
+    //     return <h6 className="shortText">{row.bodyDiameter}</h6>
+    //   },
+    // },
+    // {
+    //   header: "Tán lá",
+    //   accessorFn(row) {
+    //     return <h6 className="shortText">{row.leafLength}</h6>
+    //   },
+    // },
+    {
+      header: "Thời điểm cắt tiếp theo",
+      accessorFn(row) {
+        return <h6 className="shortText">{dayFormat(row.cutTime)}</h6>;
+      },
+      width: "15%",
     },
     {
       header: "Trạng thái",
       accessorFn(row) {
         const status = row.isCut ? "Đã cắt" : "Cần Cắt";
         const color = row.isCut ? "green" : "red";
-        return <span style={{ color, fontWeight: "bold" }}>{status}</span>;
+        return (
+          <h6 className="shortText" style={{ color, fontWeight: "bold" }}>
+            {status}
+          </h6>
+        );
       },
+      width: "10%",
     },
   ];
 
@@ -78,6 +148,7 @@ export const ManageTree = () => {
             }}
             onClick={() => navigate("/manage-tree/create")}
           >
+            <MdAddCircleOutline className="iconAdd" />
             Thêm cây
           </Button>
         }

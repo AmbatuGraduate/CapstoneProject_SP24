@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { Calendar } from "react-native-calendars";
 import moment from "moment";
 import { LocaleConfig } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import { Icon } from '@rneui/themed';
+import { api } from "../shared/api";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -40,50 +41,61 @@ export default function TasksList({ navigation }) {
     const [marked, setMarked] = useState({}); // marked date
     const [pressedDate, setPressedDate] = useState(null);
 
+    const [emptyEvents, setEmptyEvents] = useState('');
+
+    const taskStatuses = {
+        'Done': 'Đã hoàn thành',
+        'Late': 'Quá hạn',
+        'In Progress': 'Đang thực hiện',
+        'Not Start': 'Chưa bắt đầu',
+    };
+
+    const statusColors = {
+        'Done': 'green',
+        'Late': '#F76400',
+        'In Progress': 'darkblue',
+        'Not Start': '#840808',
+    };
 
     // local test: 'http://192.168.1.7:45455/api/Calendar/GetCalendarEvents/' + atoken
     // server: 'http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/GetCalendarEvents/' + atoken
     const getEvents = async () => {
         try {
-            AsyncStorage.getItem("@accessToken").then(atoken => {
-                if (atoken !== null) {
-                    fetch('https://vesinhdanang.xyz:7024/api/Calendar/GetAllCalendarEvents',
-                        {
-                            method: 'GET',
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Authorization": `Bearer ${atoken}`,
-                                "Client-Type": "Mobile"
-                            },
-                        })
-                        .then((res) => {
-                            if (res.ok) {
-                                return res.json();
-                            } else {
-                                throw new Error('Network response was not ok');
-                            }
-                        })
-                        .then((json) => {
-                            const jsonEvents = json.map(item => {
-                                const event = {
-                                    ...item,
-                                    extendedProperties: item.extendedProperties,
-                                };
-                                return event;
-                            });
-                            setEvents(jsonEvents);
-                        })
-                        .catch((error) => {
-                            console.log('There has been a problem with fetch operation: ', error.message);
+            const atoken = await AsyncStorage.getItem("@accessToken");
+            if (atoken !== null) {
+                api.get('http://192.168.1.7:45455/api/Calendar/GetAllCalendarEvents', {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${atoken}`,
+                        "Client-Type": "Mobile"
+                    },
+                })
+                    .then((res) => {
+                        const jsonEvents = res.data.map(item => {
+                            const event = {
+                                ...item,
+                                extendedProperties: item.extendedProperties,
+                            };
+                            return event;
                         });
-                } else {
-                    console.log('token null');
-                }
-            });
+                        setEvents(jsonEvents);
+                        setLoading(false);
+                        setEmptyEvents('Không có công việc nào trong ngày này');
+                    })
+                    .catch((error) => {
+                        console.log('There has been a problem with fetch operation: ', error.message);
+                        setLoading(false);
+                        setEmptyEvents('Không tải được dữ liệu, vui lòng thử lại sau');
+                    });
+            } else {
+                console.log('token null');
+                setLoading(false);
+                setEmptyEvents('Không tải được dữ liệu, vui lòng thử lại sau');
+            }
         } catch (error) {
             console.error(error);
-        } finally {
             setLoading(false);
+            setEmptyEvents('');
         }
     }
 
@@ -127,7 +139,7 @@ export default function TasksList({ navigation }) {
         if (items.length === 0) {
             return (
                 <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>Không có hoạt động nào trong hôm nay</Text>
+                    <Text style={styles.emptyText}>{emptyEvents}</Text>
                 </View>
             );
         }
@@ -150,8 +162,9 @@ export default function TasksList({ navigation }) {
                             style={[
                                 styles.records,
                                 item.extendedProperties.privateProperties?.JobWorkingStatus === 'Done' ? styles.doneBackground :
-                                    item.extendedProperties.privateProperties?.JobWorkingStatus === 'In Progress' ? styles.inProgressBackground :
-                                        (item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Start' || !item.extendedProperties.privateProperties?.JobWorkingStatus) ? styles.notStartBackground : null
+                                    item.extendedProperties.privateProperties?.JobWorkingStatus === 'Late' ? styles.lateBackground :
+                                        item.extendedProperties.privateProperties?.JobWorkingStatus === 'In Progress' ? styles.inProgressBackground :
+                                            (item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Start' || !item.extendedProperties.privateProperties?.JobWorkingStatus) ? styles.notStartBackground : null
                             ]}
                             // When the TouchableOpacity is pressed, navigate to the 'TaskDetails' screen.
                             onPress={() => {
@@ -161,7 +174,7 @@ export default function TasksList({ navigation }) {
                                     description: item.description,
                                     address: item.location,
                                     start: item.date,
-                                    status: item.extendedProperties.privateProperties?.JobWorkingStatus || 'Not Started',
+                                    status: item.extendedProperties.privateProperties?.JobWorkingStatus || 'Not Start',
                                     trees: item.extendedProperties.privateProperties?.Tree,
                                 });
                             }}
@@ -170,6 +183,7 @@ export default function TasksList({ navigation }) {
                         <Text style={styles.itemText}>Dia chi: {item.street}</Text> */}
                             <View style={styles.itemContainer}>
                                 <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>{item.summary}</Text>
+                                <Icon name="chevron-right" size={24} color="black" />
                             </View>
                             <View style={styles.itemContainer}>
                                 <Text style={styles.itemText}>{item.location}</Text>
@@ -177,13 +191,23 @@ export default function TasksList({ navigation }) {
                             <View style={styles.itemContainer}>
                                 {/* <Text style={styles.itemLabel}>Trạng thái:</Text> */}
                                 <Text style={[
-                                    styles.itemText,
+                                    styles.statusText,
                                     item.extendedProperties.privateProperties?.JobWorkingStatus === 'In Progress' ? styles.strongBlue :
                                         item.extendedProperties.privateProperties?.JobWorkingStatus === 'Done' ? styles.strongGreen :
-                                            (!item.extendedProperties.privateProperties?.JobWorkingStatus || item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Started') ? styles.strongRed : null
+                                            item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Start' ? styles.strongRed :
+                                                item.extendedProperties.privateProperties?.JobWorkingStatus === 'Late' ? styles.strongOrange :
+                                                    (!item.extendedProperties.privateProperties?.JobWorkingStatus || item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Started') ? styles.strongRed : null
                                 ]}>
-                                    {item.extendedProperties.privateProperties?.JobWorkingStatus || 'Not Started'}
+                                    {taskStatuses[item.extendedProperties.privateProperties?.JobWorkingStatus] || 'Not Started'}
                                 </Text>
+                                <Icon
+                                    style={{ marginRight: 5 }}
+                                    name={item.extendedProperties.privateProperties?.JobWorkingStatus === 'Done' ? 'check' : 'hourglass-2'}
+                                    type="font-awesome"
+                                    color={statusColors[item.extendedProperties.privateProperties?.JobWorkingStatus]}
+                                    size={16}
+                                />
+
                             </View>
                         </TouchableOpacity>
                     )}
@@ -222,7 +246,17 @@ export default function TasksList({ navigation }) {
 
             <View style={{ flex: 1 }}>
                 {isLoading ? (
-                    <Text>Loading...</Text>
+                    <View style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <ActivityIndicator size="large" color="lightgreen" />
+                    </View>
                 ) : (
                     renderItemsForSelectedDate()
                 )}
@@ -256,6 +290,7 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'row',
         marginBottom: 5,
+        justifyContent: 'space-between',
     },
     itemLabel: {
         fontSize: 16,
@@ -265,9 +300,19 @@ const styles = StyleSheet.create({
         flex: 0.75,
     },
     itemText: {
-        fontSize: 14,
+        fontSize: 16,
         flex: 0.75,
+        fontFamily: 'quolibet',
+        color: 'grey',
+        fontWeight: '500',
+
     },
+    statusText: {
+        fontSize: 15,
+        flex: 0.75,
+        fontWeight: 'bold',
+    },
+
     emptyContainer: {
         flex: 1,
         justifyContent: 'center',
@@ -286,23 +331,34 @@ const styles = StyleSheet.create({
     doneBackground: {
         backgroundColor: '#E2FFE3',
     },
+    lateBackground: {
+        backgroundColor: '#F7AD86',
+    },
     inProgressBackground: {
-        backgroundColor: '#FDFA72',
+        backgroundColor: '#FFFE7E',
     },
     notStartBackground: {
-        backgroundColor: '#FFD1DF', // light red
+        backgroundColor: '#F29B9B', // light red
     },
     strongBlue: {
         color: 'darkblue',
         fontWeight: 'bold',
+        letterSpacing: 1,
     },
     strongGreen: {
         color: 'green',
         fontWeight: 'bold',
+        letterSpacing: 1,
     },
     strongRed: {
-        color: 'coral',
+        color: '#840808',
         fontWeight: 'bold',
+        letterSpacing: 1,
+    },
+    strongOrange: {
+        color: '#F76400',
+        fontWeight: 'bold',
+        letterSpacing: 1,
     },
 });
 

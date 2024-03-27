@@ -6,6 +6,7 @@ using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Gmail.v1;
+using Google.Apis.MapsPlaces.v1;
 using Google.Apis.Services;
 using Hangfire;
 using Infrastructure.Authentication;
@@ -62,6 +63,7 @@ namespace Infrastructure
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGroupRepository, GroupRepositorys>();
             services.AddScoped<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
@@ -92,6 +94,7 @@ namespace Infrastructure
                     ApplicationName = "cay-xanh"
                 });
             });
+
 
             // calendar service registration
             services.AddScoped<ITreeCalendarService, TreeCalendarService>();
