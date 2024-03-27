@@ -67,10 +67,10 @@ img {
   border: none;
   outline: none;
   cursor: pointer;
-  border-radius: 8px;
   box-shadow: 0 2px 4px var(--inputColor);
   padding: 0.8rem 1rem;
   color: var(--textColor);
+  --bs-btn-border-radius: none;
 }
 
 .btn .icon {

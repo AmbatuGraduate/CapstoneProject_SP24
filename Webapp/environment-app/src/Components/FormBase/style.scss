@@ -18,17 +18,17 @@
     width: 100%;
 }
 .form-base {
-    font-size: 17px;
+    font-size: 16px;
     width: 100%;
     font-weight: 600;
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
     margin-top: 40px;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     >div {
-        width: 400px;
+        width: calc(50% - 15px);
     }
     div:last-child {
         width: 100%;
@@ -37,12 +37,44 @@
         min-width: 100px;
         margin-right: 50px;
         float: right;
+        --bs-btn-border-radius: none;
+        border: none;
     }
     input {
-        height: 50px;
+        height: 40px;
+        width: calc(100% - 20px);
     }
     input:hover{
         box-shadow: 0 0 5px rgba(0, 128, 0, 0.5);
+    }
+    input::placeholder{
+        color: grey;
+        font-style: italic;
+        font-size: 1rem;
+    }
+    .btnSave{
+        background-color: white;
+        --bs-btn-border-radius: none;
+        color: var(--PrimaryColor);
+        border-radius: 1.5rem;
+        border: 2px solid var(--PrimaryColor);
+        font-weight: bold;
+        &:hover{
+            background-color: var(--PrimaryColor);
+            border: 2px solid var(--PrimaryColor);
+        }
+    }
+    .btnCancel{
+        background-color: white;
+        --bs-btn-border-radius: none;
+        color: #c82333;
+        border-radius: 1.5rem;
+        border: 2px solid #c82333;
+        font-weight: bold;
+        &:hover{
+            background-color: #c82333;
+            border: 2px solid #c82333;
+        }
     }
 }
 
@@ -52,6 +84,8 @@
     border-radius: 16px;
     min-height: calc(100vh - 150px);
     box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
+    display: flex;
+    flex-direction: column;
     h4 {
         border-bottom: 1px solid rgb(212, 212, 212);
         padding-bottom: 12px;
