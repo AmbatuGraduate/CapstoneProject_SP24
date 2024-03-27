@@ -1,12 +1,13 @@
 import { Button } from "react-bootstrap";
-import { BiSolidEdit } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
-import { REPORT_LIST, TREE_DELETE, TREE_LIST, useApi } from "../../Api";
+import { REPORT_LIST, TREE_DELETE, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { useRef } from "react";
+
+import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageReport = () => {
   const navigate = useNavigate();
@@ -24,13 +25,8 @@ export const ManageReport = () => {
       accessorFn(row) {
         return (
           <div>
-            <Link to={`/manage-report/${row?.id}/update`}>
-              <button type="button" className="btn btn-click">
-                <BiSolidEdit />
-              </button>
-            </Link>
             <button type="button" className="btn btn-click" onClick={() => {}}>
-              <ModalDelete handleDelete={() => handleDelete(row.id)} />
+              <ModalDelete handleDelete={() => handleDelete(row.reportId)} />
             </button>
           </div>
         );
@@ -40,16 +36,48 @@ export const ManageReport = () => {
       header: "Mã báo cáo",
       accessorFn(row) {
         return (
-          <Link className="linkCode" to={`/manage-report/${row.id}`}>
-            {row.treeCode}
-          </Link>
+          <h6 className="shortText">
+            <Link
+              className="linkCode"
+              style={{ fontWeight: "bold" }}
+              to={`/manage-report/${row.reportId}`}
+            >
+              {row.reportId}
+            </Link>
+          </h6>
         );
       },
     },
-    { header: "Tiêu đề", accessorKey: "streetName", align: "left" },
-    { header: "Người gửi", accessorKey: "cultivar", align: "left" },
-    { header: "Mức độ ảnh hưởng", accessorKey: "bodyDiameter", align: "left" },
-    { header: "Trạng thái", accessorKey: "leafLength", align: "left" },
+    {
+      header: "Người gửi",
+      accessorFn(longRow) {
+        return <h6>{longRow.issuerGmail}</h6>;
+      },
+    },
+    {
+      header: "Trạng thái",
+      accessorFn(row) {
+        return <h6>{row.status}</h6>;
+      },
+    },
+    {
+      header: "Mức độ ảnh hưởng",
+      accessorFn(row) {
+        return <h6>{row.reportImpact}</h6>;
+      },
+    },
+    {
+      header: "Ngày giải quyết",
+      accessorFn(row) {
+        return <h6>{dayFormat(row.expectedResolutionDate)}</h6>;
+      },
+    },
+    {
+      header: "Ngày đã giải quyết",
+      accessorFn(row) {
+        return <h6>{dayFormat(row.actualResolutionDate)}</h6>;
+      },
+    },
   ];
 
   return (
@@ -58,6 +86,20 @@ export const ManageReport = () => {
         ref={ref}
         listURL={REPORT_LIST}
         columns={columns}
+        bottom={
+          <Button
+            variant="success"
+            style={{
+              backgroundColor: "hsl(94, 59%, 35%)",
+              border: "none",
+              padding: "0.5rem 1rem",
+            }}
+            onClick={() => navigate("/manage-tree/create")}
+          >
+            <MdAddCircleOutline className="iconAdd" />
+            Thêm báo cáo
+          </Button>
+        }
         filter={(row) => {
           return row.isExist == true;
         }}

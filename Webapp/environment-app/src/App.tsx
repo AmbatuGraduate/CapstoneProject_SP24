@@ -10,6 +10,7 @@ import { UpdateTree } from "./pages/ManageTree/Update";
 import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
 import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
 import { ManageCleaningSchedule } from "./pages/ManageCleaningSchedule";
+import { ManageReport } from "./pages/ManageReport";
 
 function App() {
   const router = createBrowserRouter([
@@ -52,6 +53,14 @@ function App() {
         {
           path: "manage-garbagecollection-schedule",
           element: <ManageGarbageCollectionSchedule />,
+        },
+        {
+          path: "manage-report",
+          element: <ManageReport />,
+        },
+        {
+          path: "manage-report/create",
+          element: <ManageReport />,
         },
       ],
     },
