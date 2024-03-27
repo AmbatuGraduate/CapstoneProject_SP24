@@ -58,7 +58,6 @@ export default function Report({ navigation }) {
                     },
                 })
                     .then((res) => {
-                        console.log('thanh cong');
                         const jsonReports = res.data.value.map(item => {
                             const report = {
                                 ...item.reportFormat,
