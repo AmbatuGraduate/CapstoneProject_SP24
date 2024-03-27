@@ -1,11 +1,10 @@
 import { Button } from "react-bootstrap";
-import { BiSolidEdit } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { TREE_TRIM_SCHEDULE } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
-import { dayFormat, taskStatus, timeFormat } from "../../utils";
-import ModalDelete from "../../Components/Modals/ModalDelete";
+import { taskStatus, timeFormat } from "../../utils";
+// import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageCleaningSchedule = () => {
   const navigate = useNavigate();

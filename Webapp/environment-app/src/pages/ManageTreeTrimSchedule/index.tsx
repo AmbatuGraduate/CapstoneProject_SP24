@@ -13,7 +13,7 @@ export const ManageTreeTrimSchedule = () => {
   const columns: Column[] = [
     {
       header: "",
-      accessorFn(row) {
+      accessorFn() {
         return (
           <div>
             <button type="button" className="btn btn-click" onClick={() => {}}>

@@ -8,7 +8,7 @@ import { ImProfile } from "react-icons/im";
 import { MdLogout } from "react-icons/md";
 
 const Top = () => {
-  const [token, setToken] = useCookies(["accessToken"]);
+  const [token] = useCookies(["accessToken"]);
   const [isOpen, setIsOpen] = useState(false);
   const [, , removeCookie] = useCookies(["accessToken"]);
 
