@@ -59,6 +59,53 @@ export const FormBase = (props: Props) => {
       }
     }, []);
 
+    useEffect(() => {
+      const currentTime = props.affectDate || new Date();
+      currentTime.setMonth(
+        currentTime.getMonth() + (Number(props.affectValue) || 0)
+      );
+      setStartDate(currentTime);
+    }, [props.affectValue]);
+
+    useEffect(() => {
+      if (props.googleAddress) {
+        const center = { lat: 16.047079, lng: 108.20623 };
+        // Create a bounding box with sides ~10km away from the center point
+        const defaultBounds = {
+          north: center.lat + 0.1,
+          south: center.lat - 0.1,
+          east: center.lng + 0.1,
+          west: center.lng - 0.1,
+        };
+        const input = document.getElementById("pac-input");
+        const options = {
+          bounds: defaultBounds,
+          componentRestrictions: { locality: "Da Nang" },
+          fields: ["address_components", "geometry", "icon", "name"],
+          strictBounds: false,
+        };
+        const autocomplete = new window.google.maps.places.Autocomplete(
+          input,
+          options
+        );
+
+        // Add event listener to handle place selection
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          console.log(place); // Handle the selected place here
+          if (place.geometry && place.geometry.location) {
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            console.log("Latitude:", latitude);
+            console.log("Longitude:", longitude);
+            // Xử lý tọa độ latitude và longitude ở đây
+          }
+        });
+        console.log(places);
+      }
+    }, [props.value]);
+
+
     const fetchDataForFormSelect = async (option: OptionExtra) => {
       const res = await useApi.get(option.url);
       const _options = res.data?.map((obj: any) => ({
@@ -71,7 +118,13 @@ export const FormBase = (props: Props) => {
     switch (formType) {
       case "input":
         return (
-          <Form.Control type="text" {...rest} name={key} disabled={_disabled} />
+          <Form.Control
+            id={props.googleAddress == true ? "pac-input" : ""}
+            type="text"
+            {...rest}
+            name={key}
+            disabled={_disabled}
+          />
         );
       case "number":
         return (
