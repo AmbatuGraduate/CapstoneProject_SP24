@@ -38,7 +38,7 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
                 {
                     if (DateTime.Now.CompareTo(new DateTime(refresh_tkn.Expire)) <= 0)
                     {
-                        if (DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwt_expire)).LocalDateTime.CompareTo(DateTime.UtcNow) > 0)
+                        if (DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwt_expire)).CompareTo(DateTime.Now) <= 0)
                         {
                             System.Diagnostics.Debug.WriteLine("REFRESH : " + "NEW TOKEN");
 

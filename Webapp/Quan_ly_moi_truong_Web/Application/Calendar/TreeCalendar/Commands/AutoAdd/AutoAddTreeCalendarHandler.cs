@@ -16,11 +16,13 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
     {
         private readonly ITreeCalendarService _treeCalendarService;
         private readonly ITreeRepository _treeRepository;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public AutoAddTreeCalendarHandler(ITreeCalendarService treeCalendarService, ITreeRepository treeRepository)
+        public AutoAddTreeCalendarHandler(ITreeCalendarService treeCalendarService, ITreeRepository treeRepository, IJwtTokenGenerator jwtTokenGenerator)
         {
             _treeCalendarService = treeCalendarService;
             _treeRepository = treeRepository;
+            _jwtTokenGenerator = jwtTokenGenerator;
         }
 
         public async Task<ErrorOr<List<MyAddedEventResult>>> Handle(AutoAddTreeCalendarCommand request, CancellationToken cancellationToken)
@@ -28,13 +30,15 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
 
             List<MyAddedEventResult> eventResults = new List<MyAddedEventResult>();
 
+            var accessToken = _jwtTokenGenerator.DecodeTokenToGetAccessToken(request.accessToken);
+
             var getAllTree = _treeRepository.GetAllTrees().Where(tree => !tree.isCut);
 
             var treeByAddress = getAllTree
-                .GroupBy(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty))
+                .GroupBy(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty).Split(",")[0])
                 .ToDictionary(
                     group => group.Key,
-                    group => group.Where(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty).ToLower() == group.Key.ToLower())
+                    group => group.Where(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty).Split(",")[0].ToLower() == group.Key.Split(",")[0].ToLower())
                 .ToList()).ToList();
 
             foreach (var group in treeByAddress)
@@ -64,7 +68,7 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
                     Attendees = new List<User>()
                 };
 
-                var result = await _treeCalendarService.AddEvent(request.accessToken, request.calendarId, addedEvent);
+                var result = await _treeCalendarService.AddEvent(accessToken, request.calendarId, addedEvent);
                 eventResults.Add(new MyAddedEventResult(result));
 
             }

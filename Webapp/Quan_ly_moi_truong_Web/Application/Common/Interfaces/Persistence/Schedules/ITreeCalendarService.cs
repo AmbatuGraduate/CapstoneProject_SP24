@@ -18,5 +18,7 @@ namespace Application.Common.Interfaces.Persistence.Schedules
         Task<MyUpdatedEvent> UpdateEvent(string token, string calendarId, MyUpdatedEvent myEvent, string eventId);
         Task<bool> UpdateJobStatus(string token, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId);
         Task<bool> DeleteEvent(string token, string calendarId, string eventId);
+
+        string ConvertToJobWorkingStatusString(JobWorkingStatus jobWorkingStatus);
     }
 }
