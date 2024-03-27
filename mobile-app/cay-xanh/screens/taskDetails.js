@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-nati
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
 import { Icon } from '@rneui/themed';
+import { api } from "../shared/api";
+
 
 
 /*************************************************************
@@ -18,33 +20,29 @@ export default function TaskDetails({ route }) {
     const { key, summary, description, address, start, status, trees } = route.params;
 
     // ----------------- Update task status -----------------
+
     const updateStatus = () => {
         console.log('Updating status...');
         try {
             AsyncStorage.getItem("@accessToken").then(token => {
-                // local test: https://vesinhdanang.xyz:7024/api/
-                // server: http://192.168.1.7:45455/
-                const url = new URL('http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus');
+                const url = 'http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus';
 
-                fetch(url, {
-                    method: 'POST',
+                api.post(url, {
+                    accessToken: "",
+                    calendarId: "",
+                    jobWorkingStatus: 2,
+                    eventId: key
+                }, {
                     headers: {
                         Accept: 'application/json',
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`,
                         "Client-Type": "Mobile"
-                    },
-                    body: JSON.stringify({
-                        accessToken: "",
-                        calendarId: "",
-                        jobWorkingStatus: 2,
-                        eventId: key
-                    })
+                    }
                 })
-                    .then(response => response.json())
-                    .then(responseJson => {
-                        console.log(responseJson);
-                        if (!responseJson.isError) {
+                    .then(response => {
+                        console.log(response.data);
+                        if (!response.data.isError) {
                             Toast.show({
                                 type: 'success',
                                 text1: 'Thành công',

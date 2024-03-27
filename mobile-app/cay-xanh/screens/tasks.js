@@ -5,7 +5,7 @@ import moment from "moment";
 import { LocaleConfig } from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from '@rneui/themed';
-
+import { api } from "../shared/api";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -61,47 +61,37 @@ export default function TasksList({ navigation }) {
     // server: 'http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/GetCalendarEvents/' + atoken
     const getEvents = async () => {
         try {
-            AsyncStorage.getItem("@accessToken").then(atoken => {
-                if (atoken !== null) {
-                    fetch('http://192.168.1.7:45455/api/Calendar/GetAllCalendarEvents',
-                        {
-                            method: 'GET',
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Authorization": `Bearer ${atoken}`,
-                                "Client-Type": "Mobile"
-                            },
-                        })
-                        .then((res) => {
-                            if (res.ok) {
-                                return res.json();
-                            } else {
-                                throw new Error('Network response was not ok');
-                            }
-                        })
-                        .then((json) => {
-                            const jsonEvents = json.map(item => {
-                                const event = {
-                                    ...item,
-                                    extendedProperties: item.extendedProperties,
-                                };
-                                return event;
-                            });
-                            setEvents(jsonEvents);
-                            setLoading(false);
-                            setEmptyEvents('Không có công việc nào trong ngày này');
-                        })
-                        .catch((error) => {
-                            console.log('There has been a problem with fetch operation: ', error.message);
-                            setLoading(false);
-                            setEmptyEvents('Không tải được dữ liệu, vui lòng thử lại sau');
+            const atoken = await AsyncStorage.getItem("@accessToken");
+            if (atoken !== null) {
+                api.get('http://192.168.1.7:45455/api/Calendar/GetAllCalendarEvents', {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${atoken}`,
+                        "Client-Type": "Mobile"
+                    },
+                })
+                    .then((res) => {
+                        const jsonEvents = res.data.map(item => {
+                            const event = {
+                                ...item,
+                                extendedProperties: item.extendedProperties,
+                            };
+                            return event;
                         });
-                } else {
-                    console.log('token null');
-                    setLoading(false);
-                    setEmptyEvents('Không tải được dữ liệu, vui lòng thử lại sau');
-                }
-            });
+                        setEvents(jsonEvents);
+                        setLoading(false);
+                        setEmptyEvents('Không có công việc nào trong ngày này');
+                    })
+                    .catch((error) => {
+                        console.log('There has been a problem with fetch operation: ', error.message);
+                        setLoading(false);
+                        setEmptyEvents('Không tải được dữ liệu, vui lòng thử lại sau');
+                    });
+            } else {
+                console.log('token null');
+                setLoading(false);
+                setEmptyEvents('Không tải được dữ liệu, vui lòng thử lại sau');
+            }
         } catch (error) {
             console.error(error);
             setLoading(false);

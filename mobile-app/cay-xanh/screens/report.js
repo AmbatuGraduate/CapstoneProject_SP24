@@ -1,11 +1,12 @@
 import { Text, View, Modal, StyleSheet, TouchableOpacity, FlatList, TextInput, ActivityIndicator } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
-import Header from '../shared/header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Icon } from '@rneui/themed';
 import ReportForm from "./reportForm";
 import Toast from 'react-native-toast-message';
+import { api } from "../shared/api";
+
 
 
 
@@ -42,67 +43,58 @@ export default function Report({ navigation }) {
     };
 
     // get reports from the server
+
     const getReports = async () => {
         setLoading(true);
         try {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
-            AsyncStorage.getItem("@accessToken").then(atoken => {
-                if (atoken !== null) {
-                    // local test:  http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=
-                    // server:      https://vesinhdanang.xyz:7024/api/Report/GetReportsByUser?accessToken=
-                    fetch('http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=' + atoken + '&email=' + useremail,
-                        {
-                            method: 'GET',
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        })
-                        .then((res) => {
-                            if (res.ok) {
-                                return res.json();
-                            } else {
-                                throw new Error('Network response was not ok');
-                            }
-                        })
-                        .then((json) => {
-                            const jsonReports = json.value.map(item => {
-                                const report = {
-                                    ...item.reportFormat,
-                                };
-                                return report;
-                            });
-                            setReports(jsonReports);
+            const atoken = await AsyncStorage.getItem("@accessToken");
+            if (atoken !== null) {
+                const url = `http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=${atoken}&email=${useremail}`;
 
-                            // Transform data here
-                            const data = {};
-                            jsonReports.forEach(item => {
-                                const [date, time] = item.expectedResolutionDate.split("T");
-                                const currentDate = date;
-                                if (!data[currentDate]) {
-                                    data[currentDate] = [];
-                                }
-                                data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
-                            });
-                            setTransformedData(data);
-                            setLoading(false);
-                            setEmptyReport('Không có báo cáo nào');
-                        })
-                        .catch((error) => {
-                            console.log('There has been a problem with fetch operation: ', error.message);
-                            setLoading(false);
-                            setEmptyReport('Lỗi kết nối!');
+                api.get(url, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((res) => {
+                        console.log('thanh cong');
+                        const jsonReports = res.data.value.map(item => {
+                            const report = {
+                                ...item.reportFormat,
+                            };
+                            return report;
                         });
-                } else {
-                    console.log('token null');
-                    setLoading(false);
-                    setEmptyReport('Lỗi kết nối!');
-                }
-            });
+                        setReports(jsonReports);
+
+                        // Transform data here
+                        const data = {};
+                        jsonReports.forEach(item => {
+                            const [date, time] = item.expectedResolutionDate.split("T");
+                            const currentDate = date;
+                            if (!data[currentDate]) {
+                                data[currentDate] = [];
+                            }
+                            data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
+                        });
+                        setTransformedData(data);
+                        setLoading(false);
+                        setEmptyReport('Không có báo cáo nào');
+                    })
+                    .catch((error) => {
+                        console.log('There has been a problem with fetch operation: ', error.message);
+                        setLoading(false);
+                        setEmptyReport('Lỗi kết nối!');
+                    });
+            } else {
+                console.log('token null');
+                setLoading(false);
+                setEmptyReport('Lỗi kết nối!');
+            }
         } catch (error) {
             console.error(error);
         }
     }
-
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // The screen is focused

@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Icon } from '@rneui/themed';
 import * as yup from 'yup';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { api } from "../shared/api";
 
 
 const ReportSchema = yup.object({
@@ -45,23 +46,20 @@ export default function ReportForm({ onFormSuccess }) {
 
                     // local test: http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=
                     // server:     https://vesinhdanang.xyz:7024/api/Report/CreateReport
-                    fetch('http://192.168.1.7:45455/api/Report/CreateReport', {
-                        method: 'POST',
+                    api.post('http://192.168.1.7:45455/api/Report/CreateReport', {
+                        accessToken: accessToken,
+                        issuerEmail: issuerEmail,
+                        reportSubject: values.reportSubject,
+                        reportBody: values.reportBody,
+                        expectedResolutionDate: values.expectedResolutionDate,
+                        reportImpact: parseInt(values.reportImpact, 10),
+                    }, {
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({
-                            accessToken: accessToken,
-                            issuerEmail: issuerEmail,
-                            reportSubject: values.reportSubject,
-                            reportBody: values.reportBody,
-                            expectedResolutionDate: values.expectedResolutionDate,
-                            reportImpact: parseInt(values.reportImpact, 10),
-                        }),
                     })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            console.log('Success:', data);
+                        .then((response) => {
+                            console.log('Success:', response.data);
                             onFormSuccess();
                         })
                         .catch((error) => {
