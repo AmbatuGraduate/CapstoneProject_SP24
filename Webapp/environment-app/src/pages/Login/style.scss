@@ -45,17 +45,27 @@
 
             button {
                 background-color: white;
-                color: var(--PrimanyColor);
+                color: var(--PrimaryColor);
                 border-radius: 1rem;
                 width: 80%;
                 height: 50px;
-                font-size: var(--h2FontSize);
-                font-weight: 500;
                 border: none;
                 box-shadow: 2px var(--inputColor);
+                justify-content: center;
                 &:hover {
                     background-color: var(--paleGreen);
                     transition: 0.3s ease;
+                }
+                .icon {
+                    height: 2rem;
+                    font-size: var(--biggestFontSize);
+                    margin-right: 1rem;
+                }
+
+                h6 {
+                    margin: 0;
+                    font-size: var(--h2FontSize);
+                    font-weight: 500;
                 }
             }
         }
