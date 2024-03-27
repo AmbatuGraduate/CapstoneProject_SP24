@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.User.DeleteGoogle
+namespace Application.User.Commands.DeleteGoogle
 {
     public class DeleteGoogleHandler : IRequestHandler<DeleteGoogleCommand, ErrorOr<DeleteGoogleUserRecord>>
     {

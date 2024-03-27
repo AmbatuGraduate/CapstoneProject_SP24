@@ -1,0 +1,245 @@
+﻿using Application.Common.Interfaces.Persistence;
+using Application.Group.Common;
+using Application.Group.Common.Add_Update;
+using Domain.Entities.Deparment;
+using Google.Apis.Admin.Directory.directory_v1;
+using Google.Apis.Admin.Directory.directory_v1.Data;
+using Google.Apis.Auth.OAuth2;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Infrastructure.Persistence.Repositories
+{
+    public class GroupRepositorys : IGroupRepository
+    {
+        private readonly WebDbContext webDbContext;
+        private readonly Func<GoogleCredential, DirectoryService> _directoryServiceFactory;
+
+        public GroupRepositorys(WebDbContext webDbContext, Func<GoogleCredential, DirectoryService> directoryServiceFactory)
+        {
+            this.webDbContext = webDbContext;
+            _directoryServiceFactory = directoryServiceFactory;
+        }
+
+        public List<Departments> GetAllGroups()
+        {
+            return webDbContext.Departments.ToList();
+        }
+
+        public async Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail)
+        {
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+
+                // Retrieve the group
+                var request = service.Groups.Get(groupEmail);
+                var group = await request.ExecuteAsync();
+
+                var groupDto = new GroupResult
+                {
+                    Id = group.Id,
+                    Email = group.Email,
+                    Name = group.Name,
+                    Description = group.Description,
+                    AdminCreated = (bool)group.AdminCreated,
+                    DirectMembersCount = (long)group.DirectMembersCount
+                };
+
+                return groupDto;
+            }
+            catch (Exception e)
+            {
+                // Handle exception
+                throw;
+            }
+        }
+
+        public async Task<List<GroupResult>> GetAllGoogleGroupByUserEmail(string accessToken, string userEmail)
+        {
+            var groupResult = new List<GroupResult>();
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+                var dbGroups = GetAllGroups();
+
+                foreach (var group in dbGroups)
+                {
+                    try
+                    {
+                        var memberRequest = service.Members.Get(group.DepartmentEmail, userEmail);
+                        var member = memberRequest.Execute();
+                        if (member != null)
+                        {
+                            groupResult.Add(new GroupResult
+                            {
+                                Id = member.Id,
+                                Email = member.Email,
+                                Name = group.DepartmentName,
+                                Description = group.Description,
+                                AdminCreated = group.AdminCreated,
+                                DirectMembersCount = (long)group.DirectMembersCount
+                            });
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"An error occurred: {e.Message}");
+                    }
+                }
+                return groupResult;
+            }
+            catch (Exception e)
+            {
+                // Handle exception
+                throw;
+            }
+        }
+
+        public async Task<GroupResult> AddGoogleGroup(string accessToken, AddGoogleGroup group)
+        {
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+                var newGroup = new Group()
+                {
+                    Email = group.Email,
+                    Name = group.Name,
+                    Description = group.Description,
+                    AdminCreated = group.AdminCreated
+                };
+
+                var request = service.Groups.Insert(newGroup);
+                var googleGroup = await request.ExecuteAsync();
+
+                return new GroupResult
+                {
+                    Id = googleGroup.Id,
+                    Email = googleGroup.Email,
+                    Name = googleGroup.Name,
+                    Description = googleGroup.Description,
+                    AdminCreated = (bool)googleGroup.AdminCreated
+                };
+            }
+            catch (Exception e)
+            {
+                // Handle exception
+                System.Diagnostics.Debug.WriteLine($"Failed to get user ID: {e.Message}");
+                return null;
+            }
+        }
+
+        public async Task<GroupResult> UpdateGoogleGroup(string accessToken, UpdateGoogleGroup group)
+        {
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+                var existingGroup = service.Groups.Get(group.Email).Execute();
+
+                if (existingGroup != null)
+                {
+                    existingGroup.Email = group.Email;
+                    existingGroup.Name = group.Name;
+                    existingGroup.Description = group.Description;
+                    existingGroup.AdminCreated = (bool)group.AdminCreated;
+                }
+
+                var request = service.Groups.Update(existingGroup, group.Email);
+                var googleGroup = await request.ExecuteAsync();
+
+                return new GroupResult
+                {
+                    Id = googleGroup.Id,
+                    Email = googleGroup.Email,
+                    Name = googleGroup.Name,
+                    Description = googleGroup.Description,
+                    AdminCreated = (bool)googleGroup.AdminCreated
+                };
+            }
+            catch (Exception e)
+            {
+                // Handle exception
+                System.Diagnostics.Debug.WriteLine($"Failed to get user ID: {e.Message}");
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteGoogleGroup(string accessToken, string groupEmail)
+        {
+            try
+            {
+                var result = true;
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+                var existingGroup = service.Groups.Get(groupEmail).Execute();
+
+                if (existingGroup != null)
+                {
+                    var request = service.Groups.Delete(groupEmail);
+                    await request.ExecuteAsync();
+                }
+                return result;
+            }
+            catch (Exception e)
+            {
+                // Handle exception
+                System.Diagnostics.Debug.WriteLine($"Failed to get user ID: {e.Message}");
+                return false;
+            }
+        }
+
+        public bool AddGroupDB(Departments group)
+        {
+            try
+            {
+                webDbContext.Departments.Add(group);
+                webDbContext.SaveChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateGroupDB(Departments group)
+        {
+            try
+            {
+                webDbContext.Departments.Attach(group);
+                webDbContext.Entry<Departments>(group).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                webDbContext.SaveChanges();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteGroupDB(string groupEmail)
+        {
+            try
+            {
+                webDbContext.Departments.Remove(GetGroupByEmail(groupEmail));
+                webDbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public Departments GetGroupByEmail(string groupEmail) {
+            return webDbContext.Departments.SingleOrDefault(group => group.DepartmentEmail.ToLower().Equals(groupEmail.ToLower()));
+        }
+    }
+}
