@@ -25,6 +25,8 @@ export default function Report({ navigation }) {
     // data refresh
     const [data, setData] = useState([]);
 
+    const [emptyReport, setEmptyReport] = useState('');
+
     const refreshData = async () => {
         await getReports();
         setModalOpen(false);
@@ -83,14 +85,17 @@ export default function Report({ navigation }) {
                             });
                             setTransformedData(data);
                             setLoading(false);
+                            setEmptyReport('Không có báo cáo nào');
                         })
                         .catch((error) => {
                             console.log('There has been a problem with fetch operation: ', error.message);
                             setLoading(false);
+                            setEmptyReport('Lỗi kết nối!');
                         });
                 } else {
                     console.log('token null');
                     setLoading(false);
+                    setEmptyReport('Lỗi kết nối!');
                 }
             });
         } catch (error) {
@@ -155,7 +160,7 @@ export default function Report({ navigation }) {
         if (reports.length === 0) {
             return (
                 <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>Chưa có báo cáo nào</Text>
+                    <Text style={styles.emptyText}>{emptyReport}</Text>
                 </View>
             );
         }
@@ -218,6 +223,7 @@ export default function Report({ navigation }) {
                 colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
+                style={StyleSheet.absoluteFill}
             >
                 <View style={styles.searchContainer}>
 
@@ -234,10 +240,9 @@ export default function Report({ navigation }) {
                 {isLoading ? (
                     <View style={{
                         position: 'absolute',
-                        top: 0,
+                        top: '50%',
                         left: 0,
                         right: 0,
-                        bottom: 0,
                         justifyContent: 'center',
                         alignItems: 'center'
                     }}>

@@ -41,6 +41,8 @@ export default function TasksList({ navigation }) {
     const [marked, setMarked] = useState({}); // marked date
     const [pressedDate, setPressedDate] = useState(null);
 
+    const [emptyEvents, setEmptyEvents] = useState('');
+
     const taskStatuses = {
         'Done': 'Đã hoàn thành',
         'Late': 'Quá hạn',
@@ -87,19 +89,23 @@ export default function TasksList({ navigation }) {
                             });
                             setEvents(jsonEvents);
                             setLoading(false);
+                            setEmptyEvents('Không có công việc nào trong ngày này');
                         })
                         .catch((error) => {
                             console.log('There has been a problem with fetch operation: ', error.message);
                             setLoading(false);
+                            setEmptyEvents('Không tải được dữ liệu, vui lòng thử lại sau');
                         });
                 } else {
                     console.log('token null');
                     setLoading(false);
+                    setEmptyEvents('Không tải được dữ liệu, vui lòng thử lại sau');
                 }
             });
         } catch (error) {
             console.error(error);
             setLoading(false);
+            setEmptyEvents('');
         }
     }
 
@@ -143,7 +149,7 @@ export default function TasksList({ navigation }) {
         if (items.length === 0) {
             return (
                 <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>Không có hoạt động nào trong hôm nay</Text>
+                    <Text style={styles.emptyText}>{emptyEvents}</Text>
                 </View>
             );
         }
