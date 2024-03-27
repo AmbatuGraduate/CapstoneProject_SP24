@@ -8,7 +8,6 @@ namespace Contract.User.Google
 {
     public record AddGoogleUserRequest
 (
-    string AccessToken,
     string Name,
     string FamilyName,
     string Email,
