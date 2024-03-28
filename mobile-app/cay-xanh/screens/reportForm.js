@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Button } from "react-native";
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
 import { Formik } from "formik";
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,7 +25,7 @@ export default function ReportForm({ onFormSuccess }) {
     // date picker
     const [date, setDate] = React.useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
-
+    const [loading, setLoading] = useState(false);
 
     return (
         <View style={styles.container}>
@@ -39,6 +39,7 @@ export default function ReportForm({ onFormSuccess }) {
                 }}
                 validationSchema={ReportSchema}
                 onSubmit={async (values, actions) => {
+                    setLoading(true);
                     actions.resetForm();
                     const accessToken = await AsyncStorage.getItem("@accessToken");
                     const user = JSON.parse(await AsyncStorage.getItem("@user"));
@@ -59,10 +60,12 @@ export default function ReportForm({ onFormSuccess }) {
                         },
                     })
                         .then((response) => {
+                            setLoading(false);
                             console.log('Success:', response.data);
                             onFormSuccess();
                         })
                         .catch((error) => {
+                            setLoading(false);
                             console.error('Error:', error);
                         });
                 }}
@@ -98,15 +101,15 @@ export default function ReportForm({ onFormSuccess }) {
                             >
                                 <View style={styles.radioButton}>
                                     <RadioButton value="0" color='maroon' uncheckedColor='grey' />
-                                    <Text style={styles.radioButtonTextLow}>Thấp</Text>
+                                    <Text style={styles.radioButtonTextLow}>THẤP</Text>
                                 </View>
                                 <View style={styles.radioButton}>
                                     <RadioButton value="1" color='maroon' uncheckedColor='grey' />
-                                    <Text style={styles.radioButtonTextMedium}>Vừa</Text>
+                                    <Text style={styles.radioButtonTextMedium}>VỪA</Text>
                                 </View>
                                 <View style={styles.radioButton}>
                                     <RadioButton value="2" color='maroon' uncheckedColor='grey' />
-                                    <Text style={styles.radioButtonTextHigh}>Cao</Text>
+                                    <Text style={styles.radioButtonTextHigh}>CAO</Text>
                                 </View>
                             </RadioButton.Group>
                         </View>
@@ -144,6 +147,20 @@ export default function ReportForm({ onFormSuccess }) {
                     </View>
                 )}
             </Formik>
+
+            <Modal
+                transparent={true}
+                visible={loading}
+            >
+                <View style={{
+                    flex: 1,
+                    backgroundColor: 'rgba(202,247,183,0.5)',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <ActivityIndicator size="large" color="green" />
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -216,17 +233,17 @@ const styles = StyleSheet.create({
     },
     radioButtonTextLow: {
         fontSize: 16,
-        fontWeight: '500',
+        fontWeight: '900',
         color: 'green',
     },
     radioButtonTextMedium: {
         fontSize: 16,
-        fontWeight: '500',
+        fontWeight: '900',
         color: 'orange',
     },
     radioButtonTextHigh: {
         fontSize: 16,
-        fontWeight: '500',
+        fontWeight: '900',
         color: 'red',
     },
     label: {

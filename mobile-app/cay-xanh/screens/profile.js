@@ -19,7 +19,6 @@ export default function Profile({ navigation }) {
         AsyncStorage.getItem("@user").then(user => {
             if (user !== null) {
                 setUser(JSON.parse(user));
-                console.log(user);
             }
         });
     }, []);
