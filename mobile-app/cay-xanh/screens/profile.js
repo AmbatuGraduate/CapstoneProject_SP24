@@ -66,13 +66,7 @@ export default function Profile({ navigation }) {
                 </View>
                 <View style={styles.infoSection}>
                     <MaterialIcons style={styles.icon} size={24} name="calendar-today" ></MaterialIcons>
-                    <Text style={styles.info}>Ngày Sinh</Text>
-                    <View></View>
-                    <View></View>
-                </View>
-                <View style={styles.infoSection}>
-                    <MaterialIcons style={styles.icon} size={24} name="local-phone" ></MaterialIcons>
-                    <Text style={styles.info}>0123456789</Text>
+                    <Text style={styles.info}>Bộ phận</Text>
                     <View></View>
                     <View></View>
                 </View>

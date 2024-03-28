@@ -32,7 +32,8 @@
         display: inline-block;
         border: 3px solid var(--whiteColor);
         border-radius: 10px;
-        width: 2.5rem;
+        width: 3rem;
+        height: 3rem;
         overflow: hidden;
         box-shadow: 0 2px 4px var(--inputColor);
 
@@ -60,13 +61,14 @@
           top: 6.5rem;
           border: none;
           box-shadow: 0 2px 4px var(--inputColor);
+          border-radius: 5px;
 
           button {
             border: none;
             background-color: var(--whiteColor);
             font-size: var(--normalFontSize);
             padding: 0.5rem;
-            border-radius: 4px;
+            border-radius: 5px;
 
             h6 {
               font-size: var(--h3FontSize);

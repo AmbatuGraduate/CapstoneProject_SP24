@@ -10,7 +10,6 @@
   margin-top: 25px;
   min-width: 60rem;
   .table {
-    border-radius: 1rem;
     background-color: var(--whiteColor);
     thead {
       &.thread-primary {
@@ -18,13 +17,12 @@
         caption-side: bottom;
         tr {
           th {
-            border-radius: 1rem;
             border-bottom: 2px solid darken(#f2f3f8, 6%);
             padding: 2rem;
             padding-top: 1rem;
             padding-bottom: 1rem;
-            text-align: center;
             color: var(--blackColor);
+            text-align: center;
           }
         }
       }
@@ -32,15 +30,20 @@
     tbody {
       background-color: var(--whiteColor);
       td {
-        text-align: center;
         border: none;
-        padding: 0.6rem;
+        padding: 0.5rem;
         font-size: var(--normalFontSize);
         vertical-align: middle;
+      }
+      .shortText {
+        text-align: center;
       }
       .linkCode {
         color: var(--PrimaryColor);
         text-decoration: none;
+      }
+      .linkCode:hover {
+        background-color: var(--paleGreen);
       }
 
       .btn {
@@ -48,6 +51,7 @@
         color: var(--textColor);
         z-index: 1000;
         box-shadow: none;
+        font-size: var(--h3FontSize);
       }
       .btn:hover {
         color: var(--PrimaryColor);
@@ -86,7 +90,6 @@
       box-shadow: none !important;
       color: var(--blackColor);
       border-color: var(--inputColor);
-      border-radius: 5px;
 
       &:hover {
         background-color: var(--paleGreen);
@@ -105,4 +108,14 @@
   bottom: 20px;
   right: 20px;
   padding-right: 1rem;
+
+  button {
+    --bs-btn-border-radius: 2rem;
+    height: 3.5rem;
+  }
+  .iconAdd{
+    font-size: var(--h1FontSize);
+    margin-right: 0.25rem;
+  }
 }
+

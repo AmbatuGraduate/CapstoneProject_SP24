@@ -1,11 +1,12 @@
 import { Text, View, Modal, StyleSheet, TouchableOpacity, FlatList, TextInput, ActivityIndicator } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState, useEffect } from 'react';
-import Header from '../shared/header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Icon } from '@rneui/themed';
 import ReportForm from "./reportForm";
 import Toast from 'react-native-toast-message';
+import { api } from "../shared/api";
+
 
 
 
@@ -18,13 +19,14 @@ export default function Report({ navigation }) {
     const [transformedData, setTransformedData] = useState({});
     const [filteredReports, setFilteredReports] = useState([]);
 
-
     const [modalOpen, setModalOpen] = useState(false); // modal open/close
     // search
     const [searchInput, setSearchInput] = useState(''); // search input
 
     // data refresh
     const [data, setData] = useState([]);
+
+    const [emptyReport, setEmptyReport] = useState('');
 
     const refreshData = async () => {
         await getReports();
@@ -41,61 +43,58 @@ export default function Report({ navigation }) {
     };
 
     // get reports from the server
+
     const getReports = async () => {
         setLoading(true);
         try {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
-            AsyncStorage.getItem("@accessToken").then(atoken => {
-                if (atoken !== null) {
-                    fetch('https://vesinhdanang.xyz:7024/api/Report/GetReportsByUser?accessToken=' + atoken + '&email=' + useremail,
-                        {
-                            method: 'GET',
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                        })
-                        .then((res) => {
-                            if (res.ok) {
-                                return res.json();
-                            } else {
-                                throw new Error('Network response was not ok');
-                            }
-                        })
-                        .then((json) => {
-                            const jsonReports = json.value.map(item => {
-                                const report = {
-                                    ...item.reportFormat,
-                                };
-                                return report;
-                            });
-                            setReports(jsonReports);
+            const atoken = await AsyncStorage.getItem("@accessToken");
+            if (atoken !== null) {
+                const url = `http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=${atoken}&email=${useremail}`;
 
-                            // Transform data here
-                            const data = {};
-                            jsonReports.forEach(item => {
-                                const [date, time] = item.expectedResolutionDate.split("T");
-                                const currentDate = date;
-                                if (!data[currentDate]) {
-                                    data[currentDate] = [];
-                                }
-                                data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
-                            });
-                            setTransformedData(data);
-                        })
-                        .catch((error) => {
-                            console.log('There has been a problem with fetch operation: ', error.message);
+                api.get(url, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((res) => {
+                        console.log('thanh cong');
+                        const jsonReports = res.data.value.map(item => {
+                            const report = {
+                                ...item.reportFormat,
+                            };
+                            return report;
                         });
-                } else {
-                    console.log('token null');
-                }
-            });
+                        setReports(jsonReports);
+
+                        // Transform data here
+                        const data = {};
+                        jsonReports.forEach(item => {
+                            const [date, time] = item.expectedResolutionDate.split("T");
+                            const currentDate = date;
+                            if (!data[currentDate]) {
+                                data[currentDate] = [];
+                            }
+                            data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
+                        });
+                        setTransformedData(data);
+                        setLoading(false);
+                        setEmptyReport('Không có báo cáo nào');
+                    })
+                    .catch((error) => {
+                        console.log('There has been a problem with fetch operation: ', error.message);
+                        setLoading(false);
+                        setEmptyReport('Lỗi kết nối!');
+                    });
+            } else {
+                console.log('token null');
+                setLoading(false);
+                setEmptyReport('Lỗi kết nối!');
+            }
         } catch (error) {
             console.error(error);
-        } finally {
-            setLoading(false);
         }
     }
-
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
             // The screen is focused
@@ -132,11 +131,6 @@ export default function Report({ navigation }) {
         }
     }, [searchInput, reports]);
 
-    const impactLevels = {
-        0: 'Low',
-        1: 'Medium',
-        2: 'High'
-    };
     const impactColors = {
         0: '#ADF35B',
         1: 'orange',
@@ -158,7 +152,7 @@ export default function Report({ navigation }) {
         if (reports.length === 0) {
             return (
                 <View style={styles.emptyContainer}>
-                    <Text style={styles.emptyText}>Chưa có báo cáo nào</Text>
+                    <Text style={styles.emptyText}>{emptyReport}</Text>
                 </View>
             );
         }
@@ -174,17 +168,18 @@ export default function Report({ navigation }) {
                                 navigation.navigate('ReportDetails', {
                                     reportId: item.id,
                                     reportBody: item.reportBody,
-                                    reportSubject: item.reportSubject,
+                                    reportSubject: item.reportSubject.replace('[Report]', '').trim(),
                                     reportImpact: item.reportImpact,
                                     reportStatus: item.reportStatus,
                                     reportResponse: item.reportResponse,
                                     expectedResolutionDate: formatDate(item.expectedResolutionDate),
+                                    actualResolutionDate: item.actualResolutionDate ? formatDate(item.actualResolutionDate) : '...',
                                 });
                             }}
                         >
                             <View style={styles.itemContainer}>
                                 <Text style={styles.itemLabel} numberOfLines={1} ellipsizeMode='tail'>
-                                    {item.reportSubject}
+                                    {item.reportSubject.replace('[Report]', '').trim()}
                                 </Text>
                                 <View style={{ flexDirection: 'row' }}>
                                     <Icon style={{ marginRight: 5 }} name="warning" type="Ionicons" size={16} color={impactColors[item.reportImpact]} />
@@ -209,8 +204,8 @@ export default function Report({ navigation }) {
                     )}
                 />
             </View>
-
         );
+
     }
 
     // --------------------------------------------------------------------------------------------
@@ -220,17 +215,9 @@ export default function Report({ navigation }) {
                 colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
+                style={StyleSheet.absoluteFill}
             >
                 <View style={styles.searchContainer}>
-                    {/* filter button */}
-                    <TouchableOpacity
-                        style={styles.filterButton}
-                        onPress={() => {
-                            // handle press
-                        }}
-                    >
-                        <Icon name="filter" type="font-awesome" size={24} color="#333" />
-                    </TouchableOpacity>
 
                     {/* search input */}
                     <View style={styles.searchInput}>
@@ -243,7 +230,16 @@ export default function Report({ navigation }) {
                     </View>
                 </View>
                 {isLoading ? (
-                    <ActivityIndicator size="large" color="lightgreen" />
+                    <View style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: 0,
+                        right: 0,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <ActivityIndicator size="large" color="lightgreen" />
+                    </View>
                 ) : (
                     renderReports()
                 )}

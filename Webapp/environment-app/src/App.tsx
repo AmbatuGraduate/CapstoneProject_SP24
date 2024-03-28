@@ -8,8 +8,8 @@ import { CreateTree } from "./pages/ManageTree/Create";
 import { DetailTree } from "./pages/ManageTree/Detail";
 import { UpdateTree } from "./pages/ManageTree/Update";
 import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
-import { ManageReport } from "./pages/ManageReport";
-import { ManageCleanSchedule } from "./pages/ManageCleanSchedule";
+import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
+import { ManageCleaningSchedule } from "./pages/ManageCleaningSchedule";
 
 function App() {
   const router = createBrowserRouter([
@@ -46,12 +46,12 @@ function App() {
           element: <ManageTreeTrimSchedule />,
         },
         {
-          path: "manage-report",
-          element: <ManageReport />,
+          path: "manage-cleaning-schedule",
+          element: <ManageCleaningSchedule />,
         },
         {
-          path: "manage-clean-schedule",
-          element: <ManageCleanSchedule />,
+          path: "manage-garbagecollection-schedule",
+          element: <ManageGarbageCollectionSchedule />,
         },
       ],
     },

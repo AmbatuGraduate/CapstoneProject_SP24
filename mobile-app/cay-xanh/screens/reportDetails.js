@@ -4,9 +4,9 @@ import { Icon } from '@rneui/themed';
 
 export default function ReportDetails({ route }) {
 
-    const { reportId, reportBody, reportSubject, reportImpact, reportStatus, reportReponse, expectedResolutionDate } = route.params;
+    const { reportId, reportBody, reportSubject, reportImpact, reportStatus, reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
 
-    let cleanedReportSubject = reportSubject.replace(/\[Report\]/g, '');
+    let cleanedReportSubject = reportSubject.replace(/\[Report\]/g, '').trim();
 
     let cleanedReportBody = reportBody.replace(/Report ID: .*|Expected Resolution Date: .*|Report Impact: .*/g, '');
 
@@ -61,13 +61,16 @@ export default function ReportDetails({ route }) {
             </View>
 
             {/* if response != null, add display response */}
-
             <View style={styles.overview}>
                 <Text style={styles.subject}>Phản hồi</Text>
 
-                {reportReponse
-                    ? <Text style={styles.bodyText}>{cleanedReportBody}</Text>
-                    : <Text style={styles.bodyText}>Chưa có phản hồi...</Text>
+                {reportResponse
+
+                    ? <View>
+                        <Text style={styles.bodyText}>{reportResponse}</Text>
+                        <Text style={styles.resDate}>Phản hồi ngày: {actualResolutionDate} </Text>
+                    </View>
+                    : <Text style={styles.noRes}>Chưa có phản hồi...</Text>
                 }
             </View>
 
@@ -97,7 +100,6 @@ const styles = StyleSheet.create({
         fontFamily: 'quolibet',
         fontWeight: 'bold',
         marginBottom: 10,
-        textAlign: 'center',
     },
     statusText: {
         fontSize: 16,
@@ -127,6 +129,19 @@ const styles = StyleSheet.create({
     },
     dateText: {
         color: '#2282F3',
+        marginTop: 10,
+    },
+    noRes: {
+        fontSize: 18,
+        fontFamily: 'quolibet',
+        color: 'grey',
+        marginTop: 10,
+    },
+    resDate: {
+        fontSize: 16,
+        fontFamily: 'quolibet',
+        color: '#838383',
+        fontWeight: 'bold',
         marginTop: 10,
     }
 })

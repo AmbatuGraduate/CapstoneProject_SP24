@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Linq;
+using Domain.Enums;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -280,6 +281,7 @@ namespace Infrastructure.Persistence.Repositories
                             ReportStatus = reportDb.Status.ToString(),
                             ReportImpact = reportDb.ReportImpact,
                             ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
+                            ActualResolutionDate = reportDb.ActualResolutionDate,
                             ReportResponse = reportDb.ResponseId
                         };
 
@@ -301,9 +303,25 @@ namespace Infrastructure.Persistence.Repositories
             }
         }
 
-        public Task<ReportFormat> ReponseReport(ReportFormat reportFormat)
+        public Task<ReportFormat> ReponseReport(string accessToken, string reportID, string response, ReportStatus reportStatus)
         {
-            throw new NotImplementedException();
+
+            // get request report
+            var report = context.Reports.FirstOrDefault(e => e.ReportId == reportID);
+
+
+            report.ResponseId = response;
+            report.ActualResolutionDate = DateTime.Now;
+            report.Status = reportStatus;
+
+            // update in db
+            context.Reports.Update(report);
+            context.SaveChanges();
+
+            // notify user 
+            // ...
+
+            return Task.FromResult(new ReportFormat { Id = reportID, ReportResponse = response });
         }
 
         // ---------------------------------- Helper Methods ----------------------------------

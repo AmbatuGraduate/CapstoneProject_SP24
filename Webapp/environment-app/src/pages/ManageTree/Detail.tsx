@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { TREE_DETAIL, useApi } from "../../Api";
 import { dayFormat } from "../../utils";
 import "./style.scss";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
+import SimpleMap from "./MapIntergration";
 
 export const DetailTree = () => {
   const navigate = useNavigate();
@@ -38,30 +39,39 @@ export const DetailTree = () => {
       size={60}
     />
   ) : (
-    <div className="form-cover">
-      <div className="main-layout">
-        {/* <div className="tree-detail-img">
-          <img src="/assets/imgs/imgcondau4.jpg" alt="Admin Image" />
-        </div> */}
-        <div className="tree-detail-content">
+    <div className="main-layout row">
+      <div className="map col-md-6">
+        <SimpleMap />
+      </div>
+      <div className="tree-detail-content col-md-6">
+        <div className="tree-detail-cover">
           <div className="tree-detail-content-parent">
             <div className="tree-detail-content-child-label">Mã số cây: </div>
             <div className="tree-detail-content-child-value">
               {data?.treeCode}
             </div>
           </div>
+        </div>
+
+        <div className="tree-detail-cover">
           <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Tên đường: </div>
+            <div className="tree-detail-content-child-label">Địa chỉ: </div>
             <div className="tree-detail-content-child-value">
               {data?.streetName}
             </div>
           </div>
+        </div>
+
+        <div className="tree-detail-cover">
           <div className="tree-detail-content-parent">
             <div className="tree-detail-content-child-label">Giống cây: </div>
             <div className="tree-detail-content-child-value">
               {data?.cultivar}
             </div>
           </div>
+        </div>
+
+        <div className="tree-detail-cover">
           <div className="tree-detail-content-parent">
             <div className="tree-detail-content-child-label">
               Đường kính thân:{" "}
@@ -76,6 +86,9 @@ export const DetailTree = () => {
               {data?.leafLength}
             </div>
           </div>
+        </div>
+
+        <div className="tree-detail-cover">
           <div className="tree-detail-content-parent">
             <div className="tree-detail-content-child-label">
               Thời điểm trồng:{" "}
@@ -92,9 +105,29 @@ export const DetailTree = () => {
               {dayFormat(data?.cutTime)}
             </div>
           </div>
-          <Button className="btn-back" variant="danger" onClick={handleNavigate}>
+        </div>
+
+        <div className="tree-detail-cover">
+          <div className="tree-detail-content-parent">
+            <div className="tree-detail-content-child-label">Ghi chú: </div>
+            <div className="tree-detail-content-child-value">
+              {data?.note}</div>
+          </div>
+        </div>
+
+        <div className="button-cover grid">
+          <Button
+            className="btnCancel"
+            variant="danger"
+            onClick={handleNavigate}
+          >
             Trở về
           </Button>
+          <Link to={`/manage-tree/${id}/update`}>
+            <Button className="btnLink" variant="success">
+              Cập nhật
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

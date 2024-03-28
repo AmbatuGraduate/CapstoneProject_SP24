@@ -1,18 +1,18 @@
-﻿using Application.User.Commands.Add;
+﻿using Application.GoogleAuthentication.Common;
+using Application.GoogleAuthentication.Queries.GoogleAccessToken;
+using Application.Group.Common;
+using Application.User.Commands.Add;
 using Application.User.Commands.AddToGoogle;
+using Application.User.Commands.DeleteGoogle;
 using Application.User.Commands.Udpate;
 using Application.User.Commands.UpdateGoogle;
 using Application.User.Common;
 using Application.User.Common.Add;
 using Application.User.Common.Delele;
-using Application.User.Common.Group;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
-using Application.User.DeleteGoogle;
-using Application.User.Queries.GetAllGroupsByUserEmail;
 using Application.User.Queries.GetByEmail;
 using Application.User.Queries.GetById;
-using Application.User.Queries.GetGroup;
 using Application.User.Queries.List;
 using Contract.User;
 using Contract.User.Google;
@@ -37,73 +37,102 @@ namespace API.Controllers
         }
 
         // get all users
-        [HttpGet]
-        public async Task<IActionResult> ListUsers()
-        {
-            ErrorOr<List<UserResult>> listResult = await mediator.Send(new ListQuery());
+        //[HttpGet]
+        //public async Task<IActionResult> ListUsers()
+        //{
+        //    ErrorOr<List<UserResult>> listResult = await mediator.Send(new ListQuery());
 
-            if (listResult.IsError)
-            {
-                return Problem(statusCode: StatusCodes.Status400BadRequest, title: listResult.FirstError.Description);
-            }
+        //    if (listResult.IsError)
+        //    {
+        //        return Problem(statusCode: StatusCodes.Status400BadRequest, title: listResult.FirstError.Description);
+        //    }
 
-            List<UserResponse> users = new List<UserResponse>();
-            foreach (var user in listResult.Value)
-            {
-                users.Add(mapper.Map<UserResponse>(user));
-            }
+        //    List<UserResponse> users = new List<UserResponse>();
+        //    foreach (var user in listResult.Value)
+        //    {
+        //        users.Add(mapper.Map<UserResponse>(user));
+        //    }
 
-            return Ok(users);
-        }
+        //    return Ok(users);
+        //}
 
-        // add user to db
-        [HttpPost]
-        public async Task<IActionResult> AddUser(AddUserRequest request)
-        {
-            var command = mapper.Map<AddUserCommand>(request);
+        //// add user to db
+        //[HttpPost]
+        //public async Task<IActionResult> AddUser(AddUserRequest request)
+        //{
+        //    var command = mapper.Map<AddUserCommand>(request);
 
-            ErrorOr<UserResult> addResult = await mediator.Send(command);
+        //    ErrorOr<UserResult> addResult = await mediator.Send(command);
 
-            return addResult.Match(
-                    addResult => Ok(mapper.Map<UserResponse>(addResult)),
-                    errors => Problem(errors)
-                );
-        }
+        //    return addResult.Match(
+        //            addResult => Ok(mapper.Map<UserResponse>(addResult)),
+        //            errors => Problem(errors)
+        //        );
+        //}
 
-        // update user in db
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(string id, UpdateUserRequest request)
-        {
-            return await Update(id, request);
-        }
+        //// update user in db
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateUser(string id, UpdateUserRequest request)
+        //{
+        //    return await Update(id, request);
+        //}
         
-        // delete user from db
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id, UpdateUserRequest request)
-        {
-            return await Update(id, request);
-        }
+        //// delete user from db
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteUser(string id, UpdateUserRequest request)
+        //{
+        //    return await Update(id, request);
+        //}
 
-        private async Task<IActionResult> Update(string id, UpdateUserRequest request)
-        {
-            var command = mapper.Map<UpdateUserCommand>((Guid.Parse(id), request));
+        //private async Task<IActionResult> Update(string id, UpdateUserRequest request)
+        //{
+        //    var command = mapper.Map<UpdateUserCommand>((Guid.Parse(id), request));
 
-            ErrorOr<UserResult> updateResult = await mediator.Send(command);
+        //    ErrorOr<UserResult> updateResult = await mediator.Send(command);
 
-            if (updateResult.IsError && updateResult.FirstError == Errors.UpdateUser.UpdateUserFail)
-            {
-                return Problem(statusCode: StatusCodes.Status400BadRequest, title: updateResult.FirstError.Description);
-            }
+        //    if (updateResult.IsError && updateResult.FirstError == Errors.UpdateUser.UpdateUserFail)
+        //    {
+        //        return Problem(statusCode: StatusCodes.Status400BadRequest, title: updateResult.FirstError.Description);
+        //    }
 
-            return updateResult.Match(
-                updateResult => Ok(mapper.Map<UserResponse>(updateResult)),
-                errors => Problem(errors));
-        }
+        //    return updateResult.Match(
+        //        updateResult => Ok(mapper.Map<UserResponse>(updateResult)),
+        //        errors => Problem(errors));
+        //}
 
         // get all google users
-        [HttpGet("accessToken")]
-        public async Task<IActionResult> GetGoogleUsers(string accessToken)
+        [HttpGet("GetGoogleUsers")]
+        public async Task<IActionResult> GetGoogleUsers()
         {
+            var clientType = Request.Headers["Client-Type"];
+
+
+            // declare accesstoken
+            string accessToken;
+            if (clientType == "Mobile") // mobile client
+            {
+                var authHeader = Request.Headers["Authorization"];
+                if (String.IsNullOrEmpty(authHeader))
+                {
+                    return BadRequest("Authorization header is missing");
+                }
+                accessToken = authHeader.ToString().Replace("Bearer ", "");
+            }
+            else // web client
+            {
+                var jwt = Request.Cookies["u_tkn"];
+                if (String.IsNullOrEmpty(jwt))
+                {
+                    return BadRequest("u_tkn cookie is missing");
+                }
+                System.Diagnostics.Debug.WriteLine("token: " + jwt);
+                ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+                if (token.IsError)
+                {
+                    return BadRequest("Invalid token");
+                }
+                accessToken = token.Value.accessToken;
+            }
             ErrorOr<List<GoogleUserRecord>> listResult = await mediator.Send(new ListQueryGoogle(accessToken));
 
             if (listResult.IsError)
@@ -120,9 +149,38 @@ namespace API.Controllers
             return Ok(users);
         }
 
-        [HttpGet("Email")]
-        public async Task<IActionResult> GetGoogleUser(string accessToken, string email)
+        [HttpGet()]
+        public async Task<IActionResult> GetGoogleUser(string email)
         {
+            var clientType = Request.Headers["Client-Type"];
+
+
+            // declare accesstoken
+            string accessToken;
+            if (clientType == "Mobile") // mobile client
+            {
+                var authHeader = Request.Headers["Authorization"];
+                if (String.IsNullOrEmpty(authHeader))
+                {
+                    return BadRequest("Authorization header is missing");
+                }
+                accessToken = authHeader.ToString().Replace("Bearer ", "");
+            }
+            else // web client
+            {
+                var jwt = Request.Cookies["u_tkn"];
+                if (String.IsNullOrEmpty(jwt))
+                {
+                    return BadRequest("u_tkn cookie is missing");
+                }
+                System.Diagnostics.Debug.WriteLine("token: " + jwt);
+                ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+                if (token.IsError)
+                {
+                    return BadRequest("Invalid token");
+                }
+                accessToken = token.Value.accessToken;
+            }
             ErrorOr<GoogleUserRecord> userResult = await mediator.Send(new GetByEmailQuery(accessToken, email));
 
             if (userResult.IsError)
@@ -136,10 +194,47 @@ namespace API.Controllers
         }
 
         // update google user
-        [HttpPut("accessToken")]
+        [HttpPut()]
         public async Task<IActionResult> UpdateGoogleUser(UpdateGoogleUserRequest request)
         {
-            var command = mapper.Map<UpdateGoogleCommand>((request));
+            var clientType = Request.Headers["Client-Type"];
+
+
+            // declare accesstoken
+            string accessToken;
+            if (clientType == "Mobile") // mobile client
+            {
+                var authHeader = Request.Headers["Authorization"];
+                if (String.IsNullOrEmpty(authHeader))
+                {
+                    return BadRequest("Authorization header is missing");
+                }
+                accessToken = authHeader.ToString().Replace("Bearer ", "");
+            }
+            else // web client
+            {
+                var jwt = Request.Cookies["u_tkn"];
+                if (String.IsNullOrEmpty(jwt))
+                {
+                    return BadRequest("u_tkn cookie is missing");
+                }
+                System.Diagnostics.Debug.WriteLine("token: " + jwt);
+                ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+                if (token.IsError)
+                {
+                    return BadRequest("Invalid token");
+                }
+                accessToken = token.Value.accessToken;
+            }
+
+            var command = new UpdateGoogleCommand
+            (
+                accessToken,
+                request.Name,
+                request.FamilyName,
+                request.Email,
+                request.Password
+            );
 
             ErrorOr<UpdateGoogleUserRecord> updateResult = await mediator.Send(command);
 
@@ -152,9 +247,39 @@ namespace API.Controllers
             return Ok(updateResult.Value);
         }
 
-        [HttpDelete("accessToken")]
-        public async Task<IActionResult> DeleteGoogleUser(string accessToken, string userEmail)
+        [HttpDelete()]
+        public async Task<IActionResult> DeleteGoogleUser(string userEmail)
         {
+            var clientType = Request.Headers["Client-Type"];
+
+
+            // declare accesstoken
+            string accessToken;
+            if (clientType == "Mobile") // mobile client
+            {
+                var authHeader = Request.Headers["Authorization"];
+                if (String.IsNullOrEmpty(authHeader))
+                {
+                    return BadRequest("Authorization header is missing");
+                }
+                accessToken = authHeader.ToString().Replace("Bearer ", "");
+            }
+            else // web client
+            {
+                var jwt = Request.Cookies["u_tkn"];
+                if (String.IsNullOrEmpty(jwt))
+                {
+                    return BadRequest("u_tkn cookie is missing");
+                }
+                System.Diagnostics.Debug.WriteLine("token: " + jwt);
+                ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+                if (token.IsError)
+                {
+                    return BadRequest("Invalid token");
+                }
+                accessToken = token.Value.accessToken;
+            }
+
             ErrorOr<DeleteGoogleUserRecord> deleteResult = await mediator.Send(new DeleteGoogleCommand(accessToken, userEmail));
 
             if (deleteResult.IsError && deleteResult.FirstError == Errors.UpdateGoogle.UpdateGoogleUserFail)
@@ -166,10 +291,47 @@ namespace API.Controllers
             return Ok(deleteResult.Value);
         }
 
-        [HttpPost("accessToken")]
+        [HttpPost()]
         public async Task<IActionResult> AddGoogleUser(AddGoogleUserRequest request)
         {
-            var command = mapper.Map<AddToGoogleCommand>((request));
+            var clientType = Request.Headers["Client-Type"];
+
+
+            // declare accesstoken
+            string accessToken;
+            if (clientType == "Mobile") // mobile client
+            {
+                var authHeader = Request.Headers["Authorization"];
+                if (String.IsNullOrEmpty(authHeader))
+                {
+                    return BadRequest("Authorization header is missing");
+                }
+                accessToken = authHeader.ToString().Replace("Bearer ", "");
+            }
+            else // web client
+            {
+                var jwt = Request.Cookies["u_tkn"];
+                if (String.IsNullOrEmpty(jwt))
+                {
+                    return BadRequest("u_tkn cookie is missing");
+                }
+                System.Diagnostics.Debug.WriteLine("token: " + jwt);
+                ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+                if (token.IsError)
+                {
+                    return BadRequest("Invalid token");
+                }
+                accessToken = token.Value.accessToken;
+            }
+
+            var command = new AddToGoogleCommand
+            (
+                accessToken,
+                request.Name,
+                request.FamilyName,
+                request.Email,
+                request.Password
+            );
 
             ErrorOr<AddGoogleUserRecord> addResult = await mediator.Send(command);
 
@@ -180,32 +342,6 @@ namespace API.Controllers
 
             // write code to return without mapping
             return Ok(addResult.Value);
-        }
-
-        [HttpGet(nameof(GetGroupByGroupEmail))]
-        public async Task<IActionResult> GetGroupByGroupEmail(string accessToken, string groupEmail)
-        {
-            ErrorOr<GroupResult> groupResult = await mediator.Send(new GetGroupByGroupEmailQuery(accessToken, groupEmail));
-
-            if (groupResult.IsError)
-            {
-                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
-            }
-
-            return Ok(groupResult);
-        }
-
-        [HttpGet(nameof(GetAllGroupsByUserEmail))]
-        public async Task<IActionResult> GetAllGroupsByUserEmail(string accessToken, string userEmail)
-        {
-            ErrorOr<List<GroupResult>> groupResult = await mediator.Send(new GetAllGroupsByUserEmailQuery(accessToken, userEmail));
-
-            if (groupResult.IsError)
-            {
-                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
-            }
-
-            return Ok(groupResult);
         }
     }
 }

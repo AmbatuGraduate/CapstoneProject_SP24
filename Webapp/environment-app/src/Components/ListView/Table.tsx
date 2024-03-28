@@ -1,16 +1,13 @@
 import React from "react";
-// import { BiSolidEdit } from "react-icons/bi";
 import ReactPaginate from "react-paginate";
-// import { Link } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
-// import ModalDelete from "../Modals/ModalDelete";
 import "./table.scss";
 
 export type Column = {
   header: string;
   accessorKey?: string;
   accessorFn?: (row: any) => React.ReactNode;
-  align?: "left" | "center";
+  width?: string;
 };
 
 type Props = {
@@ -62,7 +59,7 @@ function Table(props: Props) {
                       return (
                         <td
                           key={idx}
-                          className={c.align == "left" ? "text-left" : ""}
+                          style={{ width: c.width }}
                         >
                           {d[c?.accessorKey]}
                         </td>
@@ -70,7 +67,7 @@ function Table(props: Props) {
                     return (
                       <td
                         key={idx}
-                        className={c.align == "left" ? "text-left" : ""}
+                        style={{ width: c.width }}
                       >
                         {c.accessorFn && c.accessorFn(d)}
                       </td>
