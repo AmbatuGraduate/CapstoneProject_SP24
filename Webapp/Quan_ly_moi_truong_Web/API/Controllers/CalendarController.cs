@@ -1,6 +1,5 @@
 ﻿using Application.Calendar;
 using Application.Calendar.TreeCalendar.Queries.List;
-using Application.Common.Interfaces.Authentication;
 using ErrorOr;
 using MapsterMapper;
 using MediatR;
@@ -12,7 +11,6 @@ using Application.Calendar.TreeCalendar.Commands.Add;
 using Application.Calendar.TreeCalendar.Commands.Update;
 using Application.Calendar.TreeCalendar.Commands.Delete;
 using Application.Calendar.TreeCalendar.Queries.GetByAttendeeId;
-using Domain.Enums;
 using Application.Calendar.TreeCalendar.Commands.UpdateJobStatus;
 using Application.Calendar.TreeCalendar.Commands.AutoAdd;
 using Application.GoogleAuthentication.Queries.GoogleAccessToken;
@@ -76,7 +74,7 @@ namespace API.Controllers
             }
 
             // ========================
-            ErrorOr<List<MyEvent>> list = await mediator.Send(new ListTreeCalendarQuery(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+            ErrorOr<List<EventsInfo>> list = await mediator.Send(new ListTreeCalendarQuery(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -85,6 +83,7 @@ namespace API.Controllers
             return Ok(list.Value);
         }
 
+        // get google calendar events by attendee email
         [HttpGet()]
         public async Task<IActionResult> GetCalendarEventsByAttendeeEmail(string attendeeEmail)
         {
@@ -126,7 +125,7 @@ namespace API.Controllers
             return Ok(list.Value);
         }
 
-
+        // add events
         [HttpPost()]
         public async Task<IActionResult> AddCalendarEvent(MyAddedEvent? myEvent)
         {
@@ -168,6 +167,7 @@ namespace API.Controllers
             return Ok(list.Value);
         }
 
+        // auto add events
         [HttpGet]
         public async Task<IActionResult> AutoAddCalendarEvent()
         {
@@ -186,6 +186,7 @@ namespace API.Controllers
             return Ok(list.Value);
         }
 
+        // update events
         [HttpPost()]
         public async Task<IActionResult> UpdateCalendarEvent(MyUpdatedEvent? myEvent, string eventId)
         {
@@ -227,6 +228,7 @@ namespace API.Controllers
             return Ok(list);
         }
 
+        // update job status
         [HttpPost()]
         public async Task<IActionResult> UpdateJobWorkingStatus([FromBody] UpdateJobStatusCommand command)
         {
@@ -269,6 +271,7 @@ namespace API.Controllers
             return Ok(list);
         }
 
+        // delete events
         [HttpDelete()]
         public async Task<IActionResult> DeleteCalendarEvent(string eventId)
         {
