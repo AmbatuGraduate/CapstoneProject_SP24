@@ -9,7 +9,7 @@ namespace Application.Common.Interfaces.Persistence.Schedules
     public interface ITreeCalendarService
     {
         // get all events
-        Task<List<EventsInfo>> GetEvents(string token, string calendarId);                                              // get all events
+        Task<List<MyEvent>> GetEvents(string token, string calendarId);                                                 // get all events
         Task<List<MyEvent>> GetEventsByAttendeeEmail(string token, string calendarId, string attendeeEmail);            // get all events by attendee email
         Task<List<MyEvent>> GetUserTodayEvents(string token, string calendarId, string attendeeEmail);                  // get all events by attendee email
         Task<MyAddedEvent> AddEvent(string token, string calendarId, MyAddedEvent myEvent);                             // add event

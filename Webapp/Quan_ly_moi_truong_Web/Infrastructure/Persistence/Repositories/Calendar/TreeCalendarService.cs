@@ -73,7 +73,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 return null;
             }
         }
-        
+
 
         // update job status
         public async Task<bool> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
@@ -107,7 +107,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
-      
+
 
         // update event
         public async Task<MyUpdatedEvent> UpdateEvent(string accessToken, string calendarId, MyUpdatedEvent myEvent, string eventId)
@@ -201,13 +201,17 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     Start = retrievenedEvent.Start.DateTime ?? DateTime.MinValue,
                     End = retrievenedEvent.End.DateTime ?? DateTime.MinValue,
                     Attendees = (retrievenedEvent.Attendees != null) ? retrievenedEvent.Attendees
-                            .Select(attendee => new UserResult(new Users
-                            {
-                                //Name = attendee.DisplayName,
-                                Email = attendee.Email,
-                            }
+                           .Select(attendee => new UserEventResult(
+                                new Users
+                                {
+                                    Email = attendee.Email,
+                                }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
                             ))
-                            .ToList() : new List<UserResult>()
+                            .ToList() : new List<UserEventResult>(),
+                    ExtendedProperties = new EventExtendedProperties
+                    {
+                        PrivateProperties = (Dictionary<string, string>)(retrievenedEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
+                    }
                 };
                 return myEvent;
             }
@@ -248,13 +252,17 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         Start = returnEvent.Start.DateTime ?? DateTime.MinValue,
                         End = returnEvent.End.DateTime ?? DateTime.MinValue,
                         Attendees = (returnEvent.Attendees != null) ? returnEvent.Attendees
-                            .Select(attendee => new UserResult(new Users
-                            {
-                                //Name = attendee.DisplayName,
-                                Email = attendee.Email,
-                            }
+                            .Select(attendee => new UserEventResult(
+                                new Users
+                                {
+                                    Email = attendee.Email,
+                                }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
                             ))
-                            .ToList() : new List<UserResult>()
+                            .ToList() : new List<UserEventResult>(),
+                        ExtendedProperties = new EventExtendedProperties
+                        {
+                            PrivateProperties = (Dictionary<string, string>)(returnEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
+                        }
                     })
                     .ToList<MyEvent>();
                 return myEvents;
@@ -267,9 +275,9 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         }
 
         // get all events
-        public async Task<List<EventsInfo>> GetEvents(string accessToken, string calendarId)
+        public async Task<List<MyEvent>> GetEvents(string accessToken, string calendarId)
         {
-            List<EventsInfo> myEvents = new List<EventsInfo>();
+            List<MyEvent> myEvents = new List<MyEvent>();
             try
             {
                 var credential = GoogleCredential.FromAccessToken(accessToken);
@@ -289,7 +297,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
                 foreach (var eventItem in events.Items)
                 {
-                    myEvents.Add(new EventsInfo
+                    myEvents.Add(new MyEvent
                     {
                         Id = eventItem.Id,
                         Summary = eventItem.Summary,
@@ -298,14 +306,13 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         Start = eventItem.Start.DateTime ?? DateTime.MinValue,
                         End = eventItem.End.DateTime ?? DateTime.MinValue,
                         Attendees = (eventItem.Attendees != null) ? eventItem.Attendees
-                            .Select(attendee => new CalendarUser(new CalendarUserResult
-                            {
-                                //Name = attendee.DisplayName,
-                                Email = attendee.Email,
-                                FullName = _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name,
-                            }
+                            .Select(attendee => new UserEventResult(
+                                new Users
+                                {
+                                    Email = attendee.Email,
+                                }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
                             ))
-                            .ToList() : new List<CalendarUser>(),
+                            .ToList() : new List<UserEventResult>(),
                         ExtendedProperties = new EventExtendedProperties
                         {
                             PrivateProperties = (Dictionary<string, string>)(eventItem.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
@@ -335,8 +342,8 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
                 var listRequest = service.Events.List(calendarId);
                 listRequest.TimeMaxDateTimeOffset = DateTime.Now;
-                listRequest.TimeMinDateTimeOffset = DateTime.Today; 
-                listRequest.TimeMaxDateTimeOffset = DateTime.Today.AddDays(1).AddTicks(-1); 
+                listRequest.TimeMinDateTimeOffset = DateTime.Today;
+                listRequest.TimeMaxDateTimeOffset = DateTime.Today.AddDays(1).AddTicks(-1);
                 listRequest.ShowDeleted = false;
                 listRequest.SingleEvents = true;
                 listRequest.MaxResults = 10;
@@ -354,12 +361,17 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         Start = returnEvent.Start.DateTime ?? DateTime.MinValue,
                         End = returnEvent.End.DateTime ?? DateTime.MinValue,
                         Attendees = (returnEvent.Attendees != null) ? returnEvent.Attendees
-                            .Select(attendee => new UserResult(new Users
-                            {
-                                Email = attendee.Email,
-                            }
+                            .Select(attendee => new UserEventResult(
+                                new Users
+                                {
+                                    Email = attendee.Email,
+                                }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
                             ))
-                            .ToList() : new List<UserResult>()
+                            .ToList() : new List<UserEventResult>(),
+                        ExtendedProperties = new EventExtendedProperties
+                        {
+                            PrivateProperties = (Dictionary<string, string>)(returnEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
+                        }
                     })
                     .ToList<MyEvent>();
                 return myEvents;
