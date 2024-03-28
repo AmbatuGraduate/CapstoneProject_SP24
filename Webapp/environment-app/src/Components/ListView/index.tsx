@@ -22,9 +22,10 @@ type Props = {
   columns: Column[];
   bottom?: React.ReactNode;
   filter?: (row: any) => boolean;
+  transform?: (data: any) => any;
 };
 export const ListView = forwardRef((props: Props, ref) => {
-  const { listURL, columns, bottom, filter } = props;
+  const { listURL, columns, bottom, filter, transform } = props;
 
   const [data, setData] = useState<DataResponse | null>({
     data: [],
@@ -55,7 +56,11 @@ export const ListView = forwardRef((props: Props, ref) => {
     try {
       const res = await useApi.get(listURL);
       const data = await res.data;
-      setData({ data: filter ? data.filter(filter) : data, page: 1, size: 10 });
+      setData({
+        data: transform ? transform(data) : filter ? data.filter(filter) : data,
+        page: 1,
+        size: 10,
+      });
       setUnFilterData(data);
     } catch (error) {
       console.log(error);

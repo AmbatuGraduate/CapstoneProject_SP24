@@ -32,22 +32,22 @@ export const ManageReport = () => {
         );
       },
     },
-    {
-      header: "Mã báo cáo",
-      accessorFn(row) {
-        return (
-          <h6 className="shortText">
-            <Link
-              className="linkCode"
-              style={{ fontWeight: "bold" }}
-              to={`/manage-report/${row.reportId}`}
-            >
-              {row.reportId}
-            </Link>
-          </h6>
-        );
-      },
-    },
+    // {
+    //   header: "Mã báo cáo",
+    //   accessorFn(row) {
+    //     return (
+    //       <h6 className="shortText">
+    //         <Link
+    //           className="linkCode"
+    //           style={{ fontWeight: "bold" }}
+    //           to={`/manage-report/${row.reportId}`}
+    //         >
+    //           {row.reportId}
+    //         </Link>
+    //       </h6>
+    //     );
+    //   },
+    // },
     {
       header: "Người gửi",
       accessorFn(longRow) {
@@ -67,7 +67,7 @@ export const ManageReport = () => {
       },
     },
     {
-      header: "Ngày giải quyết",
+      header: "Cần giải quyết trước",
       accessorFn(row) {
         return <h6>{dayFormat(row.expectedResolutionDate)}</h6>;
       },
@@ -103,6 +103,7 @@ export const ManageReport = () => {
         filter={(row) => {
           return row.isExist == true;
         }}
+        transform={(data) => data?.result?.value?.map((i) => i.report) || []}
       />
     </div>
   );
