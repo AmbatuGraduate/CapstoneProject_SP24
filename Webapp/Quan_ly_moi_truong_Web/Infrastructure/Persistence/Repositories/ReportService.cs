@@ -73,6 +73,43 @@ namespace Infrastructure.Persistence.Repositories
             }
         }
 
+        // Notification to mail
+        public async Task<ReportFormat> CreateNotification(ReportFormat reportFormat, string address)
+        {
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(reportFormat.AccessToken);
+                var service = _gmailServiceFactory(credential);
+
+                // report format
+                var emailBody = new StringBuilder();
+                /*                emailBody.AppendLine("Issuer Email: " + reportFormat.IssuerEmail);
+                                emailBody.AppendLine("Report Subject: " + reportFormat.ReportSubject);*/
+                emailBody.Append("Report ID: " + reportFormat.Id + "\n");
+                emailBody.Append("");
+                emailBody.AppendLine(reportFormat.ReportBody);
+
+                // Create report
+                var email = new MailMessage
+                {
+                    From = new MailAddress(reportFormat.IssuerEmail), 
+                    Subject = $"{reportFormat.ReportSubject}",
+                    Body = emailBody.ToString(),
+                };
+                email.CC.Add(address);
+                ReportFormat r = await SendEmail(email, reportFormat.AccessToken);
+
+                // add to db
+
+                r.IssuerEmail = reportFormat.IssuerEmail;
+                return r;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         // get report by id
         public async Task<ReportFormat> GetReportById(string accessToken, string id)
         {

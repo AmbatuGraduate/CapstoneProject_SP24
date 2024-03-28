@@ -40,7 +40,6 @@ namespace API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            System.Diagnostics.Debug.WriteLine("after request");
 
             var token = _httpContextAccessor.HttpContext.Request.Cookies["u_tkn"];
 

@@ -6,6 +6,7 @@ using Application.Report.Queries.List;
 using Application.Report.Queries.ListByUser;
 using Application.Report.Queries.ListFromDb;
 using Application.Report.Queries.ListLateReport;
+using Application.Report.Queries.ListUnresolve;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -74,14 +75,14 @@ namespace API.Controllers
 
         // get all reports from db
         [HttpGet]
-        public IActionResult GetAllReports()
+        public async Task<IActionResult> GetAllReports()
         {
-            var result = mediator.Send(new ListFromDbQuery());
-            if (result == null)
+            var result = await mediator.Send(new ListFromDbQuery());
+            if (result.Value == null)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
             }
-            return Ok(result);
+            return Ok(result.Value);
         }
 
         // get reports by user
@@ -98,14 +99,27 @@ namespace API.Controllers
 
         // get all reports that has been late
         [HttpGet]
-        public async Task<IActionResult> GetAllLateReports(string accessToken)
-        {
-            var result = await mediator.Send(new ListLateReportQuery(accessToken));
+        public async Task<IActionResult> GetAllLateReports()
+        {     
+
+            var result = await mediator.Send(new ListLateReportQuery());
             if (result.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
             }
             return Ok(result);
+        }
+
+        // get all reports that has been late
+        [HttpGet]
+        public async Task<IActionResult> GetAllUnresolveReports()
+        {
+            var result = await mediator.Send(new ListUnresolveReportQuery());
+            if (result.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
+            }
+            return Ok(result.Value);
         }
 
     }

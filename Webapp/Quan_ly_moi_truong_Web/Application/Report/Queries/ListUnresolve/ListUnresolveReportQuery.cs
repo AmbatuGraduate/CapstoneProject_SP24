@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Report.Queries.ListLateReport
+namespace Application.Report.Queries.ListUnresolve
 {
-    public record ListLateReportQuery() : IRequest<ErrorOr<List<ReportResult>>>;
+    public record ListUnresolveReportQuery() : IRequest<ErrorOr<List<ReportResult>>>;
 }
