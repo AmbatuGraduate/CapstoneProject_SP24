@@ -31,6 +31,7 @@ namespace Application.Calendar.TreeCalendar.Queries.ListLateCalendar
             var accessToken = _jwtTokenGenerator.DecodeTokenToGetAccessToken(request.accessToken);
             var list = await _treeCalendarService.GetEvents(accessToken, request.calendarId);
 
+
             var listLateCalendar = list.Where(x => x.ExtendedProperties.PrivateProperties["JobWorkingStatus"] == _treeCalendarService.ConvertToJobWorkingStatusString(JobWorkingStatus.Late)).ToList();
 
             return listLateCalendar;

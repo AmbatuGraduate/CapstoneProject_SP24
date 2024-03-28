@@ -83,7 +83,7 @@ export default function TaskDetails({ route }) {
 
     // ----------------- GET DATA FROM PREVIOUS SCREEN -----------------
 
-    let treeArray = trees.split(",");
+    let treeArray = trees ? trees.split(",") : [];
     treeArray = treeArray.filter(item => item);
 
     const dateObject = new Date(start);
