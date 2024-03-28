@@ -63,6 +63,7 @@ namespace Infrastructure
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IGroupRepository, GroupRepositorys>();
             services.AddScoped<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
@@ -140,7 +141,11 @@ namespace Infrastructure
                     opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     opts.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
                 })
-                .AddCookie()
+                .AddCookie(opts =>
+                {
+                    opts.Cookie.Name = "u_tkn";
+                    opts.Cookie.Path = "/";
+                })
                 .AddJwtBearer(opts =>
                 {
                     opts.RequireHttpsMetadata = false;

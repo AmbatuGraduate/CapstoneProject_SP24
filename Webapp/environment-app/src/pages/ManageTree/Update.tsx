@@ -2,15 +2,19 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { CULTIVAR_LIST, TREE_DETAIL, TREE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor, dayFormat, user } from "../../utils";
+import { dateConstructor, dayFormat } from "../../utils";
+import { useCookies } from "react-cookie";
 
 export const UpdateTree = () => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
   const [data, setData] = useState<any>();
+  const [token] = useCookies(["accessToken"]);
+  const [address, setAddress] = useState<string | null>("");
 
   const fetch = async () => {
     try {
+      console.log(id);
       const data = await useApi.get(TREE_DETAIL.replace(":id", id));
       setData(data.data);
     } catch (error) {
@@ -28,12 +32,18 @@ export const UpdateTree = () => {
       formType: "input",
       key: "treeCode",
       defaultValue: data?.treeCode,
+      disabled: true,
     },
     {
       label: "Tuyến đường",
       formType: "input",
       key: "treeLocation",
-      defaultValue: data?.streetName,
+      defaultValue: data?.treeLocation,
+      googleAddress: true,
+      value: address,
+      onChange: (e) => {
+        setAddress(e.target.value);
+      },
     },
     {
       label: "Giống cây",
@@ -78,12 +88,13 @@ export const UpdateTree = () => {
   ];
 
   const handleSubmit = async (data: Record<string, unknown>) => {
-    const u = user();
-    await useApi.put(TREE_UPDATE, {
+    await useApi.put(TREE_UPDATE.replace(":id", id), {
       ...data,
       plantTime: dateConstructor(data.plantTime),
-      updateBy: u?.name,
+      updateBy: JSON.parse(token.accessToken).name,
+      isExist: true,
     });
+    navigate(-1);
     console.log("UpdateTree", data);
   };
 

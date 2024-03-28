@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.Persistence;
+﻿ using Application.Common.Interfaces.Persistence;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Infrastructure.Persistence.Repositories.Notification
@@ -12,9 +12,9 @@ namespace Infrastructure.Persistence.Repositories.Notification
             _hubContext = hubContext;
         }
 
-        public async Task SendMessage(string userName, string messageContent)
+        public async Task AutoCreateCalendar()
         {
-            await _hubContext.Clients.All.SendAsync("ReceiveMessage", userName, messageContent);
+            await _hubContext.Clients.All.SendAsync("AutoCreateCalendar");
         }
     }
 }

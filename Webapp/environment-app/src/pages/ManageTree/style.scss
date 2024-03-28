@@ -2,41 +2,72 @@
     margin-top: 100px;
     margin-left: 100px;
     display: flex;
-
-    .tree-detail-img {
-        margin-right: 150px;
-
-        img {
-            width: 350px;
-            height: 500px;
-            border-radius: 15px;
-            box-shadow: rgb(214, 207, 212) 5px 5px 18px 4px;
-        }
-    }
+    align-items: center;
 
     .tree-detail-content {
-        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        font-size: 25px;
+        margin-left: 5rem;
+        width: 40%;
+        font-size: 20px;
         display: flex;
-        flex-direction: column;
+        flex-direction: column;    
+        padding: 3rem;
         .tree-detail-content-parent {
-            width: 500px;
             display: flex;
-            flex-direction: row;
-            margin-bottom: 10px;
+            margin-bottom: none;
+            align-items: center;
             justify-content: space-between;
 
             .tree-detail-content-child-label {
                 font-weight: 1000;
+                color: var(--PrimaryColor);
+                margin-bottom: none;
+            }
+            .tree-detail-content-child-value{
+                font-size: var(--h2FontSize);
+                font-weight: bold;
+                margin-bottom: none;
             }
         }
     }
-    .btn-back {
-        width: 100px;
-        height: 40px;
-        margin-right: 10px;
-        font-size: var(--normalFontSize);
-        font-family: "Nunito", sans-serif;
+    .btnLink{
+        width: 7rem;
+        height: 3rem;
+        background-color: white;
+        --bs-btn-border-radius: none;
+        color: var(--PrimaryColor);
+        border-radius: 1.5rem;
+        border: 2px solid var(--PrimaryColor);
         font-weight: bold;
+        &:hover{
+            background-color: var(--PrimaryColor);
+            border: 2px solid var(--PrimaryColor);
+        }
+    }
+    .btnCancel{
+        width: 7rem;
+        height: 3rem;
+        background-color: white;
+        --bs-btn-border-radius: none;
+        color: #c82333;
+        border-radius: 1.5rem;
+        border: 2px solid #c82333;
+        font-weight: bold;
+        &:hover{
+            background-color: #c82333;
+            border: 2px solid #c82333;
+        }
+    }
+    .tree-detail-cover{
+        box-shadow: 0 4px 5px rgba(131, 131, 131, 0.1);
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 20px;
+        background-color: white;
+        justify-content: space-between;
+    }
+    .button-cover{
+        margin-top: 1rem;
+        display: flex;
+        justify-content: flex-end;
     }
 }

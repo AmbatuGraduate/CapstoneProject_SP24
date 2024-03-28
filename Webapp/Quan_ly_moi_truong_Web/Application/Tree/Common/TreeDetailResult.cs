@@ -10,7 +10,7 @@
         int IntervalCutTime,
         DateTime CutTime,
         bool isCut,
-        string User,
+        string User, //display email's user
         string Note
     );
 }

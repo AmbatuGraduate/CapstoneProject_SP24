@@ -8,6 +8,6 @@ namespace Application.Common.Interfaces.Persistence
 {
     public interface INotifyService
     {
-        Task SendMessage(string userName, string messageContent);
+        Task AutoCreateCalendar();
     }
 }

@@ -1,9 +1,8 @@
 .searchBar {
     padding: 1rem 3rem;
     background: var(--whiteColor);
-    border-radius: 1rem;
     gap: 1rem;
-    box-shadow: 0 2px 4px var(--inputColor);
+    box-shadow: 1px 0px 4px var(--greyText);
 
     input {
         border: none;
@@ -14,7 +13,7 @@
     .icon {
         color: var(--textColor);
         &:hover {
-            color: var(--PrimanyColor);
+            color: var(--PrimaryColor);
         }
     }
 }

@@ -5,12 +5,12 @@
   .btn {
     background-color: var(--PrimaryColor);
     color: var(--whiteColor);
-    border-radius: 1rem;
-    box-shadow: 0 2px 4px var(--inputColor);
+    box-shadow: 1px 0px 4px var(--greyText);
     align-items: center;
     padding: 1rem;
     border: none;
     font-weight: 500;
+    --bs-btn-border-radius: none;
     .smallText {
       font-size: var(--normalFontSize);
     }
@@ -30,7 +30,6 @@
     left: 110%;
     right: -200%;
     padding: 1rem;
-    border-radius: 5px;
     box-shadow: 0 2px 4px var(--inputColor);
 
     label {
@@ -44,7 +43,6 @@
       width: 100%;
       padding: 8px;
       margin-bottom: 10px;
-      border-radius: 4px;
       border: 1px solid #ccc;
       cursor: pointer;
       color: var(--textColor);
@@ -57,7 +55,6 @@
       .filter-button {
         height: 2.5rem;
         width: 5rem;
-        border-radius: 5px;
         border: none;
         cursor: pointer;
         font-size: var(--normalFontSize);

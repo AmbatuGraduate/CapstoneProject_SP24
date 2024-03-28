@@ -13,7 +13,8 @@ namespace Domain.Common.Errors
         {
             public static Error UpdateGoogleUserFail = Error.Failure(
                            code: "auth.UpdateGoogleUser", description: "Failed to update user.");
-
+            public static Error UpdateGoogleCalendarFail = Error.Failure(
+                           code: "auth.UpdateGoogleCalendar", description: "Failed to update calendar.");
         }
     }
 }

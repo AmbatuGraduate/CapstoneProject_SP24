@@ -1,5 +1,6 @@
 using API;
 using API.Controllers;
+using API.Middleware;
 using Application;
 using Hangfire;
 using Infrastructure;
@@ -42,12 +43,14 @@ app.UseRouting();
 app.UseHttpsRedirection();
 
 
+
 app.UseCors("AllowAllHeaders");
 app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseMiddleware<RefreshTokenMiddleware>();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<NotifyHub>("/chatHub");

@@ -9,12 +9,18 @@ export type Field = {
   label: string;
   key: string;
   defaultValue?: any;
+  affectValue?: any;
+  affectDate?: Date;
+  googleAddress?: boolean;
+  selected?: Date;
+  value?: any;
   placeholder?: string;
   formType: "input" | "select" | "textarea" | "number" | "date";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
   optionExtra?: OptionExtra;
+  onChange?: (event: React.ChangeEvent<any>) => void;
 };
 
 export type OptionExtra = {
@@ -51,13 +57,62 @@ export const FormBase = (props: Props) => {
     const { formType, options, key, disabled, optionExtra, ...rest } = props;
     const _disabled = mode == "view" ? true : disabled;
     const [_options, setOptions] = useState<Option[]>();
-    const [startDate, setStartDate] = useState<Date | null>(new Date());
+    const [startDate, setStartDate] = useState<Date | null>(
+      props.selected || new Date()
+    );
+    const [places, setPlaces] = useState([]);
 
     useEffect(() => {
       if (optionExtra) {
         fetchDataForFormSelect(optionExtra);
       }
     }, []);
+
+    useEffect(() => {
+      const currentTime = props.affectDate || new Date();
+      currentTime.setMonth(
+        currentTime.getMonth() + (Number(props.affectValue) || 0)
+      );
+      setStartDate(currentTime);
+    }, [props.affectValue]);
+
+    useEffect(() => {
+      if (props.googleAddress) {
+        const center = { lat: 16.047079, lng: 108.20623 };
+        // Create a bounding box with sides ~10km away from the center point
+        const defaultBounds = {
+          north: center.lat + 0.1,
+          south: center.lat - 0.1,
+          east: center.lng + 0.1,
+          west: center.lng - 0.1,
+        };
+        const input = document.getElementById("pac-input");
+        const options = {
+          bounds: defaultBounds,
+          componentRestrictions: { locality: "Da Nang" },
+          fields: ["address_components", "geometry", "icon", "name"],
+          strictBounds: false,
+        };
+        const autocomplete = new window.google.maps.places.Autocomplete(
+          input,
+          options
+        );
+
+        // Add event listener to handle place selection
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          console.log(place); // Handle the selected place here
+          if (place.geometry && place.geometry.location) {
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            console.log("Latitude:", latitude);
+            console.log("Longitude:", longitude);
+            // Xử lý tọa độ latitude và longitude ở đây
+          }
+        });
+        console.log(places);
+      }
+    }, [props.value]);
 
     const fetchDataForFormSelect = async (option: OptionExtra) => {
       const res = await useApi.get(option.url);
@@ -71,7 +126,13 @@ export const FormBase = (props: Props) => {
     switch (formType) {
       case "input":
         return (
-          <Form.Control type="text" {...rest} name={key} disabled={_disabled} />
+          <Form.Control
+            id={props.googleAddress == true ? "pac-input" : ""}
+            type="text"
+            {...rest}
+            name={key}
+            disabled={_disabled}
+          />
         );
       case "number":
         return (
@@ -143,19 +204,19 @@ export const FormBase = (props: Props) => {
       })}
       {mode == "create&update" ? (
         <div>
-          <Button variant="success" type="submit">
+          <Button className="btnSave" type="submit">
             Lưu
           </Button>
-          <Button variant="danger" onClick={onCancel}>
+          <Button className="btnCancel" variant="danger" onClick={onCancel}>
             Hủy
           </Button>
         </div>
       ) : (
         <div>
-          <Button variant="info" onClick={navigateUpdate}>
+          <Button className="btnSave" variant="info" onClick={navigateUpdate}>
             Cập nhật
           </Button>
-          <Button variant="danger" onClick={backPage}>
+          <Button className="btnCancel" variant="danger" onClick={backPage}>
             Trở về
           </Button>
         </div>
