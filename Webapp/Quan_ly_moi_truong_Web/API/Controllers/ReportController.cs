@@ -6,6 +6,7 @@ using Application.Report.Queries.GetById;
 using Application.Report.Queries.List;
 using Application.Report.Queries.ListByUser;
 using Application.Report.Queries.ListFromDb;
+using Application.Report.Queries.ListLateReport;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -89,6 +90,19 @@ namespace API.Controllers
         public async Task<IActionResult> GetReportsByUser(string accessToken, string email)
         {
             var result = await mediator.Send(new ListByEmailQuery(accessToken, email));
+            if (result.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
+            }
+            return Ok(result);
+        }
+
+
+        // get all reports that has been late
+        [HttpGet]
+        public async Task<IActionResult> GetAllLateReports(string accessToken)
+        {
+            var result = await mediator.Send(new ListLateReportQuery(accessToken));
             if (result.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");

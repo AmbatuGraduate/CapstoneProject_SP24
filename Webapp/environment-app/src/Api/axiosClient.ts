@@ -6,13 +6,16 @@ const axiosClient = axios.create({
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Credentials": "true",
   },
+  withCredentials: true
 });
 
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+  
     return config;
   },
   function (error) {

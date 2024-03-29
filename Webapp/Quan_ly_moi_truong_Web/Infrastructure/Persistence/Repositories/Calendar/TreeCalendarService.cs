@@ -14,14 +14,16 @@ namespace Infrastructure.Persistence.Repositories.Calendar
     {
         private readonly Func<GoogleCredential, CalendarService> _calendarServiceFactory;
         private readonly ITreeRepository _treeRepository;
+        private readonly IUserRepository _userRepository;
 
-        public TreeCalendarService(Func<GoogleCredential, CalendarService> calendarServiceFactory, ITreeRepository treeRepository/*, IStreetRepository streetRepository*/)
+        public TreeCalendarService(Func<GoogleCredential, CalendarService> calendarServiceFactory, ITreeRepository treeRepository, IUserRepository userRepository)
         {
             _calendarServiceFactory = calendarServiceFactory;
             _treeRepository = treeRepository;
-            //_streetRepository = streetRepository;
+            _userRepository = userRepository;
         }
 
+        // add event
         public async Task<MyAddedEvent> AddEvent(string accessToken, string calendarId, MyAddedEvent myEvent)
         {
             await Task.CompletedTask;
@@ -72,6 +74,8 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
+
+        // update job status
         public async Task<bool> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
         {
             await Task.CompletedTask;
@@ -103,18 +107,9 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
-        public string ConvertToJobWorkingStatusString(JobWorkingStatus jobWorkingStatus)
-        {
-            return jobWorkingStatus switch
-            {
-                JobWorkingStatus.Late => "Late",
-                JobWorkingStatus.NotStart => "Not Start",
-                JobWorkingStatus.InProgress => "In Progress",
-                JobWorkingStatus.Done => "Done",
-                JobWorkingStatus.DoneWithIssue => "Done With Issue",
-            };
-        }
 
+
+        // update event
         public async Task<MyUpdatedEvent> UpdateEvent(string accessToken, string calendarId, MyUpdatedEvent myEvent, string eventId)
         {
             await Task.CompletedTask;
@@ -157,6 +152,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
+        // delete event
         public async Task<bool> DeleteEvent(string accessToken, string calendarId, string eventId)
         {
             await Task.CompletedTask;
@@ -183,6 +179,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
+        // get event by id
         public async Task<MyEvent> GetEventById(string accessToken, string calendarId, string eventId)
         {
             await Task.CompletedTask;
@@ -204,13 +201,17 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     Start = retrievenedEvent.Start.DateTime ?? DateTime.MinValue,
                     End = retrievenedEvent.End.DateTime ?? DateTime.MinValue,
                     Attendees = (retrievenedEvent.Attendees != null) ? retrievenedEvent.Attendees
-                            .Select(attendee => new UserResult(new Users
-                            {
-                                //Name = attendee.DisplayName,
-                                Email = attendee.Email,
-                            }
+                           .Select(attendee => new UserEventResult(
+                                new Users
+                                {
+                                    Email = attendee.Email,
+                                }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
                             ))
-                            .ToList() : new List<UserResult>()
+                            .ToList() : new List<UserEventResult>(),
+                    ExtendedProperties = new EventExtendedProperties
+                    {
+                        PrivateProperties = (Dictionary<string, string>)(retrievenedEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
+                    }
                 };
                 return myEvent;
             }
@@ -221,6 +222,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
+        // get events by attendee email
         public async Task<List<MyEvent>> GetEventsByAttendeeEmail(string accessToken, string calendarId, string attendeeEmail)
         {
             MyEvent myEvent = new MyEvent();
@@ -250,13 +252,17 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         Start = returnEvent.Start.DateTime ?? DateTime.MinValue,
                         End = returnEvent.End.DateTime ?? DateTime.MinValue,
                         Attendees = (returnEvent.Attendees != null) ? returnEvent.Attendees
-                            .Select(attendee => new UserResult(new Users
-                            {
-                                //Name = attendee.DisplayName,
-                                Email = attendee.Email,
-                            }
+                            .Select(attendee => new UserEventResult(
+                                new Users
+                                {
+                                    Email = attendee.Email,
+                                }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
                             ))
-                            .ToList() : new List<UserResult>()
+                            .ToList() : new List<UserEventResult>(),
+                        ExtendedProperties = new EventExtendedProperties
+                        {
+                            PrivateProperties = (Dictionary<string, string>)(returnEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
+                        }
                     })
                     .ToList<MyEvent>();
                 return myEvents;
@@ -268,6 +274,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
+        // get all events
         public async Task<List<MyEvent>> GetEvents(string accessToken, string calendarId)
         {
             List<MyEvent> myEvents = new List<MyEvent>();
@@ -299,13 +306,13 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         Start = eventItem.Start.DateTime ?? DateTime.MinValue,
                         End = eventItem.End.DateTime ?? DateTime.MinValue,
                         Attendees = (eventItem.Attendees != null) ? eventItem.Attendees
-                            .Select(attendee => new UserResult(new Users
-                            {
-                                //Name = attendee.DisplayName,
-                                Email = attendee.Email,
-                            }
+                            .Select(attendee => new UserEventResult(
+                                new Users
+                                {
+                                    Email = attendee.Email,
+                                }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
                             ))
-                            .ToList() : new List<UserResult>(),
+                            .ToList() : new List<UserEventResult>(),
                         ExtendedProperties = new EventExtendedProperties
                         {
                             PrivateProperties = (Dictionary<string, string>)(eventItem.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
@@ -321,5 +328,74 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 return null;
             }
         }
+
+        // get user today events
+        public async Task<List<MyEvent>> GetUserTodayEvents(string accessToken, string calendarId, string attendeeEmail)
+        {
+            MyEvent myEvent = new MyEvent();
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+
+                // Use the factory to create a CalendarService with the correct credential
+                var service = _calendarServiceFactory(credential);
+
+                var listRequest = service.Events.List(calendarId);
+                listRequest.TimeMaxDateTimeOffset = DateTime.Now;
+                listRequest.TimeMinDateTimeOffset = DateTime.Today;
+                listRequest.TimeMaxDateTimeOffset = DateTime.Today.AddDays(1).AddTicks(-1);
+                listRequest.ShowDeleted = false;
+                listRequest.SingleEvents = true;
+                listRequest.MaxResults = 10;
+                listRequest.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+                var events = await listRequest.ExecuteAsync();
+                List<MyEvent> myEvents = events.Items
+                    .Where(myEvent => ((myEvent.Attendees != null) && (myEvent.Attendees.Any(user => user.Email.Equals(attendeeEmail)))))
+                    .Select(returnEvent => new MyEvent
+                    {
+                        Id = returnEvent.Id,
+                        Summary = returnEvent.Summary,
+                        Description = returnEvent.Description,
+                        Location = returnEvent.Location,
+                        Start = returnEvent.Start.DateTime ?? DateTime.MinValue,
+                        End = returnEvent.End.DateTime ?? DateTime.MinValue,
+                        Attendees = (returnEvent.Attendees != null) ? returnEvent.Attendees
+                            .Select(attendee => new UserEventResult(
+                                new Users
+                                {
+                                    Email = attendee.Email,
+                                }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
+                            ))
+                            .ToList() : new List<UserEventResult>(),
+                        ExtendedProperties = new EventExtendedProperties
+                        {
+                            PrivateProperties = (Dictionary<string, string>)(returnEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
+                        }
+                    })
+                    .ToList<MyEvent>();
+                return myEvents;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+
+        // -------------------- Helper Functions --------------------
+        // convert job status to string (helper function)
+        public string ConvertToJobWorkingStatusString(JobWorkingStatus jobWorkingStatus)
+        {
+            return jobWorkingStatus switch
+            {
+                JobWorkingStatus.Late => "Late",
+                JobWorkingStatus.NotStart => "Not Start",
+                JobWorkingStatus.InProgress => "In Progress",
+                JobWorkingStatus.Done => "Done",
+                JobWorkingStatus.DoneWithIssue => "Done With Issue",
+            };
+        }
+
     }
 }

@@ -1,5 +1,5 @@
-﻿using Application.User.Common.Add;
-using Application.User.Common.Group;
+﻿using Application.Group.Common;
+using Application.User.Common.Add;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
 using Domain.Entities.User;
@@ -28,9 +28,6 @@ namespace Application.Common.Interfaces.Persistence
 
         Task<bool> DeleteGoogleUser(string accessToken, string userEmail);
 
-        Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail);
-
-        Task<List<GroupResult>> GetAllGoogleGroupByUserEmail(string accessToken, string userEmail);
 
     }
 }

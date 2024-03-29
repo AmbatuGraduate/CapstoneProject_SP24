@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.User.Common.Group
+namespace Application.Group.Common
 {
     public class GroupResult
     {

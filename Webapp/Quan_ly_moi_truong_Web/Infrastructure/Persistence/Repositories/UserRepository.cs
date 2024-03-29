@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.User.Common.Add;
-using Application.User.Common.Group;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
 using Domain.Entities.Deparment;
@@ -300,79 +299,6 @@ namespace Infrastructure.Persistence.Repositories
             {
                 // Handle exception
                 return $"Failed to get user ID: {e.Message}";
-            }
-        }
-
-        public async Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail)
-        {
-            try
-            {  
-                var credential = GoogleCredential.FromAccessToken(accessToken);
-                var service = _directoryServiceFactory(credential);
-
-                // Retrieve the group
-                var request = service.Groups.Get(groupEmail);
-                var group = await request.ExecuteAsync();
-
-                var groupDto = new GroupResult
-                {
-                    Id = group.Id,
-                    Email = group.Email,
-                    Name = group.Name,
-                    Description = group.Description,
-                    AdminCreated = (bool)group.AdminCreated,
-                    DirectMembersCount = (long)group.DirectMembersCount
-                };
-
-                return groupDto;
-            }
-            catch (Exception e)
-            {
-                // Handle exception
-                throw;
-            }
-        }
-
-        public async Task<List<GroupResult>> GetAllGoogleGroupByUserEmail(string accessToken, string userEmail)
-        {
-            await Task.CompletedTask;
-            var groupResult = new List<GroupResult>();  
-            try
-            {
-                var credential = GoogleCredential.FromAccessToken(accessToken);
-                var service = _directoryServiceFactory(credential);
-                var dbGroups = GetAllGroups();
-
-                foreach(var group in dbGroups)
-                {
-                    try
-                    {
-                        var memberRequest = service.Members.Get(group.DepartmentEmail, userEmail);
-                        var member = memberRequest.Execute();
-                        if(member != null)
-                        {
-                            groupResult.Add(new GroupResult
-                            {
-                                Id = member.Id,
-                                Email = member.Email,
-                                Name = group.DepartmentName,
-                                Description = group.Description,
-                                AdminCreated = group.AdminCreated,
-                                DirectMembersCount= (long)group.DirectMembersCount
-                            });
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        System.Diagnostics.Debug.WriteLine($"An error occurred: {e.Message}");
-                    }
-                }
-                return groupResult;
-            }
-            catch (Exception e)
-            {
-                // Handle exception
-                throw;
             }
         }
     }

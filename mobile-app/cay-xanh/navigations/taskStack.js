@@ -22,7 +22,7 @@ function TaskStackRouting() {
                 options={
                     {
                         title: 'Chi tiết công việc',
-                        headerTintColor: 'green',
+                        headerTintColor: 'skyblue',
                         headerStyle: {
                             height: 60,
                         },

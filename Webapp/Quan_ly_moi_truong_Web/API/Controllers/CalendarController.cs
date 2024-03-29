@@ -1,6 +1,5 @@
 ﻿using Application.Calendar;
 using Application.Calendar.TreeCalendar.Queries.List;
-using Application.Common.Interfaces.Authentication;
 using ErrorOr;
 using MapsterMapper;
 using MediatR;
@@ -12,11 +11,15 @@ using Application.Calendar.TreeCalendar.Commands.Add;
 using Application.Calendar.TreeCalendar.Commands.Update;
 using Application.Calendar.TreeCalendar.Commands.Delete;
 using Application.Calendar.TreeCalendar.Queries.GetByAttendeeId;
-using Domain.Enums;
 using Application.Calendar.TreeCalendar.Commands.UpdateJobStatus;
 using Application.Calendar.TreeCalendar.Commands.AutoAdd;
 using Application.GoogleAuthentication.Queries.GoogleAccessToken;
 using Application.GoogleAuthentication.Common;
+using Application.Common.Interfaces.Persistence;
+using Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus;
+using Application.Calendar.TreeCalendar.Queries.ListLateCalendar;
+using Application.Calendar.TreeCalendar.Queries.ListCalendarNotHaveAttendees;
+using Application.Calendar.TreeCalendar.Queries.ListCurrentDayEventsByEmail;
 
 
 namespace API.Controllers
@@ -31,14 +34,16 @@ namespace API.Controllers
 
         //private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        //private readonly INotifyService notifyService;
 
         // constructor
-        public CalendarController(IMediator mediator, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public CalendarController(IMediator mediator, IMapper mapper, IHttpContextAccessor httpContextAccessor /*INotifyService notifyService*/)
         {
             this.mediator = mediator;
             //this.mapper = mapper;
             //_httpClient = httpClientFactory.CreateClient();
             _httpContextAccessor = httpContextAccessor;
+            //this.notifyService = notifyService;
         }
 
         // get google calendar events
@@ -61,7 +66,7 @@ namespace API.Controllers
             }
             else // web client
             {
-                var jwt = Request.Cookies["u_tkn"];
+                var jwt = _httpContextAccessor.HttpContext.Request.Cookies["u_tkn"];
                 if (String.IsNullOrEmpty(jwt))
                 {
                     return BadRequest("u_tkn cookie is missing");
@@ -85,6 +90,7 @@ namespace API.Controllers
             return Ok(list.Value);
         }
 
+        // get google calendar events by attendee email
         [HttpGet()]
         public async Task<IActionResult> GetCalendarEventsByAttendeeEmail(string attendeeEmail)
         {
@@ -126,7 +132,43 @@ namespace API.Controllers
             return Ok(list.Value);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllLateCalendarEvent()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            //Access HttpContext
+            var token = httpContext.Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("Checking: " + token);
 
+            ErrorOr<List<MyEvent>> list = await mediator.Send(new ListLateCalendarQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list.Value);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCalendarEventNoAttendees()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            //Access HttpContext
+            var token = httpContext.Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("Checking: " + token);
+
+            ErrorOr<List<MyEvent>> list = await mediator.Send(new ListCalendarNotHaveAttendessQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list.Value);
+        }
+
+        // add events
         [HttpPost()]
         public async Task<IActionResult> AddCalendarEvent(MyAddedEvent? myEvent)
         {
@@ -168,6 +210,27 @@ namespace API.Controllers
             return Ok(list.Value);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> AutoUpdateCalendarJobStatus()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            //Access HttpContext
+            var token = httpContext.Request.Cookies["u_tkn"];
+            System.Diagnostics.Debug.WriteLine("Checking: " + token);
+
+            ErrorOr<List<MyUpdatedJobStatusResult>> list = await mediator.Send(new AutoUpdateJobStatusCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            //Use signalR
+
+            return Ok(list.Value);
+        }
+
+        // auto add events
         [HttpGet]
         public async Task<IActionResult> AutoAddCalendarEvent()
         {
@@ -186,6 +249,7 @@ namespace API.Controllers
             return Ok(list.Value);
         }
 
+        // update events
         [HttpPost()]
         public async Task<IActionResult> UpdateCalendarEvent(MyUpdatedEvent? myEvent, string eventId)
         {
@@ -227,6 +291,7 @@ namespace API.Controllers
             return Ok(list);
         }
 
+        // update job status
         [HttpPost()]
         public async Task<IActionResult> UpdateJobWorkingStatus([FromBody] UpdateJobStatusCommand command)
         {
@@ -269,6 +334,7 @@ namespace API.Controllers
             return Ok(list);
         }
 
+        // delete events
         [HttpDelete()]
         public async Task<IActionResult> DeleteCalendarEvent(string eventId)
         {
@@ -308,6 +374,48 @@ namespace API.Controllers
             }
 
             return Ok(list);
+        }
+
+        // get current day events by attendee email
+        [HttpGet()]
+        public async Task<IActionResult> GetCurrentDayEventsByEmail(string attendeeEmail)
+        {
+            var clientType = Request.Headers["Client-Type"];
+
+
+            // declare accesstoken
+            string accessToken;
+            if (clientType == "Mobile") // mobile client
+            {
+                var authHeader = Request.Headers["Authorization"];
+                if (String.IsNullOrEmpty(authHeader))
+                {
+                    return BadRequest("Authorization header is missing");
+                }
+                accessToken = authHeader.ToString().Replace("Bearer ", "");
+            }
+            else // web client
+            {
+                var jwt = Request.Cookies["u_tkn"];
+                if (String.IsNullOrEmpty(jwt))
+                {
+                    return BadRequest("u_tkn cookie is missing");
+                }
+                System.Diagnostics.Debug.WriteLine("token: " + jwt);
+                ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+                if (token.IsError)
+                {
+                    return BadRequest("Invalid token");
+                }
+                accessToken = token.Value.accessToken;
+            }
+            ErrorOr<List<MyEventResult>> list = await mediator.Send(new ListCurrentEventsQuery(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", attendeeEmail));
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list.Value);
         }
     }
 }

@@ -5,10 +5,10 @@ namespace Infrastructure.Persistence.Repositories.Notification
 {
     public class NotifyHub : Hub
     {
-        public async Task SendMessage(string userName, string messageContent)
+        public async Task SendMessage()
         {
             var chatService = Context.GetHttpContext().RequestServices.GetService<NotifyService>();
-            await chatService.SendMessage(userName, messageContent);
+            await chatService.AutoCreateCalendar();
         }
     }
 }
