@@ -397,5 +397,14 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             };
         }
 
+        public string GetCalendarIdByCalendarType(CalendarTypeEnum calendarType)
+        {
+            return calendarType switch
+            {
+                CalendarTypeEnum.CayXanh => CalendarIdsEnum.CayXanhCalendarId,
+                CalendarTypeEnum.ThuGom => CalendarIdsEnum.ThuGomCalendarId,
+                CalendarTypeEnum.QuetDon => CalendarIdsEnum.QuetDonCalendarId
+            } ;
+        }
     }
 }
