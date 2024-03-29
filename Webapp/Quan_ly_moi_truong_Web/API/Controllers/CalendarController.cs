@@ -20,7 +20,8 @@ using Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus;
 using Application.Calendar.TreeCalendar.Queries.ListLateCalendar;
 using Application.Calendar.TreeCalendar.Queries.ListCalendarNotHaveAttendees;
 using Application.Calendar.TreeCalendar.Queries.ListCurrentDayEventsByEmail;
-
+using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
+using Domain.Enums;
 
 namespace API.Controllers
 {
@@ -48,7 +49,7 @@ namespace API.Controllers
 
         // get google calendar events
         [HttpGet()]
-        public async Task<IActionResult> GetAllCalendarEvents()
+        public async Task<IActionResult> GetAllCalendarEvents(CalendarTypeEnum calendarTypeEnum)
         {
             var clientType = Request.Headers["Client-Type"];
 
@@ -80,8 +81,10 @@ namespace API.Controllers
                 accessToken = token.Value.accessToken;
             }
 
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+
             // ========================
-            ErrorOr<List<MyEvent>> list = await mediator.Send(new ListTreeCalendarQuery(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+            ErrorOr<List<MyEvent>> list = await mediator.Send(new ListTreeCalendarQuery(accessToken, calendarId.Value));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -92,7 +95,7 @@ namespace API.Controllers
 
         // get google calendar events by attendee email
         [HttpGet()]
-        public async Task<IActionResult> GetCalendarEventsByAttendeeEmail(string attendeeEmail)
+        public async Task<IActionResult> GetCalendarEventsByAttendeeEmail(CalendarTypeEnum calendarTypeEnum, string attendeeEmail)
         {
             var clientType = Request.Headers["Client-Type"];
 
@@ -123,7 +126,8 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-            ErrorOr<List<MyEventResult>> list = await mediator.Send(new GetByAttendeeEmailQuery(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", attendeeEmail));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<List<MyEventResult>> list = await mediator.Send(new GetByAttendeeEmailQuery(accessToken, calendarId.Value, attendeeEmail));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -133,14 +137,14 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllLateCalendarEvent()
+        public async Task<IActionResult> GetAllLateCalendarEvent(CalendarTypeEnum calendarTypeEnum)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             //Access HttpContext
             var token = httpContext.Request.Cookies["u_tkn"];
             System.Diagnostics.Debug.WriteLine("Checking: " + token);
-
-            ErrorOr<List<MyEvent>> list = await mediator.Send(new ListLateCalendarQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<List<MyEvent>> list = await mediator.Send(new ListLateCalendarQuery(token, calendarId.Value));
 
             if (list.IsError)
             {
@@ -151,14 +155,14 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCalendarEventNoAttendees()
+        public async Task<IActionResult> GetAllCalendarEventNoAttendees(CalendarTypeEnum calendarTypeEnum)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             //Access HttpContext
             var token = httpContext.Request.Cookies["u_tkn"];
             System.Diagnostics.Debug.WriteLine("Checking: " + token);
-
-            ErrorOr<List<MyEvent>> list = await mediator.Send(new ListCalendarNotHaveAttendessQuery(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<List<MyEvent>> list = await mediator.Send(new ListCalendarNotHaveAttendessQuery(token, calendarId.Value));
 
             if (list.IsError)
             {
@@ -170,7 +174,7 @@ namespace API.Controllers
 
         // add events
         [HttpPost()]
-        public async Task<IActionResult> AddCalendarEvent(MyAddedEvent? myEvent)
+        public async Task<IActionResult> AddCalendarEvent(CalendarTypeEnum calendarTypeEnum, MyAddedEvent? myEvent)
         {
             var clientType = Request.Headers["Client-Type"];
 
@@ -201,7 +205,8 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-            ErrorOr<MyAddedEventResult> list = await mediator.Send(new AddCalendarCommand(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<MyAddedEventResult> list = await mediator.Send(new AddCalendarCommand(accessToken, calendarId.Value, myEvent));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -211,14 +216,14 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> AutoUpdateCalendarJobStatus()
+        public async Task<IActionResult> AutoUpdateCalendarJobStatus(CalendarTypeEnum calendarTypeEnum)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             //Access HttpContext
             var token = httpContext.Request.Cookies["u_tkn"];
             System.Diagnostics.Debug.WriteLine("Checking: " + token);
-
-            ErrorOr<List<MyUpdatedJobStatusResult>> list = await mediator.Send(new AutoUpdateJobStatusCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<List<MyUpdatedJobStatusResult>> list = await mediator.Send(new AutoUpdateJobStatusCommand(token, calendarId.Value));
 
             if (list.IsError)
             {
@@ -232,14 +237,14 @@ namespace API.Controllers
 
         // auto add events
         [HttpGet]
-        public async Task<IActionResult> AutoAddCalendarEvent()
+        public async Task<IActionResult> AutoAddCalendarEvent(CalendarTypeEnum calendarTypeEnum)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             //Access HttpContext
             var token = httpContext.Request.Cookies["u_tkn"];
             System.Diagnostics.Debug.WriteLine("Checking: " + token);
-
-            ErrorOr<List<MyAddedEventResult>>  list = await mediator.Send(new AutoAddTreeCalendarCommand(token, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com"));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<List<MyAddedEventResult>>  list = await mediator.Send(new AutoAddTreeCalendarCommand(token, calendarId.Value));
 
             if (list.IsError)
             {
@@ -251,7 +256,7 @@ namespace API.Controllers
 
         // update events
         [HttpPost()]
-        public async Task<IActionResult> UpdateCalendarEvent(MyUpdatedEvent? myEvent, string eventId)
+        public async Task<IActionResult> UpdateCalendarEvent(CalendarTypeEnum calendarTypeEnum, MyUpdatedEvent? myEvent, string eventId)
         {
             var clientType = Request.Headers["Client-Type"];
 
@@ -282,7 +287,8 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-            ErrorOr<MyUpdatedEventResult> list = await mediator.Send(new UpdateCalendarCommand(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", myEvent, eventId));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<MyUpdatedEventResult> list = await mediator.Send(new UpdateCalendarCommand(accessToken, calendarId.Value, myEvent, eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -293,7 +299,7 @@ namespace API.Controllers
 
         // update job status
         [HttpPost()]
-        public async Task<IActionResult> UpdateJobWorkingStatus([FromBody] UpdateJobStatusCommand command)
+        public async Task<IActionResult> UpdateJobWorkingStatus(CalendarTypeEnum calendarTypeEnum, [FromBody] UpdateJobStatusCommand command)
         {
             var clientType = Request.Headers["Client-Type"];
 
@@ -324,8 +330,8 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-
-            ErrorOr<MyUpdatedJobStatusResult> list = await mediator.Send(new UpdateJobStatusCommand(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", command.jobWorkingStatus, command.eventId));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<MyUpdatedJobStatusResult> list = await mediator.Send(new UpdateJobStatusCommand(accessToken, calendarId.Value, command.jobWorkingStatus, command.eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -336,7 +342,7 @@ namespace API.Controllers
 
         // delete events
         [HttpDelete()]
-        public async Task<IActionResult> DeleteCalendarEvent(string eventId)
+        public async Task<IActionResult> DeleteCalendarEvent(CalendarTypeEnum calendarTypeEnum, string eventId)
         {
             var clientType = Request.Headers["Client-Type"];
 
@@ -367,7 +373,8 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-            ErrorOr<MyDeletedEventResult> list = await mediator.Send(new DeleteCalendarCommand(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", eventId));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<MyDeletedEventResult> list = await mediator.Send(new DeleteCalendarCommand(accessToken, calendarId.Value, eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
@@ -378,7 +385,7 @@ namespace API.Controllers
 
         // get current day events by attendee email
         [HttpGet()]
-        public async Task<IActionResult> GetCurrentDayEventsByEmail(string attendeeEmail)
+        public async Task<IActionResult> GetCurrentDayEventsByEmail(CalendarTypeEnum calendarTypeEnum, string attendeeEmail)
         {
             var clientType = Request.Headers["Client-Type"];
 
@@ -409,7 +416,8 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-            ErrorOr<List<MyEventResult>> list = await mediator.Send(new ListCurrentEventsQuery(accessToken, "c_6529bcce12126756f2aa18387c15b6c1fee86014947d41d8a5b9f5d4170c4c4a@group.calendar.google.com", attendeeEmail));
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<List<MyEventResult>> list = await mediator.Send(new ListCurrentEventsQuery(accessToken, calendarId.Value, attendeeEmail));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
