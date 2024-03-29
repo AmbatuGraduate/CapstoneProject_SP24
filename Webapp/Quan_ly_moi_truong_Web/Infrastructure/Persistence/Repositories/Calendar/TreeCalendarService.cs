@@ -403,8 +403,10 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             {
                 CalendarTypeEnum.CayXanh => CalendarIdsEnum.CayXanhCalendarId,
                 CalendarTypeEnum.ThuGom => CalendarIdsEnum.ThuGomCalendarId,
-                CalendarTypeEnum.QuetDon => CalendarIdsEnum.QuetDonCalendarId
-            } ;
+                CalendarTypeEnum.QuetDon => CalendarIdsEnum.QuetDonCalendarId,
+                CalendarTypeEnum.None => throw new ArgumentException("Invalid calendar type", nameof(calendarType)),
+                _ => throw new ArgumentOutOfRangeException(nameof(calendarType), calendarType, null)
+            };
         }
     }
 }

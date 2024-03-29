@@ -28,7 +28,7 @@ export default function TaskDetails({ route }) {
         setLoading(true);
         try {
             AsyncStorage.getItem("@accessToken").then(token => {
-                const url = 'http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus';
+                const url = 'http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus?calendarTypeEnum=1';
 
                 api.post(url, {
                     accessToken: "",

@@ -57,6 +57,8 @@ export default function ReportForm({ onFormSuccess }) {
                     }, {
                         headers: {
                             'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${accessToken}`,
+                            "Client-Type": "Mobile"
                         },
                     })
                         .then((response) => {
