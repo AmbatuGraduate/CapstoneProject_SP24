@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Group.Common;
 using Application.Group.Common.Add_Update;
+using Application.User.Common.List;
 using Domain.Entities.Deparment;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Admin.Directory.directory_v1.Data;
@@ -56,6 +57,30 @@ namespace Infrastructure.Persistence.Repositories
             {
                 // Handle exception
                 throw;
+            }
+        }
+
+        public async Task<List<GoogleUser>> GetAllMembersOfGroup(string accessToken, string groupId)
+        {
+            List<GoogleUser> users = new List<GoogleUser>();
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential); 
+
+                var request = service.Members.List(groupId);
+                var members = request.Execute().MembersValue;
+                users = members.Select(member => new GoogleUser
+                {
+                    Id = member.Id,
+                    Email = member.Email
+                }).ToList();
+                return users;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {e.Message}");
+                return new List<GoogleUser>();
             }
         }
 
