@@ -7,7 +7,9 @@ using Application.Group.Commands.Update;
 using Application.Group.Common;
 using Application.Group.Common.Add_Update;
 using Application.Group.Queries.GetAllGroupsByUserEmail;
+using Application.Group.Queries.GetAllMembersOfGroup;
 using Application.Group.Queries.GetGroup;
+using Application.User.Common.List;
 using ErrorOr;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using MapsterMapper;
@@ -64,6 +66,32 @@ namespace API.Controllers
             }
 
             return Ok(groupResult);
+        }
+
+        [HttpGet()]
+        public async Task<IActionResult> GetAllMembersOfGroup(string groupEmail)
+        {
+            string accessToken;
+            var jwt = Request.Cookies["u_tkn"];
+            if (String.IsNullOrEmpty(jwt))
+            {
+                return BadRequest("u_tkn cookie is missing");
+            }
+            System.Diagnostics.Debug.WriteLine("token: " + jwt);
+            ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+            if (token.IsError)
+            {
+                return BadRequest("Invalid token");
+            }
+            accessToken = token.Value.accessToken;
+            ErrorOr<List<GoogleUser>> usersResult = await mediator.Send(new GetAllMembersOfGroupQuery(accessToken, groupEmail));
+
+            if (usersResult.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
+            }
+
+            return Ok(usersResult);
         }
 
         [HttpGet()]

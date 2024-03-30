@@ -1,5 +1,6 @@
 ﻿using Application.Group.Common;
 using Application.Group.Common.Add_Update;
+using Application.User.Common.List;
 using Domain.Entities.Deparment;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace Application.Common.Interfaces.Persistence
     {
         public List<Departments> GetAllGroups();
         Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail);
+        Task<List<GoogleUser>> GetAllMembersOfGroup(string accessToken, string groupId);
         Task<List<GroupResult>> GetAllGoogleGroupByUserEmail(string accessToken, string userEmail);
         Task<GroupResult> AddGoogleGroup(string accessToken, AddGoogleGroup group);
         bool AddGroupDB(Departments group);
