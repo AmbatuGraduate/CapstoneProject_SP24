@@ -1,27 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/themed';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api } from "../shared/api";
 
 
 
 export default function Home() {
-    const tasks = ['Task 1', 'Task 2', 'Task 3'];
     const currentDate = new Date();
+    const dayOfWeek = currentDate.toLocaleDateString('vi-VN', { weekday: 'long' });
+
     const navigation = useNavigation();
+    const [eventsCount, setEventsCount] = useState(0);
 
     const handlePress = () => {
         navigation.navigate('Tasks');
     };
+
+    const getEventsCount = async () => {
+
+        try {
+            var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
+            const atoken = await AsyncStorage.getItem("@accessToken");;
+            if (atoken !== null) {
+                api.get(`http://192.168.1.7:45455/api/Calendar/NumberOfEventsUser?calendarTypeEnum=1&attendeeEmail=${useremail}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${atoken}`,
+                        "Client-Type": "Mobile"
+                    },
+                })
+                    .then((res) => {
+                        setEventsCount(res.data);
+                    })
+                    .catch((error) => {
+                        console.log('There has been a problem with fetch operation: ', error.message);
+                        setEventsCount(0);
+                    });
+            } else {
+                console.log('token null');
+                setEventsCount(0);
+            }
+        } catch (error) {
+            console.error(error);
+            setEventsCount(0);
+        }
+    }
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            // The screen is focused
+            // Call any action
+            getEventsCount();
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return unsubscribe;
+    }, [navigation]);
+
     return (
         <View style={styles.container}>
             <Text style={styles.titleText}>
-                Hôm nay, {currentDate.toLocaleDateString('vi-VN')}
+                {dayOfWeek}
             </Text>
             <View style={{ flexDirection: 'row' }}>
-                <Icon name="bell-o" type="font-awesome" size={22} color="blue" />
+                <Icon name="tasks" type="font-awesome" size={24} color="skyblue" />
                 <Text style={styles.subtitleText}>
-                    Thông báo
+                    Công việc
                 </Text>
 
             </View>
@@ -29,11 +75,11 @@ export default function Home() {
 
             {/* so cong viec */}
             <View style={styles.notif}>
-                {tasks.length > 0 ? (
+                {eventsCount > 0 ? (
                     <TouchableOpacity style={styles.taskButton} onPress={handlePress}>
-                        <Icon name="calendar-check-o" type="font-awesome" size={20} color="green" />
+                        <Icon style={styles.notifIcon} name="calendar" type="font-awesome" size={20} color="green" />
                         <Text style={styles.taskText}>
-                            Bạn có {tasks.length} công việc {tasks.length > 1 ? '' : ''}hôm nay. Nhấn để xem.
+                            Bạn có {eventsCount} công việc {eventsCount > 1 ? '' : ''}hôm nay. Nhấn để xem.
                         </Text>
                     </TouchableOpacity>
                 ) : (
@@ -44,30 +90,37 @@ export default function Home() {
             <View style={styles.hrline}></View>
 
             {/* thong bao */}
+            <View style={{ flexDirection: 'row' }}>
+                <Icon name="bell" type="font-awesome" size={24} color="skyblue" />
+                <Text style={styles.subtitleText}>
+                    Thông báo
+                </Text>
+
+            </View>
             <View style={styles.notif}>
                 <View style={styles.taskButton}>
                     <Text style={styles.taskText}>
-                        Bạn có {tasks.length} công việc {tasks.length > 1 ? '' : ''}bị trễ.
+                        Bạn có 1 công việc bị trễ
                     </Text>
                 </View>
                 <View style={styles.taskButton}>
                     <Text style={styles.taskText}>
-                        Bạn có {tasks.length} công việc {tasks.length > 1 ? '' : ''}bị trễ.
+                        Bạn có 1 công việc bị trễ
                     </Text>
                 </View>
                 <View style={styles.taskButton}>
                     <Text style={styles.taskText}>
-                        Bạn có {tasks.length} công việc {tasks.length > 1 ? '' : ''}bị trễ.
+                        Bạn có 1 công việc bị trễ
                     </Text>
                 </View>
                 <View style={styles.taskButton}>
                     <Text style={styles.taskText}>
-                        Bạn có {tasks.length} công việc {tasks.length > 1 ? '' : ''}bị trễ.
+                        Bạn có 1 công việc bị trễ
                     </Text>
                 </View>
                 <View style={styles.taskButton}>
                     <Text style={styles.taskText}>
-                        Bạn có {tasks.length} công việc {tasks.length > 1 ? '' : ''}bị trễ.
+                        Bạn có 1 công việc bị trễ
                     </Text>
                 </View>
             </View>
@@ -84,16 +137,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#f5f5f5',
     },
     titleText: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#B8C1F2',
+        fontSize: 20,
+        color: '#2282F3',
         marginBottom: 20,
         fontFamily: 'quolibet',
     },
     subtitleText: {
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: 'bold',
-        color: '#4557B6',
+        color: '#2282F3',
         marginBottom: 10,
         fontFamily: 'quolibet',
         marginLeft: 10,
@@ -102,7 +154,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#fff',
-        padding: 16,
+        padding: 20,
         borderRadius: 10,
         marginVertical: 10,
         shadowColor: '#000',
@@ -112,10 +164,9 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     taskText: {
-        marginLeft: 10,
-        fontSize: 16,
-        color: 'grey',
-
+        fontSize: 20,
+        color: 'gray',
+        fontFamily: 'quolibet',
     },
     noTasksText: {
         fontSize: 18,
@@ -129,5 +180,8 @@ const styles = StyleSheet.create({
         marginVertical: 20,
         width: '90%',
         alignSelf: 'center',
+    },
+    notifIcon: {
+        marginRight: 10,
     },
 });

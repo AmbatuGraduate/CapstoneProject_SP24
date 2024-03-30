@@ -23,6 +23,7 @@ using Application.Calendar.TreeCalendar.Queries.ListCurrentDayEventsByEmail;
 using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
 using Domain.Enums;
 using Application.Calendar.TreeCalendar.Queries.NumberOfEventsToday;
+using Application.Calendar.TreeCalendar.Queries.GetEventById;
 
 namespace API.Controllers
 {
@@ -245,7 +246,7 @@ namespace API.Controllers
             var token = httpContext.Request.Cookies["u_tkn"];
             System.Diagnostics.Debug.WriteLine("Checking: " + token);
             var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
-            ErrorOr<List<MyAddedEventResult>>  list = await mediator.Send(new AutoAddTreeCalendarCommand(token, calendarId.Value));
+            ErrorOr<List<MyAddedEventResult>> list = await mediator.Send(new AutoAddTreeCalendarCommand(token, calendarId.Value));
 
             if (list.IsError)
             {
@@ -468,6 +469,56 @@ namespace API.Controllers
             }
 
             return Ok(quantity.Value);
+        }
+
+        // get event by id
+        [HttpGet()]
+        public async Task<IActionResult> GetEventById(CalendarTypeEnum calendarTypeEnum, string eventId)
+        {
+            var clientType = Request.Headers["Client-Type"];
+
+
+            // declare accesstoken
+            string accessToken;
+            if (clientType == "Mobile") // mobile client
+            {
+                var authHeader = Request.Headers["Authorization"];
+                if (String.IsNullOrEmpty(authHeader))
+                {
+                    return BadRequest("Authorization header is missing");
+                }
+                accessToken = authHeader.ToString().Replace("Bearer ", "");
+            }
+            else // web client
+            {
+                var jwt = Request.Cookies["u_tkn"];
+                if (String.IsNullOrEmpty(jwt))
+                {
+                    return BadRequest("u_tkn cookie is missing");
+                }
+                System.Diagnostics.Debug.WriteLine("token: " + jwt);
+                ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+                if (token.IsError)
+                {
+                    return BadRequest("Invalid token");
+                }
+                accessToken = token.Value.accessToken;
+            }
+
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+
+            ErrorOr<MyEventResult> eventInfo = await mediator.Send(new GetEventByIDQuery(accessToken, calendarId.Value, eventId));
+
+            if (eventInfo.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: eventInfo.FirstError.Description);
+            }
+            else
+            {
+                return Ok(eventInfo.Value);
+            }
+
+
         }
     }
 }
