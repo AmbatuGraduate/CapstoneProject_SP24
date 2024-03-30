@@ -34,12 +34,31 @@ namespace Infrastructure.Persistence.Repositories
                 var request = service.Users.Get(userEmail);
                 var user = await request.ExecuteAsync();
                 var userDb = GetByEmail(user.PrimaryEmail);
+
+                string? photoUrl = null;
+                try
+                {
+                    var photoRequest = service.Users.Photos.Get(user.PrimaryEmail);
+                    var photoResult = await photoRequest.ExecuteAsync();
+                    if (photoResult?.PhotoData != null)
+                    {
+                        // convert  URL-safe base64 string to standard base64 string
+                        string base64PhotoData = photoResult.PhotoData.Replace('-', '+').Replace('_', '/');
+                        // create a data url
+                        photoUrl = $"data:{photoResult.MimeType};base64,{base64PhotoData}";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // photo not found => null
+                }
+
                 userResult = new GoogleUser
                 {
                     Id = user.Id,
                     Name = user.Name.FullName,
                     Email = user.PrimaryEmail,
-                    Picture = user.ThumbnailPhotoUrl,
+                    Picture = photoUrl, // use the photoUrl from the request
                     Department = GetDepartmentNameById(userDb.DepartmentId),
                     PhoneNumber = "0956483756",
                     Role = GetRoleNameById(userDb.RoleId.ToString())
