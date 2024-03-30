@@ -20,7 +20,7 @@ namespace Infrastructure.Persistence.Repositories
             this.webDbContext = webDbContext;
             _directoryServiceFactory = directoryServiceFactory;
         }
-        
+
 
 
         public async Task<GoogleUser> GetGoogleUserByEmail(string accessToken, string userEmail)
@@ -62,7 +62,6 @@ namespace Infrastructure.Persistence.Repositories
                 var service = _directoryServiceFactory(credential);
                 var request = service.Users.List();
 
-                
                 request.Domain = "vesinhdanang.xyz";
                 var result = await request.ExecuteAsync();
                 if (result.UsersValue != null)
@@ -71,12 +70,32 @@ namespace Infrastructure.Persistence.Repositories
                     {
                         // get user in db by email
                         var userDb = GetByEmail(user.PrimaryEmail);
+
+                        // get user's photo
+                        string? photoUrl = null;
+                        try
+                        {
+                            var photoRequest = service.Users.Photos.Get(user.PrimaryEmail);
+                            var photoResult = await photoRequest.ExecuteAsync();
+                            if (photoResult?.PhotoData != null)
+                            {
+                                // convert  URL-safe base64 string to standard base64 string
+                                string base64PhotoData = photoResult.PhotoData.Replace('-', '+').Replace('_', '/');
+                                // create a data url
+                                photoUrl = $"data:{photoResult.MimeType};base64,{base64PhotoData}";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // photo not found => null
+                        }
+
                         users.Add(new GoogleUser
                         {
                             Id = user.Id,
                             Email = user.PrimaryEmail,
                             Name = user.Name.FullName,
-                            Picture = user.ThumbnailPhotoUrl,
+                            Picture = photoUrl, // use the photoUrl from the request
                             Department = GetDepartmentNameById(userDb.DepartmentId),
                             PhoneNumber = "0956483756",
                             Role = GetRoleNameById(userDb.RoleId.ToString())
@@ -209,7 +228,7 @@ namespace Infrastructure.Persistence.Repositories
                     Update(userDb);
                 }
 
-            UpdateGoogleUser addGoogleUser = new UpdateGoogleUser
+                UpdateGoogleUser addGoogleUser = new UpdateGoogleUser
                 {
                     Email = updatedUser.PrimaryEmail,
                     Name = updatedUser.Name.GivenName + updatedUser.Name.FamilyName,
@@ -325,9 +344,9 @@ namespace Infrastructure.Persistence.Repositories
         // get role name by id
         public string GetRoleNameById(string roleId)
         {
-            
+
             return webDbContext.Roles.SingleOrDefault(r => r.RoleId == Guid.Parse(roleId)).RoleName;
-                
+
         }
     }
 }

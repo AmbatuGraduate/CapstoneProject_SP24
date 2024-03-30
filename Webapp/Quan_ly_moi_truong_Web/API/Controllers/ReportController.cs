@@ -174,7 +174,7 @@ namespace API.Controllers
 
         // get all reports from db
         [HttpGet]
-        public IActionResult GetAllReports()
+        public IActionResult GetAllReportsFromDb()
         {
             var result = mediator.Send(new ListFromDbQuery());
             if (result == null)
