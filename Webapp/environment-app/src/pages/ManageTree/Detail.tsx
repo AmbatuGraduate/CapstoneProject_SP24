@@ -64,9 +64,9 @@ export const DetailTree = () => {
 
         <div className="tree-detail-cover">
           <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Giống cây: </div>
+            <div className="tree-detail-content-child-label">Loại cây: </div>
             <div className="tree-detail-content-child-value">
-              {data?.cultivar}
+              {data?.treeType}
             </div>
           </div>
         </div>
@@ -105,13 +105,36 @@ export const DetailTree = () => {
               {dayFormat(data?.cutTime)}
             </div>
           </div>
+          <div className="tree-detail-content-parent">
+            <div className="tree-detail-content-child-label">
+              Khoảng thời gian cắt:{" "}
+            </div>
+            <div className="tree-detail-content-child-value">
+              {dayFormat(data?.intervalCutTime)}
+            </div>
+          </div>
+        </div>
+
+        <div className="tree-detail-cover">
+          <div className="tree-detail-content-parent">
+            <div className="tree-detail-content-child-label">Trạng thái: </div>
+            <div className="tree-detail-content-child-value">{data?.isCut ? "Đã cắt" : "Cần Cắt"}</div>
+          </div>
+        </div>
+
+        <div className="tree-detail-cover">
+          <div className="tree-detail-content-parent">
+            <div className="tree-detail-content-child-label">
+              Người phụ trách:{" "}
+            </div>
+            <div className="tree-detail-content-child-value">{data?.user}</div>
+          </div>
         </div>
 
         <div className="tree-detail-cover">
           <div className="tree-detail-content-parent">
             <div className="tree-detail-content-child-label">Ghi chú: </div>
-            <div className="tree-detail-content-child-value">
-              {data?.note}</div>
+            <div className="tree-detail-content-child-value">{data?.note}</div>
           </div>
         </div>
 

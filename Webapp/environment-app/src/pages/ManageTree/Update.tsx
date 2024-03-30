@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { CULTIVAR_LIST, TREE_DETAIL, TREE_UPDATE, useApi } from "../../Api";
+import {
+  CULTIVAR_LIST,
+  EMPLOYEE_LIST,
+  TREE_DETAIL,
+  TREE_TYPE_LIST,
+  TREE_UPDATE,
+  useApi,
+} from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor, dayFormat } from "../../utils";
 import { useCookies } from "react-cookie";
@@ -32,7 +39,6 @@ export const UpdateTree = () => {
       formType: "input",
       key: "treeCode",
       defaultValue: data?.treeCode,
-      disabled: true,
     },
     {
       label: "Tuyến đường",
@@ -46,13 +52,13 @@ export const UpdateTree = () => {
       },
     },
     {
-      label: "Giống cây",
+      label: "Loại cây",
       formType: "select",
-      key: "cultivarId",
+      key: "treeTypeId",
       optionExtra: {
-        url: CULTIVAR_LIST,
-        _key: "cultivarName",
-        _value: "cultivarId",
+        url: TREE_TYPE_LIST,
+        _key: "treeTypeName",
+        _value: "treeTypeId",
       },
     },
     {
@@ -78,6 +84,16 @@ export const UpdateTree = () => {
       formType: "number",
       key: "intervalCutTime",
       defaultValue: dayFormat(data?.intervalCutTime),
+    },
+    {
+      label: "Người phụ trách",
+      formType: "select",
+      key: "userId",
+      optionExtra: {
+        url: EMPLOYEE_LIST,
+        _key: "name",
+        _value: "id",
+      },
     },
     {
       label: "Ghi chú",

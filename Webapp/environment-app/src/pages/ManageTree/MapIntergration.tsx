@@ -6,7 +6,7 @@ import Marker from "../../../public/assets/marker.svg";
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
   defer
 ></script>;
-const AnyReactComponent = ({ text }) => (
+const AnyReactComponent = ({ text }: any) => (
   <div>
     <img src={Marker} style={{ width: "30px" }} alt="" />
   </div>
