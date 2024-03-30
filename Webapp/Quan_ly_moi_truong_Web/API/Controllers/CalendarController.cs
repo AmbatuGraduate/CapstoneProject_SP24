@@ -22,6 +22,7 @@ using Application.Calendar.TreeCalendar.Queries.ListCalendarNotHaveAttendees;
 using Application.Calendar.TreeCalendar.Queries.ListCurrentDayEventsByEmail;
 using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
 using Domain.Enums;
+using Application.Calendar.TreeCalendar.Queries.NumberOfEventsToday;
 
 namespace API.Controllers
 {
@@ -424,6 +425,49 @@ namespace API.Controllers
             }
 
             return Ok(list.Value);
+        }
+
+        // get number of events by attendee email
+        [HttpGet()]
+        public async Task<IActionResult> NumberOfEventsUser(CalendarTypeEnum calendarTypeEnum, string attendeeEmail)
+        {
+            var clientType = Request.Headers["Client-Type"];
+
+
+            // declare accesstoken
+            string accessToken;
+            if (clientType == "Mobile") // mobile client
+            {
+                var authHeader = Request.Headers["Authorization"];
+                if (String.IsNullOrEmpty(authHeader))
+                {
+                    return BadRequest("Authorization header is missing");
+                }
+                accessToken = authHeader.ToString().Replace("Bearer ", "");
+            }
+            else // web client
+            {
+                var jwt = Request.Cookies["u_tkn"];
+                if (String.IsNullOrEmpty(jwt))
+                {
+                    return BadRequest("u_tkn cookie is missing");
+                }
+                System.Diagnostics.Debug.WriteLine("token: " + jwt);
+                ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+                if (token.IsError)
+                {
+                    return BadRequest("Invalid token");
+                }
+                accessToken = token.Value.accessToken;
+            }
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<int> quantity = await mediator.Send(new NumberOfEventsQuery(accessToken, calendarId.Value, attendeeEmail));
+            if (quantity.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: quantity.FirstError.Description);
+            }
+
+            return Ok(quantity.Value);
         }
     }
 }

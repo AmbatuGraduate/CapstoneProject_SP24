@@ -24,7 +24,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class UserController : ApiController
     {
         private readonly IMediator mediator;
@@ -149,7 +149,7 @@ namespace API.Controllers
             return Ok(users);
         }
 
-        [HttpGet()]
+        [HttpGet]
         public async Task<IActionResult> GetGoogleUser(string email)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -194,7 +194,7 @@ namespace API.Controllers
         }
 
         // update google user
-        [HttpPut()]
+        [HttpPut]
         public async Task<IActionResult> UpdateGoogleUser(UpdateGoogleUserRequest request)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -247,7 +247,7 @@ namespace API.Controllers
             return Ok(updateResult.Value);
         }
 
-        [HttpDelete()]
+        [HttpDelete]
         public async Task<IActionResult> DeleteGoogleUser(string userEmail)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -291,7 +291,7 @@ namespace API.Controllers
             return Ok(deleteResult.Value);
         }
 
-        [HttpPost()]
+        [HttpPost]
         public async Task<IActionResult> AddGoogleUser(AddGoogleUserRequest request)
         {
             var clientType = Request.Headers["Client-Type"];
