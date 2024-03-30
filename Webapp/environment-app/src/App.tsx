@@ -11,6 +11,8 @@ import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
 import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
 import { ManageCleaningSchedule } from "./pages/ManageCleaningSchedule";
 import { ManageReport } from "./pages/ManageReport";
+import { CreateReport } from "./pages/ManageReport/Create";
+import { DetailReport } from "./pages/ManageReport/Detail";
 
 function App() {
   const router = createBrowserRouter([
@@ -60,7 +62,11 @@ function App() {
         },
         {
           path: "manage-report/create",
-          element: <ManageReport />,
+          element: <CreateReport />,
+        },
+        {
+          path: "manage-report/:id",
+          element: <DetailReport />,
         },
       ],
     },
