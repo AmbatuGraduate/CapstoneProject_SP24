@@ -12,10 +12,17 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 {
     public class TreeCalendarService : ITreeCalendarService
     {
+        // Fields
         private readonly Func<GoogleCredential, CalendarService> _calendarServiceFactory;
         private readonly ITreeRepository _treeRepository;
         private readonly IUserRepository _userRepository;
 
+        // Constants
+        private const string TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City";
+        private const string DefaultLocation = "800 Howard St., San Francisco, CA 94103";
+        private const string ErrorMessage = "An error occurred: {0}";
+
+        // Constructor
         public TreeCalendarService(Func<GoogleCredential, CalendarService> calendarServiceFactory, ITreeRepository treeRepository, IUserRepository userRepository)
         {
             _calendarServiceFactory = calendarServiceFactory;
@@ -23,31 +30,31 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             _userRepository = userRepository;
         }
 
+
+        // -------------------- Implementing ITreeCalendarService Interface --------------------
         // add event
         public async Task<MyAddedEvent> AddEvent(string accessToken, string calendarId, MyAddedEvent myEvent)
         {
             await Task.CompletedTask;
-            string[] Scopes = { CalendarService.Scope.Calendar };
             try
             {
                 //var treeinfo = _treeRepository.GetTreeByTreeCode(myEvent.TreeId);
-                var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
+                var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _calendarServiceFactory(credential);
                 var addedEvent = new Event()
                 {
                     Summary = myEvent.Summary,
                     Description = myEvent.Description,
-                    //Location = _streetRepository.GetStreetById(treeinfo.StreetId).StreetName,
-                    Location = /*treeinfo.TreeLocation*/ myEvent.location,
+                    Location = myEvent.location,
                     Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
-                        DateTime = DateTime.Parse(myEvent.Start.DateTime),
-                        TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City"
+                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.Start.DateTime),
+                        TimeZone = TimeZone
                     },
                     End = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
-                        DateTime = DateTime.Parse(myEvent.End.DateTime),
-                        TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City"
+                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.End.DateTime),
+                        TimeZone = TimeZone
                     },
                     Attendees = myEvent.Attendees
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
@@ -64,7 +71,6 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 };
                 EventsResource.InsertRequest insertRequest = service.Events.Insert(addedEvent, calendarId);
                 Event createdEvent = insertRequest.Execute();
-                Console.WriteLine("Event created: " + createdEvent.HtmlLink);
                 return myEvent;
             }
             catch (Exception ex)
@@ -79,10 +85,9 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         public async Task<bool> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
         {
             await Task.CompletedTask;
-            string[] Scopes = { CalendarService.Scope.Calendar };
             try
             {
-                var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
+                var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _calendarServiceFactory(credential);
                 Event retrievedEvent = service.Events.Get(calendarId, eventId)
                     .Execute();
@@ -113,28 +118,26 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         public async Task<MyUpdatedEvent> UpdateEvent(string accessToken, string calendarId, MyUpdatedEvent myEvent, string eventId)
         {
             await Task.CompletedTask;
-            string[] Scopes = { CalendarService.Scope.Calendar };
             try
             {
-                var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
+                var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _calendarServiceFactory(credential);
-                Event retrievedEvent = service.Events.Get(calendarId, eventId)
-                    .Execute();
+                Event retrievedEvent = await service.Events.Get(calendarId, eventId).ExecuteAsync();
 
                 if (retrievedEvent != null)
                 {
                     retrievedEvent.Summary = myEvent.Summary;
                     retrievedEvent.Description = myEvent.Description;
-                    retrievedEvent.Location = "800 Howard St., San Francisco, CA 94103";
+                    retrievedEvent.Location = myEvent.Location;
                     retrievedEvent.Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
-                        DateTime = DateTime.Parse(myEvent.Start.DateTime),
-                        TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City"
+                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.Start.DateTime),
+                        TimeZone = TimeZone
                     };
                     retrievedEvent.End = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
-                        DateTime = DateTime.Parse(myEvent.End.DateTime),
-                        TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City"
+                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.End.DateTime),
+                        TimeZone = TimeZone
                     };
                     retrievedEvent.Attendees = myEvent.Attendees
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
@@ -156,11 +159,9 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         public async Task<bool> DeleteEvent(string accessToken, string calendarId, string eventId)
         {
             await Task.CompletedTask;
-            await Task.CompletedTask;
-            string[] Scopes = { CalendarService.Scope.Calendar };
             try
             {
-                var credential = GoogleCredential.FromAccessToken(accessToken).CreateScoped(Scopes);
+                var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _calendarServiceFactory(credential);
                 Event retrievedEvent = service.Events.Get(calendarId, eventId)
                     .Execute();
@@ -373,7 +374,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                             PrivateProperties = (Dictionary<string, string>)(returnEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
                         }
                     })
-                    .ToList<MyEvent>();
+                    .ToList();
                 return myEvents;
             }
             catch (Exception ex)
@@ -381,6 +382,12 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
                 return null;
             }
+        }
+
+        // get number of tasks today
+        public async Task<int> NumberOfTasksToday(string token, string calendarId, string attendeeEmail)
+        {
+            return (await GetUserTodayEvents(token, calendarId, attendeeEmail)).Count;
         }
 
         // -------------------- Helper Functions --------------------
@@ -396,6 +403,19 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 JobWorkingStatus.DoneWithIssue => "Done With Issue",
             };
         }
+
+        public string GetCalendarIdByCalendarType(CalendarTypeEnum calendarType)
+        {
+            return calendarType switch
+            {
+                CalendarTypeEnum.CayXanh => CalendarIdsEnum.CayXanhCalendarId,
+                CalendarTypeEnum.ThuGom => CalendarIdsEnum.ThuGomCalendarId,
+                CalendarTypeEnum.QuetDon => CalendarIdsEnum.QuetDonCalendarId,
+                CalendarTypeEnum.None => throw new ArgumentException("Invalid calendar type", nameof(calendarType)),
+                _ => throw new ArgumentOutOfRangeException(nameof(calendarType), calendarType, null)
+            };
+        }
+
 
     }
 }

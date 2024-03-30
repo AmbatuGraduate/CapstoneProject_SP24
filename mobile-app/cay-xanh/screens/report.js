@@ -45,16 +45,17 @@ export default function Report({ navigation }) {
     // get reports from the server
 
     const getReports = async () => {
-        setLoading(true);
         try {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             const atoken = await AsyncStorage.getItem("@accessToken");
             if (atoken !== null) {
-                const url = `http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=${atoken}&email=${useremail}`;
+                const url = `http://192.168.1.7:45455/api/Report/GetReportsByUser?email=${useremail}`;
 
                 api.get(url, {
                     headers: {
                         "Content-Type": "application/json",
+                        'Authorization': `Bearer ${atoken}`,
+                        "Client-Type": "Mobile"
                     },
                 })
                     .then((res) => {
