@@ -145,7 +145,7 @@ export default function TaskDetails({ route }) {
                         </View>
 
                         {treeArray.map((item, index) => (
-                            <Text key={index} style={styles.infoText}>{item}</Text>
+                            <Text key={index} style={styles.infoText}>{item.trim()}</Text>
                         ))}
 
 
