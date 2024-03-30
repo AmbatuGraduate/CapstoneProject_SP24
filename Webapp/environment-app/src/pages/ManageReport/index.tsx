@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { REPORT_LIST, TREE_DELETE, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
-import { dayFormat } from "../../utils";
+import { ReportImpact, ReportStatus, dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { useRef } from "react";
 
@@ -32,38 +32,53 @@ export const ManageReport = () => {
         );
       },
     },
-    // {
-    //   header: "Mã báo cáo",
-    //   accessorFn(row) {
-    //     return (
-    //       <h6 className="shortText">
-    //         <Link
-    //           className="linkCode"
-    //           style={{ fontWeight: "bold" }}
-    //           to={`/manage-report/${row.reportId}`}
-    //         >
-    //           {row.reportId}
-    //         </Link>
-    //       </h6>
-    //     );
-    //   },
-    // },
     {
       header: "Người gửi",
       accessorFn(longRow) {
-        return <h6>{longRow.issuerGmail}</h6>;
+        return (
+          <h6 className="shortText">
+            <Link
+              className="linkCode"
+              style={{ fontWeight: "bold" }}
+              to={`/manage-report/${longRow.reportId}`}
+            >
+              {longRow.issuerGmail}
+            </Link>
+          </h6>
+        );
       },
+      width: "10%",
     },
     {
       header: "Trạng thái",
       accessorFn(row) {
-        return <h6>{row.status}</h6>;
+        return (
+          <h6
+            className="shortText"
+            style={{
+              color: ReportStatus(row.status).color,
+              fontWeight: "bold",
+            }}
+          >
+            {ReportStatus(row.status).text}
+          </h6>
+        );
       },
     },
     {
       header: "Mức độ ảnh hưởng",
       accessorFn(row) {
-        return <h6>{row.reportImpact}</h6>;
+        return (
+          <h6
+            className="shortText"
+            style={{
+              color: ReportImpact(row.reportImpact).color,
+              fontWeight: "bold",
+            }}
+          >
+            {ReportImpact(row.reportImpact).text}
+          </h6>
+        );
       },
     },
     {
@@ -94,15 +109,12 @@ export const ManageReport = () => {
               border: "none",
               padding: "0.5rem 1rem",
             }}
-            onClick={() => navigate("/manage-tree/create")}
+            onClick={() => navigate("create")}
           >
             <MdAddCircleOutline className="iconAdd" />
             Thêm báo cáo
           </Button>
         }
-        filter={(row) => {
-          return row.isExist == true;
-        }}
         transform={(data) => data?.result?.value?.map((i) => i.report) || []}
       />
     </div>
