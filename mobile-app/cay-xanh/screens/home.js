@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,13 +13,14 @@ export default function Home() {
 
     const navigation = useNavigation();
     const [eventsCount, setEventsCount] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handlePress = () => {
         navigation.navigate('Tasks');
     };
 
     const getEventsCount = async () => {
-
+        setIsLoading(true);
         try {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             const atoken = await AsyncStorage.getItem("@accessToken");;
@@ -33,18 +34,22 @@ export default function Home() {
                 })
                     .then((res) => {
                         setEventsCount(res.data);
+                        setIsLoading(false);
                     })
                     .catch((error) => {
                         console.log('There has been a problem with fetch operation: ', error.message);
                         setEventsCount(0);
+                        setIsLoading(false);
                     });
             } else {
                 console.log('token null');
                 setEventsCount(0);
+                setIsLoading(false);
             }
         } catch (error) {
             console.error(error);
             setEventsCount(0);
+            setIsLoading(false);
         }
     }
 
@@ -74,19 +79,21 @@ export default function Home() {
 
 
             {/* so cong viec */}
-            <View style={styles.notif}>
-                {eventsCount > 0 ? (
-                    <TouchableOpacity style={styles.taskButton} onPress={handlePress}>
-                        <Icon style={styles.notifIcon} name="calendar" type="font-awesome" size={20} color="green" />
-                        <Text style={styles.taskText}>
-                            Bạn có {eventsCount} công việc {eventsCount > 1 ? '' : ''}hôm nay. Nhấn để xem.
-                        </Text>
-                    </TouchableOpacity>
-                ) : (
-                    <Text style={styles.noTasksText}>Chưa có công việc nào</Text>
-                )}
-            </View>
-
+            {isLoading ? <ActivityIndicator /> : null}
+            {
+                <View style={styles.notif}>
+                    {eventsCount > 0 ? (
+                        <TouchableOpacity style={styles.taskButton} onPress={handlePress}>
+                            <Icon style={styles.notifIcon} name="calendar" type="font-awesome" size={20} color="green" />
+                            <Text style={styles.taskText}>
+                                Bạn có {eventsCount} công việc {eventsCount > 1 ? '' : ''}hôm nay. Nhấn để xem.
+                            </Text>
+                        </TouchableOpacity>
+                    ) : (
+                        !isLoading && <Text style={styles.noTasksText}>Chưa có công việc nào</Text>
+                    )}
+                </View>
+            }
             <View style={styles.hrline}></View>
 
             {/* thong bao */}

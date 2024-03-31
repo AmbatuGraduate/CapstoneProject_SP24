@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import FlatButton from "../shared/button";
+import { View, Text, Image, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity, Animated, Easing } from 'react-native';
+import { Icon } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
-
+import { api } from "../shared/api";
 
 /*************************************************************
 **_________________ PROFILE SCREEN OF APP __________________**
@@ -14,15 +13,38 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function Profile({ navigation }) {
 
     const [user, setUser] = useState(null);
+
     // check if user is logged in
     useEffect(() => {
-        AsyncStorage.getItem("@user").then(user => {
-            if (user !== null) {
-                setUser(JSON.parse(user));
+        AsyncStorage.getItem("@user").then(async (userString) => {
+            if (userString !== null) {
+                let user = JSON.parse(userString);
+                var email = user?.email;
+                var token = user?.token; // get token from user object
+                try {
+                    const res = await api.get(`http://192.168.1.7:45455/api/User/GetGoogleUser?email=${email}`, {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                            "Client-Type": "Mobile"
+                        },
+                    });
+
+                    // append user department to user object
+                    user = {
+                        ...user,
+                        department: res.data.department,
+                        phoneNumber: res.data.phoneNumber,
+                        role: res.data.role
+                    };
+                    setUser(user);
+                    await AsyncStorage.setItem("@user", JSON.stringify(user)); // update user data in AsyncStorage
+                } catch (error) {
+                    console.log('There has been a problem with fetch operation: ', error.message);
+                }
             }
         });
     }, []);
-
 
     return (
         <LinearGradient
@@ -34,133 +56,143 @@ export default function Profile({ navigation }) {
 
             {/* ------------------------------------------------------------------- */}
             {/* PROFILE PICTURE Container*/}
+            <View style={{ padding: 20 }}>
+                <TouchableHighlight style={styles.imageContainer} onPress={() => alert('Yaay!')}>
+                    {user ? (
+                        <Image
+                            style={styles.img}
+                            source={{ uri: user.picture }}
+                        />
+                    ) : (
+                        <View></View>
+                    )}
+                </TouchableHighlight>
 
-            <TouchableHighlight style={styles.imageContainer} onPress={() => alert('Yaay!')}>
-                {user ? (
-                    <Image
-                        style={styles.img}
-                        source={{ uri: user.picture }}
-                    />
-                ) : (
-                    <View></View>
-                )}
-            </TouchableHighlight>
+                {/* ------------------------------------------------------------------- */}
+                {/* NAME Container*/}
+                <View style={styles.nameContainer}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{user?.name}</Text>
+                </View>
 
-            {/* ------------------------------------------------------------------- */}
-            {/* NAME Container*/}
-
-            <View style={styles.nameContainer}>
-                <Text style={{ fontWeight: 'bold', fontSize: 24 }}>{user?.name}</Text>
             </View>
 
             {/* ------------------------------------------------------------------- */}
             {/* Details info Container*/}
-
             <View style={styles.infoContainer}>
                 <View style={styles.infoSection}>
-                    <MaterialIcons style={styles.icon} size={24} name="account-circle" ></MaterialIcons>
+                    <Text style={styles.Label}>Email</Text>
                     <Text style={styles.info} numberOfLines={1}>{user?.email}</Text>
-                    <View></View>
-                    <View></View>
                 </View>
                 <View style={styles.infoSection}>
-                    <MaterialIcons style={styles.icon} size={24} name="calendar-today" ></MaterialIcons>
-                    <Text style={styles.info}>Bộ phận</Text>
-                    <View></View>
-                    <View></View>
+                    <Text style={styles.Label}>Bộ phận</Text>
+                    <Text style={styles.info}>{user?.department}</Text>
                 </View>
-                {/* Functional Features */}
-                {/* Password  */}
-                {/* <TouchableOpacity style={styles.infoSection} onPress={() => { navigation.navigate('ChangePassword') }}>
-                    <MaterialIcons style={styles.icon} size={24} name="lock" ></MaterialIcons>
-                    <Text style={styles.info}>Đổi mật khẩu </Text>
-                    <View></View>
-                    <View></View>
-                    <View></View>
-                    <MaterialIcons style={styles.iconBtn} size={24} name="cached" ></MaterialIcons>
-                </TouchableOpacity> */}
+                <View style={styles.infoSection}>
+                    <Text style={styles.Label}>Chức vụ</Text>
+                    <Text style={styles.info}>{user?.role}</Text>
+                </View>
+                <View style={styles.infoSection}>
+                    <Text style={styles.Label}>Số điện thoại</Text>
+                    <Text style={styles.info}>{user?.phoneNumber}</Text>
+                </View>
             </View>
 
             {/* ------------------------------------------------------------------- */}
             {/* Edit profile Container */}
-            <FlatButton text='Chỉnh sửa' iconName="edit" onPress={() => { navigation.navigate('EditProfile') }}></FlatButton>
+            <TouchableOpacity style={styles.submitButton} onPress={() => { navigation.navigate('ChangePassword') }}>
+                <Icon name="edit" size={20} color="#fff" />
+                <Text style={styles.submitButtonText}>Đổi mật khẩu</Text>
+            </TouchableOpacity>
         </LinearGradient>
     )
 }
 
-const colors = {
-    primary: '#98BD98',
-    secondary: '#d3d3d3',
-    text: '#777D7E',
-    background: 'white',
-};
-
-const spacing = {
-    small: 10,
-    medium: 20,
-    large: 30,
-};
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.background,
-        paddingVertical: spacing.large,
-        justifyContent: 'space-between',
-        paddingHorizontal: spacing.medium,
+        justifyContent: 'flex-start',
+        backgroundColor: '#f5f5f5',
     },
     nameContainer: {
         alignItems: 'center',
-        marginBottom: spacing.medium,
+        padding: 10, // Add padding
     },
     imageContainer: {
         alignSelf: 'center',
         overflow: 'hidden',
-        shadowColor: colors.secondary,
+        shadowColor: '#333',
         shadowOffset: {
             width: 0,
-            height: spacing.small,
+            height: 10,
         },
         shadowOpacity: 0.37,
         shadowRadius: 7.49,
         elevation: 12,
-        backgroundColor: colors.background,
-        width: Dimensions.get('window').width * 0.33,
-        height: Dimensions.get('window').width * 0.33,
+        width: Dimensions.get('window').width * 0.25,
+        height: Dimensions.get('window').width * 0.25,
         borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-        marginBottom: spacing.medium,
+        marginBottom: 15,
     },
     img: {
         width: '100%',
         height: '100%',
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2, // Add border radius
     },
     icon: {
-        color: colors.primary,
-        marginRight: spacing.large,
-        marginLeft: spacing.small
-    },
-    iconBtn: {
-        color: colors.primary,
+        color: 'blue',
+        marginRight: 20,
+        marginLeft: 10
     },
     infoContainer: {
-        marginTop: spacing.medium,
+        padding: 30,
     },
     infoSection: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderBottomColor: colors.secondary,
-        borderBottomWidth: 1,
-        paddingHorizontal: 0,
-        paddingVertical: spacing.medium,
+        paddingVertical: 15,
+
     },
     info: {
-        flex: 1,
-        fontSize: 16,
-        color: colors.text,
-        fontFamily: 'nunito-regular',
+        fontSize: 20,
+        color: '#333',
+        fontFamily: 'quolibet',
         flexWrap: 'nowrap',
         overflow: 'hidden',
-        width: '90%',
+        borderBottomWidth: 1,
+        borderColor: 'lightgray',
+        borderRadius: 10,
+        padding: 10,
+    },
+    submitButton: {
+        width: '50%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'lightgreen',
+        padding: 10,
+        borderRadius: 15,
+        marginBottom: 20,
+        position: 'absolute',
+        bottom: 0,
+        alignSelf: 'center',
+        shadowColor: '#000', // Add shadow
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    submitButtonText: {
+        color: 'whitesmoke',
+        marginLeft: 10,
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    Label: {
+        fontSize: 18,
+        color: '#2282F3',
+        fontFamily: 'quolibet',
+        marginBottom: 5,
+        fontWeight: 'bold',
     },
 });
