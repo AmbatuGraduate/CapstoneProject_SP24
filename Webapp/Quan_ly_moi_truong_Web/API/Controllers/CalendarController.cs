@@ -24,6 +24,7 @@ using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
 using Domain.Enums;
 using Application.Calendar.TreeCalendar.Queries.NumberOfEventsToday;
 using Application.Calendar.TreeCalendar.Queries.GetEventById;
+using Application.Calendar.TreeCalendar.Queries.GetCalendarByDepartmentEmail;
 
 namespace API.Controllers
 {
@@ -130,6 +131,49 @@ namespace API.Controllers
             }
             var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
             ErrorOr<List<MyEventResult>> list = await mediator.Send(new GetByAttendeeEmailQuery(accessToken, calendarId.Value, attendeeEmail));
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            return Ok(list.Value);
+        }
+
+        // get google calendar events by department email
+        [HttpGet()]
+        public async Task<IActionResult> GetCalendarEventsByDepartmentEmail(CalendarTypeEnum calendarTypeEnum, string departmentEmail)
+        {
+            var clientType = Request.Headers["Client-Type"];
+
+
+            // declare accesstoken
+            string accessToken;
+            if (clientType == "Mobile") // mobile client
+            {
+                var authHeader = Request.Headers["Authorization"];
+                if (String.IsNullOrEmpty(authHeader))
+                {
+                    return BadRequest("Authorization header is missing");
+                }
+                accessToken = authHeader.ToString().Replace("Bearer ", "");
+            }
+            else // web client
+            {
+                var jwt = Request.Cookies["u_tkn"];
+                if (String.IsNullOrEmpty(jwt))
+                {
+                    return BadRequest("u_tkn cookie is missing");
+                }
+                System.Diagnostics.Debug.WriteLine("token: " + jwt);
+                ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+                if (token.IsError)
+                {
+                    return BadRequest("Invalid token");
+                }
+                accessToken = token.Value.accessToken;
+            }
+            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+            ErrorOr<List<MyEventResult>> list = await mediator.Send(new GetCalendarByDepartmentEmailCommand(accessToken, calendarId.Value, departmentEmail));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
