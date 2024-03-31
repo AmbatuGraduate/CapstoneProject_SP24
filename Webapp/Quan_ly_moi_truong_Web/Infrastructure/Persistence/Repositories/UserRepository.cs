@@ -20,55 +20,8 @@ namespace Infrastructure.Persistence.Repositories
             this.webDbContext = webDbContext;
             _directoryServiceFactory = directoryServiceFactory;
         }
-        
-        // get users from db
-        public List<Domain.Entities.User.Users> GetAll()
-        {
-            return webDbContext.Users.ToList();
-        }
 
-        public List<Departments> GetAllGroups()
-        {
-            return webDbContext.Departments.ToList();
-        }
 
-        // add user to db
-        public void Add(Domain.Entities.User.Users user)
-        {
-            webDbContext.Users.Add(user);
-            webDbContext.SaveChanges();
-        }
-
-        public void Delete(string userEmail)
-        {
-            webDbContext.Users.Remove(GetByEmail(userEmail));
-            webDbContext.SaveChanges(); 
-        }
-
-        // get user by phone from db
-        //public Domain.Entities.User.Users? GetUserByPhone(string phoneNumber)
-        //{
-        //    return webDbContext.Users.SingleOrDefault(u => u.PhoneNumber == phoneNumber);
-        //}
-
-        // update user in db
-        public void Update(Domain.Entities.User.Users user)
-        {
-            webDbContext.Users.Attach(user);
-            webDbContext.Entry<Domain.Entities.User.Users>(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            webDbContext.SaveChanges();
-        }
-
-        // get user by id from db
-        public Domain.Entities.User.Users GetById(string id)
-        {
-            return webDbContext.Users.SingleOrDefault(u => u.Id == id);
-        }
-
-        public Domain.Entities.User.Users GetByEmail(string email)
-        {
-            return webDbContext.Users.SingleOrDefault(u => u.Email == email);
-        }
 
         public async Task<GoogleUser> GetGoogleUserByEmail(string accessToken, string userEmail)
         {
@@ -80,12 +33,35 @@ namespace Infrastructure.Persistence.Repositories
 
                 var request = service.Users.Get(userEmail);
                 var user = await request.ExecuteAsync();
+                var userDb = GetByEmail(user.PrimaryEmail);
+
+                string? photoUrl = null;
+                try
+                {
+                    var photoRequest = service.Users.Photos.Get(user.PrimaryEmail);
+                    var photoResult = await photoRequest.ExecuteAsync();
+                    if (photoResult?.PhotoData != null)
+                    {
+                        // convert  URL-safe base64 string to standard base64 string
+                        string base64PhotoData = photoResult.PhotoData.Replace('-', '+').Replace('_', '/');
+                        // create a data url
+                        photoUrl = $"data:{photoResult.MimeType};base64,{base64PhotoData}";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // photo not found => null
+                }
+
                 userResult = new GoogleUser
                 {
                     Id = user.Id,
                     Name = user.Name.FullName,
                     Email = user.PrimaryEmail,
-                    Picture = user.ThumbnailPhotoUrl
+                    Picture = photoUrl, // use the photoUrl from the request
+                    Department = GetDepartmentNameById(userDb.DepartmentId),
+                    PhoneNumber = "0956483756",
+                    Role = GetRoleNameById(userDb.RoleId.ToString())
                 };
                 return userResult;
             }
@@ -104,18 +80,44 @@ namespace Infrastructure.Persistence.Repositories
                 var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _directoryServiceFactory(credential);
                 var request = service.Users.List();
+
                 request.Domain = "vesinhdanang.xyz";
                 var result = await request.ExecuteAsync();
                 if (result.UsersValue != null)
                 {
                     foreach (var user in result.UsersValue)
                     {
+                        // get user in db by email
+                        var userDb = GetByEmail(user.PrimaryEmail);
+
+                        // get user's photo
+                        string? photoUrl = null;
+                        try
+                        {
+                            var photoRequest = service.Users.Photos.Get(user.PrimaryEmail);
+                            var photoResult = await photoRequest.ExecuteAsync();
+                            if (photoResult?.PhotoData != null)
+                            {
+                                // convert  URL-safe base64 string to standard base64 string
+                                string base64PhotoData = photoResult.PhotoData.Replace('-', '+').Replace('_', '/');
+                                // create a data url
+                                photoUrl = $"data:{photoResult.MimeType};base64,{base64PhotoData}";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            // photo not found => null
+                        }
+
                         users.Add(new GoogleUser
                         {
                             Id = user.Id,
                             Email = user.PrimaryEmail,
                             Name = user.Name.FullName,
-                            Picture = user.ThumbnailPhotoUrl
+                            Picture = photoUrl, // use the photoUrl from the request
+                            Department = GetDepartmentNameById(userDb.DepartmentId),
+                            PhoneNumber = "0956483756",
+                            Role = GetRoleNameById(userDb.RoleId.ToString())
                         });
                     }
                 }
@@ -245,7 +247,7 @@ namespace Infrastructure.Persistence.Repositories
                     Update(userDb);
                 }
 
-            UpdateGoogleUser addGoogleUser = new UpdateGoogleUser
+                UpdateGoogleUser addGoogleUser = new UpdateGoogleUser
                 {
                     Email = updatedUser.PrimaryEmail,
                     Name = updatedUser.Name.GivenName + updatedUser.Name.FamilyName,
@@ -300,6 +302,70 @@ namespace Infrastructure.Persistence.Repositories
                 // Handle exception
                 return $"Failed to get user ID: {e.Message}";
             }
+        }
+
+        // --------------------------------------------------- DB ---------------------------------------------------
+        // get users from db
+        public List<Domain.Entities.User.Users> GetAll()
+        {
+            return webDbContext.Users.ToList();
+        }
+
+        public List<Departments> GetAllGroups()
+        {
+            return webDbContext.Departments.ToList();
+        }
+
+        // add user to db
+        public void Add(Domain.Entities.User.Users user)
+        {
+            webDbContext.Users.Add(user);
+            webDbContext.SaveChanges();
+        }
+
+        public void Delete(string userEmail)
+        {
+            webDbContext.Users.Remove(GetByEmail(userEmail));
+            webDbContext.SaveChanges();
+        }
+
+        // get user by phone from db
+        //public Domain.Entities.User.Users? GetUserByPhone(string phoneNumber)
+        //{
+        //    return webDbContext.Users.SingleOrDefault(u => u.PhoneNumber == phoneNumber);
+        //}
+
+        // update user in db
+        public void Update(Domain.Entities.User.Users user)
+        {
+            webDbContext.Users.Attach(user);
+            webDbContext.Entry<Domain.Entities.User.Users>(user).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            webDbContext.SaveChanges();
+        }
+
+        // get user by id from db
+        public Domain.Entities.User.Users GetById(string id)
+        {
+            return webDbContext.Users.SingleOrDefault(u => u.Id == id);
+        }
+
+        public Domain.Entities.User.Users GetByEmail(string email)
+        {
+            return webDbContext.Users.SingleOrDefault(u => u.Email == email);
+        }
+
+        // get department name by id
+        public string GetDepartmentNameById(string departmentId)
+        {
+            return webDbContext.Departments.SingleOrDefault(d => d.DepartmentId == departmentId).DepartmentName;
+        }
+
+        // get role name by id
+        public string GetRoleNameById(string roleId)
+        {
+
+            return webDbContext.Roles.SingleOrDefault(r => r.RoleId == Guid.Parse(roleId)).RoleName;
+
         }
     }
 }

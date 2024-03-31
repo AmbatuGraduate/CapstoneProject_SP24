@@ -23,6 +23,11 @@ export default function ReportDetails({ route }) {
         2: 'red'
     };
 
+    statusBackground = {
+        'UnResolved': 'pink',
+        'Resolved': '#8BE78B',
+    };
+
     const reportStatuses = {
         'UnResolved': 'Chưa xử lý',
         'Resolved': 'Đã xử lý',
@@ -49,7 +54,7 @@ export default function ReportDetails({ route }) {
 
                 <View style={styles.impactContainer}>
                     <Text style={{ color: '#2282F3', fontSize: 18, fontWeight: '600' }}>Trạng thái</Text>
-                    <Text style={[styles.statusText, { color: statusColors[reportStatus] }]}>{reportStatuses[reportStatus]}</Text>
+                    <Text style={[styles.statusText, { backgroundColor: statusBackground[reportStatus] }, { color: statusColors[reportStatus] }]}>{reportStatuses[reportStatus]}</Text>
                 </View>
 
             </View>
@@ -106,6 +111,8 @@ const styles = StyleSheet.create({
         fontFamily: 'quolibet',
         fontWeight: 'bold',
         color: '#333',
+        padding: 6,
+        borderRadius: 15,
     },
     impactText: {
         fontSize: 16,

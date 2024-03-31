@@ -2,6 +2,7 @@
 
 namespace Application.Calendar
 {
+
     public class MyEvent
     {
         public string Id { get; set; }
@@ -10,9 +11,10 @@ namespace Application.Calendar
         public string Location { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        public List<UserResult> Attendees { get; set; }
+        public List<UserEventResult> Attendees { get; set; }
         public EventExtendedProperties ExtendedProperties { get; set; }
     }
+
 
     public class MyAddedEvent
     {

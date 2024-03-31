@@ -60,10 +60,11 @@ export default function TasksList({ navigation }) {
     // local test: 'http://192.168.1.7:45455/api/Calendar/GetCalendarEvents/' + atoken
     // server: 'http://vesinhdanang.xyz/AmbatuGraduate_API/api/Calendar/GetCalendarEvents/' + atoken
     const getEvents = async () => {
+
         try {
             const atoken = await AsyncStorage.getItem("@accessToken");
             if (atoken !== null) {
-                api.get('http://192.168.1.7:45455/api/Calendar/GetAllCalendarEvents', {
+                api.get('http://192.168.1.7:45455/api/Calendar/GetAllCalendarEvents?calendarTypeEnum=1', {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${atoken}`,

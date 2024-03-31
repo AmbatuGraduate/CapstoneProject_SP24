@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Modal, ActivityIndicator } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from 'react-native-toast-message';
 import { Icon } from '@rneui/themed';
@@ -19,13 +19,16 @@ export default function TaskDetails({ route }) {
 
     const { key, summary, description, address, start, status, trees } = route.params;
 
+    const [loading, setLoading] = useState(false);
+
     // ----------------- Update task status -----------------
 
     const updateStatus = () => {
         console.log('Updating status...');
+        setLoading(true);
         try {
             AsyncStorage.getItem("@accessToken").then(token => {
-                const url = 'http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus';
+                const url = 'http://192.168.1.7:45455/api/Calendar/UpdateJobWorkingStatus?calendarTypeEnum=1';
 
                 api.post(url, {
                     accessToken: "",
@@ -43,6 +46,7 @@ export default function TaskDetails({ route }) {
                     .then(response => {
                         console.log(response.data);
                         if (!response.data.isError) {
+                            setLoading(false);
                             Toast.show({
                                 type: 'success',
                                 text1: 'Thành công',
@@ -53,10 +57,12 @@ export default function TaskDetails({ route }) {
                                 bottomOffset: 40,
                             });
                             setUpdatedStatus('Done');
+
                         }
                     })
                     .catch(error => {
                         console.error(error);
+                        setLoading(false);
                         Toast.show({
                             type: 'error',
                             text1: 'Lỗi xảy ra',
@@ -70,13 +76,14 @@ export default function TaskDetails({ route }) {
             });
         } catch (error) {
             console.error(error);
+            setLoading(false);
         }
     }
 
 
     // ----------------- GET DATA FROM PREVIOUS SCREEN -----------------
 
-    let treeArray = trees.split(",");
+    let treeArray = trees ? trees.split(",") : [];
     treeArray = treeArray.filter(item => item);
 
     const dateObject = new Date(start);
@@ -138,7 +145,7 @@ export default function TaskDetails({ route }) {
                         </View>
 
                         {treeArray.map((item, index) => (
-                            <Text key={index} style={styles.infoText}>{item}</Text>
+                            <Text key={index} style={styles.infoText}>{item.trim()}</Text>
                         ))}
 
 
@@ -188,7 +195,21 @@ export default function TaskDetails({ route }) {
                 </TouchableOpacity>
             }
 
+            <Modal
+                transparent={true}
+                visible={loading}
+            >
+                <View style={{
+                    flex: 1,
+                    backgroundColor: 'rgba(202,247,183,0.5)',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <ActivityIndicator size="large" color="green" />
+                </View>
+            </Modal>
         </View>
+
     );
 }
 
