@@ -11,6 +11,7 @@ using Application.Report.Queries.ListByUser;
 using Application.Report.Queries.ListFromDb;
 using Application.Report.Queries.ListLateReport;
 using ErrorOr;
+
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -173,15 +174,14 @@ namespace API.Controllers
         }
 
         // get all reports from db
-        [HttpGet]
         public IActionResult GetAllReportsFromDb()
         {
-            var result = mediator.Send(new ListFromDbQuery());
-            if (result == null)
+            var result = await mediator.Send(new ListFromDbQuery());
+            if (result.Value == null)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
             }
-            return Ok(result);
+            return Ok(result.Value);
         }
 
         // get reports by user
@@ -308,5 +308,6 @@ namespace API.Controllers
 
             return Ok(result);
         }
+
     }
 }

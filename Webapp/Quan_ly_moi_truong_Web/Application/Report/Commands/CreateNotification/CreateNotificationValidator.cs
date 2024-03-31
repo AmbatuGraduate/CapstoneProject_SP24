@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 
 namespace Application.Report.Commands.Create
 {
-    public class CreateReportValidator : AbstractValidator<CreateReportCommand>
+    public class CreateNotificationValidator : AbstractValidator<CreateNotificationCommand>
     {
-        public CreateReportValidator()
+        public CreateNotificationValidator()
         {
             RuleFor(x => x.AccessToken).NotEmpty();
             RuleFor(x => x.IssuerEmail).NotEmpty();
-            RuleFor(x => x.ReportBody).NotEmpty();
             RuleFor(x => x.ExpectedResolutionDate).NotEmpty();
             RuleFor(x => x.ReportImpact).NotEmpty();
             RuleFor(x => x.ReportSubject).NotEmpty();
