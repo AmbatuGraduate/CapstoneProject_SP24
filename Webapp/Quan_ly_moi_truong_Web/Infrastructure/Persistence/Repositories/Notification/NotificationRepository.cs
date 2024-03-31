@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence.Notifiy;
 using Domain.Entities.Notification;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories.Notification
 {
@@ -29,9 +30,9 @@ namespace Infrastructure.Persistence.Repositories.Notification
             return webDbContext.Notifications.ToList();
         }
 
-        public List<Notifications> GetNotificationsByUseranme(string username)
+        public async Task<List<Notifications>> GetNotificationsByUseranme(string username)
         {
-            return webDbContext.Notifications.Where(x => x.Username == username).ToList();
+            return await webDbContext.Notifications.Where(x => x.Username == username).ToListAsync();
         }
     }
 }

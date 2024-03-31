@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence.Notifiy;
 using Domain.Entities.Notification;
 using Infrastructure.Persistence.Repositories.Notification.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using TableDependency.SqlClient;
 using TableDependency.SqlClient.Base.EventArgs;
 
@@ -10,10 +11,11 @@ namespace Infrastructure.Persistence.Repositories.Notification.SubscribeTableDep
     {
         private SqlTableDependency<Notifications> tableDependency;
         private NotifyHub hub;
+        private IHubContext<NotifyHub> hubContext;
 
-        public SubscribeNotificationTableDependency(NotifyHub hub)
+
+        public SubscribeNotificationTableDependency()
         {
-            this.hub = hub;
         }
 
         public void SubscribeTableDependency()
@@ -39,12 +41,15 @@ namespace Infrastructure.Persistence.Repositories.Notification.SubscribeTableDep
                 // Message to all
                 if (notify.MessageType.ToLower().Equals("all"))
                 {
-                    await hub.SendNotificationToAll(notify.Message);
+                    await hubContext.Clients.All.SendAsync("ReceiveNotification", notify.Message);
                 }
                 // Message to single user
                 else
                 {
-                    await hub.SendNotificationToSingle(notify.Username, notify.Message);
+                    if (notify != null && notify.Username != null)
+                    {
+                        await hubContext.Clients.User(notify.Username).SendAsync("ReceiveNotification", notify.Message);
+                    }
                 }
             }
         }
