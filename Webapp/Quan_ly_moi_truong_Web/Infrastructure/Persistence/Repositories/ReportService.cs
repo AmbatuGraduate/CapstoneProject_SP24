@@ -105,15 +105,15 @@ namespace Infrastructure.Persistence.Repositories
                 var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
 
                 // check if report id is in db
-                if (ReportExist(reportID))
+                if (ReportExist(reportID) && reportID == id)
                 {
                     // get report from db
-                    var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == reportID);
+                    var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == id);
 
                     // report format
                     reportFormat = new ReportFormat
                     {
-                        Id = reportID,
+                        Id = id,
                         IssuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
                         ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
                         ReportBody = body,
@@ -122,6 +122,7 @@ namespace Infrastructure.Persistence.Repositories
                         ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
                         ReportResponse = reportDb.ResponseId
                     };
+                    break;
                 }
             }
 
