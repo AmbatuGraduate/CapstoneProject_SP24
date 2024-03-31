@@ -11,7 +11,6 @@ using Application.Report.Queries.ListByUser;
 using Application.Report.Queries.ListFromDb;
 using Application.Report.Queries.ListLateReport;
 using ErrorOr;
-
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -75,12 +74,12 @@ namespace API.Controllers
             (
                 accessToken,
                 request.IssuerEmail,
-                request.ReportSubject, 
+                request.ReportSubject,
                 request.ReportBody,
                 request.ExpectedResolutionDate,
                 request.ReportImpact
             );
-                var result = await mediator.Send(command);
+            var result = await mediator.Send(command);
             if (result.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
@@ -174,14 +173,15 @@ namespace API.Controllers
         }
 
         // get all reports from db
+        [HttpGet]
         public IActionResult GetAllReportsFromDb()
         {
-            var result = await mediator.Send(new ListFromDbQuery());
-            if (result.Value == null)
+            var result = mediator.Send(new ListFromDbQuery());
+            if (result == null)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
             }
-            return Ok(result.Value);
+            return Ok(result);
         }
 
         // get reports by user
@@ -259,7 +259,7 @@ namespace API.Controllers
                 accessToken = token.Value.accessToken;
             }
 
-            var result = await mediator.Send(new ListLateReportQuery(accessToken));
+            var result = await mediator.Send(new ListLateReportQuery());
             if (result.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
@@ -299,7 +299,7 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-            var command = new ReponseReportCommand(accessToken, request.ReportID, request.Response, request.Status); 
+            var command = new ReponseReportCommand(accessToken, request.ReportID, request.Response, request.Status);
             var result = await mediator.Send(command);
             if (result.IsError)
             {
@@ -308,6 +308,5 @@ namespace API.Controllers
 
             return Ok(result);
         }
-
     }
 }
