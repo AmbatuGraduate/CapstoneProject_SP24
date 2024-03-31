@@ -1,5 +1,4 @@
-﻿
-using Domain.Entities.TreeType;
+﻿using Domain.Entities.TreeType;
 using Domain.Entities.User;
 using System.Runtime.Serialization;
 
@@ -48,7 +47,7 @@ namespace Domain.Entities.Tree
 
         [DataMember]
         public string UserId { get; set; }
-        public virtual Users? user { get; set; }
 
+        public virtual Users? user { get; set; }
     }
 }

@@ -2,21 +2,13 @@
 using Application.Notification.Common;
 using Application.Notification.Queries.List;
 using Application.Notification.Queries.ListByUsername;
-using Application.Tree.Common;
-using Application.Tree.Queries.List;
 using Contract.Notification;
-using Contract.Tree;
 using ErrorOr;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -78,7 +70,6 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AddNotificationRequest addNotificationRequest)
         {
-
             var command = mapper.Map<AddNotificationCommand>(addNotificationRequest);
             ErrorOr<NotificationResult> notification = await mediator.Send(command);
 
@@ -86,7 +77,6 @@ namespace API.Controllers
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: notification.FirstError.Description);
             }
-
 
             return notification.Match(
                 notification => Ok(mapper.Map<ListNotificationResponse>(notification)),

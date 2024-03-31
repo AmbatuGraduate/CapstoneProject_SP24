@@ -1,12 +1,6 @@
-﻿using Application.Calendar.TreeCalendar.Commands.Update;
-using Application.Common.Interfaces.Persistence.Schedules;
+﻿using Application.Common.Interfaces.Persistence.Schedules;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Calendar.TreeCalendar.Commands.Delete
 {

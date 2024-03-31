@@ -1,14 +1,7 @@
 ﻿using Application.Common.Interfaces.Authentication;
-using Application.Common.Interfaces.Persistence;
 using Application.GoogleAuthentication.Common;
 using ErrorOr;
-using Google.Apis.Calendar.v3.Data;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.GoogleAuthentication.Queries.GoogleAccessToken
 {
@@ -19,7 +12,7 @@ namespace Application.GoogleAuthentication.Queries.GoogleAccessToken
         public GoogleAccessTokenHandler(IJwtTokenGenerator jwtTokenGenerator)
         {
             this.jwtTokenGenerator = jwtTokenGenerator;
-        } 
+        }
 
         public async Task<ErrorOr<GoogleAccessTokenResult>> Handle(GoogleAccessTokenQuery request, CancellationToken cancellationToken)
         {
@@ -28,7 +21,7 @@ namespace Application.GoogleAuthentication.Queries.GoogleAccessToken
             if (request.jwt != null)
             {
                 var accessToken = jwtTokenGenerator.DecodeTokenToGetAccessToken(request.jwt);
-                if(accessToken != null)
+                if (accessToken != null)
                 {
                     return new GoogleAccessTokenResult(accessToken);
                 }

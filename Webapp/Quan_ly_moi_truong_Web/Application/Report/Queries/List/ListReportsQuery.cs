@@ -1,6 +1,4 @@
-﻿
-
-using Application.Report.Common;
+﻿using Application.Report.Common;
 using ErrorOr;
 using MediatR;
 

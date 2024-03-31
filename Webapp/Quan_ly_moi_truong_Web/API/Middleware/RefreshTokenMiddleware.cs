@@ -28,7 +28,7 @@ namespace API.Middleware
                 return;
             }
 
-            ErrorOr<GoogleRefreshResult> authResult = await mediator.Send(new GoogleRefreshQuery(token));
+            ErrorOr<GoogleAuthenticationResult> authResult = await mediator.Send(new GoogleRefreshQuery(token));
 
             if (authResult.IsError && authResult.FirstError == Errors.Authentication.ExpireRefreshToken)
             {

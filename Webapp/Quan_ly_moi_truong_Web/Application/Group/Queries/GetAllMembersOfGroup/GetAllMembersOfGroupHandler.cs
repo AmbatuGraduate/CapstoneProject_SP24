@@ -1,14 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence;
-using Application.Group.Common;
-using Application.Group.Queries.GetGroup;
 using Application.User.Common.List;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Group.Queries.GetAllMembersOfGroup
 {
@@ -20,6 +13,7 @@ namespace Application.Group.Queries.GetAllMembersOfGroup
         {
             this.groupRepository = groupRepository;
         }
+
         public async Task<ErrorOr<List<GoogleUser>>> Handle(GetAllMembersOfGroupQuery request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;

@@ -1,10 +1,7 @@
 using API;
-using API.Controllers;
 using API.Middleware;
 using Application;
-using Hangfire;
 using Infrastructure;
-using Infrastructure.Persistence.Repositories.Notification;
 using Infrastructure.Persistence.Repositories.Notification.Hubs;
 using Infrastructure.Persistence.Repositories.Notification.SubscribeTableDependencies;
 
@@ -15,7 +12,6 @@ builder.Services
     .AddPresentation()
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
-
 
 builder.Services.AddSession(options =>
 {
@@ -31,20 +27,16 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-    
 }
 
 app.UseExceptionHandler("/error");
 app.UseRouting();
 app.UseHttpsRedirection();
-
-
 
 app.UseCors("AllowAllHeaders");
 app.UseSession();

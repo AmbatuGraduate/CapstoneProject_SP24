@@ -1,9 +1,8 @@
-﻿
-
-namespace Contract.Authentication
+﻿namespace Contract.Authentication
 {
     public record AccessTokenResMobile
     (
         long expires_in,
         string token
-           );}
+           );
+}

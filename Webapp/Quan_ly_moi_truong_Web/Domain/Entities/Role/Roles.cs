@@ -13,6 +13,5 @@ namespace Domain.Entities.Role
         public string RoleName { get; set; }
 
         public ICollection<Users>? Users { get; set; }
-
     }
 }

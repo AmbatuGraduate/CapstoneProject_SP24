@@ -1,5 +1,4 @@
 ﻿using API.Common.Errors;
-using API.Controllers;
 using API.Mapping;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
@@ -9,7 +8,6 @@ namespace API
     {
         public static IServiceCollection AddPresentation(this IServiceCollection services)
         {
-
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.SameSite = SameSiteMode.None;
@@ -23,7 +21,7 @@ namespace API
             services.AddSession(cfg =>
             {
                 cfg.Cookie.Name = "tokenv2";
-                cfg.IdleTimeout = new TimeSpan(0, 60, 0) ;
+                cfg.IdleTimeout = new TimeSpan(0, 60, 0);
             });
 
             services.AddSingleton<ProblemDetailsFactory, WebProblemDetailFactory>();
@@ -39,10 +37,8 @@ namespace API
                         .AllowAnyHeader()
                         .AllowAnyMethod()
                         .AllowCredentials();
-
                     });
             });
-
 
             services.AddMappings();
             services.AddControllers();

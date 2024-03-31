@@ -1,5 +1,4 @@
-﻿
-namespace Application.Session.Token
+﻿namespace Application.Session.Token
 {
     public record TokenData
     (

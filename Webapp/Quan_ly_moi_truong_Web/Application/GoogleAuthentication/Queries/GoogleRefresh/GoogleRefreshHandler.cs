@@ -9,7 +9,7 @@ using MediatR;
 namespace Application.GoogleAuthentication.Queries.GoogleRefresh
 {
     public class GoogleRefreshHandler :
-                IRequestHandler<GoogleRefreshQuery, ErrorOr<GoogleRefreshResult>>
+                IRequestHandler<GoogleRefreshQuery, ErrorOr<GoogleAuthenticationResult>>
     {
         private readonly IJwtTokenGenerator jwtTokenGenerator;
         private readonly IAuthenticationService authenticationService;
@@ -22,7 +22,7 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
             this.userRefreshTokenRepository = userRefreshTokenRepository;
         }
 
-        public async Task<ErrorOr<GoogleRefreshResult>> Handle(GoogleRefreshQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<GoogleAuthenticationResult>> Handle(GoogleRefreshQuery request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
 
@@ -51,7 +51,7 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
                             DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
                             var token = jwtTokenGenerator.GenerateToken(payload.Subject, tokenData.access_token, date);
 
-                            return new GoogleRefreshResult(payload.Subject, payload.Name, payload.Picture, date, token);
+                            return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, payload.Email, token);
                         }
                     }
                 }

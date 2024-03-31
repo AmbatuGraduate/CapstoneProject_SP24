@@ -4,6 +4,6 @@
     (
         string Name,
         string Image,
-        string token
+        string Email
     );
 }

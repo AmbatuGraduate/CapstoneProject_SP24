@@ -1,5 +1,4 @@
-﻿
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Application.GoogleAuthentication.Common;
 using Application.GoogleAuthentication.Queries.GoogleAccessToken;
 using Application.Report.Commands.Create;
@@ -224,7 +223,6 @@ namespace API.Controllers
             }
             return Ok(result);
         }
-
 
         // get all reports that has been late
         [HttpGet]

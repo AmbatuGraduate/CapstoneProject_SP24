@@ -1,20 +1,12 @@
 ﻿using Application.Notification.Commands.Add;
 using Application.Notification.Common;
-using Application.Tree.Common;
 using Contract.Notification;
-using Contract.Tree;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace API.Mapping
 {
     public class NotificationMappingConfig : IRegister
     {
-
         public void Register(TypeAdapterConfig config)
         {
             config.NewConfig<NotificationResult, ListNotificationResponse>()

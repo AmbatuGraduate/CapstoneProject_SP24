@@ -1,10 +1,7 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.GoogleAuthentication.Common;
-using Domain.Common.Errors;
 using ErrorOr;
-using Google.Apis.Auth;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace Application.GoogleAuthentication.Queries.GoogleRefreshMobile
 {

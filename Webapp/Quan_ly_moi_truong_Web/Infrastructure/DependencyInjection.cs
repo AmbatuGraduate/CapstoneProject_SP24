@@ -8,7 +8,6 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
-using Hangfire;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
@@ -57,7 +56,6 @@ namespace Infrastructure
             services.AddSingleton<IHostedService, BackgroundQueueProcessor>();
             services.AddHttpClient<BackgroundQueueProcessor>();
 
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ISessionService, SessionService>();
             services.AddSingleton<NotifyHub>();
@@ -98,7 +96,6 @@ namespace Infrastructure
                 });
             });
 
-
             // calendar service registration
             services.AddScoped<ITreeCalendarService, TreeCalendarService>();
 
@@ -118,7 +115,6 @@ namespace Infrastructure
             //opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             );
 
-
             services.AddSignalR();
             return services;
         }
@@ -128,7 +124,6 @@ namespace Infrastructure
             ConfigurationManager configuration
             )
         {
-
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings.SectionName, jwtSettings);
 

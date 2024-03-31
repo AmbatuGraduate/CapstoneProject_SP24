@@ -21,8 +21,6 @@ namespace Infrastructure.Persistence.Repositories
             _directoryServiceFactory = directoryServiceFactory;
         }
 
-
-
         public async Task<GoogleUser> GetGoogleUserByEmail(string accessToken, string userEmail)
         {
             GoogleUser userResult = null;
@@ -131,14 +129,13 @@ namespace Infrastructure.Persistence.Repositories
             return users;
         }
 
-        // add google user 
+        // add google user
         public async Task<AddGoogleUser> AddGoogleUser(AddGoogleUser user)
         {
             try
             {
                 var credential = GoogleCredential.FromAccessToken(user.AccessToken);
                 var service = _directoryServiceFactory(credential);
-
 
                 User googleUser = new User
                 {
@@ -363,9 +360,7 @@ namespace Infrastructure.Persistence.Repositories
         // get role name by id
         public string GetRoleNameById(string roleId)
         {
-
             return webDbContext.Roles.SingleOrDefault(r => r.RoleId == Guid.Parse(roleId)).RoleName;
-
         }
     }
 }

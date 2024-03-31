@@ -22,11 +22,8 @@ namespace API.Mapping
             config.NewConfig<GoogleAuthenticationResult, AuthenticationResponse>()
                   .Map(dest => dest.Name, src => src.name)
                   .Map(dest => dest.Image, src => src.avatar)
-                  .Map(dest => dest.token, src => src.token);
+                  .Map(dest => dest.Email, src => src.email);
 
-            config.NewConfig<GoogleRefreshResult, AuthenticationResponse>()
-                  .Map(dest => dest.Name, src => src.name)
-                  .Map(dest => dest.Image, src => src.avatar);
 
             config.NewConfig<GoogleRefreshResultMobile, AccessTokenResMobile>()
                     .Map(dest => dest.expires_in, src => src.expire_in)

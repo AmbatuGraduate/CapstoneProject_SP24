@@ -16,7 +16,8 @@ namespace Domain.Entities.Report
         public ReportStatus Status { get; set; }
 
         [DataMember]
-        public ReportImpact ReportImpact { get; set; }  
+        public ReportImpact ReportImpact { get; set; }
+
         [DataMember]
         public DateTime ExpectedResolutionDate { get; set; }
 

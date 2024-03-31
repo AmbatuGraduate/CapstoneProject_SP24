@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.User.Common;
-using Domain.Common.Errors;
 using Domain.Entities.User;
 using ErrorOr;
 using MediatR;

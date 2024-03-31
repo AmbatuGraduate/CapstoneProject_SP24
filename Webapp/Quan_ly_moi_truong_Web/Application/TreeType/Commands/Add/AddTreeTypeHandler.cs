@@ -21,11 +21,10 @@ namespace Application.TreeType.Commands.Add
         {
             await Task.CompletedTask;
 
-            if(treeTypeRepository.GetAllTreeTypes().FirstOrDefault(type => type.TreeTypeName == request.TreeTypeName) is not null)
+            if (treeTypeRepository.GetAllTreeTypes().FirstOrDefault(type => type.TreeTypeName == request.TreeTypeName) is not null)
             {
                 return Errors.DuplicateTreeType.duplicationTreeType;
             }
-
 
             var treeType = new TreeTypes
             {

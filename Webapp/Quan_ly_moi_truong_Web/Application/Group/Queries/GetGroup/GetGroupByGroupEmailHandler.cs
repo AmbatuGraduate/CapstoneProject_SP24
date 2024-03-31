@@ -1,14 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Group.Common;
-using Application.User.Common.List;
-using Application.User.Queries.List;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Group.Queries.GetGroup
 {

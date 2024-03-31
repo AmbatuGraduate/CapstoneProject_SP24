@@ -1,6 +1,4 @@
-﻿
-
-namespace Domain.Enums
+﻿namespace Domain.Enums
 {
     public enum ReportStatus
     {

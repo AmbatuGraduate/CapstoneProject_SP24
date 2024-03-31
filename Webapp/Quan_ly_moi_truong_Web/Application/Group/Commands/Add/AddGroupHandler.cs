@@ -3,11 +3,6 @@ using Application.Group.Common;
 using Domain.Entities.Deparment;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Group.Commands.Add
 {
@@ -19,9 +14,10 @@ namespace Application.Group.Commands.Add
         {
             this.groupRepository = groupRepository;
         }
+
         public async Task<ErrorOr<GroupResult>> Handle(AddGroupCommand request, CancellationToken cancellationToken)
         {
-            var result = false ;
+            var result = false;
             await Task.CompletedTask;
             var addedGroup = await groupRepository.AddGoogleGroup(request.accessToken, request.group);
             if (addedGroup != null)

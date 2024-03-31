@@ -1,6 +1,4 @@
-﻿
-
-using Application.Common.Interfaces.Persistence.Schedules;
+﻿using Application.Common.Interfaces.Persistence.Schedules;
 using ErrorOr;
 using MediatR;
 
@@ -20,7 +18,6 @@ namespace Application.Calendar.TreeCalendar.Queries.GetEventById
             await Task.CompletedTask;
             var eventInfo = await _treeCalendarService.GetEventById(request.accessToken, request.calendarId, request.eventId);
             return new MyEventResult(eventInfo);
-
         }
     }
 }

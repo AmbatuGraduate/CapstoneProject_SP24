@@ -1,7 +1,4 @@
-﻿
-
-using Application.Common.Interfaces.Persistence;
-using Application.User.Common.Add;
+﻿using Application.Common.Interfaces.Persistence;
 using Application.User.Common.UpdateUser;
 using ErrorOr;
 using MediatR;
@@ -31,7 +28,6 @@ namespace Application.User.Commands.UpdateGoogle
             };
 
             var userResult = await userRepository.UpdateGoogleUser(updateGoogleUser);
-
 
             // add to db
             // ...

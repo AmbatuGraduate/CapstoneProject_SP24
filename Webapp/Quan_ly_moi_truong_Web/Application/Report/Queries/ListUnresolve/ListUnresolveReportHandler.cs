@@ -1,14 +1,8 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Report.Common;
-using Application.Report.Queries.ListLateReport;
 using Domain.Enums;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Report.Queries.ListUnresolve
 {
@@ -34,7 +28,6 @@ namespace Application.Report.Queries.ListUnresolve
             {
                 results.Add(new ReportResult(report));
             }
-
 
             return results;
         }

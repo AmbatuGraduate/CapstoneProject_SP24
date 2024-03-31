@@ -1,15 +1,4 @@
-﻿
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Hosting;
 
 namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
 {
@@ -22,7 +11,7 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
             _httpClient = httpClient;
         }
 
-        public  Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
             _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(5)); // Change the interval as needed
             return Task.CompletedTask;
@@ -36,7 +25,6 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
 
                 // Prepare the HTTP request
                 var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7024/api/tree/AutoUpdate");
-
 
                 // Send the request and get the response
                 var response = await _httpClient.SendAsync(request);

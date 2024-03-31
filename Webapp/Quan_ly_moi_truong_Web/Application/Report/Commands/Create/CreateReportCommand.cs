@@ -1,6 +1,4 @@
-﻿
-
-using Application.Report.Common;
+﻿using Application.Report.Common;
 using Domain.Enums;
 using ErrorOr;
 using MediatR;

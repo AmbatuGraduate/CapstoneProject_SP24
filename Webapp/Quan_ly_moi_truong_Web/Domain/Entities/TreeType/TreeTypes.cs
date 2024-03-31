@@ -1,5 +1,4 @@
-﻿
-using Domain.Entities.Tree;
+﻿using Domain.Entities.Tree;
 using System.Runtime.Serialization;
 
 namespace Domain.Entities.TreeType
@@ -12,7 +11,7 @@ namespace Domain.Entities.TreeType
 
         [DataMember]
         public string TreeTypeName { get; set; }
-        public ICollection<Trees>? trees { get; set; }
 
+        public ICollection<Trees>? trees { get; set; }
     }
 }

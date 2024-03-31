@@ -30,7 +30,6 @@ namespace Application.Tree.Queries.List
                 var treeType = treeTypeRepository.GetTreeTypeById(tree.TreeTypeId).TreeTypeName;
                 var result = new TreeResult(tree.TreeCode, tree.TreeLocation, treeType, tree.BodyDiameter, tree.LeafLength, tree.CutTime, tree.isCut, tree.isExist);
                 treeResults.Add(result);
-
             }
 
             return treeResults;

@@ -1,5 +1,4 @@
-﻿
-using Domain.Entities.Deparment;
+﻿using Domain.Entities.Deparment;
 using Domain.Entities.HubConnection;
 using Domain.Entities.Notification;
 using Domain.Entities.Report;
@@ -45,6 +44,7 @@ namespace Infrastructure.Persistence
         public DbSet<TreeTypes> TreeTypes { get; set; }
         public DbSet<HubConnections> HubConnections { get; set; }
         public DbSet<Notifications> Notifications { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -93,7 +93,6 @@ namespace Infrastructure.Persistence
                         .WithOne(e => e.TreeType)
                         .HasForeignKey(e => e.TreeTypeId)
                         .IsRequired();
-
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(WebDbContext).Assembly);
         }

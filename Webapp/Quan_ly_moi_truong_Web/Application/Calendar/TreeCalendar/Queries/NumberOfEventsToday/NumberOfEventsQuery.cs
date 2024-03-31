@@ -1,6 +1,4 @@
-﻿
-
-using ErrorOr;
+﻿using ErrorOr;
 using MediatR;
 
 namespace Application.Calendar.TreeCalendar.Queries.NumberOfEventsToday

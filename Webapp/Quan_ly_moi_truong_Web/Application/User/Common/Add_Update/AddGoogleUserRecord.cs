@@ -1,8 +1,7 @@
-﻿
-namespace Application.User.Common.Add
+﻿namespace Application.User.Common.Add
 {
     public record AddGoogleUserRecord
     (
-        AddGoogleUser addGoogleUser   
+        AddGoogleUser addGoogleUser
     );
 }

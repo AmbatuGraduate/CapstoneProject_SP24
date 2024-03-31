@@ -1,11 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Domain.Entities.Role;
-using GoogleApi.Entities.Search.Video.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repositories
 {
