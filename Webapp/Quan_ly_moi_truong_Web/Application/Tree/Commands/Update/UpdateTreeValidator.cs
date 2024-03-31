@@ -14,7 +14,7 @@ namespace Application.Tree.Commands.Update
             RuleFor(x => x.PlantTime).NotEmpty();
             RuleFor(x => x.IntervalCutTime).NotEmpty();
             RuleFor(x => x.TreeTypeId).NotEmpty();
-            RuleFor(x => x.UserId).NotEmpty();
+            RuleFor(x => x.Email).NotEmpty();
         }
     }
 }

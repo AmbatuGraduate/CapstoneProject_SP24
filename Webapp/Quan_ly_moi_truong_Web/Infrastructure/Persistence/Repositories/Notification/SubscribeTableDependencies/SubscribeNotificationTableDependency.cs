@@ -19,7 +19,7 @@ namespace Infrastructure.Persistence.Repositories.Notification.SubscribeTableDep
         public void SubscribeTableDependency()
         {
             Console.WriteLine("Start sql dependency");
-            tableDependency = new SqlTableDependency<Notifications>("Server=144.126.216.43,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=ad;Password=Urban123;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;");
+            tableDependency = new SqlTableDependency<Notifications>("Server=20.255.186.117,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=ad;Password=Urban3579;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;");
             tableDependency.OnChanged += TableDependency_OnChanged;
             tableDependency.OnError += TableDependency_OnError;
             tableDependency.Start();
