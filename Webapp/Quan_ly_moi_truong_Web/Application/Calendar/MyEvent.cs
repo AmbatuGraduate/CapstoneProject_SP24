@@ -22,6 +22,7 @@ namespace Application.Calendar
         public string Description { get; set; }
         public string location { get; set; }
         public string TreeId { get; set; } //List of tree, seprate with comma
+        public string DepartmentEmail { get; set; } 
         public EventDateTime Start { get; set; }
         public EventDateTime End { get; set; }
         public List<User> Attendees { get; set; }
@@ -58,6 +59,26 @@ namespace Application.Calendar
 
     public class EventExtendedProperties
     {
-        public Dictionary<string, string> PrivateProperties { get; set; }
+        public static readonly string JobWorkingStatus = "JobWorkingStatus";
+        public static readonly string Tree = "Tree";
+        public static readonly string DepartmentId = "DepartmentId";
+        public static readonly string DepartmentEmail = "DepartmentEmail";
+
+        private Dictionary<string, string> privateProperties;
+
+        public Dictionary<string, string> PrivateProperties
+        {
+            get { return privateProperties; }
+            set
+            {
+                // Ensure privateProperties is initialized
+                privateProperties = privateProperties ?? new Dictionary<string, string>();
+
+                // Set or update specific keys
+                privateProperties[JobWorkingStatus] = value.ContainsKey(JobWorkingStatus) ? value[JobWorkingStatus] : "";
+                privateProperties[Tree] = value.ContainsKey(Tree) ? value[Tree] : "";
+                privateProperties[DepartmentEmail] = value.ContainsKey(DepartmentEmail) ? value[DepartmentEmail] : "";
+            }
+        }
     }
 }

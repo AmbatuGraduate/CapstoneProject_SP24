@@ -64,8 +64,9 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     {
                         Private__ = new Dictionary<string, string>
                         {
-                            {"JobWorkingStatus", ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart)},
-                            {"Tree", myEvent.TreeId}
+                            {EventExtendedProperties.JobWorkingStatus, ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart)},
+                            {EventExtendedProperties.Tree, myEvent.TreeId},
+                            {EventExtendedProperties.DepartmentEmail, myEvent.DepartmentEmail }
                         }
                     }
                 };
@@ -208,10 +209,78 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                             .ToList() : new List<UserEventResult>(),
                     ExtendedProperties = new EventExtendedProperties
                     {
-                        PrivateProperties = (Dictionary<string, string>)(retrievenedEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
+                        PrivateProperties = (Dictionary<string, string>)(retrievenedEvent.ExtendedProperties?.Private__ != null
+                        ? new Dictionary<string, string>
+                        {
+                            {EventExtendedProperties.JobWorkingStatus, retrievenedEvent.ExtendedProperties?.Private__[EventExtendedProperties.JobWorkingStatus]},
+                            {EventExtendedProperties.Tree, retrievenedEvent.ExtendedProperties?.Private__[EventExtendedProperties.Tree]},
+                            {EventExtendedProperties.DepartmentEmail, retrievenedEvent.ExtendedProperties?.Private__[EventExtendedProperties.DepartmentEmail] }
+                        }
+                        : new Dictionary<string, string>())
                     }
                 };
                 return myEvent;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<List<MyEvent>> GetEventsByDepartmentEmail(string accessToken, string calendarId, string departmentEmail)
+        {
+            MyEvent myEvent = new MyEvent();
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+
+                // Use the factory to create a CalendarService with the correct credential
+                var service = _calendarServiceFactory(credential);
+
+                var listRequest = service.Events.List(calendarId);
+                listRequest.TimeMaxDateTimeOffset = DateTime.Now;
+                listRequest.ShowDeleted = false;
+                listRequest.SingleEvents = true;
+                listRequest.MaxResults = 10;
+                listRequest.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+                var events = await listRequest.ExecuteAsync();
+                List<MyEvent> myEvents = events.Items
+                    .Where(myEvent => (myEvent.ExtendedProperties != null && 
+                    myEvent.ExtendedProperties.Private__.ContainsKey(EventExtendedProperties.DepartmentEmail) &&
+                    myEvent.ExtendedProperties.Private__[EventExtendedProperties.DepartmentEmail].Equals(departmentEmail, StringComparison.OrdinalIgnoreCase)
+                    ))
+                    .Select(returnEvent => new MyEvent
+                    {
+                        Id = returnEvent.Id,
+                        Summary = returnEvent.Summary,
+                        Description = returnEvent.Description,
+                        Location = returnEvent.Location,
+                        Start = returnEvent.Start.DateTime ?? DateTime.MinValue,
+                        End = returnEvent.End.DateTime ?? DateTime.MinValue,
+                        Attendees = (returnEvent.Attendees != null) ? returnEvent.Attendees
+                            .Select(attendee => new UserEventResult(
+                                new Users
+                                {
+                                    Email = attendee.Email,
+                                }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
+                            ))
+                            .ToList() : new List<UserEventResult>(),
+                        ExtendedProperties = new EventExtendedProperties
+                        {
+                            PrivateProperties = (Dictionary<string, string>)(returnEvent.ExtendedProperties?.Private__ != null
+                        ? new Dictionary<string, string>
+                        {
+                            {EventExtendedProperties.JobWorkingStatus, returnEvent.ExtendedProperties?.Private__[EventExtendedProperties.JobWorkingStatus]},
+                            {EventExtendedProperties.Tree, returnEvent.ExtendedProperties?.Private__[EventExtendedProperties.Tree]},
+                            {EventExtendedProperties.DepartmentEmail, returnEvent.ExtendedProperties?.Private__[EventExtendedProperties.DepartmentEmail] }
+                        }
+                        : new Dictionary<string, string>())
+                        }
+                    })
+                    .ToList<MyEvent>();
+                return myEvents;
             }
             catch (Exception ex)
             {
