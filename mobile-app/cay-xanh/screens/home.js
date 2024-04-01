@@ -192,11 +192,11 @@ export default function Home() {
             <View style={styles.notif}>
 
                 <FlatList
-                    style={{ marginBottom: 50 }}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}
                     data={notifications}
                     keyExtractor={(item, index) => index.toString()}
+                    contentContainerStyle={{ paddingBottom: 20 }}
                     initialNumToRender={5}
                     maxToRenderPerBatch={10}
                     windowSize={10}
