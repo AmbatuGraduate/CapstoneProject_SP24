@@ -4,12 +4,12 @@ namespace Application.Common.Interfaces.Persistence.Notifiy
 {
     public interface INotificationRepository
     {
-        List<Notifications> GetlNotifications();
+        Task<List<Notifications>> GetlNotifications();
 
-        List<Notifications> GetNotificationsByUseranme(string username);
+        Task<List<Notifications>> GetNotificationsByUseranme(string username);
 
         Notifications GetlNotification(Guid Id);
 
-        Notifications CreateNotification(Notifications notification);
+        Task<Notifications> CreateNotification(Notifications notification);
     }
 }

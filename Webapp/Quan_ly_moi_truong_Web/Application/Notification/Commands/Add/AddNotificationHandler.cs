@@ -29,7 +29,7 @@ namespace Application.Notification.Commands.Add
                 NotificationDateTime = DateTime.UtcNow,
             };
 
-            var createdNotification = _notificationRepository.CreateNotification(notification);
+            var createdNotification = await _notificationRepository.CreateNotification(notification);
 
             return new NotificationResult(createdNotification);
         }

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Routes from './navigations/drawer';
 import * as SplashScreen from 'expo-splash-screen'; // loading screen
 import { RootSiblingParent } from 'react-native-root-siblings'; // show toast all app
+import 'react-native-url-polyfill/auto'; // fix url error
 
 
 /*************************************************************

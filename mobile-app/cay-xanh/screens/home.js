@@ -1,25 +1,119 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from "../shared/api";
-
+import * as signalR from '@microsoft/signalr';
 
 
 export default function Home() {
+    // notification
+    // -----------------------------------
+
+    const [connection, setConnection] = useState(null);
+    const [notifications, setNotifications] = useState([]);
+
+    const fetchNotifications = async () => {
+        try {
+            var username = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
+            const atoken = await AsyncStorage.getItem("@accessToken");
+            if (atoken !== null) {
+                api.get(`http://192.168.1.7:45455/api/Notification/GetByUsername/${username}`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${atoken}`,
+                        "Client-Type": "Mobile"
+                    },
+                })
+                    .then((res) => {
+                        setNotifications(res.data);
+                    })
+                    .catch((error) => {
+                        console.log('There has been a problem with fetch operation: ', error.message);
+                    });
+            } else {
+                console.log('token null');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
+    useEffect(() => {
+        const newConnection = new signalR.HubConnectionBuilder()
+            .withUrl('http://192.168.1.7:45455/chatHub')
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        setConnection(newConnection);
+    }, []);
+
+    useEffect(() => {
+        if (connection) {
+            connection.start()
+                .then(() => {
+                    console.log('Connection started!');
+                    fetchNotifications();
+                })
+                .catch(err => console.log('Error while establishing connection :('));
+
+            connection.on('OnConnected', (data) => {
+                OnConnected();
+            });
+
+            connection.on("ReceivedNotification", function (msg) {
+                console.log(msg);
+            });
+
+            connection.on("ReceivedPersonalNotification", function (msg, user) {
+                console.log("ReceivePersonalNotification event triggered");
+                console.log("Message: " + msg);
+                console.log("User: " + user);
+
+                setNotifications(prevNotifications => {
+                    console.log("Previous notifications: " + prevNotifications);
+                    const newNotifications = [...prevNotifications, user + ' - ' + msg];
+                    console.log("New notifications: " + newNotifications);
+                    return newNotifications;
+                });
+            });
+
+        }
+
+        return () => {
+            if (connection) {
+                connection.stop();
+            }
+        };
+    }, [connection]);
+
+    const OnConnected = async () => {
+        try {
+            var username = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
+            await connection.invoke('SaveUserConnection', username)
+        } catch (err) {
+            console.error(err.toString());
+        }
+    }
+
+    // connected -----------------------------------------------------
+
+    // -----------------------------------------------------
     const currentDate = new Date();
     const dayOfWeek = currentDate.toLocaleDateString('vi-VN', { weekday: 'long' });
 
     const navigation = useNavigation();
     const [eventsCount, setEventsCount] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handlePress = () => {
         navigation.navigate('Tasks');
     };
 
     const getEventsCount = async () => {
-
+        setIsLoading(true);
         try {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             const atoken = await AsyncStorage.getItem("@accessToken");;
@@ -33,18 +127,22 @@ export default function Home() {
                 })
                     .then((res) => {
                         setEventsCount(res.data);
+                        setIsLoading(false);
                     })
                     .catch((error) => {
                         console.log('There has been a problem with fetch operation: ', error.message);
                         setEventsCount(0);
+                        setIsLoading(false);
                     });
             } else {
                 console.log('token null');
                 setEventsCount(0);
+                setIsLoading(false);
             }
         } catch (error) {
             console.error(error);
             setEventsCount(0);
+            setIsLoading(false);
         }
     }
 
@@ -74,19 +172,21 @@ export default function Home() {
 
 
             {/* so cong viec */}
-            <View style={styles.notif}>
-                {eventsCount > 0 ? (
-                    <TouchableOpacity style={styles.taskButton} onPress={handlePress}>
-                        <Icon style={styles.notifIcon} name="calendar" type="font-awesome" size={20} color="green" />
-                        <Text style={styles.taskText}>
-                            Bạn có {eventsCount} công việc {eventsCount > 1 ? '' : ''}hôm nay. Nhấn để xem.
-                        </Text>
-                    </TouchableOpacity>
-                ) : (
-                    <Text style={styles.noTasksText}>Chưa có công việc nào</Text>
-                )}
-            </View>
-
+            {isLoading ? <ActivityIndicator /> : null}
+            {
+                <View style={styles.taskContainer}>
+                    {eventsCount > 0 ? (
+                        <TouchableOpacity style={styles.taskButton} onPress={handlePress}>
+                            <Icon style={styles.notifIcon} name="calendar" type="font-awesome" size={20} color="green" />
+                            <Text style={styles.taskText}>
+                                Bạn có {eventsCount} công việc {eventsCount > 1 ? '' : ''}hôm nay. Nhấn để xem.
+                            </Text>
+                        </TouchableOpacity>
+                    ) : (
+                        !isLoading && <Text style={styles.noTasksText}>Chưa có công việc nào</Text>
+                    )}
+                </View>
+            }
             <View style={styles.hrline}></View>
 
             {/* thong bao */}
@@ -98,31 +198,29 @@ export default function Home() {
 
             </View>
             <View style={styles.notif}>
-                <View style={styles.taskButton}>
-                    <Text style={styles.taskText}>
-                        Bạn có 1 công việc bị trễ
-                    </Text>
-                </View>
-                <View style={styles.taskButton}>
-                    <Text style={styles.taskText}>
-                        Bạn có 1 công việc bị trễ
-                    </Text>
-                </View>
-                <View style={styles.taskButton}>
-                    <Text style={styles.taskText}>
-                        Bạn có 1 công việc bị trễ
-                    </Text>
-                </View>
-                <View style={styles.taskButton}>
-                    <Text style={styles.taskText}>
-                        Bạn có 1 công việc bị trễ
-                    </Text>
-                </View>
-                <View style={styles.taskButton}>
-                    <Text style={styles.taskText}>
-                        Bạn có 1 công việc bị trễ
-                    </Text>
-                </View>
+
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}
+                    data={notifications}
+                    keyExtractor={(item, index) => index.toString()}
+                    contentContainerStyle={{ paddingBottom: 20 }}
+                    initialNumToRender={5}
+                    maxToRenderPerBatch={10}
+                    windowSize={10}
+                    renderItem={({ item }) => <View style={styles.notifButton}>
+                        <View>
+                            <Text style={styles.taskText}>
+                                {item.message}
+
+                            </Text>
+                            <Text style={styles.dateText}>{item.notificationDateTime}</Text>
+
+                        </View>
+
+                    </View>}
+                />
+
             </View>
 
 
@@ -163,6 +261,19 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         elevation: 3,
     },
+    notifButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        padding: 20,
+        borderRadius: 10,
+        marginVertical: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 3,
+    },
     taskText: {
         fontSize: 20,
         color: 'gray',
@@ -182,6 +293,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     notifIcon: {
-        marginRight: 10,
+        marginRight: 15,
     },
+    notif: {
+        backgroundColor: '#f5f5f5'
+    },
+    dateText: {
+        color: '#2282F3',
+        fontWeight: 'bold',
+        fontSize: 13,
+        paddingTop: 8
+    }
 });

@@ -10,6 +10,8 @@ namespace Application.Common.Interfaces.Persistence.Schedules
 
         Task<List<MyEvent>> GetEventsByAttendeeEmail(string token, string calendarId, string attendeeEmail);            // get all events by attendee email
 
+        Task<List<MyEvent>> GetEventsByDepartmentEmail(string accessToken, string calendarId, string departmentEmail);  // get all events by department email
+
         Task<List<MyEvent>> GetUserTodayEvents(string token, string calendarId, string attendeeEmail);                  // get all events by attendee email
 
         Task<MyEvent> GetEventById(string accessToken, string calendarId, string eventId);                  // get all events by attendee email

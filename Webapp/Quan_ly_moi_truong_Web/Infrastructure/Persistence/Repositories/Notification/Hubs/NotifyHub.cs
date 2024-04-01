@@ -1,5 +1,6 @@
 ﻿using Domain.Entities.HubConnection;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories.Notification.Hubs
 {
@@ -24,7 +25,7 @@ namespace Infrastructure.Persistence.Repositories.Notification.Hubs
         //Message to single user -> but 1 user can have many device
         public async Task SendNotificationToSingle(string user, string msg)
         {
-            var hubConns = webDbContext.HubConnections.Where(conn => conn.Username == user).ToList();
+            var hubConns = await webDbContext.HubConnections.Where(conn => conn.Username == user).ToListAsync();
             Console.WriteLine("checking send to: " + hubConns.Count);
             foreach (var hubConn in hubConns)
             {
@@ -48,7 +49,7 @@ namespace Infrastructure.Persistence.Repositories.Notification.Hubs
                 ConnectionId = connectionId,
                 Username = user,
             };
-            webDbContext.HubConnections.Add(hub);
+            await webDbContext.HubConnections.AddAsync(hub);
             await webDbContext.SaveChangesAsync();
         }
 

@@ -56,11 +56,14 @@ namespace Infrastructure
             services.AddHttpClient<BackgroundQueueProcessor>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            // Add services dependency injection
             services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<INotifyService, NotifyService>();
             services.AddScoped<NotifyHub>();
 
             services.AddScoped<INotificationRepository, NotificationRepository>();
+
+
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGroupRepository, GroupRepositorys>();

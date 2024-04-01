@@ -57,7 +57,7 @@ namespace API.Controllers
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
             }
 
-            List<ListNotificationResponse> notifications = new List<ListNotificationResponse>();
+            List<ListNotificationResponse> notifications = new();
             foreach (var notification in list.Value)
             {
                 notifications.Add(mapper.Map<ListNotificationResponse>(notification));
