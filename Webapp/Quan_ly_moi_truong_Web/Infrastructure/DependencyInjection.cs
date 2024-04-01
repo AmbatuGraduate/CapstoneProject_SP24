@@ -67,6 +67,7 @@ namespace Infrastructure
             services.AddSingleton<SubscribeNotificationTableDependency>();
 
             services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddSingleton<ISubscribeTableDependency, SubscribeNotificationTableDependency>();
 
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();

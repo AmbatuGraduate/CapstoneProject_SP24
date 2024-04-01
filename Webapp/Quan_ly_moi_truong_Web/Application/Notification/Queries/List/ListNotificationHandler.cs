@@ -19,7 +19,7 @@ namespace Application.Notification.Queries.List
         {
             await Task.CompletedTask;
 
-            var listNotification = _notificationRepository.GetlNotifications();
+            var listNotification = await _notificationRepository.GetlNotifications();
             var results = new List<NotificationResult>();
 
             foreach (var notification in listNotification)

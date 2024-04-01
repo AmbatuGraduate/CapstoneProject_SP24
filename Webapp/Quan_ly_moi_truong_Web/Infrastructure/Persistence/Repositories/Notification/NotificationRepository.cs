@@ -13,10 +13,10 @@ namespace Infrastructure.Persistence.Repositories.Notification
             this.webDbContext = webDbContext;
         }
 
-        public Notifications CreateNotification(Notifications notification)
+        public async Task<Notifications> CreateNotification(Notifications notification)
         {
-            webDbContext.Notifications.Add(notification);
-            webDbContext.SaveChanges();
+            await webDbContext.Notifications.AddAsync(notification);
+            await webDbContext.SaveChangesAsync();
             return notification;
         }
 
@@ -25,9 +25,9 @@ namespace Infrastructure.Persistence.Repositories.Notification
             return webDbContext.Notifications.FirstOrDefault(o => o.Id == Id);
         }
 
-        public List<Notifications> GetlNotifications()
+        public async Task<List<Notifications>> GetlNotifications()
         {
-            return webDbContext.Notifications.ToList();
+            return await webDbContext.Notifications.ToListAsync();
         }
 
         public async Task<List<Notifications>> GetNotificationsByUseranme(string username)

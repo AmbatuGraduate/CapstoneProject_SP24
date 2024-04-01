@@ -10,18 +10,17 @@ namespace Infrastructure.Persistence.Repositories.Notification.SubscribeTableDep
     public class SubscribeNotificationTableDependency : ISubscribeTableDependency
     {
         private SqlTableDependency<Notifications> tableDependency;
-        private NotifyHub hub;
         private IHubContext<NotifyHub> hubContext;
 
-
-        public SubscribeNotificationTableDependency()
+        public SubscribeNotificationTableDependency(IHubContext<NotifyHub> hubContext)
         {
+            this.hubContext = hubContext;
         }
 
         public void SubscribeTableDependency()
         {
             Console.WriteLine("Start sql dependency");
-            tableDependency = new SqlTableDependency<Notifications>("Server=144.126.216.43,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=ad;Password=Urban123;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;");
+            tableDependency = new SqlTableDependency<Notifications>("Server=20.255.186.117,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=ad;Password=Urban3579;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;");
             tableDependency.OnChanged += TableDependency_OnChanged;
             tableDependency.OnError += TableDependency_OnError;
             tableDependency.Start();
@@ -38,18 +37,16 @@ namespace Infrastructure.Persistence.Repositories.Notification.SubscribeTableDep
             if (e.ChangeType != TableDependency.SqlClient.Base.Enums.ChangeType.None)
             {
                 var notify = e.Entity;
+                System.Diagnostics.Debug.WriteLine("user: " + notify.Username);
                 // Message to all
                 if (notify.MessageType.ToLower().Equals("all"))
                 {
-                    await hubContext.Clients.All.SendAsync("ReceiveNotification", notify.Message);
+                    await hubContext.Clients.All.SendAsync("ReceivedNotification", notify.Message);
                 }
                 // Message to single user
                 else
                 {
-                    if (notify != null && notify.Username != null)
-                    {
-                        await hubContext.Clients.User(notify.Username).SendAsync("ReceiveNotification", notify.Message);
-                    }
+                    await hubContext.Clients.User(notify.Username).SendAsync("ReceivedPersonalNotification", notify.Message, notify.Username);
                 }
             }
         }
