@@ -63,7 +63,5 @@ namespace Infrastructure.Persistence.Repositories
         //{
         //    _httpContextAccessor.HttpContext.Session.SetString("scope", scope);
         //}
-
-
     }
 }

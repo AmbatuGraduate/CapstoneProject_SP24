@@ -22,7 +22,5 @@ namespace Domain.Entities.UserRefreshToken
         public DateTime CreateAt { get; set; }
 
         public virtual Users? User { get; set; }
-
-
     }
 }

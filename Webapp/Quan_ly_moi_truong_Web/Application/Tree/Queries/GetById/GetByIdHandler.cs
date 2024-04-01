@@ -13,7 +13,7 @@ namespace Application.Tree.Queries.GetById
         private readonly ITreeTypeRepository treeTypeRepository;
         private readonly IUserRepository userRepository;
 
-        public GetByIdHandler(ITreeRepository treeRepository,  ITreeTypeRepository treeTypeRepository, IUserRepository userRepository)
+        public GetByIdHandler(ITreeRepository treeRepository, ITreeTypeRepository treeTypeRepository, IUserRepository userRepository)
         {
             this.treeRepository = treeRepository;
             this.treeTypeRepository = treeTypeRepository;
@@ -34,7 +34,7 @@ namespace Application.Tree.Queries.GetById
             //var streetName = streetRepository.GetStreetById(tree.StreetId).StreetName;
             var treeType = treeTypeRepository.GetTreeTypeById(tree.TreeTypeId).TreeTypeName;
             var user = userRepository.GetById(tree.UserId).Email;
-            var result = new TreeDetailResult(tree.TreeCode, tree.TreeLocation, treeType, tree.BodyDiameter, tree.LeafLength, tree.PlantTime, tree.IntervalCutTime,tree.CutTime, tree.isCut, user ,tree.Note);
+            var result = new TreeDetailResult(tree.TreeCode, tree.TreeLocation, treeType, tree.BodyDiameter, tree.LeafLength, tree.PlantTime, tree.IntervalCutTime, tree.CutTime, tree.isCut, user, tree.Note);
 
             return result;
         }

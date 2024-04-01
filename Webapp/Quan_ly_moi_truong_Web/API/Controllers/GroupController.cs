@@ -11,7 +11,6 @@ using Application.Group.Queries.GetAllMembersOfGroup;
 using Application.Group.Queries.GetGroup;
 using Application.User.Common.List;
 using ErrorOr;
-using Google.Apis.Admin.Directory.directory_v1.Data;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -31,7 +30,6 @@ namespace API.Controllers
         private readonly HttpClient _httpClient;
         private readonly ISessionService _sessionService;
 
-
         // constructor
         public GroupController(IMediator mediator, IMapper mapper, IHttpClientFactory httpClientFactory, ISessionService sessionService)
         {
@@ -40,7 +38,6 @@ namespace API.Controllers
             _httpClient = httpClientFactory.CreateClient();
             _sessionService = sessionService;
         }
-
 
         [HttpGet()]
         public async Task<IActionResult> GetGroupByGroupEmail(string groupEmail)

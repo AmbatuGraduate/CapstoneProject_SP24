@@ -1,6 +1,4 @@
-﻿
-
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Application.Report.Common;
 using ErrorOr;
 using MediatR;
@@ -9,7 +7,6 @@ namespace Application.Report.Commands.Response
 {
     public class ResponseReportCommandHandler : IRequestHandler<ReponseReportCommand, ErrorOr<ReportFormatRecord>>
     {
-
         private readonly IReportService reportRepository;
 
         public ResponseReportCommandHandler(IReportService reportRepository)

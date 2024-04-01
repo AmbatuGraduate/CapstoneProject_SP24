@@ -1,5 +1,4 @@
-﻿
-namespace Application.GoogleAuthentication.Common
+﻿namespace Application.GoogleAuthentication.Common
 {
     public record GoogleRefreshResultMobile
     (

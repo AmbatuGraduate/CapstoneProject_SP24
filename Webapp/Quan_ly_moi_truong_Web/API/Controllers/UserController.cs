@@ -1,20 +1,14 @@
 ﻿using Application.GoogleAuthentication.Common;
 using Application.GoogleAuthentication.Queries.GoogleAccessToken;
-using Application.Group.Common;
-using Application.User.Commands.Add;
 using Application.User.Commands.AddToGoogle;
 using Application.User.Commands.DeleteGoogle;
-using Application.User.Commands.Udpate;
 using Application.User.Commands.UpdateGoogle;
-using Application.User.Common;
 using Application.User.Common.Add;
 using Application.User.Common.Delele;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
 using Application.User.Queries.GetByEmail;
-using Application.User.Queries.GetById;
 using Application.User.Queries.List;
-using Contract.User;
 using Contract.User.Google;
 using Domain.Common.Errors;
 using ErrorOr;
@@ -76,7 +70,7 @@ namespace API.Controllers
         //{
         //    return await Update(id, request);
         //}
-        
+
         //// delete user from db
         //[HttpDelete("{id}")]
         //public async Task<IActionResult> DeleteUser(string id, UpdateUserRequest request)
@@ -105,7 +99,6 @@ namespace API.Controllers
         public async Task<IActionResult> GetGoogleUsers()
         {
             var clientType = Request.Headers["Client-Type"];
-
 
             // declare accesstoken
             string accessToken;
@@ -154,7 +147,6 @@ namespace API.Controllers
         {
             var clientType = Request.Headers["Client-Type"];
 
-
             // declare accesstoken
             string accessToken;
             if (clientType == "Mobile") // mobile client
@@ -198,7 +190,6 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateGoogleUser(UpdateGoogleUserRequest request)
         {
             var clientType = Request.Headers["Client-Type"];
-
 
             // declare accesstoken
             string accessToken;
@@ -252,7 +243,6 @@ namespace API.Controllers
         {
             var clientType = Request.Headers["Client-Type"];
 
-
             // declare accesstoken
             string accessToken;
             if (clientType == "Mobile") // mobile client
@@ -295,7 +285,6 @@ namespace API.Controllers
         public async Task<IActionResult> AddGoogleUser(AddGoogleUserRequest request)
         {
             var clientType = Request.Headers["Client-Type"];
-
 
             // declare accesstoken
             string accessToken;

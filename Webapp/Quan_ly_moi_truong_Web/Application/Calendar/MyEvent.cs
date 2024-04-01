@@ -2,7 +2,6 @@
 
 namespace Application.Calendar
 {
-
     public class MyEvent
     {
         public string Id { get; set; }
@@ -14,7 +13,6 @@ namespace Application.Calendar
         public List<UserEventResult> Attendees { get; set; }
         public EventExtendedProperties ExtendedProperties { get; set; }
     }
-
 
     public class MyAddedEvent
     {
@@ -44,7 +42,7 @@ namespace Application.Calendar
     {
         public class EventExtendedProperties
         {
-            Dictionary<string, string> PrivateProperties { get; set; }
+            private Dictionary<string, string> PrivateProperties { get; set; }
         }
     }
 

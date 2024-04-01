@@ -25,23 +25,18 @@ namespace API.Controllers
     {
         private readonly IMediator mediator;
         private readonly IMapper mapper;
-        private readonly INotifyService notifyService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-        public TreeController(IMediator mediator, IMapper mapper, INotifyService notifyService, IHttpContextAccessor httpContextAccessor)
+        public TreeController(IMediator mediator, IMapper mapper,IHttpContextAccessor httpContextAccessor)
         {
             this.mediator = mediator;
             this.mapper = mapper;
-            this.notifyService = notifyService;
             _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            System.Diagnostics.Debug.WriteLine("after request");
-
             var token = _httpContextAccessor.HttpContext.Request.Cookies["u_tkn"];
 
             ErrorOr<List<TreeResult>> list = await mediator.Send(new ListTreeQuery());
@@ -57,7 +52,6 @@ namespace API.Controllers
                 trees.Add(mapper.Map<ListTreeResponse>(tree));
             }
 
-            
             return Ok(trees);
         }
 
@@ -73,8 +67,6 @@ namespace API.Controllers
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
             }
             return Ok(mapper.Map<DetailTreeResponse>(result.Value));
-
-
         }
 
         [HttpGet("{TreeCode}")]
@@ -153,8 +145,6 @@ namespace API.Controllers
             }
 
             // Use signalR
-            await notifyService.AutoCreateCalendar();
-
             return Ok(trees);
         }
     }

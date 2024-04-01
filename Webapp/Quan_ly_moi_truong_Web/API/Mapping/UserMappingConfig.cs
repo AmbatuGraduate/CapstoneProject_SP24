@@ -2,7 +2,6 @@
 using Application.User.Commands.Udpate;
 using Application.User.Common;
 using Application.User.Common.List;
-using Application.User.Common.UpdateUser;
 using Contract.User;
 using Contract.User.Google;
 using Mapster;
@@ -30,7 +29,6 @@ namespace API.Mapping
                 .Map(dest => dest.Department, src => src.googleUser.Department)
                 .Map(dest => dest.PhoneNumber, src => src.googleUser.PhoneNumber)
                 .Map(dest => dest.Role, src => src.googleUser.Role);
-
         }
     }
 }

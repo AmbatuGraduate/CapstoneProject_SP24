@@ -1,6 +1,4 @@
-﻿
-
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Application.Report.Common;
 using ErrorOr;
 using MediatR;
@@ -20,7 +18,7 @@ namespace Application.Report.Queries.ListFromDb
         {
             await Task.CompletedTask;
             var list = new List<ReportResult>();
-            var reportResult =  reportRepository.GetAllReports();
+            var reportResult = reportRepository.GetAllReports();
             if (reportResult != null)
             {
                 foreach (var report in reportResult)

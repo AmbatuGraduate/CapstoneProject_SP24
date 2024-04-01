@@ -1,13 +1,8 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence.Schedules;
+using Domain.Enums;
 using ErrorOr;
 using MediatR;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Calendar.TreeCalendar.Queries.ListCalendarNotHaveAttendees
 {
@@ -27,8 +22,9 @@ namespace Application.Calendar.TreeCalendar.Queries.ListCalendarNotHaveAttendees
             var accessToken = _jwtTokenGenerator.DecodeTokenToGetAccessToken(request.accessToken);
             var list = await _treeCalendarService.GetEvents(accessToken, request.calendarId);
 
-            var listNoAttendees = list.Where(e => e.Attendees.Count == 0).ToList();
-            System.Diagnostics.Debug.WriteLine("Check: " + listNoAttendees.Count);
+            // Get list tree trim calendar not have attendess and not start
+            var listNoAttendees = list.Where(e => e.Attendees.Count == 0
+            && e.ExtendedProperties.PrivateProperties["JobWorkingStatus"] == _treeCalendarService.ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart)).ToList();
 
             return listNoAttendees;
         }

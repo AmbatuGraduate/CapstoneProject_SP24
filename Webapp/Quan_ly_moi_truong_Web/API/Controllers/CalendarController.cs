@@ -1,29 +1,27 @@
 ﻿using Application.Calendar;
+using Application.Calendar.TreeCalendar.Commands.Add;
+using Application.Calendar.TreeCalendar.Commands.AutoAdd;
+using Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus;
+using Application.Calendar.TreeCalendar.Commands.Delete;
+using Application.Calendar.TreeCalendar.Commands.Update;
+using Application.Calendar.TreeCalendar.Commands.UpdateJobStatus;
+using Application.Calendar.TreeCalendar.Queries.GetByAttendeeId;
+using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
+using Application.Calendar.TreeCalendar.Queries.GetEventById;
 using Application.Calendar.TreeCalendar.Queries.List;
+using Application.Calendar.TreeCalendar.Queries.ListCalendarNotHaveAttendees;
+using Application.Calendar.TreeCalendar.Queries.ListCurrentDayEventsByEmail;
+using Application.Calendar.TreeCalendar.Queries.ListLateCalendar;
+using Application.Calendar.TreeCalendar.Queries.NumberOfEventsToday;
+using Application.GoogleAuthentication.Common;
+using Application.GoogleAuthentication.Queries.GoogleAccessToken;
+using Domain.Enums;
 using ErrorOr;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-
-using Application.Calendar.TreeCalendar.Commands.Add;
-using Application.Calendar.TreeCalendar.Commands.Update;
-using Application.Calendar.TreeCalendar.Commands.Delete;
-using Application.Calendar.TreeCalendar.Queries.GetByAttendeeId;
-using Application.Calendar.TreeCalendar.Commands.UpdateJobStatus;
-using Application.Calendar.TreeCalendar.Commands.AutoAdd;
-using Application.GoogleAuthentication.Queries.GoogleAccessToken;
-using Application.GoogleAuthentication.Common;
-using Application.Common.Interfaces.Persistence;
-using Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus;
-using Application.Calendar.TreeCalendar.Queries.ListLateCalendar;
-using Application.Calendar.TreeCalendar.Queries.ListCalendarNotHaveAttendees;
-using Application.Calendar.TreeCalendar.Queries.ListCurrentDayEventsByEmail;
-using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
-using Domain.Enums;
-using Application.Calendar.TreeCalendar.Queries.NumberOfEventsToday;
-using Application.Calendar.TreeCalendar.Queries.GetEventById;
 using Application.Calendar.TreeCalendar.Queries.GetCalendarByDepartmentEmail;
 
 namespace API.Controllers
@@ -38,6 +36,7 @@ namespace API.Controllers
 
         //private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         //private readonly INotifyService notifyService;
 
         // constructor
@@ -55,7 +54,6 @@ namespace API.Controllers
         public async Task<IActionResult> GetAllCalendarEvents(CalendarTypeEnum calendarTypeEnum)
         {
             var clientType = Request.Headers["Client-Type"];
-
 
             // declare accesstoken
             string accessToken;
@@ -101,7 +99,6 @@ namespace API.Controllers
         public async Task<IActionResult> GetCalendarEventsByAttendeeEmail(CalendarTypeEnum calendarTypeEnum, string attendeeEmail)
         {
             var clientType = Request.Headers["Client-Type"];
-
 
             // declare accesstoken
             string accessToken;
@@ -224,7 +221,6 @@ namespace API.Controllers
         {
             var clientType = Request.Headers["Client-Type"];
 
-
             // declare accesstoken
             string accessToken;
             if (clientType == "Mobile") // mobile client
@@ -306,7 +302,6 @@ namespace API.Controllers
         {
             var clientType = Request.Headers["Client-Type"];
 
-
             // declare accesstoken
             string accessToken;
             if (clientType == "Mobile") // mobile client
@@ -348,7 +343,6 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateJobWorkingStatus(CalendarTypeEnum calendarTypeEnum, [FromBody] UpdateJobStatusCommand command)
         {
             var clientType = Request.Headers["Client-Type"];
-
 
             // declare accesstoken
             string accessToken;
@@ -392,7 +386,6 @@ namespace API.Controllers
         {
             var clientType = Request.Headers["Client-Type"];
 
-
             // declare accesstoken
             string accessToken;
             if (clientType == "Mobile") // mobile client
@@ -434,7 +427,6 @@ namespace API.Controllers
         public async Task<IActionResult> GetCurrentDayEventsByEmail(CalendarTypeEnum calendarTypeEnum, string attendeeEmail)
         {
             var clientType = Request.Headers["Client-Type"];
-
 
             // declare accesstoken
             string accessToken;
@@ -478,7 +470,6 @@ namespace API.Controllers
         {
             var clientType = Request.Headers["Client-Type"];
 
-
             // declare accesstoken
             string accessToken;
             if (clientType == "Mobile") // mobile client
@@ -521,7 +512,6 @@ namespace API.Controllers
         {
             var clientType = Request.Headers["Client-Type"];
 
-
             // declare accesstoken
             string accessToken;
             if (clientType == "Mobile") // mobile client
@@ -561,8 +551,6 @@ namespace API.Controllers
             {
                 return Ok(eventInfo.Value);
             }
-
-
         }
     }
 }

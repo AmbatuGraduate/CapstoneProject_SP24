@@ -1,14 +1,10 @@
-﻿
+﻿using Application.Calendar;
 using Domain.Enums;
-
-
-using Application.Calendar;
 
 namespace Application.Common.Interfaces.Persistence.Schedules
 {
-    public interface ITreeCalendarService 
+    public interface ITreeCalendarService
     {
-        
         // get all events
         Task<List<MyEvent>> GetEvents(string token, string calendarId);                                                 // get all events
 
@@ -33,5 +29,5 @@ namespace Application.Common.Interfaces.Persistence.Schedules
         string ConvertToJobWorkingStatusString(JobWorkingStatus jobWorkingStatus);                                      // convert to job working status string
 
         Task<int> NumberOfTasksToday(string token, string calendarId, string attendeeEmail);                            // get number of tasks today
-    }   
+    }
 }

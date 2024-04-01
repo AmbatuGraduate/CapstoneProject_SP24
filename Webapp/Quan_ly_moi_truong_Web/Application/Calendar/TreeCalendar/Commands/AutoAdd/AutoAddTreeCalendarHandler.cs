@@ -1,13 +1,9 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Persistence.Schedules;
-using Domain.Common.Errors;
-using Domain.Entities.Tree;
 using ErrorOr;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
-
 
 namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
 {
@@ -27,7 +23,6 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
 
         public async Task<ErrorOr<List<MyAddedEventResult>>> Handle(AutoAddTreeCalendarCommand request, CancellationToken cancellationToken)
         {
-
             List<MyAddedEventResult> eventResults = new List<MyAddedEventResult>();
 
             var accessToken = _jwtTokenGenerator.DecodeTokenToGetAccessToken(request.accessToken);
@@ -70,7 +65,6 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
 
                 var result = await _treeCalendarService.AddEvent(accessToken, request.calendarId, addedEvent);
                 eventResults.Add(new MyAddedEventResult(result));
-
             }
             return eventResults;
         }

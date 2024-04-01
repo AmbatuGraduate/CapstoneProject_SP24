@@ -1,5 +1,4 @@
-﻿
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Application.GoogleAuthentication.Common;
 using Application.GoogleAuthentication.Queries.GoogleAccessToken;
 using Application.Report.Commands.Create;
@@ -74,12 +73,12 @@ namespace API.Controllers
             (
                 accessToken,
                 request.IssuerEmail,
-                request.ReportSubject, 
+                request.ReportSubject,
                 request.ReportBody,
                 request.ExpectedResolutionDate,
                 request.ReportImpact
             );
-                var result = await mediator.Send(command);
+            var result = await mediator.Send(command);
             if (result.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: result.FirstError.Description);
@@ -225,7 +224,6 @@ namespace API.Controllers
             return Ok(result);
         }
 
-
         // get all reports that has been late
         [HttpGet]
         public async Task<IActionResult> GetAllLateReports()
@@ -259,7 +257,7 @@ namespace API.Controllers
                 accessToken = token.Value.accessToken;
             }
 
-            var result = await mediator.Send(new ListLateReportQuery(accessToken));
+            var result = await mediator.Send(new ListLateReportQuery());
             if (result.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "No reports found");
@@ -299,7 +297,7 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-            var command = new ReponseReportCommand(accessToken, request.ReportID, request.Response, request.Status); 
+            var command = new ReponseReportCommand(accessToken, request.ReportID, request.Response, request.Status);
             var result = await mediator.Send(command);
             if (result.IsError)
             {

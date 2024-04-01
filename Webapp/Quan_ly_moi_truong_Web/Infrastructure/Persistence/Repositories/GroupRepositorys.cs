@@ -6,11 +6,6 @@ using Domain.Entities.Deparment;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -66,7 +61,7 @@ namespace Infrastructure.Persistence.Repositories
             try
             {
                 var credential = GoogleCredential.FromAccessToken(accessToken);
-                var service = _directoryServiceFactory(credential); 
+                var service = _directoryServiceFactory(credential);
 
                 var request = service.Members.List(groupId);
                 var members = request.Execute().MembersValue;
@@ -228,7 +223,7 @@ namespace Infrastructure.Persistence.Repositories
                 webDbContext.SaveChanges();
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return false;
             }
@@ -243,7 +238,7 @@ namespace Infrastructure.Persistence.Repositories
                 webDbContext.SaveChanges();
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return false;
             }
@@ -263,7 +258,8 @@ namespace Infrastructure.Persistence.Repositories
             }
         }
 
-        public Departments GetGroupByEmail(string groupEmail) {
+        public Departments GetGroupByEmail(string groupEmail)
+        {
             return webDbContext.Departments.SingleOrDefault(group => group.DepartmentEmail.ToLower().Equals(groupEmail.ToLower()));
         }
     }

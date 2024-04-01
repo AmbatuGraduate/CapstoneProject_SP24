@@ -1,5 +1,4 @@
-﻿
-namespace Application.User.Common.Add
+﻿namespace Application.User.Common.Add
 {
     public class AddGoogleUser
     {

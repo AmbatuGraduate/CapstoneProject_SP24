@@ -11,10 +11,12 @@ namespace Application.Tree.Commands.Add
         IRequestHandler<AddTreeCommand, ErrorOr<AddTreeResult>>
     {
         private readonly ITreeRepository treeRepository;
+        private readonly IUserRepository userRepository;
 
-        public AddTreeHandler(ITreeRepository treeRepository)
+        public AddTreeHandler(ITreeRepository treeRepository, IUserRepository userRepository)
         {
             this.treeRepository = treeRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<ErrorOr<AddTreeResult>> Handle(AddTreeCommand request, CancellationToken cancellationToken)
@@ -24,6 +26,14 @@ namespace Application.Tree.Commands.Add
             {
                 return Errors.AddTree.DuplicateTreeCode;
             }
+
+            var userId = userRepository.GetAll().FirstOrDefault(x => x.Email == request.Email).Id;
+            
+            if(userId == null)
+            {
+                return Errors.User.NotExist;
+            }
+
             var tree = new Trees
             {
                 TreeId = Guid.NewGuid(),
@@ -35,7 +45,7 @@ namespace Application.Tree.Commands.Add
                 CutTime = request.CutTime,
                 TreeTypeId = request.TreeTypeId,
                 IntervalCutTime = request.IntervalCutTime,
-                UserId = request.UserId,
+                UserId = userId,
                 Note = request.Note,
             };
 

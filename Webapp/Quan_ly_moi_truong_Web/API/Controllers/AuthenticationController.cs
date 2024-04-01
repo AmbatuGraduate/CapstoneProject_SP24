@@ -95,7 +95,7 @@ namespace API.Controllers
 
             var query = mapper.Map<GoogleRefreshQuery>(token);
 
-            ErrorOr<GoogleRefreshResult> authResult = await mediator.Send(query);
+            ErrorOr<GoogleAuthenticationResult> authResult = await mediator.Send(query);
 
             if (authResult.IsError && authResult.FirstError == Errors.Authentication.ExpireRefreshToken)
                 return Problem(statusCode: StatusCodes.Status404NotFound, title: authResult.FirstError.Description);

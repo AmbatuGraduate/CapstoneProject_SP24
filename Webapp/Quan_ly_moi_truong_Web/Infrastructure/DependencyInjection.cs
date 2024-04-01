@@ -1,20 +1,21 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
+using Application.Common.Interfaces.Persistence.Notifiy;
 using Application.Common.Interfaces.Persistence.Schedules;
 using Application.Common.Interfaces.Services;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Gmail.v1;
-using Google.Apis.MapsPlaces.v1;
 using Google.Apis.Services;
-using Hangfire;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Persistence.Repositories.BackgroundTaskQueue;
 using Infrastructure.Persistence.Repositories.Calendar;
 using Infrastructure.Persistence.Repositories.Notification;
+using Infrastructure.Persistence.Repositories.Notification.Hubs;
+using Infrastructure.Persistence.Repositories.Notification.SubscribeTableDependencies;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -55,11 +56,19 @@ namespace Infrastructure
             services.AddSingleton<IHostedService, BackgroundQueueProcessor>();
             services.AddHttpClient<BackgroundQueueProcessor>();
 
-
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            // Add services dependency injection
             services.AddScoped<ISessionService, SessionService>();
-            services.AddScoped<INotifyService, NotifyService>();
-            services.AddScoped<NotifyService>();
+
+            // Add notification service
+            services.AddScoped<NotifyHub>();
+
+            services.AddSingleton<ISubscribeTableDependency, SubscribeNotificationTableDependency>();
+            services.AddSingleton<SubscribeNotificationTableDependency>();
+
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddSingleton<ISubscribeTableDependency, SubscribeNotificationTableDependency>();
+
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
@@ -95,7 +104,6 @@ namespace Infrastructure
                 });
             });
 
-
             // calendar service registration
             services.AddScoped<ITreeCalendarService, TreeCalendarService>();
 
@@ -107,13 +115,13 @@ namespace Infrastructure
             this IServiceCollection services)
         {
             services.AddDbContext<WebDbContext>(opts =>
-            {
+
                 /*                opts.UseSqlServer("Server=tcp:urban-sanitation.database.windows.net,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=adminServer;Password=Urbansanitation357;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
                 */
-                opts.UseSqlServer("Server=144.126.216.43,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=ad;Password=Urban123;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;");
-                opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            });
-
+                opts.UseSqlServer("Server=20.255.186.117,1433;Initial Catalog=UrbanSanitationDB;Persist Security Info=False;User ID=ad;Password=Urban3579;MultipleActiveResultSets=False;TrustServerCertificate=True;Connection Timeout=30;\r\n"),
+                ServiceLifetime.Scoped
+            //opts.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            );
 
             services.AddSignalR();
             return services;
@@ -124,7 +132,6 @@ namespace Infrastructure
             ConfigurationManager configuration
             )
         {
-
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings.SectionName, jwtSettings);
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Group.Common.Add_Update
+﻿namespace Application.Group.Common.Add_Update
 {
     public class UpdateGoogleGroup
     {

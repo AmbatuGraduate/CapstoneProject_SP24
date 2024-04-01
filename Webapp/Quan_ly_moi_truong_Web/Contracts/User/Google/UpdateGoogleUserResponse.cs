@@ -1,6 +1,4 @@
-﻿
-
-namespace Contract.User.Google
+﻿namespace Contract.User.Google
 {
     public record UpdateGoogleUserResponse
     (

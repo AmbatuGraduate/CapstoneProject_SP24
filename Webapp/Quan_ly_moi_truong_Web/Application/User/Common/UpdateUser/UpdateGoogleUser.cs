@@ -1,5 +1,4 @@
-﻿
-namespace Application.User.Common.UpdateUser
+﻿namespace Application.User.Common.UpdateUser
 {
     public class UpdateGoogleUser
     {

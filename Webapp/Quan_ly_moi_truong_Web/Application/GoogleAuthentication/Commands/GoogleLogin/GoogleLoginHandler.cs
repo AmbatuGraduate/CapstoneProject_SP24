@@ -68,7 +68,7 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                         //Save refresh token to DB
                         userRefreshTokenRepository.AddRefreshRoken(refreshToken);
 
-                        return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, token);
+                        return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, payload.Email ,token);
                     }
                 }
             }

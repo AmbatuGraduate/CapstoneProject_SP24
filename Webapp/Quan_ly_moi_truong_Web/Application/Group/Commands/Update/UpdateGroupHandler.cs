@@ -3,11 +3,6 @@ using Application.Group.Common;
 using Domain.Entities.Deparment;
 using ErrorOr;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Group.Commands.Update
 {
@@ -19,9 +14,10 @@ namespace Application.Group.Commands.Update
         {
             this.groupRepository = groupRepository;
         }
+
         public async Task<ErrorOr<GroupResult>> Handle(UpdateGroupCommand request, CancellationToken cancellationToken)
         {
-            var result = false ;
+            var result = false;
             await Task.CompletedTask;
             var updatedGroup = await groupRepository.UpdateGoogleGroup(request.accessToken, request.group);
             if (updatedGroup != null)

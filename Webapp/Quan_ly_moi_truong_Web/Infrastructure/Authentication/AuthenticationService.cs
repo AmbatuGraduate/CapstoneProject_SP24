@@ -3,7 +3,6 @@ using Application.Session.Token;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Flows;
 using Microsoft.Extensions.Options;
-using static System.Net.WebRequestMethods;
 
 namespace Infrastructure.Authentication
 {
@@ -15,6 +14,7 @@ namespace Infrastructure.Authentication
         private string clientId;
 
         private string clientSecret;
+
         private readonly string[] scopes = { "https://www.googleapis.com/auth/calendar" ,
                                              "https://www.googleapis.com/auth/admin.directory.group",
                                              "https://www.googleapis.com/auth/admin.directory.group.member",
@@ -29,6 +29,7 @@ namespace Infrastructure.Authentication
                                              "https://www.googleapis.com/auth/gmail.labels",
                                              "https://www.googleapis.com/auth/gmail.send",
                                              "openid", "profile", "email"};
+
         private string[] mobileScopes = { "https://www.googleapis.com/auth/calendar" ,
                                           "https://www.googleapis.com/auth/userinfo.email",
                                           "https://www.googleapis.com/auth/admin.directory.user",
@@ -39,6 +40,7 @@ namespace Infrastructure.Authentication
                                           "https://mail.google.com/",
                                           "https://www.googleapis.com/auth/gmail.send",
                                           "openid", "profile", "email"};
+
         private string redirect_Uri = "postmessage";
 
         public AuthenticationService(IOptions<GoogleApiSettings> googelApiSettings)

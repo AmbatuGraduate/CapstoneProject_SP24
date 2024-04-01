@@ -7,9 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Authentication\**" />
     <Compile Remove="Common\Errors\**" />
+    <Compile Remove="NotifyHub\**" />
+    <EmbeddedResource Remove="Authentication\**" />
     <EmbeddedResource Remove="Common\Errors\**" />
+    <EmbeddedResource Remove="NotifyHub\**" />
+    <None Remove="Authentication\**" />
     <None Remove="Common\Errors\**" />
+    <None Remove="NotifyHub\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,11 +30,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Authentication\Commands\" />
-    <Folder Include="NotifyHub\Common\" />
   </ItemGroup>
 
 </Project>

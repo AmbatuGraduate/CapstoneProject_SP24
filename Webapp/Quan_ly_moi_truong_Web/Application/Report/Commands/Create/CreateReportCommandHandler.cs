@@ -1,6 +1,4 @@
-﻿
-
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Application.Report.Common;
 using Domain.Entities.Report;
 using ErrorOr;
@@ -37,7 +35,7 @@ namespace Application.Report.Commands.Create
             var reportResult = await reportRepository.CreateReport(createReport);
 
             // add to db
-           
+
             reportRepository.AddReport(new Reports
             {
                 ReportId = reportDbId,

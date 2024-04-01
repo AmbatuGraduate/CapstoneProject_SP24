@@ -1,6 +1,4 @@
-﻿
-
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Application.User.Common.Add;
 using ErrorOr;
 using MediatR;

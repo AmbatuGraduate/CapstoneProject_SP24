@@ -14,11 +14,13 @@ namespace Infrastructure.Persistence.Repositories.Calendar
     {
         // Fields
         private readonly Func<GoogleCredential, CalendarService> _calendarServiceFactory;
+
         private readonly ITreeRepository _treeRepository;
         private readonly IUserRepository _userRepository;
 
         // Constants
         private const string TimeZone = "(GMT+07:00) Indochina Time - Ho Chi Minh City";
+
         private const string DefaultLocation = "800 Howard St., San Francisco, CA 94103";
         private const string ErrorMessage = "An error occurred: {0}";
 
@@ -29,7 +31,6 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             _treeRepository = treeRepository;
             _userRepository = userRepository;
         }
-
 
         // -------------------- Implementing ITreeCalendarService Interface --------------------
         // add event
@@ -61,7 +62,6 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         .ToList(),
                     ExtendedProperties = new Event.ExtendedPropertiesData
                     {
-
                         Private__ = new Dictionary<string, string>
                         {
                             {EventExtendedProperties.JobWorkingStatus, ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart)},
@@ -80,7 +80,6 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 return null;
             }
         }
-
 
         // update job status
         public async Task<bool> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
@@ -112,8 +111,6 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 return false;
             }
         }
-
-
 
         // update event
         public async Task<MyUpdatedEvent> UpdateEvent(string accessToken, string calendarId, MyUpdatedEvent myEvent, string eventId)
@@ -484,7 +481,5 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 _ => throw new ArgumentOutOfRangeException(nameof(calendarType), calendarType, null)
             };
         }
-
-
     }
 }

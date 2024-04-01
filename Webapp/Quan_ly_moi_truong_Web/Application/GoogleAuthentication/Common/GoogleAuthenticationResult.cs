@@ -6,6 +6,7 @@
         string name,
         string avatar,
         DateTime expire_in,
+        string email,
         string token
     );
 }

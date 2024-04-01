@@ -14,7 +14,7 @@ namespace Application.Tree.Commands.Add
         int IntervalCutTime,
         Guid TreeTypeId,
         string Note,
-        string UserId, // id user current login  -> FE input readonly -> nguoi dn hien tai hien tai
+        string Email,
         bool isExist
         ) : IRequest<ErrorOr<AddTreeResult>>;
 }

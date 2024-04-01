@@ -25,6 +25,5 @@ namespace Domain.Entities.Deparment
         public long DirectMembersCount { get; set; }
 
         public ICollection<Users>? Users { get; set; }
-
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-using Application.Common.Interfaces.Persistence.Schedules;
+﻿using Application.Common.Interfaces.Persistence.Schedules;
 using ErrorOr;
 using MediatR;
 
