@@ -6,10 +6,12 @@ namespace Infrastructure.Persistence.Repositories.Notification.Hubs
     public class NotifyHub : Hub
     {
         private readonly WebDbContext webDbContext;
+        protected IHubContext<NotifyHub> _context;
 
-        public NotifyHub(WebDbContext webDbContext)
+        public NotifyHub(WebDbContext webDbContext, IHubContext<NotifyHub> context)
         {
             this.webDbContext = webDbContext;
+            _context = context;
         }
 
         //Message to all
@@ -26,7 +28,7 @@ namespace Infrastructure.Persistence.Repositories.Notification.Hubs
             Console.WriteLine("checking send to: " + hubConns.Count);
             foreach (var hubConn in hubConns)
             {
-                await Clients.Client(hubConn.ConnectionId).SendAsync("ReceivedPersonalNotification", msg, user);
+                await _context.Clients.Client(hubConn.ConnectionId).SendAsync("ReceivedPersonalNotification", msg, user);
             }
         }
 

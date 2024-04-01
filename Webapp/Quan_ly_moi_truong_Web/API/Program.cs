@@ -3,7 +3,6 @@ using API.Middleware;
 using Application;
 using Infrastructure;
 using Infrastructure.Persistence.Repositories.Notification.Hubs;
-using Infrastructure.Persistence.Repositories.Notification.SubscribeTableDependencies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,12 +45,14 @@ app.UseAuthorization();
 
 app.UseMiddleware<RefreshTokenMiddleware>();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<NotifyHub>("/chatHub");
-});
+app.MapHub<NotifyHub>("/chatHub");
 
-app.UseSqlTableDependency<SubscribeNotificationTableDependency>();
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapHub<NotifyHub>("/chatHub");
+//});
+
+//app.UseSqlTableDependency<SubscribeNotificationTableDependency>();
 
 app.MapControllers();
 

@@ -17,6 +17,8 @@ namespace Application.Tree.Commands.AutoUpdate
 
         public async Task<ErrorOr<List<AddTreeResult>>> Handle(AutoUpdateTreeCommand request, CancellationToken cancellationToken)
         {
+            await Task.CompletedTask;
+
             var list = _treeRepository.GetAllTrees();
             var result = new List<AddTreeResult>();
             // check and auto update status isCut of tree
@@ -28,7 +30,6 @@ namespace Application.Tree.Commands.AutoUpdate
                     result.Add(new AddTreeResult(_treeRepository.UpdateTree(tree).TreeCode));
                 }
             }
-
             return result;
         }
     }

@@ -25,14 +25,12 @@ namespace API.Controllers
     {
         private readonly IMediator mediator;
         private readonly IMapper mapper;
-        private readonly INotifyService notifyService;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TreeController(IMediator mediator, IMapper mapper, INotifyService notifyService, IHttpContextAccessor httpContextAccessor)
+        public TreeController(IMediator mediator, IMapper mapper,IHttpContextAccessor httpContextAccessor)
         {
             this.mediator = mediator;
             this.mapper = mapper;
-            this.notifyService = notifyService;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -145,9 +143,6 @@ namespace API.Controllers
             {
                 trees.Add(mapper.Map<ListTreeResponse>(tree));
             }
-
-            // Use signalR
-            await notifyService.AutoCreateCalendar();
 
             return Ok(trees);
         }
