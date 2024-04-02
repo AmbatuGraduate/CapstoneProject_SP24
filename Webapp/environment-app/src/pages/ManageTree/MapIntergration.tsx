@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
-import { TREE_DETAIL, useApi } from "../../Api";
 import Marker from "../../../public/assets/marker.svg";
 
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
   defer
 ></script>;
-const AnyReactComponent = ({ text }) => (
+const AnyReactComponent = (props: any) => (
   <div>
     <img src={Marker} style={{ width: "30px" }} alt="" />
   </div>
@@ -20,10 +18,10 @@ export type MarkerType = {
 
 export default function SimpleMap() {
   // const [data, setData] = useState<any>();
-  const [treeLocation, setTreeLocation] = useState<MarkerType>({
-    lat: 0.0,
-    lng: 0,
-  });
+  // const [treeLocation, setTreeLocation] = useState<MarkerType>({
+  //   lat: 0.0,
+  //   lng: 0,
+  // });
   const defaultProps = {
     center: {
       lat: 16.041871,
@@ -51,7 +49,6 @@ export default function SimpleMap() {
           <AnyReactComponent
             lat={16.041871} // Lấy tọa độ lat từ treeLocation
             lng={108.216446} // Lấy tọa độ lng từ treeLocation
-            text="Tree Location" // Đặt text cho marker
           />
         }
       </GoogleMapReact>

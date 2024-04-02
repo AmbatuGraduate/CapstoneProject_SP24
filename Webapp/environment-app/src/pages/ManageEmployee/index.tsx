@@ -3,11 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { EMPLOYEE_LIST, EMPLOYEE_DELETE, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
-import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
-import { BiSolidEdit } from "react-icons/bi";
 import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageEmployee = () => {

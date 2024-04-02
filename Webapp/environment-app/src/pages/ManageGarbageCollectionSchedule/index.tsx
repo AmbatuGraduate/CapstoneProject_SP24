@@ -3,11 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { TREE_TRIM_SCHEDULE, useApi, TREE_TRIM_SCHEDULE_DELETE } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
-import { dayFormat, taskStatus, timeFormat } from "../../utils";
+import { taskStatus, timeFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 
-import { BiSolidEdit } from "react-icons/bi";
 import { MdAddCircleOutline } from "react-icons/md";
 
 
