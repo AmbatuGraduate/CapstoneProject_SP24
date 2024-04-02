@@ -187,6 +187,9 @@ export const FormBase = (props: Props) => {
     const data: Record<string, unknown> = {};
     fields.forEach((f) => {
       data[f.key] = (e.target as any)?.[f.key].value;
+      if (f.key == "reportImpact") {
+        data[f.key] = Number((e.target as any)?.[f.key].value);
+      }
     });
     console.log(data);
     onSave && onSave(data);

@@ -92,9 +92,9 @@ export const ManageTree = () => {
       width: "40%",
     },
     {
-      header: "Giống Cây",
+      header: "Loại Cây",
       accessorFn(row) {
-        return <h6 className="shortText">{row.cultivar}</h6>;
+        return <h6 className="shortText">{row.treeType}</h6>;
       },
       width: "15%",
     },
