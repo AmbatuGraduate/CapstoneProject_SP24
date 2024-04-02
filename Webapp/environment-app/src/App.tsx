@@ -12,6 +12,10 @@ import { ManageCleaningSchedule } from "./pages/ManageCleaningSchedule";
 import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
 import { DetailEmployee } from "./pages/ManageEmployee/Detail";
 import { DetailTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule/Detail";
+import { ManageReport } from "./pages/ManageReport";
+import { CreateReport } from "./pages/ManageReport/Create";
+import { DetailReport } from "./pages/ManageReport/Detail";
+import { ResponseReport } from "./pages/ManageReport/Response";
 
 function App() {
   const router = createBrowserRouter([
@@ -21,7 +25,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <Manage />,
+          element: <ManageReport />,
         },
         {
           path: "manage-tree",
@@ -63,6 +67,18 @@ function App() {
           path: "manage-garbagecollection-schedule",
           element: <ManageGarbageCollectionSchedule />,
         },
+        {
+          path: "/create",
+          element: <CreateReport />,
+        },
+        {
+          path: "manage-report/:id",
+          element: <DetailReport />,
+        },
+        {
+          path: "response",
+          element: <ResponseReport />,
+        }
       ],
     },
     {
