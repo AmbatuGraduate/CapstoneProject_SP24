@@ -1,54 +1,101 @@
 import { Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { TREE_TRIM_SCHEDULE } from "../../Api";
+import { TREE_TRIM_SCHEDULE, useApi, TREE_TRIM_SCHEDULE_DELETE } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
-import { taskStatus, timeFormat } from "../../utils";
-// import ModalDelete from "../../Components/Modals/ModalDelete";
+import { dayFormat, taskStatus, timeFormat } from "../../utils";
+import ModalDelete from "../../Components/Modals/ModalDelete";
+import { useRef, useState } from "react";
+
+import { BiSolidEdit } from "react-icons/bi";
+import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageCleaningSchedule = () => {
   const navigate = useNavigate();
 
+  const ref = useRef<any>();
+
+  const handleDelete = async (id: string) => {
+    await useApi.delete(TREE_TRIM_SCHEDULE_DELETE.replace(":id", id));
+    ref.current?.reload();
+  };
+
   const columns: Column[] = [
-    // {
-    //   header: "Chỉnh sửa",
-    //   accessorFn(row) {
-    //     return (
-    //       <div >
-    //         <Link to={`/manage-tree/${row?.treeCode}/update`}>
-    //           <button type="button" className="btn btn-click">
-    //             <BiSolidEdit />
-    //           </button>
-    //         </Link>
-    //         <button type="button" className="btn btn-click" onClick={() => { }}>
-    //           <ModalDelete />
-    //         </button>
-    //       </div>
-    //     );
-    //   },
-    // },
     {
-      header: "Thời gian",
+      header: "",
       accessorFn(row) {
-        return <h6 className="shortText" >{timeFormat(row.myEvent.start) + "-" + timeFormat(row.myEvent.end)}</h6>;
+        return (
+          <div>
+            <button type="button" className="btn btn-click" onClick={() => { }}>
+              <ModalDelete handleDelete={() => handleDelete(row.id)} />
+            </button>
+          </div>
+        );
       },
+      width: "2%",
     },
     {
-      header: "Tiêu đề",
+      header: "Thời Gian",
       accessorFn(row) {
-        return <h6 className="shortText"><Link className="linkCode" style={{ fontWeight: 'bold', textAlign: 'center' }} to={`/manage-tree/${row.treeCode}`}>{row.myEvent.summary}</Link></h6>;
+        return (
+          <h6 className="shortText">
+            {timeFormat(row.start) + "-" + timeFormat(row.end)}
+          </h6>
+        );
       },
+      width: "10%",
     },
     {
-      header: "Vị trí",
+      header: "Tiêu Đề",
       accessorFn(row) {
-        return <h6>{row.myEvent.location}</h6>;
+        return (
+          <h6 className="shortText">
+            <Link
+              className="linkCode"
+              style={{ fontWeight: "bold", textAlign: "center" }}
+              to={`/manage-tree/${row.treeCode}`}
+            >
+              {row.summary}
+            </Link>
+          </h6>
+        );
       },
+      width: "15%",
     },
     {
-      header: "Trạng thái",
+      header: "Nhân Viên Thực Hiện",
       accessorFn(row) {
-        return <h6 className="shortText" style={{ color: taskStatus(row.myEvent.extendedProperties.privateProperties.JobWorkingStatus).color, fontWeight: "bold" }}>{taskStatus(row.myEvent.extendedProperties.privateProperties.JobWorkingStatus).text}</h6>;
+        return <h6>{row.attendees}</h6>;
+      },
+      width: "20%",
+    },
+    {
+      header: "Địa Chỉ Cụ Thể",
+      accessorFn(row) {
+        return <h6>{row.location}</h6>;
+      },
+      width: "35%",
+    },
+    {
+      header: "Trạng Thái",
+      accessorFn(row) {
+        return (
+          <h6
+            className="shortText"
+            style={{
+              color: taskStatus(
+                row.extendedProperties.privateProperties.JobWorkingStatus
+              ).color,
+              fontWeight: "bold",
+            }}
+          >
+            {
+              taskStatus(
+                row.extendedProperties.privateProperties.JobWorkingStatus
+              ).text
+            }
+          </h6>
+        );
       },
     },
   ];
@@ -61,9 +108,14 @@ export const ManageCleaningSchedule = () => {
         bottom={
           <Button
             variant="success"
-            style={{ backgroundColor: "hsl(94, 59%, 35%)", border: "none", padding: "0.5rem 1rem" }}
+            style={{
+              backgroundColor: "hsl(94, 59%, 35%)",
+              border: "none",
+              padding: "0.5rem 1rem",
+            }}
             onClick={() => navigate("/manage-tree/create")}
           >
+            <MdAddCircleOutline className="iconAdd" />
             Thêm lịch
           </Button>
         }

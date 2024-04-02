@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./style.scss";
 
 // Imported Icons
@@ -30,7 +30,7 @@ const Sidebar = () => {
       <div className="menuDiv p-0">
         <ul className="menuLists grid">
           <li className="listItem">
-            <NavLink to="manage-report" className="menuLink flex">
+            <NavLink to="/" className="menuLink flex">
               <IoHomeOutline className="icon" />
               <span className="smallText d-none d-md-inline ">
                 Trang chủ
@@ -39,7 +39,7 @@ const Sidebar = () => {
           </li>
 
           <li className="listItem">
-            <NavLink to="manage-report" className="menuLink flex">
+            <NavLink to="/" className="menuLink flex">
               <TbLayoutDashboard className="icon" />
               <span className="smallText d-none d-md-inline ">
                 Quản lý báo cáo

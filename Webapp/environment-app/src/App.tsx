@@ -8,11 +8,10 @@ import { CreateTree } from "./pages/ManageTree/Create";
 import { DetailTree } from "./pages/ManageTree/Detail";
 import { UpdateTree } from "./pages/ManageTree/Update";
 import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
-import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
 import { ManageCleaningSchedule } from "./pages/ManageCleaningSchedule";
-import { ManageReport } from "./pages/ManageReport";
-import { CreateReport } from "./pages/ManageReport/Create";
-import { DetailReport } from "./pages/ManageReport/Detail";
+import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
+import { DetailEmployee } from "./pages/ManageEmployee/Detail";
+import { DetailTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule/Detail";
 
 function App() {
   const router = createBrowserRouter([
@@ -45,8 +44,16 @@ function App() {
           element: <ManageEmployee />,
         },
         {
+          path: "manage-employee/:email",
+          element: <DetailEmployee />,
+        },
+        {
           path: "manage-treetrim-schedule",
           element: <ManageTreeTrimSchedule />,
+        },
+        {
+          path: "manage-treetrim-schedule/:id",
+          element: <DetailTreeTrimSchedule />,
         },
         {
           path: "manage-cleaning-schedule",
@@ -55,18 +62,6 @@ function App() {
         {
           path: "manage-garbagecollection-schedule",
           element: <ManageGarbageCollectionSchedule />,
-        },
-        {
-          path: "manage-report",
-          element: <ManageReport />,
-        },
-        {
-          path: "manage-report/create",
-          element: <CreateReport />,
-        },
-        {
-          path: "manage-report/:id",
-          element: <DetailReport />,
         },
       ],
     },

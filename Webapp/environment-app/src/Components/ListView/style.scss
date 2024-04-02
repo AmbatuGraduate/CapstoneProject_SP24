@@ -6,4 +6,17 @@
   .listing {
     margin-top: 1rem;
   }
+  .filterDate {
+    vertical-align: middle;
+    button {
+      border: none;
+      .icon {
+        font-size: var(--biggestFontSize);
+      }
+    }
+    .dateString {
+      font-size: var(--h1FontSize);
+      font-weight: 500;
+    }
+  }
 }

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { EMPLOYEE_LIST, TREE_ADD, TREE_TYPE_LIST, useApi } from "../../Api";
+import { CULTIVAR_LIST, TREE_ADD, TREE_TYPE_LIST, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
@@ -8,11 +8,11 @@ import { useCookies } from "react-cookie";
 export const CreateTree = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
-  const [, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [cutTime, setCutTime] = useState<Date | null>(null);
   const [plantTime, setPlantTime] = useState<Date | null>(null);
   const [intervalCutTime, setIntervalCutTime] = useState<number>(0);
-  const [token] = useCookies(["accessToken"]);
+  const [token, setToken] = useCookies(["accessToken"]);
   const [address, setAddress] = useState<string | null>("");
 
   const fields: Field[] = [
@@ -80,7 +80,7 @@ export const CreateTree = () => {
       },
     },
     {
-      label: "Khoảng thời gian cắt (tháng)",
+      label: "Khoảng thời gian cắt",
       formType: "input",
       key: "intervalCutTime",
       value: intervalCutTime,
@@ -95,14 +95,24 @@ export const CreateTree = () => {
         setCutTime(newCutTime);
       },
     },
+    // {
+    //   label: "Loại cây",
+    //   formType: "select",
+    //   key: "treeTypeId",
+    //   optionExtra: {
+    //     url: TREE_TYPE_LIST,
+    //     _key: "treeTypeName",
+    //     _value: "treeTypeId",
+    //   },
+    // },
     {
-      label: "Loại cây",
+      label: "Giống cây",
       formType: "select",
-      key: "treeTypeId",
+      key: "cultivarId",
       optionExtra: {
-        url: TREE_TYPE_LIST,
-        _key: "treeTypeName",
-        _value: "treeTypeId",
+        url: CULTIVAR_LIST,
+        _key: "cultivarName",
+        _value: "cultivarId",
       },
       googleAddress: false,
     },
@@ -110,14 +120,6 @@ export const CreateTree = () => {
       label: "Ghi chú",
       formType: "textarea",
       key: "note",
-      googleAddress: false,
-      placeholder: "Ví dụ: Cần lưu ý...",
-    },
-    {
-      value: JSON.parse(token.accessToken).name,
-      label: "Người phụ trách",
-      formType: "input",
-      key: "userId",
       googleAddress: false,
     },
   ];
@@ -130,7 +132,9 @@ export const CreateTree = () => {
         ...data,
         cutTime: dateConstructor(data.cutTime),
         plantTime: dateConstructor(data.plantTime),
-        userId: JSON.parse(token.accessToken).name,
+        updateBy: JSON.parse(token.accessToken).name,
+        createBy: JSON.parse(token.accessToken).name,
+        updateDate: new Date(),
         isExist: true,
       });
       ref.current?.reload();
