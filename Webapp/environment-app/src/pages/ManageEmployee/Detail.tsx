@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { TREE_TRIM_SCHEDULE_DELETE, EMPLOYEE_DETAIL, useApi, TREE_TRIM_SCHEDULE, EMPLOYEE_SCHEDULE } from "../../Api";
+import { TREE_TRIM_SCHEDULE_DELETE, EMPLOYEE_DETAIL, useApi, EMPLOYEE_SCHEDULE } from "../../Api";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { taskStatus, timeFormat, dayFormat } from "../../utils";
 import { ListView } from "../../Components/ListView";
-import { MdAddCircleOutline } from "react-icons/md";
 
 export const DetailEmployee = () => {
   const navigate = useNavigate();

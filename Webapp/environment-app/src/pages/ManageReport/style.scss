@@ -1,0 +1,51 @@
+.detail {
+    &-cover-report {
+        display: flex;
+    }
+    &-content {
+        &-left {
+            min-width: 50px;
+            margin-right: 10px;
+        }
+        &-right {
+            &.title {
+                font-weight: 600;
+                font-size: x-large;
+            }
+            &.email {
+                font-weight: 500;
+                font-size: medium;
+            }
+            span {
+                &.resolved {
+                    background-color: greenyellow;
+                    padding: 2px 5px;
+                    border-radius: 10px;
+                    color: green;
+                    font-weight: bold;
+                }
+                &.unresolved {
+                    background-color: pink;
+                    padding: 2px 5px;
+                    border-radius: 10px;
+                    color: red;
+                    font-weight: bold;
+                }
+            }
+            span {
+                &.low {
+                    color: #0b8b36;
+                    font-weight: bold;
+                }
+                &.medium {
+                    color: #e7a618;
+                    font-weight: bold;
+                }
+                &.high {
+                    color: #a30b0b;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
