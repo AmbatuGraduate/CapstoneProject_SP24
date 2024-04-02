@@ -9,5 +9,7 @@
         public string Department { get; set; }
         public string PhoneNumber { get; set; }
         public string Role { get; set; }
+        public DateOnly BirthDate { get; set; }
+        public string Address {  get; set; }
     }
 }

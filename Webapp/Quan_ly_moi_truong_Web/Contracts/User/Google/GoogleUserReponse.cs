@@ -8,6 +8,8 @@
          string Picture,
          string Department,
          string PhoneNumber,
-         string Role
+         string Role,
+         string address,
+         string birthDate
     );
 }

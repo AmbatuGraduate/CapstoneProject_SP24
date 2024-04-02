@@ -16,6 +16,9 @@ namespace Application.Common.Interfaces.Persistence
         void Add(Users user);
 
         void Update(Users user);
+        string GetDepartmentNameById(string departmentId);
+        string GetRoleNameById(string roleId);
+        Task<string> GetGoogleUserImage(string accessToken, string userEmail);
 
         Task<List<GoogleUser>> GetGoogleUsers(string accessToken);
 

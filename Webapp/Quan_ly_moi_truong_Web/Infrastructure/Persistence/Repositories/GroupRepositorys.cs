@@ -13,11 +13,13 @@ namespace Infrastructure.Persistence.Repositories
     {
         private readonly WebDbContext webDbContext;
         private readonly Func<GoogleCredential, DirectoryService> _directoryServiceFactory;
+        private readonly IUserRepository _userRepository;
 
-        public GroupRepositorys(WebDbContext webDbContext, Func<GoogleCredential, DirectoryService> directoryServiceFactory)
+        public GroupRepositorys(WebDbContext webDbContext, Func<GoogleCredential, DirectoryService> directoryServiceFactory, IUserRepository userRepository)
         {
             this.webDbContext = webDbContext;
             _directoryServiceFactory = directoryServiceFactory;
+            _userRepository = userRepository;
         }
 
         public List<Departments> GetAllGroups()
@@ -60,16 +62,31 @@ namespace Infrastructure.Persistence.Repositories
             List<GoogleUser> users = new List<GoogleUser>();
             try
             {
+                var allGoogleUsers = _userRepository.GetGoogleUsers(accessToken);
+                var allDBUsers = _userRepository.GetAll();
+
                 var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _directoryServiceFactory(credential);
 
                 var request = service.Members.List(groupId);
                 var members = request.Execute().MembersValue;
-                users = members.Select(member => new GoogleUser
+                foreach (var member in members)
                 {
-                    Id = member.Id,
-                    Email = member.Email
-                }).ToList();
+                    var memberDB = allDBUsers.FirstOrDefault(x => x.Email.Equals(member.Email, StringComparison.OrdinalIgnoreCase));
+                    var memberGoogle = allGoogleUsers.Result.FirstOrDefault(x => x.Email.Equals(member.Email, StringComparison.OrdinalIgnoreCase));
+                    users.Add(
+                        new GoogleUser()
+                        {
+                            Id = member.Id,
+                            Email = member.Email,
+                            Picture = _userRepository.GetGoogleUserImage(accessToken, member.Email).Result,
+                            Department = _userRepository.GetDepartmentNameById(memberDB.DepartmentId),
+                            PhoneNumber = memberGoogle.PhoneNumber,
+                            Role = _userRepository.GetRoleNameById(memberDB.RoleId.ToString()),
+                            BirthDate = memberGoogle.BirthDate,
+                            Address = memberGoogle.Address
+                        });
+                }
                 return users;
             }
             catch (Exception e)
