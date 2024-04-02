@@ -27,5 +27,9 @@ export const ClEANING_SCHEDULE = "/Calendar/GetAllCalendarEvents?calendarTypeEnu
 
 export const STREET_LIST = "Street/Get"
 export const LOGIN = "/auth/google"
-export const REPORT_LIST = "/Report/GetAllReports"
+
+export const REPORT_LIST =  "/Report/GetReportFormats"
+export const CREATE_REPORT = "/Report/CreateReport"
+export const DETAIL_REPORT = "/Report/GetReportById/?id=:id"
+export const RESPONSE_REPORT = "/Report/ResponseReport"
 
