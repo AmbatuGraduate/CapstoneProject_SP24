@@ -24,7 +24,10 @@ namespace Application.User.Commands.AddToGoogle
                 Email = request.Email,
                 Name = request.Name,
                 FamilyName = request.FamilyName,
-                Password = request.Password
+                Password = request.Password,
+                PhoneNumber = request.phone,
+                Address = request.address,
+                BirthDate = DateOnly.Parse(request.birthDate),
             };
 
             var userResult = await userRepository.AddGoogleUser(AddGoogleUser);

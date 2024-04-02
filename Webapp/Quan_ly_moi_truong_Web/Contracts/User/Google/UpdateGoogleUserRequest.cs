@@ -5,6 +5,9 @@
         string Name,
         string FamilyName,
         string Email,
-        string Password
+        string Password,
+        string phone,
+        string address,
+        string birthDate
         );
 }
