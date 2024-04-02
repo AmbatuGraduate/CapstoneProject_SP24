@@ -1,12 +1,13 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
+import { TREE_DETAIL, useApi } from "../../Api";
 import Marker from "../../../public/assets/marker.svg";
 
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
   defer
 ></script>;
-const AnyReactComponent = ({ text }: any) => (
+const AnyReactComponent = ({ text }) => (
   <div>
     <img src={Marker} style={{ width: "30px" }} alt="" />
   </div>

@@ -34,15 +34,15 @@ function ModalDelete(props: Props) {
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>{title || "Alert"}</Modal.Title>
+          <Modal.Title>{title || "Cảnh báo"}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{description || "Bạn có chắc chắn muốn xóa?"}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Hủy
           </Button>
           <Button variant="primary" onClick={onDelete}>
-            Delete
+            Xóa
           </Button>
         </Modal.Footer>
       </Modal>

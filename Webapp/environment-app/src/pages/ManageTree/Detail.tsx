@@ -43,98 +43,67 @@ export const DetailTree = () => {
       <div className="map col-md-6">
         <SimpleMap />
       </div>
-      <div className="tree-detail-content col-md-6">
-        <div className="tree-detail-cover">
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Mã số cây: </div>
-            <div className="tree-detail-content-child-value">
+      <div className="detail-content col-md-6">
+        <div className="detail-cover">
+          <div className="detail-content-parent">
+            <div className="detail-content-child-label">Mã số cây: </div>
+            <div className="detail-content-child-value">
               {data?.treeCode}
             </div>
           </div>
         </div>
 
-        <div className="tree-detail-cover">
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Địa chỉ: </div>
-            <div className="tree-detail-content-child-value">
+        <div className="detail-cover">
+          <div className="detail-content-parent">
+            <div className="detail-content-child-label">Tên đường: </div>
+            <div className="detail-content-child-value">
               {data?.streetName}
             </div>
           </div>
         </div>
 
-        <div className="tree-detail-cover">
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Loại cây: </div>
-            <div className="tree-detail-content-child-value">
+        <div className="detail-cover">
+          <div className="detail-content-parent">
+            <div className="detail-content-child-label">Loại cây: </div>
+            <div className="detail-content-child-value">
               {data?.treeType}
             </div>
           </div>
         </div>
 
-        <div className="tree-detail-cover">
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">
+        <div className="detail-cover">
+          <div className="detail-content-parent">
+            <div className="detail-content-child-label">
               Đường kính thân:{" "}
             </div>
-            <div className="tree-detail-content-child-value">
+            <div className="detail-content-child-value">
               {data?.bodyDiameter}
             </div>
           </div>
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Tán lá: </div>
-            <div className="tree-detail-content-child-value">
+          <div className="detail-content-parent">
+            <div className="detail-content-child-label">Tán lá: </div>
+            <div className="detail-content-child-value">
               {data?.leafLength}
             </div>
           </div>
         </div>
 
-        <div className="tree-detail-cover">
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">
+        <div className="detail-cover">
+          <div className="detail-content-parent">
+            <div className="detail-content-child-label">
               Thời điểm trồng:{" "}
             </div>
-            <div className="tree-detail-content-child-value">
+            <div className="detail-content-child-value">
               {dayFormat(data?.plantTime)}
             </div>
           </div>
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">
+          <div className="detail-content-parent">
+            <div className="detail-content-child-label">
               Thời điểm cắt:{" "}
             </div>
-            <div className="tree-detail-content-child-value">
+            <div className="detail-content-child-value">
               {dayFormat(data?.cutTime)}
             </div>
-          </div>
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">
-              Khoảng thời gian cắt:{" "}
-            </div>
-            <div className="tree-detail-content-child-value">
-              {dayFormat(data?.intervalCutTime)}
-            </div>
-          </div>
-        </div>
-
-        <div className="tree-detail-cover">
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Trạng thái: </div>
-            <div className="tree-detail-content-child-value">{data?.isCut ? "Đã cắt" : "Cần Cắt"}</div>
-          </div>
-        </div>
-
-        <div className="tree-detail-cover">
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">
-              Người phụ trách:{" "}
-            </div>
-            <div className="tree-detail-content-child-value">{data?.user}</div>
-          </div>
-        </div>
-
-        <div className="tree-detail-cover">
-          <div className="tree-detail-content-parent">
-            <div className="tree-detail-content-child-label">Ghi chú: </div>
-            <div className="tree-detail-content-child-value">{data?.note}</div>
           </div>
         </div>
 
@@ -146,7 +115,7 @@ export const DetailTree = () => {
           >
             Trở về
           </Button>
-          <Link to={`/manage-tree/${id}/update`}>
+          <Link to={`/manage-tree/${data?.treeCode}/update`}>
             <Button className="btnLink" variant="success">
               Cập nhật
             </Button>

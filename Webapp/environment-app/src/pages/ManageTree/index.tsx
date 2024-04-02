@@ -5,9 +5,9 @@ import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
-// import { BiSolidEdit } from "react-icons/bi";
+import { BiSolidEdit } from "react-icons/bi";
 import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageTree = () => {
@@ -59,7 +59,7 @@ export const ManageTree = () => {
       accessorFn(row) {
         return (
           <div>
-            <button type="button" className="btn btn-click" onClick={() => {}}>
+            <button type="button" className="btn btn-click" onClick={() => { }}>
               <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
             </button>
           </div>
@@ -89,7 +89,7 @@ export const ManageTree = () => {
       accessorFn(longRow) {
         return <h6>{longRow.streetName}</h6>;
       },
-      width: "40%",
+      width: "35%",
     },
     {
       header: "Loại Cây",

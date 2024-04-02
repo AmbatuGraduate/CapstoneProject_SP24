@@ -37,6 +37,10 @@
       }
       .shortText {
         text-align: center;
+        img {
+          height: 10rem;
+          width: auto;
+        }
       }
       .linkCode {
         color: var(--PrimaryColor);
@@ -112,10 +116,10 @@
   button {
     --bs-btn-border-radius: 2rem;
     height: 3.5rem;
+    font-weight: bold;
   }
-  .iconAdd{
-    font-size: var(--h1FontSize);
+  .iconAdd {
+    font-size: 2rem;
     margin-right: 0.25rem;
   }
 }
-

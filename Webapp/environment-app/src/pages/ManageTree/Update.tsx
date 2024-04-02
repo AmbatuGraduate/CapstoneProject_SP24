@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  CULTIVAR_LIST,
-  EMPLOYEE_LIST,
-  TREE_DETAIL,
-  TREE_TYPE_LIST,
-  TREE_UPDATE,
-  useApi,
-} from "../../Api";
+import { CULTIVAR_LIST, TREE_DETAIL, TREE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor, dayFormat } from "../../utils";
 import { useCookies } from "react-cookie";
@@ -16,12 +9,11 @@ export const UpdateTree = () => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
   const [data, setData] = useState<any>();
-  const [token] = useCookies(["accessToken"]);
+  const [token, setToken] = useCookies(["accessToken"]);
   const [address, setAddress] = useState<string | null>("");
 
   const fetch = async () => {
     try {
-      console.log(id);
       const data = await useApi.get(TREE_DETAIL.replace(":id", id));
       setData(data.data);
     } catch (error) {
@@ -39,6 +31,7 @@ export const UpdateTree = () => {
       formType: "input",
       key: "treeCode",
       defaultValue: data?.treeCode,
+      disabled: true,
     },
     {
       label: "Tuyến đường",
@@ -52,13 +45,13 @@ export const UpdateTree = () => {
       },
     },
     {
-      label: "Loại cây",
+      label: "Giống cây",
       formType: "select",
-      key: "treeTypeId",
+      key: "cultivarId",
       optionExtra: {
-        url: TREE_TYPE_LIST,
-        _key: "treeTypeName",
-        _value: "treeTypeId",
+        url: CULTIVAR_LIST,
+        _key: "cultivarName",
+        _value: "cultivarId",
       },
     },
     {
@@ -86,16 +79,6 @@ export const UpdateTree = () => {
       defaultValue: dayFormat(data?.intervalCutTime),
     },
     {
-      label: "Người phụ trách",
-      formType: "select",
-      key: "userId",
-      optionExtra: {
-        url: EMPLOYEE_LIST,
-        _key: "name",
-        _value: "id",
-      },
-    },
-    {
       label: "Ghi chú",
       formType: "textarea",
       key: "note",
@@ -104,13 +87,12 @@ export const UpdateTree = () => {
   ];
 
   const handleSubmit = async (data: Record<string, unknown>) => {
-    await useApi.put(TREE_UPDATE.replace(":id", id), {
+    await useApi.put(TREE_UPDATE, {
       ...data,
       plantTime: dateConstructor(data.plantTime),
       updateBy: JSON.parse(token.accessToken).name,
       isExist: true,
     });
-    navigate(-1);
     console.log("UpdateTree", data);
   };
 
