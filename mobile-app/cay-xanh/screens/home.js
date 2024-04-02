@@ -13,13 +13,15 @@ export default function Home() {
 
     const [connection, setConnection] = useState(null);
     const [notifications, setNotifications] = useState([]);
+    const [loadingNotif, setLoadingNotif] = useState(false);
 
     const fetchNotifications = async () => {
+        setLoadingNotif(true);
         try {
             var username = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             const atoken = await AsyncStorage.getItem("@accessToken");
             if (atoken !== null) {
-                api.get(`http://192.168.1.7:45455/api/Notification/GetByUsername/${username}`, {
+                api.get(`https://vesinhdanang.xyz:7024/api/Notification/GetByUsername/${username}`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${atoken}`,
@@ -28,22 +30,26 @@ export default function Home() {
                 })
                     .then((res) => {
                         setNotifications(res.data);
+                        setLoadingNotif(false);
                     })
                     .catch((error) => {
                         console.log('There has been a problem with fetch operation: ', error.message);
+                        setLoadingNotif(false);
                     });
             } else {
                 console.log('token null');
+                setLoadingNotif(false);
             }
         } catch (error) {
             console.error(error);
+            setLoadingNotif(false);
         }
     }
 
 
     useEffect(() => {
         const newConnection = new signalR.HubConnectionBuilder()
-            .withUrl('http://192.168.1.7:45455/chatHub')
+            .withUrl('https://vesinhdanang.xyz:7024/chatHub')
             .configureLogging(signalR.LogLevel.Information)
             .build();
 
@@ -118,7 +124,7 @@ export default function Home() {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             const atoken = await AsyncStorage.getItem("@accessToken");;
             if (atoken !== null) {
-                api.get(`http://192.168.1.7:45455/api/Calendar/NumberOfEventsUser?calendarTypeEnum=1&attendeeEmail=${useremail}`, {
+                api.get(`https://vesinhdanang.xyz:7024/api/Calendar/NumberOfEventsUser?calendarTypeEnum=1&attendeeEmail=${useremail}`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${atoken}`,
@@ -198,29 +204,30 @@ export default function Home() {
 
             </View>
             <View style={styles.notif}>
+                {loadingNotif ? <ActivityIndicator size="large" color="lightgreen" /> : (
 
-                <FlatList
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}
-                    data={notifications}
-                    keyExtractor={(item, index) => index.toString()}
-                    contentContainerStyle={{ paddingBottom: 20 }}
-                    initialNumToRender={5}
-                    maxToRenderPerBatch={10}
-                    windowSize={10}
-                    renderItem={({ item }) => <View style={styles.notifButton}>
-                        <View>
-                            <Text style={styles.taskText}>
-                                {item.message}
+                    <FlatList
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        data={notifications}
+                        keyExtractor={(item, index) => index.toString()}
+                        contentContainerStyle={{ paddingBottom: 20 }}
+                        initialNumToRender={5}
+                        maxToRenderPerBatch={10}
+                        windowSize={10}
+                        renderItem={({ item }) => <View style={styles.notifButton}>
+                            <View>
+                                <Text style={styles.taskText}>
+                                    {item.message}
 
-                            </Text>
-                            <Text style={styles.dateText}>{item.notificationDateTime}</Text>
+                                </Text>
+                                <Text style={styles.dateText}>{item.notificationDateTime}</Text>
 
-                        </View>
+                            </View>
 
-                    </View>}
-                />
-
+                        </View>}
+                    />
+                )}
             </View>
 
 

@@ -47,7 +47,7 @@ export default function ReportForm({ onFormSuccess }) {
 
                     // local test: http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=
                     // server:     https://vesinhdanang.xyz:7024/api/Report/CreateReport
-                    api.post('http://192.168.1.7:45455/api/Report/CreateReport', {
+                    api.post('https://vesinhdanang.xyz:7024/api/Report/CreateReport', {
                         accessToken: accessToken,
                         issuerEmail: issuerEmail,
                         reportSubject: values.reportSubject,

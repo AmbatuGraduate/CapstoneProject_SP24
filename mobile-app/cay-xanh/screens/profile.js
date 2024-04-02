@@ -22,7 +22,7 @@ export default function Profile({ navigation }) {
                 var email = user?.email;
                 var token = user?.token; // get token from user object
                 try {
-                    const res = await api.get(`http://192.168.1.7:45455/api/User/GetGoogleUser?email=${email}`, {
+                    const res = await api.get(`https://vesinhdanang.xyz:7024/api/User/GetGoogleUser?email=${email}`, {
                         headers: {
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${token}`,
