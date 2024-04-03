@@ -18,7 +18,7 @@ namespace Application.Common.Interfaces.Persistence
         Task<ReportFormat> GetReportById(string accessToken, string id);                                                  // get by id
 
         // db
-        void AddReport(Reports report);
+        Task AddReport(Reports report);
 
         List<Reports> GetAllReports();
     }

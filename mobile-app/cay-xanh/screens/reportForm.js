@@ -12,7 +12,7 @@ import { api } from "../shared/api";
 const ReportSchema = yup.object({
     reportSubject: yup.string().required('Tiêu đề không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
     reportBody: yup.string().required('Nội dung báo cáo không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
-    reportImpact: yup.string().required('Mức độ ảnh hưởng là bắt buộc').test('is-impact', 'Mức độ ảnh hưởng phải từ 0 đến 2', (value) => {
+    reportImpact: yup.string().required('Mức độ ảnh hưởng là bắt buộc').test('is-impact', 'Chọn mức độ ảnh hưởng', (value) => {
         const parsedValue = parseInt(value, 10);
         return parsedValue >= 0 && parsedValue <= 2;
     }),
@@ -47,7 +47,7 @@ export default function ReportForm({ onFormSuccess }) {
 
                     // local test: http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=
                     // server:     https://vesinhdanang.xyz:7024/api/Report/CreateReport
-                    api.post('http://192.168.1.7:45455/api/Report/CreateReport', {
+                    api.post('https://vesinhdanang.xyz:7024/api/Report/CreateReport', {
                         accessToken: accessToken,
                         issuerEmail: issuerEmail,
                         reportSubject: values.reportSubject,

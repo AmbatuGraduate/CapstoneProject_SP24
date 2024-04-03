@@ -49,7 +49,7 @@ export default function Report({ navigation }) {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             const atoken = await AsyncStorage.getItem("@accessToken");
             if (atoken !== null) {
-                const url = `http://192.168.1.7:45455/api/Report/GetReportsByUser?email=${useremail}`;
+                const url = `https://vesinhdanang.xyz:7024/api/Report/GetReportsByUser?email=${useremail}`;
 
                 api.get(url, {
                     headers: {

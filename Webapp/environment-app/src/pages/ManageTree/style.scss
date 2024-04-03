@@ -1,73 +1,88 @@
 .main-layout {
-    margin-top: 100px;
-    margin-left: 100px;
+    margin: none;
     display: flex;
-    align-items: center;
+    justify-content: center;
 
-    .tree-detail-content {
-        margin-left: 5rem;
+    .image {
+        padding-top: 5rem;
+        img {
+            height: 15rem;
+            width: auto;
+        }
+    }
+
+    .detail-content {
+        // margin-left: 5rem;
         width: 40%;
         font-size: 20px;
         display: flex;
-        flex-direction: column;    
+        flex-direction: column;
         padding: 3rem;
-        .tree-detail-content-parent {
+        .detail-content-parent {
             display: flex;
             margin-bottom: none;
             align-items: center;
             justify-content: space-between;
 
-            .tree-detail-content-child-label {
+            .detail-content-child-label {
                 font-weight: 1000;
                 color: var(--PrimaryColor);
                 margin-bottom: none;
             }
-            .tree-detail-content-child-value{
+            .detail-content-child-value {
                 font-size: var(--h2FontSize);
                 font-weight: bold;
                 margin-bottom: none;
             }
         }
     }
-    .btnLink{
+    .btnLink {
         width: 7rem;
         height: 3rem;
-        background-color: white;
+        background-color: var(--whiteColor);
         --bs-btn-border-radius: none;
         color: var(--PrimaryColor);
         border-radius: 1.5rem;
         border: 2px solid var(--PrimaryColor);
         font-weight: bold;
-        &:hover{
+        &:hover {
             background-color: var(--PrimaryColor);
             border: 2px solid var(--PrimaryColor);
         }
     }
-    .btnCancel{
+    .btnCancel {
         width: 7rem;
         height: 3rem;
-        background-color: white;
+        background-color: var(--whiteColor);
         --bs-btn-border-radius: none;
         color: #c82333;
         border-radius: 1.5rem;
         border: 2px solid #c82333;
         font-weight: bold;
-        &:hover{
+        &:hover {
             background-color: #c82333;
             border: 2px solid #c82333;
         }
     }
-    .tree-detail-cover{
+    .detail-cover {
         box-shadow: 0 4px 5px rgba(131, 131, 131, 0.1);
         border-radius: 5px;
         padding: 10px;
         margin-bottom: 20px;
-        background-color: white;
+        background-color: var(--whiteColor);
         justify-content: space-between;
     }
-    .button-cover{
+    .button-cover {
         margin-top: 1rem;
         display: flex;
         justify-content: flex-end;
+    }
+    .linkCode {
+        color: var(--blackColor);
+        text-decoration: none;
+
+        &:hover {
+            color: var(--PrimaryColor);
+        }
     }
 }

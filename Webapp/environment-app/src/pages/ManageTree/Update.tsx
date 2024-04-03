@@ -14,7 +14,6 @@ export const UpdateTree = () => {
 
   const fetch = async () => {
     try {
-      console.log(id);
       const data = await useApi.get(TREE_DETAIL.replace(":id", id));
       setData(data.data);
     } catch (error) {
@@ -87,14 +86,13 @@ export const UpdateTree = () => {
     },
   ];
 
-  const handleSubmit = async (data: Record<string, unknown>) => {
-    await useApi.put(TREE_UPDATE.replace(":id", id), {
+  const handleSubmit = async (data: Record<string, any>) => {
+    await useApi.put(TREE_UPDATE, {
       ...data,
       plantTime: dateConstructor(data.plantTime),
       updateBy: JSON.parse(token.accessToken).name,
       isExist: true,
     });
-    navigate(-1);
     console.log("UpdateTree", data);
   };
 

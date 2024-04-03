@@ -8,8 +8,6 @@ using Google.Apis.Gmail.v1.Data;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Linq;
-using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories
@@ -26,10 +24,10 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // add report to db
-        public void AddReport(Reports report)
+        public async Task AddReport(Reports report)
         {
-            context.Reports.Add(report);
-            context.SaveChanges();
+            await context.Reports.AddAsync(report);
+            await context.SaveChangesAsync();
         }
 
         // create report

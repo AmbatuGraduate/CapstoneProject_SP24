@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { CULTIVAR_LIST, TREE_ADD, useApi } from "../../Api";
+import { TREE_ADD, TREE_TYPE_LIST, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
@@ -66,18 +66,18 @@ export const CreateTree = () => {
       affectValue: intervalCutTime,
       affectDate: plantTime || new Date(),
       googleAddress: false,
-      onChange: (e) => {
-        const plantTimeValue = data["plantTime"];
-        const plantTime = dateConstructor(plantTimeValue);
-        const intervalCutTime = parseInt(e.target.value) || 0;
-        const newCutTime = new Date(
-          plantTime.getFullYear(),
-          plantTime.getMonth() + intervalCutTime,
-          plantTime.getDate()
-        );
-        newCutTime.setMonth(newCutTime.getMonth() + intervalCutTime);
-        setCutTime(newCutTime);
-      },
+      // onChange: (e) => {
+      //   const plantTimeValue = data["plantTime"];
+      //   const plantTime = dateConstructor(plantTimeValue);
+      //   const intervalCutTime = parseInt(e.target.value) || 0;
+      //   const newCutTime = new Date(
+      //     plantTime.getFullYear(),
+      //     plantTime.getMonth() + intervalCutTime,
+      //     plantTime.getDate()
+      //   );
+      //   newCutTime.setMonth(newCutTime.getMonth() + intervalCutTime);
+      //   setCutTime(newCutTime);
+      // },
     },
     {
       label: "Khoảng thời gian cắt (tháng)",
@@ -95,24 +95,14 @@ export const CreateTree = () => {
         setCutTime(newCutTime);
       },
     },
-    // {
-    //   label: "Loại cây",
-    //   formType: "select",
-    //   key: "treeTypeId",
-    //   optionExtra: {
-    //     url: TREE_TYPE_LIST,
-    //     _key: "treeTypeName",
-    //     _value: "treeTypeId",
-    //   },
-    // },
     {
-      label: "Giống cây",
+      label: "Loại cây",
       formType: "select",
-      key: "cultivarId",
+      key: "treeTypeId",
       optionExtra: {
-        url: CULTIVAR_LIST,
-        _key: "cultivarName",
-        _value: "cultivarId",
+        url: TREE_TYPE_LIST,
+        _key: "treeTypeName",
+        _value: "treeTypeId",
       },
       googleAddress: false,
     },
@@ -122,6 +112,13 @@ export const CreateTree = () => {
       key: "note",
       googleAddress: false,
       placeholder: "Ví dụ: Cần lưu ý...",
+    },
+    {
+      value: JSON.parse(token.accessToken).name,
+      label: "Người phụ trách",
+      formType: "input",
+      key: "userId",
+      googleAddress: false,
     },
   ];
 
@@ -133,9 +130,7 @@ export const CreateTree = () => {
         ...data,
         cutTime: dateConstructor(data.cutTime),
         plantTime: dateConstructor(data.plantTime),
-        updateBy: JSON.parse(token.accessToken).name,
-        createBy: JSON.parse(token.accessToken).name,
-        updateDate: new Date(),
+        userId: JSON.parse(token.accessToken).email,
         isExist: true,
       });
       ref.current?.reload();

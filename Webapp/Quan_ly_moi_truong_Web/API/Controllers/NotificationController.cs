@@ -48,9 +48,9 @@ namespace API.Controllers
 
         // get list of notification by username
         [HttpGet("{username}")]
-        public async Task<IActionResult> GetByUsername(string username)
+        public async Task<IActionResult> GetByUsername(string username, [FromQuery] int page = 1)
         {
-            ErrorOr<List<NotificationResult>> list = await mediator.Send(new ListNotificationByUsernameQuery(username));
+            ErrorOr<List<NotificationResult>> list = await mediator.Send(new ListNotificationByUsernameQuery(username, page));
 
             if (list.IsError)
             {

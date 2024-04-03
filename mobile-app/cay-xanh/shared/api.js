@@ -13,7 +13,7 @@ api.interceptors.request.use(
         if (token && (currentTime - token_received_at) >= expire_in) {
             // if token is expired, refresh 
             const refreshToken = await AsyncStorage.getItem("@refreshToken");
-            const response = await axios.get(`http://192.168.1.7:45455/api/auth/RefreshMobile`, {
+            const response = await axios.get(`https://vesinhdanang.xyz:7024/api/auth/RefreshMobile`, {
                 headers: {
                     'Authorization': `Bearer ${refreshToken}`
                 }

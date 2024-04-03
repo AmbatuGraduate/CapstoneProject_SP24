@@ -45,7 +45,7 @@ namespace Application.Report.Commands.Create
 
             // add to db
 
-            reportRepository.AddReport(new Reports
+            await reportRepository.AddReport(new Reports
             {
                 ReportId = reportDbId,
                 IssuerGmail = request.IssuerEmail,
@@ -67,8 +67,6 @@ namespace Application.Report.Commands.Create
             };
             await notificationRepository.CreateNotification(notification);
             await notifyService.SendToUser("ambatuadmin@vesinhdanang.xyz", msg);
-
-
             return new ReportFormatRecord(reportResult);
         }
     }

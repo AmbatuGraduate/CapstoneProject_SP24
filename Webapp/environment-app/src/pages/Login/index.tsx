@@ -17,11 +17,12 @@ export const Login = () => {
 
   const handleSuccess = (response: any) => {
     const authCode = response.code;
-    fetch("https://localhost:7024/api/auth/google", {
+    fetch("https://vesinhdanang.xyz:7024/api/auth/google", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "true",
       },
       credentials: "include",
       body: JSON.stringify({ AuthCode: authCode }),
@@ -49,7 +50,7 @@ export const Login = () => {
     onSuccess: handleSuccess,
     flow: "auth-code",
     scope:
-      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/admin.directory.group.member https://www.googleapis.com/auth/admin.directory.group.member.readonly https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/userinfo.profile openid profile email https://mail.google.com/ https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.compose",
+      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/admin.directory.group https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/admin.directory.user https://www.googleapis.com/auth/userinfo.profile openid profile email https://mail.google.com/ https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.labels https://www.googleapis.com/auth/gmail.compose",
   });
 
   return (

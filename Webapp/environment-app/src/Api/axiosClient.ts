@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const axiosClient = axios.create({ 
+const axiosClient = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL + "/api/",
   withCredentials: true,
   headers: {
@@ -14,7 +14,6 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-  
     return config;
   },
   function (error) {

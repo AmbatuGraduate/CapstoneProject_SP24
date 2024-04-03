@@ -224,7 +224,10 @@ namespace API.Controllers
                 request.Name,
                 request.FamilyName,
                 request.Email,
-                request.Password
+                request.Password,
+                request.phone,
+                request.address,
+                request.birthDate
             );
 
             ErrorOr<UpdateGoogleUserRecord> updateResult = await mediator.Send(command);
@@ -319,7 +322,10 @@ namespace API.Controllers
                 request.Name,
                 request.FamilyName,
                 request.Email,
-                request.Password
+                request.Password,
+                request.phone,
+                request.address,
+                request.birthDate
             );
 
             ErrorOr<AddGoogleUserRecord> addResult = await mediator.Send(command);

@@ -2,6 +2,7 @@
 using Application.User.Common.Add;
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
+using Domain.Common.Constant;
 using Domain.Entities.Deparment;
 using Domain.Enums;
 using Google.Apis.Admin.Directory.directory_v1;
@@ -20,6 +21,33 @@ namespace Infrastructure.Persistence.Repositories
             this.webDbContext = webDbContext;
             _directoryServiceFactory = directoryServiceFactory;
         }
+
+        public async Task<string> GetGoogleUserImage(string accessToken, string userEmail)
+        {
+            string? photoUrl = null;
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+
+                var photoRequest = service.Users.Photos.Get(userEmail);
+                var photoResult = await photoRequest.ExecuteAsync();
+                if (photoResult?.PhotoData != null)
+                {
+                    // convert  URL-safe base64 string to standard base64 string
+                    string base64PhotoData = photoResult.PhotoData.Replace('-', '+').Replace('_', '/');
+                    // create a data url
+                    photoUrl = $"data:{photoResult.MimeType};base64,{base64PhotoData}";
+                }
+                return photoUrl;
+            }
+            catch (Exception ex)
+            {
+                // photo not found => null
+                return String.Empty;
+            }
+        }
+
 
         public async Task<GoogleUser> GetGoogleUserByEmail(string accessToken, string userEmail)
         {
@@ -58,8 +86,10 @@ namespace Infrastructure.Persistence.Repositories
                     Email = user.PrimaryEmail,
                     Picture = photoUrl, // use the photoUrl from the request
                     Department = GetDepartmentNameById(userDb.DepartmentId),
-                    PhoneNumber = "0956483756",
-                    Role = GetRoleNameById(userDb.RoleId.ToString())
+                    PhoneNumber = user.Phones != null ?  user.Phones[0].Value : string.Empty,
+                    Role = GetRoleNameById(userDb.RoleId.ToString()),
+                    BirthDate = user.Relations != null ? DateOnly.Parse(user.Relations[0].Value) : new DateOnly(),
+                    Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                 };
                 return userResult;
             }
@@ -67,7 +97,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 throw;
             }
-        }
+        } 
 
         // get google users list
         public async Task<List<GoogleUser>> GetGoogleUsers(string accessToken)
@@ -114,8 +144,10 @@ namespace Infrastructure.Persistence.Repositories
                             Name = user.Name.FullName,
                             Picture = photoUrl, // use the photoUrl from the request
                             Department = GetDepartmentNameById(userDb.DepartmentId),
-                            PhoneNumber = "0956483756",
-                            Role = GetRoleNameById(userDb.RoleId.ToString())
+                            PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
+                            Role = GetRoleNameById(userDb.RoleId.ToString()),
+                            BirthDate = user.Relations != null ? DateOnly.Parse(user.Relations[0].Value) : new DateOnly(),
+                            Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                         });
                     }
                 }
@@ -146,8 +178,20 @@ namespace Infrastructure.Persistence.Repositories
                     },
                     Password = user.Password,
                     PrimaryEmail = user.Email,
-                    ChangePasswordAtNextLogin = false
-                };
+                    ChangePasswordAtNextLogin = false,
+                    Phones = new List<UserPhone>
+                    {
+                        new UserPhone { Value = user.PhoneNumber}
+                    },
+                    Addresses = new List<UserAddress>
+                    {
+                        new UserAddress { Locality = user.Address}
+                    },
+                    Relations = new List<UserRelation>
+                    {
+                        new UserRelation { Value = user.BirthDate.ToString()}
+                    }
+            };
 
                 var request = service.Users.Insert(googleUser);
                 var newUser = await request.ExecuteAsync();
@@ -162,7 +206,7 @@ namespace Infrastructure.Persistence.Repositories
                         UserCode = ConvertToUserCodeString(UserCode.EM_NHS_QD),
                         Email = newUser.PrimaryEmail,
                         RoleId = new Guid(ConvertToUserRoleId(UserRole.Employee)),
-                        DepartmentId = "03bj1y382j5l78b"
+                        DepartmentId = DepartmentConstant.DefaultDepartmentId
                     };
                     Add(dbUser);
                 }
@@ -172,7 +216,10 @@ namespace Infrastructure.Persistence.Repositories
                     Email = newUser.PrimaryEmail,
                     Name = newUser.Name.GivenName + newUser.Name.FamilyName,
                     FamilyName = newUser.Name.FamilyName,
-                    Password = user.Password
+                    Password = user.Password,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    BirthDate = user.BirthDate,
                 };
 
                 return addGoogleUser;
@@ -198,7 +245,7 @@ namespace Infrastructure.Persistence.Repositories
             {
                 UserRole.Employee => "8977EF77-E554-4EF3-8353-3E01161F84D0",
                 UserRole.Manager => "ABCCDE85-C7DC-4F78-9E4E-B1B3E7ABEE84",
-                UserRole.Leader => "CACD4B3A-8AFE-43E9-B757-F57F5C61F8D8"
+                UserRole.Admin => "CACD4B3A-8AFE-43E9-B757-F57F5C61F8D8"
             };
         }
 
@@ -232,10 +279,31 @@ namespace Infrastructure.Persistence.Repositories
                 {
                     currentUser.PrimaryEmail = user.Email;
                 }
+                if (!string.IsNullOrEmpty(user.PhoneNumber))
+                {
+                    currentUser.Phones = new List<UserPhone>
+                    {
+                        new UserPhone { Value = user.PhoneNumber}
+                    };
+                }
+                if (!string.IsNullOrEmpty(user.Address))
+                {
+                    currentUser.Addresses =  new List<UserAddress>
+                    {
+                        new UserAddress { Locality = user.Address}
+                    };
+                }
+                if (!string.IsNullOrEmpty(user.BirthDate.ToString()))
+                {
+                    currentUser.Relations = new List<UserRelation>
+                    {
+                        new UserRelation { Value = user.BirthDate.ToString()}
+                    };
+                }
 
                 var request = service.Users.Update(currentUser, user_id);
                 var updatedUser = await request.ExecuteAsync();
-
+                var cser = await service.Users.Get(user_id).ExecuteAsync();
                 var userDb = GetById(user_id);
 
                 if (updatedUser != null && userDb != null)
@@ -249,7 +317,10 @@ namespace Infrastructure.Persistence.Repositories
                     Email = updatedUser.PrimaryEmail,
                     Name = updatedUser.Name.GivenName + updatedUser.Name.FamilyName,
                     FamilyName = updatedUser.Name.FamilyName,
-                    Password = updatedUser.Password
+                    Password = updatedUser.Password,
+                    PhoneNumber = user.PhoneNumber,
+                    Address = user.Address,
+                    BirthDate = user.BirthDate
                 };
 
                 return addGoogleUser;

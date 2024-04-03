@@ -6,7 +6,7 @@ namespace Application.Common.Interfaces.Persistence.Notifiy
     {
         Task<List<Notifications>> GetlNotifications();
 
-        Task<List<Notifications>> GetNotificationsByUseranme(string username);
+        Task<List<Notifications>> GetNotificationsByUseranme(string username, int page);
 
         Notifications GetlNotification(Guid Id);
 

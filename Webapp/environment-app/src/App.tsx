@@ -1,15 +1,20 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Layout } from "./Components/Layout";
 import { Login } from "./pages/Login";
-import { Manage } from "./pages/Manage";
 import { ManageEmployee } from "./pages/ManageEmployee";
 import { ManageTree } from "./pages/ManageTree";
 import { CreateTree } from "./pages/ManageTree/Create";
 import { DetailTree } from "./pages/ManageTree/Detail";
 import { UpdateTree } from "./pages/ManageTree/Update";
 import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
-import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
 import { ManageCleaningSchedule } from "./pages/ManageCleaningSchedule";
+import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
+import { DetailEmployee } from "./pages/ManageEmployee/Detail";
+import { DetailTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule/Detail";
+import { ManageReport } from "./pages/ManageReport";
+import { CreateReport } from "./pages/ManageReport/Create";
+import { DetailReport } from "./pages/ManageReport/Detail";
+import { ResponseReport } from "./pages/ManageReport/Response";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,7 +24,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <Manage />,
+          element: <ManageReport />,
         },
         {
           path: "manage-tree",
@@ -42,8 +47,16 @@ function App() {
           element: <ManageEmployee />,
         },
         {
+          path: "manage-employee/:email",
+          element: <DetailEmployee />,
+        },
+        {
           path: "manage-treetrim-schedule",
           element: <ManageTreeTrimSchedule />,
+        },
+        {
+          path: "manage-treetrim-schedule/:id",
+          element: <DetailTreeTrimSchedule />,
         },
         {
           path: "manage-cleaning-schedule",
@@ -53,6 +66,18 @@ function App() {
           path: "manage-garbagecollection-schedule",
           element: <ManageGarbageCollectionSchedule />,
         },
+        {
+          path: "/create",
+          element: <CreateReport />,
+        },
+        {
+          path: "manage-report/:id",
+          element: <DetailReport />,
+        },
+        {
+          path: "response",
+          element: <ResponseReport />,
+        }
       ],
     },
     {

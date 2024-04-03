@@ -64,7 +64,7 @@ export default function TasksList({ navigation }) {
         try {
             const atoken = await AsyncStorage.getItem("@accessToken");
             if (atoken !== null) {
-                api.get('http://192.168.1.7:45455/api/Calendar/GetAllCalendarEvents?calendarTypeEnum=1', {
+                api.get('https://vesinhdanang.xyz:7024/api/Calendar/GetAllCalendarEvents?calendarTypeEnum=1', {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${atoken}`,
@@ -72,14 +72,27 @@ export default function TasksList({ navigation }) {
                     },
                 })
                     .then((res) => {
-                        const jsonEvents = res.data.map(item => {
-                            const event = {
-                                ...item,
-                                extendedProperties: item.extendedProperties,
-                            };
-                            return event;
-                        });
-                        setEvents(jsonEvents);
+                        if (Array.isArray(res.data)) {
+                            const jsonEvents = res.data.map(item => {
+                                const event = {
+                                    ...item,
+                                    extendedProperties: item.extendedProperties,
+                                };
+                                return event;
+                            });
+                            setEvents(jsonEvents);
+                        }
+                        else {
+                            console.log('Unexpected response from API:', res);
+                        }
+                        // const jsonEvents = res.data.map(item => {
+                        //     const event = {
+                        //         ...item,
+                        //         extendedProperties: item.extendedProperties,
+                        //     };
+                        //     return event;
+                        // });
+                        // setEvents(jsonEvents);
                         setLoading(false);
                         setEmptyEvents('Không có công việc nào trong ngày này');
                     })

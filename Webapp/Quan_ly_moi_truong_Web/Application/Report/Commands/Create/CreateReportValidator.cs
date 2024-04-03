@@ -10,7 +10,6 @@ namespace Application.Report.Commands.Create
             RuleFor(x => x.IssuerEmail).NotEmpty();
             RuleFor(x => x.ReportBody).NotEmpty();
             RuleFor(x => x.ExpectedResolutionDate).NotEmpty();
-            RuleFor(x => x.ReportImpact).NotEmpty();
             RuleFor(x => x.ReportSubject).NotEmpty();
         }
     }

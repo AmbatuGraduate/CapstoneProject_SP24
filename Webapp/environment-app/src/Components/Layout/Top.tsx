@@ -8,7 +8,7 @@ import { ImProfile } from "react-icons/im";
 import { MdLogout } from "react-icons/md";
 
 const Top = () => {
-  const [token] = useCookies(["accessToken"]);
+  const [token, setToken] = useCookies(["accessToken"]);
   const [isOpen, setIsOpen] = useState(false);
   const [, , removeCookie] = useCookies(["accessToken"]);
 
@@ -18,7 +18,7 @@ const Top = () => {
 
   const LogOut = async () => {
     try {
-      await fetch("https://vesinhdanang.xyz:7024/api/auth/googlelogout", {
+      await fetch("https://localhost:7024/api/auth/googlelogout", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
