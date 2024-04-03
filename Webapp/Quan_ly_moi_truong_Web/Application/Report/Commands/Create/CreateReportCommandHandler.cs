@@ -55,19 +55,18 @@ namespace Application.Report.Commands.Create
             });
 
             //Notification report
-            var usserEmail = reportResult.IssuerEmail;
             var msg = "Bạn vừa nhận được báo cáo";
 
             var notification = new Domain.Entities.Notification.Notifications
             {
                 Id = Guid.NewGuid(),
-                Username = usserEmail,
+                Username = "ambatuadmin@vesinhdanang.xyz",
                 Message = msg,
                 MessageType = "Single",
                 NotificationDateTime = DateTime.Now,
             };
             await notificationRepository.CreateNotification(notification);
-            await notifyService.SendToUser(usserEmail, msg);
+            await notifyService.SendToUser("ambatuadmin@vesinhdanang.xyz", msg);
 
 
             return new ReportFormatRecord(reportResult);
