@@ -40,6 +40,8 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             try
             {
                 //var treeinfo = _treeRepository.GetTreeByTreeCode(myEvent.TreeId);
+                System.Diagnostics.Debug.WriteLine("access token: " + accessToken);
+
                 var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _calendarServiceFactory(credential);
                 var addedEvent = new Event()

@@ -88,7 +88,7 @@ namespace Infrastructure.Persistence.Repositories
                     Department = GetDepartmentNameById(userDb.DepartmentId),
                     PhoneNumber = user.Phones != null ?  user.Phones[0].Value : string.Empty,
                     Role = GetRoleNameById(userDb.RoleId.ToString()),
-                    BirthDate = user.Relations != null ? DateOnly.Parse(user.Relations[0].Value) : new DateOnly(),
+                    BirthDate = user.Relations != null ? DateOnly.ParseExact(user.Relations[0].Value, "dd/MM/yyyy", null) : new DateOnly(),
                     Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                 };
                 return userResult;
@@ -146,7 +146,7 @@ namespace Infrastructure.Persistence.Repositories
                             Department = GetDepartmentNameById(userDb.DepartmentId),
                             PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
                             Role = GetRoleNameById(userDb.RoleId.ToString()),
-                            BirthDate = user.Relations != null ? DateOnly.Parse(user.Relations[0].Value) : new DateOnly(),
+                            BirthDate = user.Relations != null ? DateOnly.ParseExact(user.Relations[0].Value, "dd/MM/yyyy", null) : new DateOnly(),
                             Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                         });
                     }

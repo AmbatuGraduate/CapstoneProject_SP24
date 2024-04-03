@@ -88,13 +88,14 @@ export default function Home() {
             });
 
             connection.on("ReceivedPersonalNotification", function (msg, user) {
-                console.log("ReceivePersonalNotification event triggered");
-                console.log("Message: " + msg);
-                console.log("User: " + user);
-
                 setNotifications(prevNotifications => {
-                    console.log("Previous notifications: " + prevNotifications);
-                    const newNotifications = [...prevNotifications, user + ' - ' + msg];
+                    const newNotification = {
+                        id: prevNotifications.length,
+                        message: msg,
+                        notificationDateTime: new Date().toLocaleString('en-US'), // format date-time as mm/dd/yyyy, hh:mm:ss AM/PM
+                        // add other properties here...
+                    };
+                    const newNotifications = [newNotification, ...prevNotifications]; // add new notification at the beginning
                     console.log("New notifications: " + newNotifications);
                     return newNotifications;
                 });
