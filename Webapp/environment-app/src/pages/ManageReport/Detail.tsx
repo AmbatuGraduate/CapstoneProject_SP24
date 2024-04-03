@@ -23,7 +23,7 @@ export const DetailReport = () => {
     UnResolved: "Chưa được xử lý",
   };
   const handleNavigate = () => {
-    navigate("/");
+    navigate("/manage-report");
   };
 
   const fetchData = async () => {
