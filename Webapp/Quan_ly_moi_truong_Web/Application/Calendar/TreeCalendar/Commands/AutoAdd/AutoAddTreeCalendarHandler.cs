@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
+using Application.Common.Interfaces.Persistence.Notifiy;
 using Application.Common.Interfaces.Persistence.Schedules;
+using Application.Report.Common;
 using ErrorOr;
 using MediatR;
 using System.Text.RegularExpressions;
@@ -14,11 +16,21 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
         private readonly ITreeRepository _treeRepository;
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-        public AutoAddTreeCalendarHandler(ITreeCalendarService treeCalendarService, ITreeRepository treeRepository, IJwtTokenGenerator jwtTokenGenerator)
+        //For notification
+        private readonly INotifyService notifyService;
+        private readonly INotificationRepository notificationRepository;
+        private readonly IUserRepository userRepository;
+
+        public AutoAddTreeCalendarHandler(ITreeCalendarService treeCalendarService, ITreeRepository treeRepository, IJwtTokenGenerator jwtTokenGenerator,
+            INotifyService notifyService, INotificationRepository notificationRepository, IUserRepository userRepository)
         {
             _treeCalendarService = treeCalendarService;
             _treeRepository = treeRepository;
             _jwtTokenGenerator = jwtTokenGenerator;
+
+            this.notifyService = notifyService;
+            this.userRepository = userRepository;
+            this.notificationRepository = notificationRepository;
         }
 
         public async Task<ErrorOr<List<MyAddedEventResult>>> Handle(AutoAddTreeCalendarCommand request, CancellationToken cancellationToken)
@@ -66,6 +78,28 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
                 var result = await _treeCalendarService.AddEvent(accessToken, request.calendarId, addedEvent);
                 eventResults.Add(new MyAddedEventResult(result));
             }
+
+            // notification to all manager tree trim calendar
+            var treeTrimDepartmentId = "01egqt2p26jkcil"; // Id department of tree
+            var msg = eventResults.ToList().Count +  " Lịch cắt tỉa cây mới đã được tạo";
+
+            // Get all user have department id is tree
+            var listUser = userRepository.GetAll().Where(x => x.DepartmentId == treeTrimDepartmentId).ToList();
+
+            for (int i = 0; i < listUser.Count; i++)
+            {
+                var notification = new Domain.Entities.Notification.Notifications
+                {
+                    Id = Guid.NewGuid(),
+                    Username = listUser[i].Email,
+                    Message = msg,
+                    MessageType = "Single",
+                    NotificationDateTime = DateTime.Now,
+                };
+                notificationRepository.CreateNotification(notification);
+                await notifyService.SendToUser(listUser[i].Email, msg);
+            }
+
             return eventResults;
         }
     }
