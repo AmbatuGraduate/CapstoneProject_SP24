@@ -305,7 +305,7 @@ namespace Infrastructure.Persistence.Repositories
             // notify user
             // ...
 
-            return Task.FromResult(new ReportFormat { Id = reportID, ReportResponse = response });
+            return Task.FromResult(new ReportFormat { Id = reportID, ReportResponse = response, IssuerEmail = report.IssuerGmail });
         }
 
         // ---------------------------------- Helper Methods ----------------------------------
