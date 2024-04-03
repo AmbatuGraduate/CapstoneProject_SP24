@@ -84,13 +84,14 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         }
 
         // update job status
-        public async Task<bool> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
+        public async Task<string> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
         {
             await Task.CompletedTask;
             try
             {
                 var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _calendarServiceFactory(credential);
+                var listTreesNeedUpdated = string.Empty;
                 Event retrievedEvent = service.Events.Get(calendarId, eventId)
                     .Execute();
 
@@ -98,19 +99,20 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 {
                     string newJobStatus = ConvertToJobWorkingStatusString(jobWorkingStatus);
                     if (retrievedEvent.ExtendedProperties.Private__ != null
-                        && retrievedEvent.ExtendedProperties.Private__.ContainsKey("JobWorkingStatus"))
+                        && retrievedEvent.ExtendedProperties.Private__.ContainsKey(EventExtendedProperties.JobWorkingStatus))
                     {
-                        retrievedEvent.ExtendedProperties.Private__["JobWorkingStatus"] = newJobStatus;
+                        retrievedEvent.ExtendedProperties.Private__[EventExtendedProperties.JobWorkingStatus] = newJobStatus;
                     }
                     service.Events.Update(retrievedEvent, calendarId, eventId)
                         .Execute();
+                    listTreesNeedUpdated = retrievedEvent.ExtendedProperties.Private__[EventExtendedProperties.Tree];
                 }
-                return true;
+                return listTreesNeedUpdated;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
-                return false;
+                return string.Empty;
             }
         }
 

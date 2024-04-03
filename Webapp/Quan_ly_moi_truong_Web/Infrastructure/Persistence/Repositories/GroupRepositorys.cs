@@ -80,6 +80,7 @@ namespace Infrastructure.Persistence.Repositories
                             Id = member.Id,
                             Email = member.Email,
                             Picture = _userRepository.GetGoogleUserImage(accessToken, member.Email).Result,
+                            Name = memberGoogle.Name,
                             Department = _userRepository.GetDepartmentNameById(memberDB.DepartmentId),
                             PhoneNumber = memberGoogle.PhoneNumber,
                             Role = _userRepository.GetRoleNameById(memberDB.RoleId.ToString()),

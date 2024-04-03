@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Application.Calendar.TreeCalendar.Queries.GetCalendarByDepartmentEmail;
+using Application.Calendar.TreeCalendar.Common;
 
 namespace API.Controllers
 {
@@ -340,7 +341,7 @@ namespace API.Controllers
 
         // update job status
         [HttpPost()]
-        public async Task<IActionResult> UpdateJobWorkingStatus(CalendarTypeEnum calendarTypeEnum, [FromBody] UpdateJobStatusCommand command)
+        public async Task<IActionResult> UpdateJobWorkingStatus(CalendarTypeEnum calendarTypeEnum, [FromBody] UpdateJobStatusRequest request)
         {
             var clientType = Request.Headers["Client-Type"];
 
@@ -371,7 +372,7 @@ namespace API.Controllers
                 accessToken = token.Value.accessToken;
             }
             var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
-            ErrorOr<MyUpdatedJobStatusResult> list = await mediator.Send(new UpdateJobStatusCommand(accessToken, calendarId.Value, command.jobWorkingStatus, command.eventId));
+            ErrorOr<MyUpdatedJobStatusResult> list = await mediator.Send(new UpdateJobStatusCommand(accessToken, calendarId.Value, request.jobWorkingStatus, request.eventId));
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
