@@ -13,7 +13,7 @@ namespace Domain.Entities.User
         public string Id { get; set; }
 
         [DataMember]
-        public string UserCode { get; set; }
+        public string UserCode { get; set; } // Bỏ
 
         [DataMember]
         public string Email { get; set; } = null!;

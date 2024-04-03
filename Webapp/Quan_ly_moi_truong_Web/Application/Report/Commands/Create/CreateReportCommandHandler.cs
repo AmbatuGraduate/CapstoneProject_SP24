@@ -66,7 +66,7 @@ namespace Application.Report.Commands.Create
                 MessageType = "Single",
                 NotificationDateTime = DateTime.Now,
             };
-            notificationRepository.CreateNotification(notification);
+            await notificationRepository.CreateNotification(notification);
             await notifyService.SendToUser(usserEmail, msg);
 
 

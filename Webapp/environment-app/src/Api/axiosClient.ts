@@ -8,7 +8,6 @@ const axiosClient = axios.create({
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Credentials": "true",
   },
-  withCredentials: true
 });
 
 // Add a request interceptor
