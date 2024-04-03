@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableOpacity, ActivityIndicator, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,6 +14,10 @@ export default function Home() {
     const [connection, setConnection] = useState(null);
     const [notifications, setNotifications] = useState([]);
     const [loadingNotif, setLoadingNotif] = useState(false);
+    const [page, setPage] = useState(1);
+    const [isEndOfList, setIsEndOfList] = useState(false);
+
+
 
     const fetchNotifications = async () => {
         setLoadingNotif(true);
@@ -21,7 +25,7 @@ export default function Home() {
             var username = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             const atoken = await AsyncStorage.getItem("@accessToken");
             if (atoken !== null) {
-                api.get(`https://vesinhdanang.xyz:7024/api/Notification/GetByUsername/${username}`, {
+                api.get(`https://vesinhdanang.xyz:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${atoken}`,
@@ -29,7 +33,17 @@ export default function Home() {
                     },
                 })
                     .then((res) => {
-                        setNotifications(res.data);
+                        setNotifications(prevNotifications => {
+                            // Create a Set from the IDs of the existing notifications
+                            const existingIds = new Set(prevNotifications.map(a => a.id));
+
+                            // Filter the new notifications to only include those whose IDs are not in the Set
+                            const newNotifications = res.data.filter(a => !existingIds.has(a.id));
+
+                            // Append the new notifications to the existing ones
+                            return [...prevNotifications, ...newNotifications];
+                        });
+                        setIsEndOfList(res.data.length <= 5);
                         setLoadingNotif(false);
                     })
                     .catch((error) => {
@@ -209,33 +223,52 @@ export default function Home() {
                     <FlatList
                         showsVerticalScrollIndicator={false}
                         showsHorizontalScrollIndicator={false}
+                        overScrollMode='never'
                         data={notifications}
-                        keyExtractor={(item, index) => index.toString()}
+                        extraData={notifications}
+                        keyExtractor={(item) => item.id.toString()}
                         contentContainerStyle={{ paddingBottom: 20 }}
-                        initialNumToRender={5}
-                        maxToRenderPerBatch={10}
                         windowSize={10}
                         renderItem={({ item }) => <View style={styles.notifButton}>
                             <View>
                                 <Text style={styles.taskText}>
                                     {item.message}
-
                                 </Text>
                                 <Text style={styles.dateText}>{item.notificationDateTime}</Text>
-
                             </View>
+                        </View>
+                        }
+                        ListFooterComponent={() =>
+                            isEndOfList ? (
+                                <TouchableOpacity style={styles.loadMoreButton} onPress={() => {
+                                    setPage(page => page + 1);
+                                    fetchNotifications();
+                                    setIsEndOfList(false);
+                                }}>
+                                    <Text style={styles.loadMoreText}>Xem thêm...</Text>
+                                </TouchableOpacity>
+                            ) : null
+                        }
 
-                        </View>}
                     />
                 )}
             </View>
-
 
         </View>
     );
 }
 
 const styles = StyleSheet.create({
+    loadMoreButton: {
+        marginTop: 10,
+        backgroundColor: '#f5f5f5',
+        borderRadius: 5,
+    },
+    loadMoreText: {
+        color: '#2282F3',
+        fontSize: 16,
+        textAlign: 'center',
+    },
     container: {
         flex: 1,
         padding: 24,
@@ -288,7 +321,7 @@ const styles = StyleSheet.create({
     },
     noTasksText: {
         fontSize: 18,
-        color: '#333',
+        color: 'grey',
         fontStyle: 'italic',
         textAlign: 'center',
     },
@@ -303,7 +336,8 @@ const styles = StyleSheet.create({
         marginRight: 15,
     },
     notif: {
-        backgroundColor: '#f5f5f5'
+        backgroundColor: '#f5f5f5',
+        flex: 1,
     },
     dateText: {
         color: '#2282F3',

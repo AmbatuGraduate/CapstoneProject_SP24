@@ -30,9 +30,15 @@ namespace Infrastructure.Persistence.Repositories.Notification
             return await webDbContext.Notifications.ToListAsync();
         }
 
-        public async Task<List<Notifications>> GetNotificationsByUseranme(string username)
+        public async Task<List<Notifications>> GetNotificationsByUseranme(string username, int page)
         {
-            return await webDbContext.Notifications.Where(x => x.Username == username).ToListAsync();
+            int pageSize = 5; 
+            return await webDbContext.Notifications
+                .Where(x => x.Username == username)
+                .OrderByDescending(x => x.NotificationDateTime)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
     }
 }

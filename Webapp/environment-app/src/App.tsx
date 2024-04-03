@@ -8,14 +8,14 @@ import { CreateTree } from "./pages/ManageTree/Create";
 import { DetailTree } from "./pages/ManageTree/Detail";
 import { UpdateTree } from "./pages/ManageTree/Update";
 import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
-import { ManageCleaningSchedule } from "./pages/ManageCleaningSchedule";
 import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
-import { DetailEmployee } from "./pages/ManageEmployee/Detail";
-import { DetailTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule/Detail";
+import { ManageCleaningSchedule } from "./pages/ManageCleaningSchedule";
 import { ManageReport } from "./pages/ManageReport";
 import { CreateReport } from "./pages/ManageReport/Create";
 import { DetailReport } from "./pages/ManageReport/Detail";
 import { ResponseReport } from "./pages/ManageReport/Response";
+import { DetailTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule/Detail";
+import { DetailEmployee } from "./pages/ManageEmployee/Detail";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,7 +25,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <ManageReport />,
+          element: <Manage />,
         },
         {
           path: "manage-tree",
@@ -68,7 +68,11 @@ function App() {
           element: <ManageGarbageCollectionSchedule />,
         },
         {
-          path: "/create",
+          path: "manage-report",
+          element: <ManageReport />,
+        },
+        {
+          path: "manage-report/create",
           element: <CreateReport />,
         },
         {

@@ -19,7 +19,7 @@ namespace Application.Notification.Queries.ListByUsername
         {
             await Task.CompletedTask;
 
-            var listNotification = await _notificationRepository.GetNotificationsByUseranme(request.Username);
+            var listNotification = await _notificationRepository.GetNotificationsByUseranme(request.Username, request.Page);
             var results = new List<NotificationResult>();
 
             foreach (var notification in listNotification)

@@ -4,6 +4,6 @@ using MediatR;
 
 namespace Application.Notification.Queries.ListByUsername
 {
-    public record ListNotificationByUsernameQuery(string Username) :
-        IRequest<ErrorOr<List<NotificationResult>>>;
+    public record ListNotificationByUsernameQuery(string Username, int Page) : IRequest<ErrorOr<List<NotificationResult>>>;
+
 }
