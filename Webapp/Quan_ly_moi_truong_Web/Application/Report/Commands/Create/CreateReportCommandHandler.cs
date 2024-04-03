@@ -45,7 +45,7 @@ namespace Application.Report.Commands.Create
 
             // add to db
 
-            reportRepository.AddReport(new Reports
+            await reportRepository.AddReport(new Reports
             {
                 ReportId = reportDbId,
                 IssuerGmail = request.IssuerEmail,
@@ -66,7 +66,7 @@ namespace Application.Report.Commands.Create
                 MessageType = "Single",
                 NotificationDateTime = DateTime.Now,
             };
-            notificationRepository.CreateNotification(notification);
+            await notificationRepository.CreateNotification(notification);
             await notifyService.SendToUser(usserEmail, msg);
 
 

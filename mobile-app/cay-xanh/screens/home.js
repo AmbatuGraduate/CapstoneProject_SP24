@@ -226,7 +226,7 @@ export default function Home() {
                         overScrollMode='never'
                         data={notifications}
                         extraData={notifications}
-                        keyExtractor={(item) => item.id.toString()}
+                        keyExtractor={(item) => item.id}
                         contentContainerStyle={{ paddingBottom: 20 }}
                         windowSize={10}
                         renderItem={({ item }) => <View style={styles.notifButton}>

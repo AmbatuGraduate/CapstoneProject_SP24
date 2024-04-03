@@ -12,7 +12,7 @@ import { api } from "../shared/api";
 const ReportSchema = yup.object({
     reportSubject: yup.string().required('Tiêu đề không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
     reportBody: yup.string().required('Nội dung báo cáo không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
-    reportImpact: yup.string().required('Mức độ ảnh hưởng là bắt buộc').test('is-impact', 'Mức độ ảnh hưởng phải từ 0 đến 2', (value) => {
+    reportImpact: yup.string().required('Mức độ ảnh hưởng là bắt buộc').test('is-impact', 'Chọn mức độ ảnh hưởng', (value) => {
         const parsedValue = parseInt(value, 10);
         return parsedValue >= 0 && parsedValue <= 2;
     }),

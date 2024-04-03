@@ -1,21 +1,20 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Layout } from "./Components/Layout";
 import { Login } from "./pages/Login";
-import { Manage } from "./pages/Manage";
 import { ManageEmployee } from "./pages/ManageEmployee";
 import { ManageTree } from "./pages/ManageTree";
 import { CreateTree } from "./pages/ManageTree/Create";
 import { DetailTree } from "./pages/ManageTree/Detail";
 import { UpdateTree } from "./pages/ManageTree/Update";
 import { ManageTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule";
-import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
 import { ManageCleaningSchedule } from "./pages/ManageCleaningSchedule";
+import { ManageGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule";
+import { DetailEmployee } from "./pages/ManageEmployee/Detail";
+import { DetailTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule/Detail";
 import { ManageReport } from "./pages/ManageReport";
 import { CreateReport } from "./pages/ManageReport/Create";
 import { DetailReport } from "./pages/ManageReport/Detail";
 import { ResponseReport } from "./pages/ManageReport/Response";
-import { DetailTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule/Detail";
-import { DetailEmployee } from "./pages/ManageEmployee/Detail";
 
 function App() {
   const router = createBrowserRouter([
@@ -25,7 +24,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <Manage />,
+          element: <ManageReport />,
         },
         {
           path: "manage-tree",
@@ -68,11 +67,7 @@ function App() {
           element: <ManageGarbageCollectionSchedule />,
         },
         {
-          path: "manage-report",
-          element: <ManageReport />,
-        },
-        {
-          path: "manage-report/create",
+          path: "/create",
           element: <CreateReport />,
         },
         {

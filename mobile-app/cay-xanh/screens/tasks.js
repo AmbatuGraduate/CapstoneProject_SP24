@@ -72,14 +72,27 @@ export default function TasksList({ navigation }) {
                     },
                 })
                     .then((res) => {
-                        const jsonEvents = res.data.map(item => {
-                            const event = {
-                                ...item,
-                                extendedProperties: item.extendedProperties,
-                            };
-                            return event;
-                        });
-                        setEvents(jsonEvents);
+                        if (Array.isArray(res.data)) {
+                            const jsonEvents = res.data.map(item => {
+                                const event = {
+                                    ...item,
+                                    extendedProperties: item.extendedProperties,
+                                };
+                                return event;
+                            });
+                            setEvents(jsonEvents);
+                        }
+                        else {
+                            console.log('Unexpected response from API:', res);
+                        }
+                        // const jsonEvents = res.data.map(item => {
+                        //     const event = {
+                        //         ...item,
+                        //         extendedProperties: item.extendedProperties,
+                        //     };
+                        //     return event;
+                        // });
+                        // setEvents(jsonEvents);
                         setLoading(false);
                         setEmptyEvents('Không có công việc nào trong ngày này');
                     })
