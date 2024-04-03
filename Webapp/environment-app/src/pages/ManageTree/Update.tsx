@@ -9,7 +9,7 @@ export const UpdateTree = () => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
   const [data, setData] = useState<any>();
-  const [token, setToken] = useCookies(["accessToken"]);
+  const [token] = useCookies(["accessToken"]);
   const [address, setAddress] = useState<string | null>("");
 
   const fetch = async () => {
@@ -86,7 +86,7 @@ export const UpdateTree = () => {
     },
   ];
 
-  const handleSubmit = async (data: Record<string, unknown>) => {
+  const handleSubmit = async (data: Record<string, any>) => {
     await useApi.put(TREE_UPDATE, {
       ...data,
       plantTime: dateConstructor(data.plantTime),
