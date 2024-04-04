@@ -1,4 +1,5 @@
 ﻿using Application.GoogleAuthentication.Common;
+using Application.GoogleAuthentication.Queries.ExistEmployee;
 using Application.GoogleAuthentication.Queries.GoogleAccessToken;
 using Application.User.Commands.AddToGoogle;
 using Application.User.Commands.DeleteGoogle;
@@ -337,6 +338,20 @@ namespace API.Controllers
 
             // write code to return without mapping
             return Ok(addResult.Value);
+        }
+
+        // user is employee in db
+        [HttpGet]
+        public async Task<IActionResult> IsEmployee(string email)
+        {
+            ErrorOr<bool> isEmployee = await mediator.Send(new ExistEmployeeQuery(email));
+
+            if (isEmployee.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: isEmployee.FirstError.Description);
+            }
+
+            return Ok(isEmployee.Value);
         }
     }
 }

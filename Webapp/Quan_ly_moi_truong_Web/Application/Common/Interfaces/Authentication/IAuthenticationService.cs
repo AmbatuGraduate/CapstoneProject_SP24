@@ -12,5 +12,7 @@ namespace Application.Common.Interfaces.Authentication
         Task<TokenData> RefreshTokenWithGoogle(string refreshToken);
 
         Task<TokenData> RefreshTokenWithMobileClient(string refreshToken);
+
+        Task<bool> EmployeeInOrganization(string email);
     }
 }

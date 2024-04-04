@@ -17,6 +17,7 @@ export default function Home() {
     const [loadingNotif, setLoadingNotif] = useState(false);
     const [page, setPage] = useState(1);
     const [isEndOfList, setIsEndOfList] = useState(false);
+    const [user, setUser] = useState(null);
 
 
 
@@ -137,47 +138,76 @@ export default function Home() {
     const getEventsCount = async () => {
         setIsLoading(true);
         try {
-            var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
-            var department = JSON.parse(await AsyncStorage.getItem("@user"))?.department;
+            let userString = await AsyncStorage.getItem("@user");
+            if (userString !== null) {
+                let user = JSON.parse(userString);
+                var email = user?.email;
+                var token = user?.token; // get token from user object
+                try {
+                    const res = await api.get(`https://vesinhdanang.xyz:7024/api/User/GetGoogleUser?email=${email}`, {
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                            "Client-Type": "Mobile"
+                        },
+                    });
 
-            var calendarId;
-            if (department.toString().toLowerCase().includes('cay xanh')) {
-                calendarId = 1;
-            } else if (department.toString().toLowerCase().includes('ve sinh')) {
-                calendarId = 2;
-            } else if (department.toString().toLowerCase().includes('quet don')) {
-                calendarId = 3;
-            }
+                    // append user department to user object
+                    user = {
+                        ...user,
+                        department: res.data.department,
+                        phoneNumber: res.data.phoneNumber,
+                        role: res.data.role
+                    };
+                    setUser(user);
+                    await AsyncStorage.setItem("@user", JSON.stringify(user)); // update user data in AsyncStorage
 
-            const atoken = await AsyncStorage.getItem("@accessToken");;
-            if (atoken !== null) {
-                api.get(`https://vesinhdanang.xyz:7024/api/Calendar/NumberOfEventsUser?calendarTypeEnum=${calendarId}&attendeeEmail=${useremail}`, {
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${atoken}`,
-                        "Client-Type": "Mobile"
-                    },
-                })
-                    .then((res) => {
-                        setEventsCount(res.data);
-                        setIsLoading(false);
-                    })
-                    .catch((error) => {
-                        console.log('There has been a problem with fetch operation: ', error.message);
+                    var department = user?.department;
+                    var calendarId;
+                    if (department.toString().toLowerCase().includes('cay xanh')) {
+                        calendarId = 1;
+                    } else if (department.toString().toLowerCase().includes('ve sinh')) {
+                        calendarId = 2;
+                    } else if (department.toString().toLowerCase().includes('quet don')) {
+                        calendarId = 3;
+                    }
+
+
+                    const atoken = await AsyncStorage.getItem("@accessToken");;
+                    if (atoken !== null) {
+                        api.get(`https://vesinhdanang.xyz:7024/api/Calendar/NumberOfEventsUser?calendarTypeEnum=${calendarId}&attendeeEmail=${email}`, {
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer ${atoken}`,
+                                "Client-Type": "Mobile"
+                            },
+                        })
+                            .then((res) => {
+                                setEventsCount(res.data);
+                                setIsLoading(false);
+                            })
+                            .catch((error) => {
+                                console.log('There has been a problem with fetch operation: ', error.message);
+                                setEventsCount(0);
+                                setIsLoading(false);
+                            });
+                    } else {
+                        console.log('token null');
                         setEventsCount(0);
                         setIsLoading(false);
-                    });
-            } else {
-                console.log('token null');
-                setEventsCount(0);
-                setIsLoading(false);
+                    }
+                } catch (error) {
+                    console.error(error);
+                    setEventsCount(0);
+                    setIsLoading(false);
+                }
             }
         } catch (error) {
             console.error(error);
             setEventsCount(0);
             setIsLoading(false);
         }
-    }
+    };
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
