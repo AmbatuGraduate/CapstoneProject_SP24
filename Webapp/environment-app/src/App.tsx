@@ -80,9 +80,9 @@ function App() {
           element: <DetailReport />,
         },
         {
-          path: "response",
+          path: "response/:id",
           element: <ResponseReport />,
-        }
+        },
       ],
     },
     {

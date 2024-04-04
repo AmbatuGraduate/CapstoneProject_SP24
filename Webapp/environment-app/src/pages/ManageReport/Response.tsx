@@ -1,10 +1,11 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { RESPONSE_REPORT, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
 
 export const ResponseReport = () => {
   const navigate = useNavigate();
+  const { id = "" } = useParams();
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
 
@@ -13,7 +14,7 @@ export const ResponseReport = () => {
       label: "Phản hồi ",
       formType: "input",
       key: "response",
-      placeholder: "Chưa có phản hồi nào"
+      placeholder: "Chưa có phản hồi nào",
     },
     {
       label: "Trạng thái",
@@ -36,6 +37,7 @@ export const ResponseReport = () => {
     setIsLoading(true);
     await useApi.post(RESPONSE_REPORT, {
       ...data,
+      reportID: id,
     });
     ref.current?.reload();
     navigate("/manage-report");

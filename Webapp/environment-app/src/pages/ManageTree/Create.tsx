@@ -4,6 +4,7 @@ import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
+import { GoogleMap } from "./MapIntergration";
 
 export const CreateTree = () => {
   const navigate = useNavigate();
@@ -33,6 +34,13 @@ export const CreateTree = () => {
       onChange: (e) => {
         setAddress(e.target.value);
       },
+    },
+    {
+      label: "Tuyến đường",
+      formType: "jsx",
+      key: "location",
+      onRender: <GoogleMap/>
+      
     },
     {
       label: "Đường kính thân (cm)",

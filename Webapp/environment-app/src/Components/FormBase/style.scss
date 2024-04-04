@@ -30,7 +30,7 @@
     >div {
         width: calc(50% - 15px);
     }
-    div:last-child {
+    > div:last-child {
         width: 100%;
     }
     button {
@@ -79,6 +79,7 @@
 }
 
 .form-cover {
+    position: relative;
     background: white;
     padding: 24px;
     border-radius: 16px;

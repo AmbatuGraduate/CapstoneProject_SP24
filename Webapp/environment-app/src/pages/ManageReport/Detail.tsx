@@ -80,7 +80,7 @@ export const DetailReport = () => {
         >
           <div className="detail-content-left"></div>
           <div className="detail-content-right title">
-            {data?.value?.reportFormat?.reportSubject}
+            {data?.value?.reportFormat?.reportSubject.replace("[Report]", "")}
           </div>
         </div>
         <div className="detail-cover-report" style={{ marginBottom: "35px" }}>
@@ -105,7 +105,7 @@ export const DetailReport = () => {
           </div>
         </div> */}
 
-        <div className="detail-cover-report" style={{ marginBottom: "20px"}}>
+        <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
           <div className="detail-content-left"></div>
           <div className="detail-content-right">
             {data.value.reportFormat.reportBody?.split("\r\n")[1]}
@@ -177,7 +177,7 @@ export const DetailReport = () => {
           >
             Trở về
           </Button>
-          <Link to={`/manage-tree/${id}/update`}>
+          <Link to={`/response/${id}`}>
             <Button className="btnLink" variant="success">
               Phản hồi
             </Button>
