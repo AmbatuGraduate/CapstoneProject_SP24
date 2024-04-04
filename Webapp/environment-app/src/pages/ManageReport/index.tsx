@@ -51,7 +51,8 @@ export const ManageReport = () => {
     {
       header: "Tiêu đề",
       accessorFn(row) {
-        return <h6 className="shortText">{row.reportSubject}</h6>;
+        const modifiedSubject = row.reportSubject.replace("[Report]", "");
+        return <h6 className="shortText">{modifiedSubject}</h6>;
       },
     },
     {
