@@ -46,7 +46,7 @@ export const DetailTree = () => {
       <div className="detail-content col-md-6">
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Mã số cây: </div>
+            <div className="detail-content-child-label">Mã Số Cây: </div>
             <div className="detail-content-child-value">
               {data?.treeCode}
             </div>
@@ -55,7 +55,7 @@ export const DetailTree = () => {
 
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Tên đường: </div>
+            <div className="detail-content-child-label">Tên Đường: </div>
             <div className="detail-content-child-value">
               {data?.streetName}
             </div>
@@ -64,7 +64,7 @@ export const DetailTree = () => {
 
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Loại cây: </div>
+            <div className="detail-content-child-label">Loại Cây: </div>
             <div className="detail-content-child-value">
               {data?.treeType}
             </div>
@@ -81,7 +81,7 @@ export const DetailTree = () => {
             </div>
           </div>
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Tán lá: </div>
+            <div className="detail-content-child-label">Tán Lá: </div>
             <div className="detail-content-child-value">
               {data?.leafLength}
             </div>
@@ -91,7 +91,7 @@ export const DetailTree = () => {
         <div className="detail-cover">
           <div className="detail-content-parent">
             <div className="detail-content-child-label">
-              Thời điểm trồng:{" "}
+              Thời Điểm Trồng:{" "}
             </div>
             <div className="detail-content-child-value">
               {dayFormat(data?.plantTime)}
@@ -99,7 +99,7 @@ export const DetailTree = () => {
           </div>
           <div className="detail-content-parent">
             <div className="detail-content-child-label">
-              Thời điểm cắt:{" "}
+              Thời Điểm Cắt:{" "}
             </div>
             <div className="detail-content-child-value">
               {dayFormat(data?.cutTime)}

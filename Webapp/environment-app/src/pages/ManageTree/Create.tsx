@@ -18,7 +18,7 @@ export const CreateTree = () => {
 
   const fields: Field[] = [
     {
-      label: "Mã cây",
+      label: "Mã Cây",
       formType: "input",
       key: "treeCode",
       googleAddress: false,
@@ -26,7 +26,7 @@ export const CreateTree = () => {
       placeholder: "Ví dụ: 15_CD5_HX_CL",
     },
     {
-      label: "Tuyến đường",
+      label: "Tuyến Đường",
       formType: "input",
       key: "treeLocation",
       googleAddress: true,
@@ -36,28 +36,28 @@ export const CreateTree = () => {
       },
     },
     {
-      label: "Tuyến đường",
+      label: "Tuyến Đường",
       formType: "jsx",
       key: "location",
       onRender: <GoogleMap/>
       
     },
     {
-      label: "Đường kính thân (cm)",
+      label: "Đường Kính Thân (cm)",
       formType: "number",
       key: "bodyDiameter",
       googleAddress: false,
       placeholder: "Ví dụ: 150",
     },
     {
-      label: "Tán lá (cm)",
+      label: "Tán Lá (cm)",
       formType: "number",
       key: "leafLength",
       googleAddress: false,
       placeholder: "Ví dụ: 150",
     },
     {
-      label: "Thời điểm trồng",
+      label: "Thời Điểm Trồng",
       formType: "date",
       key: "plantTime",
       selected: plantTime || new Date(),
@@ -67,7 +67,7 @@ export const CreateTree = () => {
       },
     },
     {
-      label: "Thời điểm cắt",
+      label: "Thời Điểm Cắt",
       formType: "date",
       key: "cutTime",
       selected: cutTime || new Date(),
@@ -88,7 +88,7 @@ export const CreateTree = () => {
       // },
     },
     {
-      label: "Khoảng thời gian cắt (tháng)",
+      label: "Khoảng Thời Gian Cắt (Tháng)",
       formType: "input",
       key: "intervalCutTime",
       value: intervalCutTime,
@@ -104,7 +104,7 @@ export const CreateTree = () => {
       },
     },
     {
-      label: "Loại cây",
+      label: "Loại Cây",
       formType: "select",
       key: "treeTypeId",
       optionExtra: {
@@ -115,7 +115,7 @@ export const CreateTree = () => {
       googleAddress: false,
     },
     {
-      label: "Ghi chú",
+      label: "Ghi Chú",
       formType: "textarea",
       key: "note",
       googleAddress: false,
@@ -123,7 +123,7 @@ export const CreateTree = () => {
     },
     {
       value: JSON.parse(token.accessToken).name,
-      label: "Người phụ trách",
+      label: "Người Phụ Trách",
       formType: "input",
       key: "userId",
       googleAddress: false,
