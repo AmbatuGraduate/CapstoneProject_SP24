@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity, ActivityIndicator, 
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import moment from "moment";
 import { api } from "../shared/api";
 import * as signalR from '@microsoft/signalr';
 
@@ -230,15 +231,21 @@ export default function Home() {
                         keyExtractor={(item) => item.id ? item.id.toString() : ''}
                         contentContainerStyle={{ paddingBottom: 20 }}
                         windowSize={10}
-                        renderItem={({ item }) => <View style={styles.notifButton}>
-                            <View>
-                                <Text style={styles.taskText}>
-                                    {item.message}
-                                </Text>
-                                <Text style={styles.dateText}>{item.notificationDateTime}</Text>
-                            </View>
-                        </View>
-                        }
+                        renderItem={({ item }) => {
+                            const notificationDate = moment(item.notificationDateTime, "M/D/YYYY h:mm:ss A").startOf('day');
+                            const today = moment().startOf('day');
+                            const isOld = notificationDate.isBefore(today);
+                            return (
+                                <View style={isOld ? styles.oldNotifButton : styles.notifButton}>
+                                    <View>
+                                        <Text style={isOld ? styles.oldTaskText : styles.taskText}>
+                                            {item.message}
+                                        </Text>
+                                        <Text style={styles.dateText}>{item.notificationDateTime}</Text>
+                                    </View>
+                                </View>
+                            );
+                        }}
                         ListFooterComponent={() =>
                             isEndOfList ? (
                                 <TouchableOpacity style={styles.loadMoreButton} onPress={() => {
@@ -317,7 +324,7 @@ const styles = StyleSheet.create({
     },
     taskText: {
         fontSize: 20,
-        color: 'gray',
+        color: 'black',
         fontFamily: 'quolibet',
     },
     noTasksText: {
@@ -345,5 +352,23 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 13,
         paddingTop: 8
-    }
+    },
+    oldNotifButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#f1f1f1',
+        padding: 20,
+        borderRadius: 10,
+        marginVertical: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 3,
+    },
+    oldTaskText: {
+        color: 'gray',
+        fontSize: 20,
+        fontFamily: 'quolibet',
+    },
 });
