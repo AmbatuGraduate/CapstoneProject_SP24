@@ -138,9 +138,20 @@ export default function Home() {
         setIsLoading(true);
         try {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
+            var department = JSON.parse(await AsyncStorage.getItem("@user"))?.department;
+
+            var calendarId;
+            if (department.toString().toLowerCase().includes('cay xanh')) {
+                calendarId = 1;
+            } else if (department.toString().toLowerCase().includes('ve sinh')) {
+                calendarId = 2;
+            } else if (department.toString().toLowerCase().includes('quet don')) {
+                calendarId = 3;
+            }
+
             const atoken = await AsyncStorage.getItem("@accessToken");;
             if (atoken !== null) {
-                api.get(`https://vesinhdanang.xyz:7024/api/Calendar/NumberOfEventsUser?calendarTypeEnum=1&attendeeEmail=${useremail}`, {
+                api.get(`https://vesinhdanang.xyz:7024/api/Calendar/NumberOfEventsUser?calendarTypeEnum=${calendarId}&attendeeEmail=${useremail}`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${atoken}`,
@@ -205,7 +216,7 @@ export default function Home() {
                             </Text>
                         </TouchableOpacity>
                     ) : (
-                        !isLoading && <Text style={styles.noTasksText}>Chưa có công việc nào</Text>
+                        !isLoading && <Text style={styles.noTasksText}>Chưa có công việc nào hôm nay!</Text>
                     )}
                 </View>
             }
