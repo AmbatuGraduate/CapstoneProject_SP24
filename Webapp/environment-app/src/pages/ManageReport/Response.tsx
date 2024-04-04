@@ -14,7 +14,7 @@ export const ResponseReport = () => {
       label: "Phản hồi ",
       formType: "input",
       key: "response",
-      placeholder: "Chưa có phản hồi nào",
+      placeholder: "Nhập nội dung phản hồi",
     },
     {
       label: "Trạng thái",
