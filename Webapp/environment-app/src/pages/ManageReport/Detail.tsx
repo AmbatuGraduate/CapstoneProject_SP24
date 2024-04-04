@@ -177,7 +177,7 @@ export const DetailReport = () => {
           >
             Trở về
           </Button>
-          <Link to={`/manage-tree/${id}/update`}>
+          <Link to={`/response/${id}`}>
             <Button className="btnLink" variant="success">
               Phản hồi
             </Button>
