@@ -15,12 +15,13 @@ export type Field = {
   selected?: Date;
   value?: any;
   placeholder?: string;
-  formType: "input" | "select" | "textarea" | "number" | "date";
+  formType: "input" | "select" | "textarea" | "number" | "date" | "jsx";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
   optionExtra?: OptionExtra;
   onChange?: (event: React.ChangeEvent<any>) => void;
+  onRender?: React.ReactNode;
 };
 
 export type OptionExtra = {
@@ -54,7 +55,8 @@ export const FormBase = (props: Props) => {
   } = props;
 
   const FormType = ({ props }: { props: Field }) => {
-    const { formType, options, key, disabled, optionExtra, ...rest } = props;
+    const { formType, options, key, disabled, optionExtra, onRender, ...rest } =
+      props;
     const _disabled = mode == "view" ? true : disabled;
     const [_options, setOptions] = useState<Option[]>();
     const [startDate, setStartDate] = useState<Date | null>(
@@ -175,6 +177,9 @@ export const FormBase = (props: Props) => {
             dateFormat="dd/MM/yyyy"
           />
         );
+      case "jsx":
+        return onRender;
+
       default:
         return (
           <Form.Control type="text" {...rest} name={key} disabled={_disabled} />
@@ -189,7 +194,10 @@ export const FormBase = (props: Props) => {
       data[f.key] = (e.target as any)?.[f.key].value;
       if (f.key === "reportImpact") {
         data[f.key] = Number((e.target as any)?.[f.key].value);
-    }
+      }
+      if (f.key === "status") {
+        data[f.key] = Number((e.target as any)?.[f.key].value);
+      }
     });
     console.log(data);
     onSave && onSave(data);
