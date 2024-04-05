@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { CULTIVAR_LIST, TREE_DETAIL, TREE_UPDATE, useApi } from "../../Api";
+import { TREE_DETAIL, TREE_TYPE_LIST, TREE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor, dayFormat } from "../../utils";
 import { useCookies } from "react-cookie";
@@ -45,13 +45,13 @@ export const UpdateTree = () => {
       },
     },
     {
-      label: "Giống Cây",
+      label: "Loại Cây",
       formType: "select",
-      key: "cultivarId",
+      key: "treeTypeId",
       optionExtra: {
-        url: CULTIVAR_LIST,
-        _key: "cultivarName",
-        _value: "cultivarId",
+        url: TREE_TYPE_LIST,
+        _key: "treeTypeName",
+        _value: "v",
       },
     },
     {
