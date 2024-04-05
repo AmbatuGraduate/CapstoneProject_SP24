@@ -41,7 +41,7 @@ const Top = () => {
           <p>Xin chào {JSON.parse(token.accessToken).name}</p>
         </div>
         <div className="adminDiv flex">
-          <IoNotificationsOutline className="icon" />
+          {/* <IoNotificationsOutline className="icon" /> */}
           <div className="adminImage">
             <button onClick={toggleDropdown} className="dropbtn">
               <img

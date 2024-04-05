@@ -115,7 +115,7 @@ export const DetailReport = () => {
         <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
           <div className="detail-content-left"></div>
           <div className="detail-content-right">
-            <b>Trạng thái:</b>{" "}
+            <b>Trạng Thái:</b>{" "}
             <span
               className={
                 data?.value?.reportFormat?.reportStatus == "Resolved"
@@ -131,14 +131,14 @@ export const DetailReport = () => {
         <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
           <div className="detail-content-left"></div>
           <div className="detail-content-right">
-            <b>Mức độ ảnh hưởng:</b>
+            <b>Mức Độ Ảnh Hưởng:</b>
             <span
               className={
                 data?.value?.reportFormat?.reportImpact == 0
                   ? "low"
                   : data?.value?.reportFormat?.reportImpact == 1
-                  ? "medium"
-                  : "HIGH"
+                    ? "medium"
+                    : "HIGH"
               }
             >
               {ReportImpact[data?.value?.reportFormat?.reportImpact]}
@@ -149,7 +149,7 @@ export const DetailReport = () => {
         <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
           <div className="detail-content-left"></div>
           <div className="detail-content-right">
-            <b>Cần giải quyết trước:</b>{" "}
+            <b>Cần Giải Quyết Trước:</b>{" "}
             {dayFormat(data?.value?.reportFormat?.expectedResolutionDate)}
           </div>
         </div>
@@ -157,7 +157,7 @@ export const DetailReport = () => {
         <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
           <div className="detail-content-left"></div>
           <div className="detail-content-right">
-            <b>Ngày giải quyết:</b>{" "}
+            <b>Ngày Giải Quyết:</b>{" "}
             {dayFormat(data?.value?.reportFormat?.actualResolutionDate)}
           </div>
         </div>
@@ -165,7 +165,7 @@ export const DetailReport = () => {
         <div className="detail-cover-report">
           <div className="detail-content-left"></div>
           <div className="detail-content-right">
-            <b>Phản hồi:</b> {data?.value?.reportFormat?.reportResponse}
+            <b>Phản Hồi:</b> {data?.value?.reportFormat?.reportResponse}
           </div>
         </div>
 
@@ -175,11 +175,11 @@ export const DetailReport = () => {
             variant="danger"
             onClick={handleNavigate}
           >
-            Trở về
+            Trở Về
           </Button>
           <Link to={`/response/${id}`}>
             <Button className="btnLink" variant="success">
-              Phản hồi
+              Phản Hồi
             </Button>
           </Link>
         </div>

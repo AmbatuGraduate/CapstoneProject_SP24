@@ -114,7 +114,7 @@ export function GoogleMap(props: GoogleMapProps) {
       <div className="form-group address">
         <label htmlFor="exampleInputEmail1">Address</label>
         <input
-         
+
           className="form-control"
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
