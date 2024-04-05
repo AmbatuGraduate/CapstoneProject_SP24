@@ -60,6 +60,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         TimeZone = TimeZone
                     },
                     Attendees = myEvent.Attendees
+                        .Where(attendee => !string.IsNullOrEmpty(attendee.Email)) // Skip attendees with null or empty email
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
                         .ToList(),
                     ExtendedProperties = new Event.ExtendedPropertiesData
@@ -251,7 +252,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
                 var events = await listRequest.ExecuteAsync();
                 List<MyEvent> myEvents = events.Items
-                    .Where(myEvent => (myEvent.ExtendedProperties != null && 
+                    .Where(myEvent => (myEvent.ExtendedProperties != null &&
                     myEvent.ExtendedProperties.Private__.ContainsKey(EventExtendedProperties.DepartmentEmail) &&
                     myEvent.ExtendedProperties.Private__[EventExtendedProperties.DepartmentEmail].Equals(departmentEmail, StringComparison.OrdinalIgnoreCase)
                     ))

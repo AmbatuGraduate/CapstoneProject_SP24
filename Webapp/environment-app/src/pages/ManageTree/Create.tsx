@@ -39,8 +39,8 @@ export const CreateTree = () => {
       label: "Tuyến Đường",
       formType: "jsx",
       key: "location",
-      onRender: <GoogleMap/>
-      
+      onRender: <GoogleMap />
+
     },
     {
       label: "Đường Kính Thân (cm)",

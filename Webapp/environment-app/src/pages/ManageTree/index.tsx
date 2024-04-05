@@ -149,7 +149,7 @@ export const ManageTree = () => {
             onClick={() => navigate("/manage-tree/create")}
           >
             <MdAddCircleOutline className="iconAdd" />
-            Thêm cây
+            Thêm Cây
           </Button>
         }
         filter={(row) => {

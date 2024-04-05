@@ -1,32 +1,49 @@
-import { useNavigate } from "react-router-dom";
-import { TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ClEANING_SCHEDULE_DETAIL, ClEANING_SCHEDULE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 
-export const CreateTreeTrimSchedule = () => {
+export const UpdateCleaningSchedule = () => {
     const navigate = useNavigate();
+    const { id = "" } = useParams();
+    const [data, setData] = useState<any>();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
     const [token] = useCookies(["accessToken"]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await useApi.get(ClEANING_SCHEDULE_DETAIL.replace(":id", id));
+                setData(response.data);
+            } catch (error) {
+                console.error("Error fetching tree trimm schedule detail:", error);
+            }
+        };
+
+        fetchData();
+    }, [id]);
 
     const fields: Field[] = [
         {
             label: "Tiêu Đề",
             formType: "input",
             key: "sumary",
+            defaultValue: data?.myEvent.summary,
         },
         {
             label: "Địa Chỉ",
             formType: "input",
             key: "location",
-            placeholder: "Ví dụ: 29 Sơn Thủy Đông 2, Hòa Hải, Ngũ Hành Sơn",
+            defaultValue: data?.myEvent.location,
         },
         {
             label: "Bắt Đầu Từ",
             formType: "datetime",
             key: "start.dateTime",
+            defaultValue: data?.myEvent.start,
         },
         {
             label: "Kết Thúc Trước",
@@ -34,14 +51,10 @@ export const CreateTreeTrimSchedule = () => {
             key: "end.dateTime",
         },
         {
-            label: "Cây Cần Cẳt",
-            formType: "input",
-            key: "treeId",
-        },
-        {
             label: "Nhân Viên Thực Hiện",
             formType: "input",
-            key: "",
+            key: "attendees",
+            defaultValue: data?.myEvent.attendees[0].fullName,
         },
         {
             label: "Ghi Chú",
@@ -53,20 +66,20 @@ export const CreateTreeTrimSchedule = () => {
 
     const handleSubmit = async (data: Record<string, any>) => {
         setIsLoading(true);
-        await useApi.post(TREE_TRIM_SCHEDULE_ADD, {
+        await useApi.post(ClEANING_SCHEDULE_UPDATE, {
             ...data,
         });
         ref.current?.reload();
-        navigate("/manage-treetrim-schedule");
+        navigate("/manage-cleaning-schedule");
     };
 
     return (
         <div className="form-cover">
-            <h4>Thêm Lịch Cắt Tỉa</h4>
+            <h4>Cập Nhật Lịch Vệ Sinh Đô Thị</h4>
             <FormBase
                 fields={fields}
                 onSave={handleSubmit}
-                onCancel={() => navigate("/manage-treetrim-schedule")}
+                onCancel={() => navigate("/manage-cleaning-schedule")}
             />
         </div>
     );

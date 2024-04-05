@@ -98,7 +98,7 @@ export const UpdateTree = () => {
 
   return (
     <div className="form-cover">
-      <h4>Cập nhật cây</h4>
+      <h4>Cập Nhật Cây</h4>
       <FormBase
         fields={fields}
         onSave={handleSubmit}

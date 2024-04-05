@@ -137,8 +137,8 @@ export const DetailReport = () => {
                 data?.value?.reportFormat?.reportImpact == 0
                   ? "low"
                   : data?.value?.reportFormat?.reportImpact == 1
-                  ? "medium"
-                  : "HIGH"
+                    ? "medium"
+                    : "HIGH"
               }
             >
               {ReportImpact[data?.value?.reportFormat?.reportImpact]}

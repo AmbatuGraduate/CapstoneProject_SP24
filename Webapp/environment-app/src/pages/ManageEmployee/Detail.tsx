@@ -186,6 +186,7 @@ export const DetailEmployee = () => {
               Ngày Sinh:{" "}
             </div>
             <div className="detail-content-child-value">
+              {dayFormat(data?.birthDate)}
             </div>
           </div>
         </div>
@@ -196,6 +197,7 @@ export const DetailEmployee = () => {
               Địa Chỉ Thường Trú:{" "}
             </div>
             <div className="detail-content-child-value">
+              {data?.address}
             </div>
           </div>
         </div>
@@ -206,11 +208,11 @@ export const DetailEmployee = () => {
             variant="danger"
             onClick={handleNavigate}
           >
-            Trở về
+            Trở Về
           </Button>
-          <Link to={`/manage-tree/${data?.treeCode}/update`}>
+          <Link to={`/manage-employee/${data?.email}/update`}>
             <Button className="btnLink" variant="success">
-              Cập nhật
+              Cập Nhật
             </Button>
           </Link>
         </div>

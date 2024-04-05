@@ -11,13 +11,13 @@ export const ResponseReport = () => {
 
   const fields: Field[] = [
     {
-      label: "Phản hồi ",
+      label: "Phản Hồi ",
       formType: "input",
       key: "response",
-      placeholder: "Chưa có phản hồi nào",
+      placeholder: "Nhập nội dung phản hồi",
     },
     {
-      label: "Trạng thái",
+      label: "Trạng Thái",
       formType: "select",
       key: "status",
       options: [
@@ -45,7 +45,7 @@ export const ResponseReport = () => {
 
   return (
     <div className="form-cover">
-      <h4>Phản hồi</h4>
+      <h4>Phản Hồi</h4>
       <FormBase
         fields={fields}
         onSave={handleSubmit}

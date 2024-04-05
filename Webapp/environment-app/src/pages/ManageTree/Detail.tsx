@@ -74,7 +74,7 @@ export const DetailTree = () => {
         <div className="detail-cover">
           <div className="detail-content-parent">
             <div className="detail-content-child-label">
-              Đường kính thân:{" "}
+              Đường Kính Thân:{" "}
             </div>
             <div className="detail-content-child-value">
               {data?.bodyDiameter}
@@ -113,11 +113,11 @@ export const DetailTree = () => {
             variant="danger"
             onClick={handleNavigate}
           >
-            Trở về
+            Trở Về
           </Button>
           <Link to={`/manage-tree/${data?.treeCode}/update`}>
             <Button className="btnLink" variant="success">
-              Cập nhật
+              Cập Nhật
             </Button>
           </Link>
         </div>
