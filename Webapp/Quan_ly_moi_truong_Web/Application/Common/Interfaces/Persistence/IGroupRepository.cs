@@ -26,5 +26,7 @@ namespace Application.Common.Interfaces.Persistence
         Task<GroupResult> UpdateGoogleGroup(string accessToken, UpdateGoogleGroup group);
 
         Task<bool> DeleteGoogleGroup(string accessToken, string groupEmail);
+
+        Departments GetGroupByEmail(string groupEmail);
     }
 }
