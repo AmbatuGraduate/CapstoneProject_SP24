@@ -27,14 +27,14 @@ export const UpdateTree = () => {
 
   const fields: Field[] = [
     {
-      label: "Mã cây",
+      label: "Mã Cây",
       formType: "input",
       key: "treeCode",
       defaultValue: data?.treeCode,
       disabled: true,
     },
     {
-      label: "Tuyến đường",
+      label: "Tuyến Đường",
       formType: "input",
       key: "treeLocation",
       defaultValue: data?.treeLocation,
@@ -45,7 +45,7 @@ export const UpdateTree = () => {
       },
     },
     {
-      label: "Giống cây",
+      label: "Loại Cây",
       formType: "select",
       key: "cultivarId",
       optionExtra: {
@@ -55,31 +55,31 @@ export const UpdateTree = () => {
       },
     },
     {
-      label: "Đường kính thân",
+      label: "Đường Kính Thân",
       formType: "number",
       key: "bodyDiameter",
       defaultValue: data?.bodyDiameter,
     },
     {
-      label: "Tán lá",
+      label: "Tán Lá",
       formType: "number",
       key: "leafLength",
       defaultValue: data?.leafLength,
     },
     {
-      label: "Thời điểm trồng",
+      label: "Thời Điểm Trồng",
       formType: "date",
       key: "plantTime",
       defaultValue: dayFormat(data?.plantTime),
     },
     {
-      label: "Khoảng thời gian cắt",
+      label: "Khoảng Thời Gian Cắt",
       formType: "number",
       key: "intervalCutTime",
       defaultValue: dayFormat(data?.intervalCutTime),
     },
     {
-      label: "Ghi chú",
+      label: "Ghi Chú",
       formType: "textarea",
       key: "note",
       defaultValue: data?.note,
@@ -98,7 +98,7 @@ export const UpdateTree = () => {
 
   return (
     <div className="form-cover">
-      <h4>Cập nhật cây</h4>
+      <h4>Cập Nhật Cây</h4>
       <FormBase
         fields={fields}
         onSave={handleSubmit}

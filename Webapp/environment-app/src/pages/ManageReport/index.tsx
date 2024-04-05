@@ -32,7 +32,7 @@ export const ManageReport = () => {
     //   },
     // },
     {
-      header: "Người gửi",
+      header: "Người Gửi",
       accessorFn(longRow) {
         return (
           <h6 className="shortText">
@@ -49,7 +49,7 @@ export const ManageReport = () => {
       width: "25%",
     },
     {
-      header: "Trạng thái",
+      header: "Trạng Thái",
       accessorFn(row) {
         return (
           <h6
@@ -66,7 +66,7 @@ export const ManageReport = () => {
       width: "15%",
     },
     {
-      header: "Mức độ ảnh hưởng",
+      header: "Mức Độ Ảnh Hưởng",
       accessorFn(row) {
         return (
           <h6
@@ -83,14 +83,14 @@ export const ManageReport = () => {
       width: "20%",
     },
     {
-      header: "Cần giải quyết trước",
+      header: "Cần Giải Quyết Trước",
       accessorFn(row) {
         return <h6 className="shortText">{dayFormat(row.expectedResolutionDate)}</h6>;
       },
       width: "15%",
     },
     {
-      header: "Ngày đã giải quyết",
+      header: "Ngày Đã Giải Quyết",
       accessorFn(row) {
         return <h6 className="shortText">{dayFormat(row.actualResolutionDate)}</h6>;
       },
@@ -114,7 +114,7 @@ export const ManageReport = () => {
             onClick={() => navigate("create")}
           >
             <MdAddCircleOutline className="iconAdd" />
-            Thêm báo cáo
+            Thêm Báo Cáo
           </Button>
         }
         transform={(data: any) => data?.value?.map((i) => i.reportFormat) || []}
