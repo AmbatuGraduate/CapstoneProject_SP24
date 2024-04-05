@@ -32,7 +32,7 @@ export const ManageReport = () => {
     //   },
     // },
     {
-      header: "Người Gửi",
+      header: "Người gửi",
       accessorFn(longRow) {
         return (
           <h6 className="shortText">
@@ -49,7 +49,23 @@ export const ManageReport = () => {
       width: "25%",
     },
     {
-      header: "Trạng Thái",
+      header: "Tiêu đề",
+      accessorFn(row) {
+        const modifiedSubject = row.reportSubject.replace("[Report]", "");
+        return <h6 className="shortText">{modifiedSubject}</h6>;
+      },
+    },
+    {
+      header: "Cần giải quyết trước",
+      accessorFn(row) {
+        return (
+          <h6 className="shortText">{dayFormat(row.expectedResolutionDate)}</h6>
+        );
+      },
+      width: "15%",
+    },
+    {
+      header: "Trạng thái",
       accessorFn(row) {
         return (
           <h6
@@ -66,7 +82,7 @@ export const ManageReport = () => {
       width: "15%",
     },
     {
-      header: "Mức Độ Ảnh Hưởng",
+      header: "Mức độ ảnh hưởng",
       accessorFn(row) {
         return (
           <h6
@@ -81,19 +97,6 @@ export const ManageReport = () => {
         );
       },
       width: "20%",
-    },
-    {
-      header: "Cần Giải Quyết Trước",
-      accessorFn(row) {
-        return <h6 className="shortText">{dayFormat(row.expectedResolutionDate)}</h6>;
-      },
-      width: "15%",
-    },
-    {
-      header: "Ngày Đã Giải Quyết",
-      accessorFn(row) {
-        return <h6 className="shortText">{dayFormat(row.actualResolutionDate)}</h6>;
-      },
     },
   ];
 
@@ -111,10 +114,10 @@ export const ManageReport = () => {
               border: "none",
               padding: "0.5rem 1rem",
             }}
-            onClick={() => navigate("create")}
+            onClick={() => navigate("/manage-report/create")}
           >
             <MdAddCircleOutline className="iconAdd" />
-            Thêm Báo Cáo
+            Thêm báo cáo
           </Button>
         }
         transform={(data: any) => data?.value?.map((i) => i.reportFormat) || []}

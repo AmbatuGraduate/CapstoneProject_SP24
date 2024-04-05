@@ -25,6 +25,7 @@ import { UpdateGarbageCollectionSchedule } from "./pages/ManageGarbageCollection
 import { CreateCleaningSchedule } from "./pages/ManageCleaningSchedule/Create";
 import { DetailCleaningSchedule } from "./pages/ManageCleaningSchedule/Detail";
 import { UpdateCleaningSchedule } from "./pages/ManageCleaningSchedule/Update";
+import { Manage } from "./pages/Manage";
 
 function App() {
   const router = createBrowserRouter([
@@ -34,7 +35,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <ManageReport />,
+          element: <Manage />,
         },
         {
           path: "manage-tree",
@@ -115,6 +116,10 @@ function App() {
         {
           path: "manage-garbagecollection-schedule/:id/update",
           element: <UpdateGarbageCollectionSchedule />,
+        },
+        {
+          path: "manage-report",
+          element: <ManageReport />,
         },
         {
           path: "/create",
