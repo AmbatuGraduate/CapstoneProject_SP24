@@ -10,5 +10,6 @@
         public string PhoneNumber { get; set; }
         public DateOnly BirthDate { get; set; }
         public string Address { get; set; }
+        public string DepartmentEmail {  get; set; }
     }
 }
