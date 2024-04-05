@@ -25,7 +25,7 @@ namespace Application.Calendar
         public string DepartmentEmail { get; set; } 
         public EventDateTime Start { get; set; }
         public EventDateTime End { get; set; }
-        public List<User> Attendees { get; set; }
+        public List<User>? Attendees { get; set; }
     }
 
     public class MyUpdatedEvent
