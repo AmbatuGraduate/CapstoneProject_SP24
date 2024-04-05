@@ -7,6 +7,8 @@
         string avatar,
         DateTime expire_in,
         string email,
-        string token
+        string token,
+        string role,
+        string department
     );
 }

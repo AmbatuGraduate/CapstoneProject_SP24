@@ -22,7 +22,9 @@ namespace API.Mapping
             config.NewConfig<GoogleAuthenticationResult, AuthenticationResponse>()
                   .Map(dest => dest.Name, src => src.name)
                   .Map(dest => dest.Image, src => src.avatar)
-                  .Map(dest => dest.Email, src => src.email);
+                  .Map(dest => dest.Email, src => src.email)
+                  .Map(dest => dest.Role, src => src.role)
+                  .Map(dest => dest.Department, src => src.department);
 
 
             config.NewConfig<GoogleRefreshResultMobile, AccessTokenResMobile>()

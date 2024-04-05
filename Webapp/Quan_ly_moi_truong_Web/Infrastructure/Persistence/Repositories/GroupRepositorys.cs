@@ -279,5 +279,17 @@ namespace Infrastructure.Persistence.Repositories
         {
             return webDbContext.Departments.SingleOrDefault(group => group.DepartmentEmail.ToLower().Equals(groupEmail.ToLower()));
         }
+
+        public Departments GetGroupDbById(string groupId)
+        {
+            try
+            {
+                return webDbContext.Departments.FirstOrDefault(x => x.DepartmentId == groupId);
+            }
+            catch (Exception e)
+            {
+                return null ;
+            }
+        }
     }
 }
