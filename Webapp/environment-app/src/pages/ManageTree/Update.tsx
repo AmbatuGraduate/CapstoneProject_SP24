@@ -102,7 +102,7 @@ export const UpdateTree = () => {
       <FormBase
         fields={fields}
         onSave={handleSubmit}
-        onCancel={() => navigate("/manage-tree")}
+        onCancel={() => navigate(-1)}
       />
     </div>
   );
