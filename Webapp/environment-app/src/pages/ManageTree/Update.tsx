@@ -37,12 +37,12 @@ export const UpdateTree = () => {
       label: "Tuyến Đường",
       formType: "input",
       key: "treeLocation",
-      defaultValue: data?.treeLocation,
-      googleAddress: true,
-      value: address,
-      onChange: (e) => {
-        setAddress(e.target.value);
-      },
+      defaultValue: data?.streetName,
+      // googleAddress: true,
+      // value: address,
+      // onChange: (e) => {
+      //   setAddress(e.target.value);
+      // },
     },
     {
       label: "Loại Cây",
