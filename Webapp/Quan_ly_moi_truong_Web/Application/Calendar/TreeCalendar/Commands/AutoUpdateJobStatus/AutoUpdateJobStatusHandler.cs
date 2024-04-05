@@ -4,6 +4,7 @@ using Domain.Common.Errors;
 using Domain.Enums;
 using ErrorOr;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus
 {
@@ -31,7 +32,7 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus
                     && listCalendar[i].ExtendedProperties.PrivateProperties["JobWorkingStatus"] != _treeCalendarService.ConvertToJobWorkingStatusString(JobWorkingStatus.Late))
                 {
                     var result = await _treeCalendarService.UpdateJobStatus(accessToken, request.calendarId, JobWorkingStatus.Late, listCalendar[i].Id);
-                    if (!result)
+                    if (result.IsNullOrEmpty())
                     {
                         return Errors.UpdateGoogle.UpdateGoogleCalendarFail;
                     }

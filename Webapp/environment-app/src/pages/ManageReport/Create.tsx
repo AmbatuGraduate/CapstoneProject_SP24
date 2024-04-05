@@ -61,7 +61,7 @@ export const CreateReport = () => {
       expectedResolutionDate: dateConstructor(data.expectedResolutionDate),
     });
     ref.current?.reload();
-    navigate("/");
+    navigate("/manage-report");
   };
 
   return (
@@ -70,7 +70,7 @@ export const CreateReport = () => {
       <FormBase
         fields={fields}
         onSave={handleSubmit}
-        onCancel={() => navigate("/")}
+        onCancel={() => navigate("/manage-report")}
       />
     </div>
   );

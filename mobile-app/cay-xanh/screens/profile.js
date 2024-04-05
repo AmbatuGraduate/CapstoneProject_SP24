@@ -18,30 +18,7 @@ export default function Profile({ navigation }) {
     useEffect(() => {
         AsyncStorage.getItem("@user").then(async (userString) => {
             if (userString !== null) {
-                let user = JSON.parse(userString);
-                var email = user?.email;
-                var token = user?.token; // get token from user object
-                try {
-                    const res = await api.get(`https://vesinhdanang.xyz:7024/api/User/GetGoogleUser?email=${email}`, {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`,
-                            "Client-Type": "Mobile"
-                        },
-                    });
-
-                    // append user department to user object
-                    user = {
-                        ...user,
-                        department: res.data.department,
-                        phoneNumber: res.data.phoneNumber,
-                        role: res.data.role
-                    };
-                    setUser(user);
-                    await AsyncStorage.setItem("@user", JSON.stringify(user)); // update user data in AsyncStorage
-                } catch (error) {
-                    console.log('There has been a problem with fetch operation: ', error.message);
-                }
+                setUser(JSON.parse(userString));
             }
         });
     }, []);

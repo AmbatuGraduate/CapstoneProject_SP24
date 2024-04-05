@@ -62,9 +62,20 @@ export default function TasksList({ navigation }) {
     const getEvents = async () => {
 
         try {
+            var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
+            var department = JSON.parse(await AsyncStorage.getItem("@user"))?.department;
+
+            var calendarId;
+            if (department.toString().toLowerCase().includes('cay xanh')) {
+                calendarId = 1;
+            } else if (department.toString().toLowerCase().includes('ve sinh')) {
+                calendarId = 2;
+            } else if (department.toString().toLowerCase().includes('quet don')) {
+                calendarId = 3;
+            }
             const atoken = await AsyncStorage.getItem("@accessToken");
             if (atoken !== null) {
-                api.get('https://vesinhdanang.xyz:7024/api/Calendar/GetAllCalendarEvents?calendarTypeEnum=1', {
+                api.get(`https://vesinhdanang.xyz:7024/api/Calendar/GetCalendarEventsByAttendeeEmail?calendarTypeEnum=${calendarId}&attendeeEmail=${useremail}`, {
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${atoken}`,
@@ -75,8 +86,8 @@ export default function TasksList({ navigation }) {
                         if (Array.isArray(res.data)) {
                             const jsonEvents = res.data.map(item => {
                                 const event = {
-                                    ...item,
-                                    extendedProperties: item.extendedProperties,
+                                    ...item.myEvent,
+                                    extendedProperties: item.myEvent.extendedProperties,
                                 };
                                 return event;
                             });
@@ -85,14 +96,6 @@ export default function TasksList({ navigation }) {
                         else {
                             console.log('Unexpected response from API:', res);
                         }
-                        // const jsonEvents = res.data.map(item => {
-                        //     const event = {
-                        //         ...item,
-                        //         extendedProperties: item.extendedProperties,
-                        //     };
-                        //     return event;
-                        // });
-                        // setEvents(jsonEvents);
                         setLoading(false);
                         setEmptyEvents('Không có công việc nào trong ngày này');
                     })
@@ -130,13 +133,15 @@ export default function TasksList({ navigation }) {
             const data = {};
             const markedDates = {};
             events.forEach(item => {
-                const [date, time] = item.start.split("T");
-                const currentDate = date;
-                if (!data[currentDate]) {
-                    data[currentDate] = [];
+                if (item.start) {
+                    const [date, time] = item.start.split("T");
+                    const currentDate = date;
+                    if (!data[currentDate]) {
+                        data[currentDate] = [];
+                    }
+                    data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
+                    markedDates[currentDate] = { marked: true };
                 }
-                data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
-                markedDates[currentDate] = { marked: true };
             });
             setTransformedData(data);
             setMarked(markedDates);

@@ -23,12 +23,22 @@ export default function TaskDetails({ route }) {
 
     // ----------------- Update task status -----------------
 
-    const updateStatus = () => {
+    const updateStatus = async () => {
         console.log('Updating status...');
         setLoading(true);
         try {
+            var department = JSON.parse(await AsyncStorage.getItem("@user"))?.department;
+
+            var calendarId;
+            if (department.toString().toLowerCase().includes('cay xanh')) {
+                calendarId = 1;
+            } else if (department.toString().toLowerCase().includes('ve sinh')) {
+                calendarId = 2;
+            } else if (department.toString().toLowerCase().includes('quet don')) {
+                calendarId = 3;
+            }
             AsyncStorage.getItem("@accessToken").then(token => {
-                const url = 'https://vesinhdanang.xyz:7024/api/Calendar/UpdateJobWorkingStatus?calendarTypeEnum=1';
+                const url = `https://vesinhdanang.xyz:7024/api/Calendar/UpdateJobWorkingStatus?calendarTypeEnum=${calendarId}`;
 
                 api.post(url, {
                     accessToken: "",

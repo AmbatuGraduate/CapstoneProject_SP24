@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, Image, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as WebBrowser from 'expo-web-browser';
+
+
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -37,11 +39,30 @@ const LoginScreen = ({ setUser }) => {
             'https://www.googleapis.com/auth/gmail.compose',
 
         ],
+        hd: 'vesinhdanang.xyz',
     }, discovery);
+
 
     useEffect(() => {
         handleGoogleLogin();
     }, [res]);
+
+    const isEmployee = async (email) => {
+        try {
+            const response = await fetch(`https://vesinhdanang.xyz:7024/api/User/IsEmployee?email=${encodeURIComponent(email)}`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.title || 'Something went wrong');
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Error:', error);
+            return false;
+        }
+    }
+
 
     async function handleGoogleLogin() {
         const user = await AsyncStorage.getItem("@user");
@@ -51,6 +72,11 @@ const LoginScreen = ({ setUser }) => {
         } else {
             if (res?.type === 'success') {
                 const userInfo = await getUserInfo(res.authentication.accessToken);
+                const isEmployeeResponse = await isEmployee(userInfo.email);
+                if (!isEmployeeResponse) {
+                    Alert.alert('Đăng nhập không thành công', 'Tài khoản của bạn không có quyền truy cập');
+                    return;
+                }
                 const currentTime = Date.now() / 1000; // Current time in seconds
                 const userData = {
                     ...userInfo,
@@ -61,6 +87,8 @@ const LoginScreen = ({ setUser }) => {
                 await AsyncStorage.setItem("@user", JSON.stringify(userData));
                 await AsyncStorage.setItem("@accessToken", res.authentication.accessToken);
                 await AsyncStorage.setItem("@refreshToken", res.authentication.refreshToken);
+                setUserInfo(userData);
+                setUser(userData);
             }
         }
     }
@@ -70,29 +98,25 @@ const LoginScreen = ({ setUser }) => {
             headers: { Authorization: `Bearer ${token}` },
         });
         const user = await response.json();
-        await AsyncStorage.setItem("@user", JSON.stringify(user));
 
-        setUserInfo(user);
-        setUser(user);
         return user;
     }
 
     return (
         <LinearGradient
-            colors={['#98FB98', '#E0FFD1']}
+            colors={['#ffffff', '#f5f5f5']}
             style={styles.container}
         >
             <Image
-                source={require('../assets/icons/envi.png')}
+                source={require('../assets/ambatu.png')}
                 style={styles.logo}
             />
-            <Text style={styles.title}>Ve sinh Da Nang</Text>
             <TouchableOpacity style={styles.button} onPress={() => promptAsync()}>
                 <Image
                     source={require('../assets/icons/google.jpg')}
                     style={styles.buttonIcon}
                 />
-                <Text style={styles.buttonText}>Login with Google</Text>
+                <Text style={styles.buttonText}>Đăng nhập với Google</Text>
             </TouchableOpacity>
         </LinearGradient>
     );
@@ -106,28 +130,24 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
     },
     logo: {
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        top: 0,
-        opacity: 0.8,
-    },
-    title: {
-        fontSize: 40,
-        marginBottom: 20,
-        color: 'whitesmoke',
-        letterSpacing: 1.5,
-        fontWeight: 'bold',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 10
+        width: 150, // Adjust as needed
+        height: 150, // Adjust as needed
+        marginBottom: 50, // Creates some space between the logo and the button
+        resizeMode: 'contain',
     },
     button: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#4285F4',
+        backgroundColor: '#fff',
         padding: 10,
         borderRadius: 5,
+        borderWidth: 1,
+        borderColor: 'lightgrey',
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 5,
     },
     buttonIcon: {
         width: 24,
@@ -135,7 +155,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     buttonText: {
-        color: '#fff',
+        color: 'black',
         fontSize: 18,
     },
 });

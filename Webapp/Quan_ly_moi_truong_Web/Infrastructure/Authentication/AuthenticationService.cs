@@ -1,7 +1,10 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Session.Token;
+using Domain.Enums;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Auth.OAuth2.Flows;
+using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Authentication
@@ -9,6 +12,7 @@ namespace Infrastructure.Authentication
     public class AuthenticationService : IAuthenticationService
     {
         private readonly GoogleApiSettings _settings;
+        private readonly WebDbContext _context;
 
         //Request parameters
         private string clientId;
@@ -43,11 +47,12 @@ namespace Infrastructure.Authentication
 
         private string redirect_Uri = "postmessage";
 
-        public AuthenticationService(IOptions<GoogleApiSettings> googelApiSettings)
+        public AuthenticationService(IOptions<GoogleApiSettings> googelApiSettings, WebDbContext webDbContext)
         {
             _settings = googelApiSettings.Value;
             clientId = _settings.ClientId;
             clientSecret = _settings.ClientSecret;
+            _context = webDbContext;
         }
 
         public AuthorizationCodeFlow CreateFlow()
@@ -106,6 +111,27 @@ namespace Infrastructure.Authentication
                     tokenRespone.Scope,
                     tokenRespone.TokenType,
                     tokenRespone.IdToken);
+        }
+
+        public async Task<bool> EmployeeInOrganization(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+
+            // Check if user exists
+            if (user == null)
+            {
+                return false;
+            }
+
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.RoleId == user.RoleId);
+
+            // Check if they are an employee
+            if (role != null && role.RoleName == "Employee")
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

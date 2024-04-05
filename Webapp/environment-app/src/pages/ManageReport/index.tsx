@@ -49,6 +49,22 @@ export const ManageReport = () => {
       width: "25%",
     },
     {
+      header: "Tiêu đề",
+      accessorFn(row) {
+        const modifiedSubject = row.reportSubject.replace("[Report]", "");
+        return <h6 className="shortText">{modifiedSubject}</h6>;
+      },
+    },
+    {
+      header: "Cần giải quyết trước",
+      accessorFn(row) {
+        return (
+          <h6 className="shortText">{dayFormat(row.expectedResolutionDate)}</h6>
+        );
+      },
+      width: "15%",
+    },
+    {
       header: "Trạng thái",
       accessorFn(row) {
         return (
@@ -82,19 +98,6 @@ export const ManageReport = () => {
       },
       width: "20%",
     },
-    {
-      header: "Cần giải quyết trước",
-      accessorFn(row) {
-        return <h6 className="shortText">{dayFormat(row.expectedResolutionDate)}</h6>;
-      },
-      width: "15%",
-    },
-    {
-      header: "Ngày đã giải quyết",
-      accessorFn(row) {
-        return <h6 className="shortText">{dayFormat(row.actualResolutionDate)}</h6>;
-      },
-    },
   ];
 
   return (
@@ -111,7 +114,7 @@ export const ManageReport = () => {
               border: "none",
               padding: "0.5rem 1rem",
             }}
-            onClick={() => navigate("create")}
+            onClick={() => navigate("/manage-report/create")}
           >
             <MdAddCircleOutline className="iconAdd" />
             Thêm báo cáo

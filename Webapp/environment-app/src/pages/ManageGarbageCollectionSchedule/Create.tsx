@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
+import { GARBAGE_COLLECTION_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 
-export const CreateTreeTrimSchedule = () => {
+export const CreateGarbageCollectionSchedule = () => {
     const navigate = useNavigate();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
@@ -34,11 +34,6 @@ export const CreateTreeTrimSchedule = () => {
             key: "end.dateTime",
         },
         {
-            label: "Cây Cần Cẳt",
-            formType: "input",
-            key: "treeId",
-        },
-        {
             label: "Nhân Viên Thực Hiện",
             formType: "input",
             key: "",
@@ -53,20 +48,20 @@ export const CreateTreeTrimSchedule = () => {
 
     const handleSubmit = async (data: Record<string, any>) => {
         setIsLoading(true);
-        await useApi.post(TREE_TRIM_SCHEDULE_ADD, {
+        await useApi.post(GARBAGE_COLLECTION_ADD, {
             ...data,
         });
         ref.current?.reload();
-        navigate("/manage-treetrim-schedule");
+        navigate("/manage-garbagecollection-schedule");
     };
 
     return (
         <div className="form-cover">
-            <h4>Thêm Lịch Cắt Tỉa</h4>
+            <h4>Thêm Lịch Thu Gom Rác</h4>
             <FormBase
                 fields={fields}
                 onSave={handleSubmit}
-                onCancel={() => navigate("/manage-treetrim-schedule")}
+                onCancel={() => navigate("/manage-garbagecollection-schedule")}
             />
         </div>
     );

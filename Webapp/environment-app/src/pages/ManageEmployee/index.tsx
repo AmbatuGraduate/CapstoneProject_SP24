@@ -110,7 +110,7 @@ export const ManageEmployee = () => {
               border: "none",
               padding: "0.5rem 1rem",
             }}
-            onClick={() => navigate("/manage-tree/create")}
+            onClick={() => navigate("/manage-employee/create")}
           >
             <MdAddCircleOutline className="iconAdd" />
             Thêm Nhân Viên

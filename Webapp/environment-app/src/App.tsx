@@ -15,6 +15,17 @@ import { ManageReport } from "./pages/ManageReport";
 import { CreateReport } from "./pages/ManageReport/Create";
 import { DetailReport } from "./pages/ManageReport/Detail";
 import { ResponseReport } from "./pages/ManageReport/Response";
+import { CreateEmployee } from "./pages/ManageEmployee/Create";
+import { UpdateEmployee } from "./pages/ManageEmployee/Update";
+import { CreateTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule/Create";
+import { UpdateTreeTrimSchedule } from "./pages/ManageTreeTrimSchedule/Update";
+import { CreateGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule/Create";
+import { DetailGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule/Detail";
+import { UpdateGarbageCollectionSchedule } from "./pages/ManageGarbageCollectionSchedule/Update";
+import { CreateCleaningSchedule } from "./pages/ManageCleaningSchedule/Create";
+import { DetailCleaningSchedule } from "./pages/ManageCleaningSchedule/Detail";
+import { UpdateCleaningSchedule } from "./pages/ManageCleaningSchedule/Update";
+import { Manage } from "./pages/Manage";
 
 function App() {
   const router = createBrowserRouter([
@@ -24,7 +35,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <ManageReport />,
+          element: <Manage />,
         },
         {
           path: "manage-tree",
@@ -47,27 +58,84 @@ function App() {
           element: <ManageEmployee />,
         },
         {
+          path: "manage-employee/create",
+          element: <CreateEmployee />,
+        },
+        {
           path: "manage-employee/:email",
           element: <DetailEmployee />,
+        },
+        {
+          path: "manage-employee/:email/update",
+          element: <UpdateEmployee />,
         },
         {
           path: "manage-treetrim-schedule",
           element: <ManageTreeTrimSchedule />,
         },
         {
+          path: "manage-treetrim-schedule/create",
+          element: <CreateTreeTrimSchedule />,
+        },
+        {
           path: "manage-treetrim-schedule/:id",
           element: <DetailTreeTrimSchedule />,
+        },
+        {
+          path: "manage-treetrim-schedule/:id/update",
+          element: <UpdateTreeTrimSchedule />,
         },
         {
           path: "manage-cleaning-schedule",
           element: <ManageCleaningSchedule />,
         },
         {
+          path: "manage-cleaning-schedule/create",
+          element: <CreateCleaningSchedule />,
+        },
+        {
+          path: "manage-cleaning-schedule/:id",
+          element: <DetailCleaningSchedule />,
+        },
+        {
+          path: "manage-cleaning-schedule/:id/update",
+          element: <UpdateCleaningSchedule />,
+        },
+        {
           path: "manage-garbagecollection-schedule",
           element: <ManageGarbageCollectionSchedule />,
         },
         {
-          path: "/create",
+          path: "manage-garbagecollection-schedule/create",
+          element: <CreateGarbageCollectionSchedule />,
+        },
+        {
+          path: "manage-garbagecollection-schedule/:id",
+          element: <DetailGarbageCollectionSchedule />,
+        },
+        {
+          path: "manage-garbagecollection-schedule/:id/update",
+          element: <UpdateGarbageCollectionSchedule />,
+        },
+
+        {
+          path: "manage-garbagecollection-schedule/create",
+          element: <CreateGarbageCollectionSchedule />,
+        },
+        {
+          path: "manage-garbagecollection-schedule/:id",
+          element: <DetailGarbageCollectionSchedule />,
+        },
+        {
+          path: "manage-garbagecollection-schedule/:id/update",
+          element: <UpdateGarbageCollectionSchedule />,
+        },
+        {
+          path: "manage-report",
+          element: <ManageReport />,
+        },
+        {
+          path: "/manage-report/create",
           element: <CreateReport />,
         },
         {
@@ -75,9 +143,9 @@ function App() {
           element: <DetailReport />,
         },
         {
-          path: "response",
+          path: "response/:id",
           element: <ResponseReport />,
-        }
+        },
       ],
     },
     {

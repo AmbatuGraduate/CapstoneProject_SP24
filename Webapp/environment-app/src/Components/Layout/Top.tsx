@@ -18,7 +18,7 @@ const Top = () => {
 
   const LogOut = async () => {
     try {
-      await fetch("https://localhost:7024/api/auth/googlelogout", {
+      await fetch("https://vesinhdanang.xyz:7024/api/auth/googlelogout", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const Top = () => {
           <p>Xin chào {JSON.parse(token.accessToken).name}</p>
         </div>
         <div className="adminDiv flex">
-          <IoNotificationsOutline className="icon" />
+          {/* <IoNotificationsOutline className="icon" /> */}
           <div className="adminImage">
             <button onClick={toggleDropdown} className="dropbtn">
               <img

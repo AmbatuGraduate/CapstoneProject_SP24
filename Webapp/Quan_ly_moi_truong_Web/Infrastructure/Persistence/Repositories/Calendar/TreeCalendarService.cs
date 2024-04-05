@@ -40,6 +40,8 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             try
             {
                 //var treeinfo = _treeRepository.GetTreeByTreeCode(myEvent.TreeId);
+                System.Diagnostics.Debug.WriteLine("access token: " + accessToken);
+
                 var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _calendarServiceFactory(credential);
                 var addedEvent = new Event()
@@ -58,6 +60,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         TimeZone = TimeZone
                     },
                     Attendees = myEvent.Attendees
+                        .Where(attendee => !string.IsNullOrEmpty(attendee.Email)) // Skip attendees with null or empty email
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
                         .ToList(),
                     ExtendedProperties = new Event.ExtendedPropertiesData
@@ -82,13 +85,14 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         }
 
         // update job status
-        public async Task<bool> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
+        public async Task<string> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
         {
             await Task.CompletedTask;
             try
             {
                 var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _calendarServiceFactory(credential);
+                var listTreesNeedUpdated = string.Empty;
                 Event retrievedEvent = service.Events.Get(calendarId, eventId)
                     .Execute();
 
@@ -96,19 +100,20 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 {
                     string newJobStatus = ConvertToJobWorkingStatusString(jobWorkingStatus);
                     if (retrievedEvent.ExtendedProperties.Private__ != null
-                        && retrievedEvent.ExtendedProperties.Private__.ContainsKey("JobWorkingStatus"))
+                        && retrievedEvent.ExtendedProperties.Private__.ContainsKey(EventExtendedProperties.JobWorkingStatus))
                     {
-                        retrievedEvent.ExtendedProperties.Private__["JobWorkingStatus"] = newJobStatus;
+                        retrievedEvent.ExtendedProperties.Private__[EventExtendedProperties.JobWorkingStatus] = newJobStatus;
                     }
                     service.Events.Update(retrievedEvent, calendarId, eventId)
                         .Execute();
+                    listTreesNeedUpdated = retrievedEvent.ExtendedProperties.Private__[EventExtendedProperties.Tree];
                 }
-                return true;
+                return listTreesNeedUpdated;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
-                return false;
+                return string.Empty;
             }
         }
 
@@ -247,7 +252,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
                 var events = await listRequest.ExecuteAsync();
                 List<MyEvent> myEvents = events.Items
-                    .Where(myEvent => (myEvent.ExtendedProperties != null && 
+                    .Where(myEvent => (myEvent.ExtendedProperties != null &&
                     myEvent.ExtendedProperties.Private__.ContainsKey(EventExtendedProperties.DepartmentEmail) &&
                     myEvent.ExtendedProperties.Private__[EventExtendedProperties.DepartmentEmail].Equals(departmentEmail, StringComparison.OrdinalIgnoreCase)
                     ))
@@ -301,10 +306,9 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 var service = _calendarServiceFactory(credential);
 
                 var listRequest = service.Events.List(calendarId);
-                listRequest.TimeMaxDateTimeOffset = DateTime.Now;
                 listRequest.ShowDeleted = false;
                 listRequest.SingleEvents = true;
-                listRequest.MaxResults = 10;
+                listRequest.MaxResults = 250;
                 listRequest.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
 
                 var events = await listRequest.ExecuteAsync();
@@ -315,9 +319,9 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         Id = returnEvent.Id,
                         Summary = returnEvent.Summary,
                         Description = returnEvent.Description,
-                        Location = returnEvent.Location,
                         Start = returnEvent.Start.DateTime ?? DateTime.MinValue,
                         End = returnEvent.End.DateTime ?? DateTime.MinValue,
+                        Location = returnEvent.Location,
                         Attendees = (returnEvent.Attendees != null) ? returnEvent.Attendees
                             .Select(attendee => new UserEventResult(
                                 new Users
@@ -331,7 +335,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                             PrivateProperties = (Dictionary<string, string>)(returnEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
                         }
                     })
-                    .ToList<MyEvent>();
+                    .ToList();
                 return myEvents;
             }
             catch (Exception ex)
@@ -344,7 +348,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         // get all events
         public async Task<List<MyEvent>> GetEvents(string accessToken, string calendarId)
         {
-            List<MyEvent> myEvents = new List<MyEvent>();
+            List<MyEvent> myEvents = new();
             try
             {
                 var credential = GoogleCredential.FromAccessToken(accessToken);
@@ -399,7 +403,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         // get user today events
         public async Task<List<MyEvent>> GetUserTodayEvents(string accessToken, string calendarId, string attendeeEmail)
         {
-            MyEvent myEvent = new MyEvent();
+            MyEvent myEvent = new();
             try
             {
                 var credential = GoogleCredential.FromAccessToken(accessToken);
@@ -413,7 +417,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 listRequest.TimeMaxDateTimeOffset = DateTime.Today.AddDays(1).AddTicks(-1);
                 listRequest.ShowDeleted = false;
                 listRequest.SingleEvents = true;
-                listRequest.MaxResults = 10;
+                listRequest.MaxResults = 20;
                 listRequest.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
 
                 var events = await listRequest.ExecuteAsync();

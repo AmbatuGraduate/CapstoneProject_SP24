@@ -33,16 +33,16 @@ const Sidebar = () => {
             <NavLink to="/" className="menuLink flex">
               <IoHomeOutline className="icon" />
               <span className="smallText d-none d-md-inline ">
-                Trang chủ
+                Trang Chủ
               </span>
             </NavLink>
           </li>
 
           <li className="listItem">
-            <NavLink to="/" className="menuLink flex">
+            <NavLink to="/manage-report" className="menuLink flex">
               <TbLayoutDashboard className="icon" />
               <span className="smallText d-none d-md-inline ">
-                Quản lý báo cáo
+                Quản Lý Báo Cáo
               </span>
             </NavLink>
           </li>
@@ -51,7 +51,7 @@ const Sidebar = () => {
             <NavLink to="/manage-employee" className="menuLink flex">
               <GrUserManager className="icon" />
               <span className="smallText d-none d-md-inline">
-                Quản lý nhân sự
+                Quản Lý Nhân Sự
               </span>
             </NavLink>
           </li>
@@ -60,7 +60,7 @@ const Sidebar = () => {
             <NavLink to="/manage-tree" className="menuLink flex ">
               <LuTrees className="icon" />
               <span className="smallText d-none d-md-inline">
-                Quản lý cây xanh
+                Quản Lý Cây Xanh
               </span>
             </NavLink>
           </li>
@@ -69,7 +69,7 @@ const Sidebar = () => {
             <NavLink to="/manage-treetrim-schedule" className="menuLink flex">
               <GiTreeBranch className="icon" />
               <span className="smallText d-none d-md-inline">
-                Quản lý lịch cắt tỉa
+                Quản Lý Lịch Cắt Tỉa
               </span>
             </NavLink>
           </li>
@@ -78,7 +78,7 @@ const Sidebar = () => {
             <NavLink to="/manage-cleaning-schedule" className="menuLink flex">
               <FaTreeCity className="icon" />
               <span className="smallText d-none d-md-inline">
-                Quản lý lịch vệ sinh đô thị
+                Quản Lý Lịch Vệ Sinh Đô Thị
               </span>
             </NavLink>
           </li>
@@ -90,7 +90,7 @@ const Sidebar = () => {
             >
               <PiTrashSimpleBold className="icon" />
               <span className="smallText d-none d-md-inline">
-                Quản lý lịch thu gom rác
+                Quản Lý Lịch Thu Gom Rác
               </span>
             </NavLink>
           </li>
