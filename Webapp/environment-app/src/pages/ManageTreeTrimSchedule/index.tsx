@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { TREE_TRIM_SCHEDULE, useApi, TREE_TRIM_SCHEDULE_DELETE } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
-import { taskStatus, timeFormat } from "../../utils";
+import { dayFormat, taskStatus, timeFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { MdAddCircleOutline } from "react-icons/md";
 import { useRef, useState } from "react";
@@ -74,7 +74,18 @@ export const ManageTreeTrimSchedule = () => {
           </h6>
         );
       },
-      width: "10%",
+      width: "8%",
+    },
+    {
+      header: "Ngày Làm",
+      accessorFn(row) {
+        return (
+          <h6 className="shortText">
+            {dayFormat(row.end)}
+          </h6>
+        );
+      },
+      width: "8%",
     },
     {
       header: "Tiêu Đề",
@@ -148,7 +159,7 @@ export const ManageTreeTrimSchedule = () => {
       accessorFn(row) {
         return <h6>{row.location}</h6>;
       },
-      width: "35%",
+      width: "30%",
     },
     {
       header: "Trạng Thái",
