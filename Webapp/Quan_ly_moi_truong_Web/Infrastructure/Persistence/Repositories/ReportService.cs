@@ -9,6 +9,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mime;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -30,7 +31,6 @@ namespace Infrastructure.Persistence.Repositories
             await context.SaveChangesAsync();
         }
 
-        // create report
         public async Task<ReportFormat> CreateReport(ReportFormat reportFormat)
         {
             try
@@ -40,14 +40,9 @@ namespace Infrastructure.Persistence.Repositories
 
                 // report format
                 var emailBody = new StringBuilder();
-                /*                emailBody.AppendLine("Issuer Email: " + reportFormat.IssuerEmail);
-                                emailBody.AppendLine("Report Subject: " + reportFormat.ReportSubject);*/
                 emailBody.Append("Report ID: " + reportFormat.Id + "\n");
-                emailBody.Append("");
                 emailBody.AppendLine(reportFormat.ReportBody);
-                emailBody.Append("");
                 emailBody.AppendLine("Expected Resolution Date: " + reportFormat.ExpectedResolutionDate);
-                emailBody.Append("");
                 emailBody.AppendLine("Report Impact: " + reportFormat.ReportImpact);
 
                 // Create report
@@ -55,13 +50,17 @@ namespace Infrastructure.Persistence.Repositories
                 {
                     From = new MailAddress(reportFormat.IssuerEmail),
                     Subject = $"[Report] {reportFormat.ReportSubject}",
-                    Body = emailBody.ToString(),
+                    SubjectEncoding = Encoding.UTF8,
                 };
                 email.To.Add("ambatuadmin@vesinhdanang.xyz");
+
+                // Create an AlternateView for UTF-8 body text
+                var av = AlternateView.CreateAlternateViewFromString(emailBody.ToString(), new ContentType("text/plain; charset=UTF-8"));
+                email.AlternateViews.Add(av);
+
                 ReportFormat r = await SendEmail(email, reportFormat.AccessToken);
 
                 // add to db
-
                 r.IssuerEmail = reportFormat.IssuerEmail;
                 return r;
             }
@@ -108,27 +107,27 @@ namespace Infrastructure.Persistence.Repositories
             }
         }
 
-        // get report by id
         public async Task<ReportFormat> GetReportById(string accessToken, string id)
         {
             var credential = GoogleCredential.FromAccessToken(accessToken);
             var service = _gmailServiceFactory(credential);
 
-            // get email details
             var request = service.Users.Messages.List("me");
             request.Q = "subject:Report";
             var response = await request.ExecuteAsync();
 
-            ReportFormat reportFormat = new();
-
             foreach (var message in response.Messages)
             {
-                // get the details of the message
                 var messageRequest = service.Users.Messages.Get("me", message.Id);
                 var messageDetail = await messageRequest.ExecuteAsync();
 
-                // extract id from body
-                var base64Url = messageDetail.Payload.Body.Data;
+                if (messageDetail.Payload.Parts == null) continue;
+
+                var part = messageDetail.Payload.Parts.FirstOrDefault(p => p.MimeType == "text/plain");
+
+                if (part == null) continue;
+
+                var base64Url = part.Body.Data;
                 var base64 = base64Url.Replace('-', '+').Replace('_', '/');
                 var bodyBytes = Convert.FromBase64String(base64);
                 var body = Encoding.UTF8.GetString(bodyBytes);
@@ -136,38 +135,31 @@ namespace Infrastructure.Persistence.Repositories
                 var reportIDMatch = Regex.Match(body, @"Report ID: (.*)");
                 var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
 
-                // check if report id is in db
-                if (ReportExist(reportID) && reportID == id)
-                {
-                    // get report from db
-                    var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == id);
+                if (reportID != id || !ReportExist(reportID)) continue;
 
-                    // report format
-                    reportFormat = new ReportFormat
-                    {
-                        Id = id,
-                        IssuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
-                        ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
-                        ReportBody = body,
-                        ReportStatus = reportDb.Status.ToString(),
-                        ReportImpact = reportDb.ReportImpact,
-                        ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
-                        ReportResponse = reportDb.ResponseId
-                    };
-                    break;
-                }
+                var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == id);
+
+                if (reportDb == null) continue;
+
+                var reportFormat = new ReportFormat
+                {
+                    Id = id,
+                    IssuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
+                    ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
+                    ReportBody = Regex.Match(body, @"Report ID: .*?\n(.*)\nExpected Resolution Date:").Groups[1].Value.Trim(),
+                    ReportStatus = reportDb.Status.ToString(),
+                    ReportImpact = reportDb.ReportImpact,
+                    ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
+                    ReportResponse = reportDb.ResponseId
+                };
+
+                return reportFormat;
             }
 
-            return reportFormat;
+            return new ReportFormat();
         }
 
-        // get all reports id from db
-        public List<Reports> GetAllReports()
-        {
-            return context.Reports.ToList();
-        }
 
-        // get all report
         public async Task<List<ReportFormat>> GetReportFormats(string accessToken)
         {
             var credential = GoogleCredential.FromAccessToken(accessToken);
@@ -186,35 +178,42 @@ namespace Infrastructure.Persistence.Repositories
 
             foreach (var messageDetail in messageDetails)
             {
-                var base64Url = messageDetail.Payload.Body.Data;
+                if (messageDetail.Payload.Parts == null) continue;
+
+                // Find the part with the text/plain MIME type
+                var part = messageDetail.Payload.Parts.FirstOrDefault(p => p.MimeType == "text/plain");
+
+                if (part == null) continue;
+
+                var base64Url = part.Body.Data;
                 var base64 = base64Url.Replace('-', '+').Replace('_', '/');
                 var bodyBytes = Convert.FromBase64String(base64);
                 var body = Encoding.UTF8.GetString(bodyBytes);
 
+                var reportDescriptionMatch = Regex.Match(body, @"Report ID: .*?\n(.*)\nExpected Resolution Date:");
+                var reportDescription = reportDescriptionMatch.Success ? reportDescriptionMatch.Groups[1].Value.Trim() : null;
                 var reportIDMatch = Regex.Match(body, @"Report ID: (.*)");
                 var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
 
-                if (reportID != null)
+                if (reportID == null) continue;
+
+                var reportDb = await context.Reports.FirstOrDefaultAsync(e => e.ReportId == reportID);
+
+                if (reportDb == null) continue;
+
+                var reportFormat = new ReportFormat
                 {
-                    var reportDb = await context.Reports.FirstOrDefaultAsync(e => e.ReportId == reportID);
+                    Id = reportID,
+                    IssuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
+                    ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
+                    ReportBody = reportDescription,
+                    ReportStatus = reportDb.Status.ToString(),
+                    ReportImpact = reportDb.ReportImpact,
+                    ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
+                    ReportResponse = reportDb.ResponseId
+                };
 
-                    if (reportDb != null)
-                    {
-                        var reportFormat = new ReportFormat
-                        {
-                            Id = reportID,
-                            IssuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
-                            ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
-                            ReportBody = body,
-                            ReportStatus = reportDb.Status.ToString(),
-                            ReportImpact = reportDb.ReportImpact,
-                            ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
-                            ReportResponse = reportDb.ResponseId
-                        };
-
-                        reportFormats.Add(reportFormat);
-                    }
-                }
+                reportFormats.Add(reportFormat);
             }
 
             return reportFormats;
@@ -247,33 +246,39 @@ namespace Infrastructure.Persistence.Repositories
 
                 foreach (var messageDetail in messageDetails)
                 {
-                    var base64Url = messageDetail.Payload.Body.Data;
+                    var part = messageDetail.Payload.Parts?.FirstOrDefault(p => p.MimeType == "text/plain");
+
+                    if (part == null) continue;
+
+                    var base64Url = part.Body.Data;
                     var base64 = base64Url.Replace('-', '+').Replace('_', '/');
                     var bodyBytes = Convert.FromBase64String(base64);
                     var body = Encoding.UTF8.GetString(bodyBytes);
 
+                    var reportDescriptionMatch = Regex.Match(body, @"Report ID: .*?\n(.*)\nExpected Resolution Date:");
+                    var reportDescription = reportDescriptionMatch.Success ? reportDescriptionMatch.Groups[1].Value.Trim() : null;
+
                     var reportIDMatch = Regex.Match(body, @"Report ID: (.*)");
                     var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
 
-                    var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == reportID);
+                    var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == reportID && e.IssuerGmail == gmail);
 
-                    if (reportDb != null && reportDb.IssuerGmail == gmail)
+                    if (reportDb == null) continue;
+
+                    var reportFormat = new ReportFormat
                     {
-                        var reportFormat = new ReportFormat
-                        {
-                            Id = reportID,
-                            IssuerEmail = gmail,
-                            ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
-                            ReportBody = body,
-                            ReportStatus = reportDb.Status.ToString(),
-                            ReportImpact = reportDb.ReportImpact,
-                            ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
-                            ActualResolutionDate = reportDb.ActualResolutionDate,
-                            ReportResponse = reportDb.ResponseId
-                        };
+                        Id = reportID,
+                        IssuerEmail = gmail,
+                        ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
+                        ReportBody = reportDescription,
+                        ReportStatus = reportDb.Status.ToString(),
+                        ReportImpact = reportDb.ReportImpact,
+                        ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
+                        ActualResolutionDate = reportDb.ActualResolutionDate,
+                        ReportResponse = reportDb.ResponseId
+                    };
 
-                        reportFormats.Add(reportFormat);
-                    }
+                    reportFormats.Add(reportFormat);
 
                     if (reportFormats.Count == list.Count)
                     {
@@ -351,6 +356,11 @@ namespace Infrastructure.Persistence.Repositories
         private List<Reports> GetReportsByUser(string gmail)
         {
             return context.Reports.Where(e => e.IssuerGmail == gmail).ToList();
+        }
+        // get all reports id from db
+        public List<Reports> GetAllReports()
+        {
+            return context.Reports.ToList();
         }
     }
 }

@@ -346,7 +346,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
         }
 
         // get all events
-        public async Task<List<MyEvent>> GetEvents(string accessToken, string calendarId)
+        public async Task<List<MyEvent>?> GetEvents(string accessToken, string calendarId)
         {
             List<MyEvent> myEvents = new();
             try
