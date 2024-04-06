@@ -123,9 +123,14 @@ namespace Infrastructure.Persistence.Repositories
 
             foreach (var message in response.Messages)
             {
+
                 // get the details of the message
                 var messageRequest = service.Users.Messages.Get("me", message.Id);
                 var messageDetail = await messageRequest.ExecuteAsync();
+                if (messageDetail.Payload.Body.Data == null)
+                {
+                    continue;
+                }
 
                 // extract id from body
                 var base64Url = messageDetail.Payload.Body.Data;
@@ -251,6 +256,10 @@ namespace Infrastructure.Persistence.Repositories
 
                 foreach (var messageDetail in messageDetails)
                 {
+                    if (messageDetail.Payload.Body.Data == null)
+                    {
+                        continue;
+                    }
                     var base64Url = messageDetail.Payload.Body.Data;
                     var base64 = base64Url.Replace('-', '+').Replace('_', '/');
                     var bodyBytes = Convert.FromBase64String(base64);
