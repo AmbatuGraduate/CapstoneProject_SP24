@@ -61,7 +61,7 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                     if (date.CompareTo(DateTime.Now) == 1 && payload.Issuer.Contains("accounts.google.com"))
                     {
                         var userRole = roleRepository.GetRole(user.RoleId).RoleName;
-                        var userDepartment = groupRepository.GetGroupDbById(user.DepartmentId).DepartmentName;
+                        var userDepartment = (userRole != "Admin") ? groupRepository.GetGroupDbById(user.DepartmentId).DepartmentName : "Admin";
 
                         var token = jwtTokenGenerator.GenerateToken(payload.Subject, userRole, userDepartment ,tokenData.access_token, date);
 
