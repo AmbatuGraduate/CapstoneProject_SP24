@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { TREE_DETAIL, useApi } from "../../Api";
 import { dayFormat } from "../../utils";
-import "./style.scss";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import SimpleMap from "./MapIntergration";
