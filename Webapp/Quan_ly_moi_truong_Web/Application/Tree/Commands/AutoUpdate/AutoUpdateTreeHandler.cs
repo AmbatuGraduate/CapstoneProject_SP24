@@ -24,6 +24,7 @@ namespace Application.Tree.Commands.AutoUpdate
             // check and auto update status isCut of tree
             foreach (var tree in list)
             {
+                Console.WriteLine(tree.CutTime + " - " + DateTime.Now + " ->  " + tree.CutTime.CompareTo(DateTime.Now));
                 if (tree.CutTime.CompareTo(DateTime.Now) <= 0 && tree.isCut)
                 {
                     tree.isCut = false;

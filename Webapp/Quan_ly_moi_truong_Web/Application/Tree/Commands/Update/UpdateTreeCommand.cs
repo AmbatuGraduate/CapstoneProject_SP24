@@ -13,6 +13,6 @@ namespace Application.Tree.Commands.Update
         int IntervalCutTime,
         Guid TreeTypeId,
         string Note,
-        string UserId
+        string Email
         ) : IRequest<ErrorOr<AddTreeResult>>;
 }

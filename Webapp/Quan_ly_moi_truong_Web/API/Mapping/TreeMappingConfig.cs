@@ -32,7 +32,7 @@ namespace API.Mapping
                     dest.Item2.TreeLocation, dest.Item2.BodyDiameter,
                     dest.Item2.LeafLength, dest.Item2.PlantTime,
                     dest.Item2.IntervalCutTime, dest.Item2.TreeTypeId,
-                    dest.Item2.Note, dest.Item2.UserId));
+                    dest.Item2.Note, dest.Item2.Email));
 
             config.NewConfig<AddTreeRequest, AddTreeCommand>();
 
