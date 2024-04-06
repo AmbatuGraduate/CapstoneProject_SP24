@@ -112,20 +112,20 @@ export function GoogleMap(props: GoogleMapProps) {
     // Important! Always set the container height explicitly
     <div className="google-map">
       <div className="form-group address">
-        <label htmlFor="exampleInputEmail1">Address</label>
+        {/* <label htmlFor="exampleInputEmail1">Tuyến đường</label> */}
         <input
-         
+
           className="form-control"
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
-          placeholder="Enter email"
+          placeholder="Nhập địa chỉ"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           onKeyDown={(e) => onKeyDown(e)}
         />
-        <small id="emailHelp" className="form-text text-muted">
+        {/* <small id="emailHelp" className="form-text text-muted">
           We'll never share your email with anyone else.
-        </small>
+        </small> */}
       </div>
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyBqQfxxgCjLvTq9tCGjnjHxCVnX3acWXmY" }}

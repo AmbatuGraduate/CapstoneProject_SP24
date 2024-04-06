@@ -18,6 +18,7 @@ using Infrastructure.Persistence.Repositories.Notification.Hubs;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -63,10 +64,10 @@ namespace Infrastructure
 
             services.AddScoped<INotificationRepository, NotificationRepository>();
 
-
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGroupRepository, GroupRepositorys>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IUserRefreshTokenRepository, UserRefreshTokenRepository>();
             services.AddScoped<ITreeRepository, TreeRepository>();
             services.AddScoped<ITreeTypeRepository, TreeTypeRepository>();
@@ -139,14 +140,13 @@ namespace Infrastructure
 
             services.AddAuthentication(opts =>
                 {
-                    opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    opts.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opts.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    //opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    //opts.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
                 })
-                .AddCookie(opts =>
-                {
-                    opts.Cookie.Name = "u_tkn";
-                    opts.Cookie.Path = "/";
-                })
+                .AddCookie()
                 .AddJwtBearer(opts =>
                 {
                     opts.RequireHttpsMetadata = false;

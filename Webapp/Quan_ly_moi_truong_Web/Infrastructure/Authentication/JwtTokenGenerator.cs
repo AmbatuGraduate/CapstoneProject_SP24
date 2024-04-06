@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces.Authentication;
+﻿using Application.Calendar;
+using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -50,7 +51,7 @@ namespace Infrastructure.Authentication
         /// </summary>
         /// <param name="user">The data of user login or register</param>
         /// <returns>String token</returns>
-        public string GenerateToken(string id, string access_token, DateTime expire)
+        public string GenerateToken(string id, string role, string department,string access_token, DateTime expire)
         {
             var signingCredential = new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
@@ -61,7 +62,8 @@ namespace Infrastructure.Authentication
             {
                 new Claim(JwtRegisteredClaimNames.Sub, id),
                 new Claim("atkn", access_token),
-                //new Claim(ClaimTypes.Role, user.Role),
+                new Claim(ClaimTypes.Role, role),
+                new Claim("Deparmant", department),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

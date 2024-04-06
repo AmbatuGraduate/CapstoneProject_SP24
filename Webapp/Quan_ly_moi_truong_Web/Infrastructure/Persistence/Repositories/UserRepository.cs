@@ -8,6 +8,7 @@ using Domain.Enums;
 using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -206,7 +207,9 @@ namespace Infrastructure.Persistence.Repositories
                         UserCode = ConvertToUserCodeString(UserCode.EM_NHS_QD),
                         Email = newUser.PrimaryEmail,
                         RoleId = new Guid(ConvertToUserRoleId(UserRole.Employee)),
-                        DepartmentId = DepartmentConstant.DefaultDepartmentId
+                        DepartmentId = !user.DepartmentEmail.IsNullOrEmpty() && GetGroupByEmail(user.DepartmentEmail) != null ? 
+                            GetGroupByEmail(user.DepartmentEmail).DepartmentId : 
+                            DepartmentConstant.DefaultDepartmentId 
                     };
                     Add(dbUser);
                 }
@@ -220,6 +223,7 @@ namespace Infrastructure.Persistence.Repositories
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
                     BirthDate = user.BirthDate,
+                    DepartmentEmail = user.DepartmentEmail,
                 };
 
                 return addGoogleUser;
@@ -309,10 +313,13 @@ namespace Infrastructure.Persistence.Repositories
                 if (updatedUser != null && userDb != null)
                 {
                     userDb.Email = updatedUser.PrimaryEmail;
+                    userDb.DepartmentId = !user.DepartmentEmail.IsNullOrEmpty() && GetGroupByEmail(user.DepartmentEmail) != null ?
+                            GetGroupByEmail(user.DepartmentEmail).DepartmentId :
+                            DepartmentConstant.DefaultDepartmentId;
                     Update(userDb);
                 }
 
-                UpdateGoogleUser addGoogleUser = new UpdateGoogleUser
+                UpdateGoogleUser updateGoogleUser = new UpdateGoogleUser
                 {
                     Email = updatedUser.PrimaryEmail,
                     Name = updatedUser.Name.GivenName + updatedUser.Name.FamilyName,
@@ -320,16 +327,22 @@ namespace Infrastructure.Persistence.Repositories
                     Password = updatedUser.Password,
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
-                    BirthDate = user.BirthDate
+                    BirthDate = user.BirthDate,
+                    DepartmentEmail = user.DepartmentEmail
                 };
 
-                return addGoogleUser;
+                return updateGoogleUser;
             }
             catch (Exception e)
             {
                 // Handle exception
                 throw;
             }
+        }
+
+        public Departments GetGroupByEmail(string groupEmail)
+        {
+            return webDbContext.Departments.SingleOrDefault(group => group.DepartmentEmail.ToLower().Equals(groupEmail.ToLower()));
         }
 
         public async Task<bool> DeleteGoogleUser(string accessToken, string userEmail)

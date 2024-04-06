@@ -23,8 +23,12 @@ namespace Application.Common.Interfaces.Persistence
 
         bool DeleteGroupDB(string groupEmail);
 
+        Departments GetGroupDbById(string groupId);
+
         Task<GroupResult> UpdateGoogleGroup(string accessToken, UpdateGoogleGroup group);
 
         Task<bool> DeleteGoogleGroup(string accessToken, string groupEmail);
+
+        Departments GetGroupByEmail(string groupEmail);
     }
 }

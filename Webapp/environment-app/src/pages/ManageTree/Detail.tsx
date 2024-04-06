@@ -10,6 +10,7 @@ import SimpleMap from "./MapIntergration";
 export const DetailTree = () => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
+  const { email = " " } = useParams();
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
   const handleNavigate = () => {
@@ -46,7 +47,7 @@ export const DetailTree = () => {
       <div className="detail-content col-md-6">
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Mã số cây: </div>
+            <div className="detail-content-child-label">Mã Số Cây: </div>
             <div className="detail-content-child-value">
               {data?.treeCode}
             </div>
@@ -55,7 +56,7 @@ export const DetailTree = () => {
 
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Tên đường: </div>
+            <div className="detail-content-child-label">Tên Đường: </div>
             <div className="detail-content-child-value">
               {data?.streetName}
             </div>
@@ -64,7 +65,7 @@ export const DetailTree = () => {
 
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Loại cây: </div>
+            <div className="detail-content-child-label">Loại Cây: </div>
             <div className="detail-content-child-value">
               {data?.treeType}
             </div>
@@ -74,14 +75,14 @@ export const DetailTree = () => {
         <div className="detail-cover">
           <div className="detail-content-parent">
             <div className="detail-content-child-label">
-              Đường kính thân:{" "}
+              Đường Kính Thân:{" "}
             </div>
             <div className="detail-content-child-value">
               {data?.bodyDiameter}
             </div>
           </div>
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Tán lá: </div>
+            <div className="detail-content-child-label">Tán Lá: </div>
             <div className="detail-content-child-value">
               {data?.leafLength}
             </div>
@@ -91,7 +92,7 @@ export const DetailTree = () => {
         <div className="detail-cover">
           <div className="detail-content-parent">
             <div className="detail-content-child-label">
-              Thời điểm trồng:{" "}
+              Thời Điểm Trồng:{" "}
             </div>
             <div className="detail-content-child-value">
               {dayFormat(data?.plantTime)}
@@ -99,11 +100,20 @@ export const DetailTree = () => {
           </div>
           <div className="detail-content-parent">
             <div className="detail-content-child-label">
-              Thời điểm cắt:{" "}
+              Thời Điểm Cắt:{" "}
             </div>
             <div className="detail-content-child-value">
               {dayFormat(data?.cutTime)}
             </div>
+          </div>
+        </div>
+
+        <div className="detail-cover">
+          <div className="detail-content-parent">
+            <div className="detail-content-child-label">Người Phụ Trách: </div>           
+            <Link to={`/manage-employee/${data?.user}`}>
+              <div className="detail-content-child-value">{data?.user}</div>
+            </Link>
           </div>
         </div>
 
@@ -113,11 +123,11 @@ export const DetailTree = () => {
             variant="danger"
             onClick={handleNavigate}
           >
-            Trở về
+            Trở Về
           </Button>
           <Link to={`/manage-tree/${data?.treeCode}/update`}>
             <Button className="btnLink" variant="success">
-              Cập nhật
+              Cập Nhật
             </Button>
           </Link>
         </div>

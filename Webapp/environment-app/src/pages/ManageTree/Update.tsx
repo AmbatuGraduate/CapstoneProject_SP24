@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { CULTIVAR_LIST, TREE_DETAIL, TREE_UPDATE, useApi } from "../../Api";
+import { TREE_DETAIL, TREE_TYPE_LIST, TREE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor, dayFormat } from "../../utils";
 import { useCookies } from "react-cookie";
@@ -27,59 +27,65 @@ export const UpdateTree = () => {
 
   const fields: Field[] = [
     {
-      label: "Mã cây",
+      label: "Mã Cây",
       formType: "input",
       key: "treeCode",
       defaultValue: data?.treeCode,
       disabled: true,
     },
     {
-      label: "Tuyến đường",
+      label: "Tuyến Đường",
       formType: "input",
       key: "treeLocation",
-      defaultValue: data?.treeLocation,
-      googleAddress: true,
-      value: address,
-      onChange: (e) => {
-        setAddress(e.target.value);
-      },
+      defaultValue: data?.streetName,
+      // googleAddress: true,
+      // value: address,
+      // onChange: (e) => {
+      //   setAddress(e.target.value);
+      // },
     },
     {
-      label: "Giống cây",
+      label: "Loại Cây",
       formType: "select",
-      key: "cultivarId",
+      key: "treeTypeId",
       optionExtra: {
-        url: CULTIVAR_LIST,
-        _key: "cultivarName",
-        _value: "cultivarId",
+        url: TREE_TYPE_LIST,
+        _key: "treeTypeName",
+        _value: "v",
       },
     },
     {
-      label: "Đường kính thân",
+      label: "Đường Kính Thân",
       formType: "number",
       key: "bodyDiameter",
       defaultValue: data?.bodyDiameter,
     },
     {
-      label: "Tán lá",
+      label: "Tán Lá",
       formType: "number",
       key: "leafLength",
       defaultValue: data?.leafLength,
     },
     {
-      label: "Thời điểm trồng",
+      label: "Thời Điểm Trồng",
       formType: "date",
       key: "plantTime",
       defaultValue: dayFormat(data?.plantTime),
     },
     {
-      label: "Khoảng thời gian cắt",
+      label: "Khoảng Thời Gian Cắt",
       formType: "number",
       key: "intervalCutTime",
       defaultValue: dayFormat(data?.intervalCutTime),
     },
     {
-      label: "Ghi chú",
+      label: "Ghi Chú",
+      formType: "textarea",
+      key: "note",
+      defaultValue: data?.note,
+    },
+    {
+      label: "Người Phụ Trách",
       formType: "textarea",
       key: "note",
       defaultValue: data?.note,
@@ -90,7 +96,7 @@ export const UpdateTree = () => {
     await useApi.put(TREE_UPDATE, {
       ...data,
       plantTime: dateConstructor(data.plantTime),
-      updateBy: JSON.parse(token.accessToken).name,
+      updateBy: JSON.parse(token.accessToken).email,
       isExist: true,
     });
     console.log("UpdateTree", data);
@@ -98,11 +104,11 @@ export const UpdateTree = () => {
 
   return (
     <div className="form-cover">
-      <h4>Cập nhật cây</h4>
+      <h4>Cập Nhật Cây</h4>
       <FormBase
         fields={fields}
         onSave={handleSubmit}
-        onCancel={() => navigate("/manage-tree")}
+        onCancel={() => navigate(-1)}
       />
     </div>
   );

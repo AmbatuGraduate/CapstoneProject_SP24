@@ -6,11 +6,13 @@ using Application.Group.Commands.Delete;
 using Application.Group.Commands.Update;
 using Application.Group.Common;
 using Application.Group.Common.Add_Update;
+using Application.Group.Queries.GetAllGroups;
 using Application.Group.Queries.GetAllGroupsByUserEmail;
 using Application.Group.Queries.GetAllMembersOfGroup;
 using Application.Group.Queries.GetGroup;
 using Application.User.Common.List;
 using ErrorOr;
+using Google.Apis.Admin.Directory.directory_v1.Data;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -89,6 +91,19 @@ namespace API.Controllers
             }
 
             return Ok(usersResult);
+        }
+
+        [HttpGet()]
+        public async Task<IActionResult> GetAllGroups()
+        {
+            ErrorOr<List<GroupResult>> groupResult = await mediator.Send(new GetAllGroupsQuery());
+
+            if (groupResult.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
+            }
+
+            return Ok(groupResult);
         }
 
         [HttpGet()]

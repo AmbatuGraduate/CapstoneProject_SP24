@@ -15,7 +15,7 @@ export type Field = {
   selected?: Date;
   value?: any;
   placeholder?: string;
-  formType: "input" | "select" | "textarea" | "number" | "date" | "jsx";
+  formType: "input" | "select" | "textarea" | "number" | "date" | "jsx" | "datetime";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
@@ -55,8 +55,7 @@ export const FormBase = (props: Props) => {
   } = props;
 
   const FormType = ({ props }: { props: Field }) => {
-    const { formType, options, key, disabled, optionExtra, onRender, ...rest } =
-      props;
+    const { formType, options, key, disabled, optionExtra, onRender, ...rest } = props;
     const _disabled = mode == "view" ? true : disabled;
     const [_options, setOptions] = useState<Option[]>();
     const [startDate, setStartDate] = useState<Date | null>(
@@ -179,7 +178,21 @@ export const FormBase = (props: Props) => {
         );
       case "jsx":
         return onRender;
-
+      case "datetime":
+        return (
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            timeCaption="Time"
+            dateFormat="HH:mm dd/MM/yyyy "
+            className="datepicker"
+            name={key}
+            disabled={_disabled}
+          />
+        );
       default:
         return (
           <Form.Control type="text" {...rest} name={key} disabled={_disabled} />
@@ -214,7 +227,7 @@ export const FormBase = (props: Props) => {
         );
       })}
       {mode == "create&update" ? (
-        <div>
+        <div className="btnPosi">
           <Button className="btnSave" type="submit">
             Lưu
           </Button>
@@ -223,12 +236,12 @@ export const FormBase = (props: Props) => {
           </Button>
         </div>
       ) : (
-        <div>
+        <div className="btnPosi">
           <Button className="btnSave" variant="info" onClick={navigateUpdate}>
-            Cập nhật
+            Cập Nhật
           </Button>
           <Button className="btnCancel" variant="danger" onClick={backPage}>
-            Trở về
+            Trở Về
           </Button>
         </div>
       )}

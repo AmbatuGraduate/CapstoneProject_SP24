@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { TREE_TRIM_SCHEDULE_DETAIL, useApi } from "../../Api";
+import { GARBAGE_COLLECTION_DETAIL, useApi } from "../../Api";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import { dayFormat, timeFormat } from "../../utils";
 
-export const DetailTreeTrimSchedule = () => {
+export const DetailGarbageCollectionSchedule = () => {
     const navigate = useNavigate();
     const { id = "" } = useParams();
     const [data, setData] = useState<any>();
     const [loading, setLoading] = useState<boolean>(true);
     const handleNavigate = () => {
-        navigate("/manage-treetrim-schedule");
+        navigate("/manage-garbagecollection-schedule");
     };
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await useApi.get(TREE_TRIM_SCHEDULE_DETAIL.replace(":id", id));
+                const response = await useApi.get(GARBAGE_COLLECTION_DETAIL.replace(":id", id));
                 setData(response.data);
             } catch (error) {
                 console.error("Error fetching tree trimm schedule detail:", error);
@@ -95,15 +95,6 @@ export const DetailTreeTrimSchedule = () => {
 
                 <div className="detail-cover">
                     <div className="detail-content-parent">
-                        <div className="detail-content-child-label">Cây Cần Cắt: </div>
-                        <div className="detail-content-child-value">
-                            {data?.myEvent.extendedProperties.privateProperties.Tree}
-                        </div>
-                    </div>
-                </div>
-
-                <div className="detail-cover">
-                    <div className="detail-content-parent">
                         <div className="detail-content-child-label">
                             Tình Trạng Công Việc:{" "}
                         </div>
@@ -121,7 +112,7 @@ export const DetailTreeTrimSchedule = () => {
                     >
                         Trở về
                     </Button>
-                    <Link to={`/manage-treetrim-schedule/${data?.myEvent.id}/update`}>
+                    <Link to={`/manage-garbagecollection-schedule/${data?.myEvent.id}/update`}>
                         <Button className="btnLink" variant="success">
                             Cập nhật
                         </Button>

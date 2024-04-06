@@ -111,14 +111,14 @@ export const ManageTree = () => {
     //   },
     // },
     {
-      header: "Thời điểm cắt tiếp theo",
+      header: "Thời Điểm Cắt Tiếp Theo",
       accessorFn(row) {
         return <h6 className="shortText">{dayFormat(row.cutTime)}</h6>;
       },
       width: "15%",
     },
     {
-      header: "Trạng thái",
+      header: "Trạng Thái",
       accessorFn(row) {
         const status = row.isCut ? "Đã cắt" : "Cần Cắt";
         const color = row.isCut ? "green" : "red";
@@ -149,7 +149,7 @@ export const ManageTree = () => {
             onClick={() => navigate("/manage-tree/create")}
           >
             <MdAddCircleOutline className="iconAdd" />
-            Thêm cây
+            Thêm Cây
           </Button>
         }
         filter={(row) => {
