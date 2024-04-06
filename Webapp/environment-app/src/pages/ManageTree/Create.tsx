@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { TREE_ADD, TREE_TYPE_LIST, useApi } from "../../Api";
+import { EMPLOYEE_LIST, TREE_ADD, TREE_TYPE_LIST, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
@@ -36,14 +36,14 @@ export const CreateTree = () => {
       },
     },
     {
-      label: "Tuyến đường",
+      label: "Tuyến Đường",
       formType: "jsx",
       key: "location",
       onRender: <GoogleMap />
 
     },
     {
-      label: "Đường kính thân (cm)",
+      label: "Đường Kính Thân (cm)",
       formType: "number",
       key: "bodyDiameter",
       googleAddress: false,
@@ -88,7 +88,7 @@ export const CreateTree = () => {
       // },
     },
     {
-      label: "Khoảng Thời Gian Cắt (tháng)",
+      label: "Khoảng Thời Gian Cắt (Tháng)",
       formType: "input",
       key: "intervalCutTime",
       value: intervalCutTime,
@@ -122,10 +122,14 @@ export const CreateTree = () => {
       placeholder: "Ví dụ: Cần lưu ý...",
     },
     {
-      value: JSON.parse(token.accessToken).name,
       label: "Người Phụ Trách",
-      formType: "input",
-      key: "userId",
+      formType: "select",
+      key: "id",
+      optionExtra: {
+        url: EMPLOYEE_LIST,
+        _key: "email",
+        _value: "email",
+      },
       googleAddress: false,
     },
   ];

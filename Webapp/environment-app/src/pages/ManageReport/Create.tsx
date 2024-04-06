@@ -13,28 +13,22 @@ export const CreateReport = () => {
 
   const fields: Field[] = [
     {
-      value: JSON.parse(token.accessToken).email,
-      label: "Người gửi",
-      formType: "input",
-      key: "issuerEmail",
-    },
-    {
-      label: "Tiêu đề",
+      label: "Tiêu Đề",
       formType: "input",
       key: "reportSubject",
     },
     {
-      label: "Nội dung",
+      label: "Nội Dung",
       formType: "input",
       key: "reportBody",
     },
     {
-      label: "Cần giải quyết trước",
+      label: "Cần Giải Quyết Trước",
       formType: "date",
       key: "expectedResolutionDate",
     },
     {
-      label: "Mức độ ảnh hưởng",
+      label: "Mức Độ Ảnh Hưởng",
       formType: "select",
       key: "reportImpact",
       options: [
@@ -58,6 +52,7 @@ export const CreateReport = () => {
     setIsLoading(true);
     await useApi.post(CREATE_REPORT, {
       ...data,
+      issuerEmail: JSON.parse(token.accessToken).email,
       expectedResolutionDate: dateConstructor(data.expectedResolutionDate),
     });
     ref.current?.reload();
@@ -66,7 +61,7 @@ export const CreateReport = () => {
 
   return (
     <div className="form-cover">
-      <h4>Thêm báo cáo</h4>
+      <h4>Thêm Báo Cáo</h4>
       <FormBase
         fields={fields}
         onSave={handleSubmit}
