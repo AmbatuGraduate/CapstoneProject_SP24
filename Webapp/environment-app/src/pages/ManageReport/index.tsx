@@ -32,7 +32,7 @@ export const ManageReport = () => {
     //   },
     // },
     {
-      header: "Người gửi",
+      header: "Người Gửi",
       accessorFn(longRow) {
         return (
           <h6 className="shortText">
@@ -46,26 +46,27 @@ export const ManageReport = () => {
           </h6>
         );
       },
-      width: "25%",
+      width: "19%",
     },
     {
-      header: "Tiêu đề",
+      header: "Tiêu Đề",
       accessorFn(row) {
         const modifiedSubject = row.reportSubject.replace("[Report]", "");
-        return <h6 className="shortText">{modifiedSubject}</h6>;
+        return <h6>{modifiedSubject}</h6>;
       },
+      width: "8%",
     },
     {
-      header: "Cần giải quyết trước",
+      header: "Cần Giải Quyết Trước",
       accessorFn(row) {
         return (
           <h6 className="shortText">{dayFormat(row.expectedResolutionDate)}</h6>
         );
       },
-      width: "15%",
+      width: "19%",
     },
     {
-      header: "Trạng thái",
+      header: "Trạng Thái",
       accessorFn(row) {
         return (
           <h6
@@ -82,7 +83,7 @@ export const ManageReport = () => {
       width: "15%",
     },
     {
-      header: "Mức độ ảnh hưởng",
+      header: "Mức Độ Ảnh Hưởng",
       accessorFn(row) {
         return (
           <h6
