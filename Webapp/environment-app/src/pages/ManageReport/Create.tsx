@@ -13,12 +13,6 @@ export const CreateReport = () => {
 
   const fields: Field[] = [
     {
-      value: JSON.parse(token.accessToken).email,
-      label: "Người Gửi",
-      formType: "input",
-      key: "issuerEmail",
-    },
-    {
       label: "Tiêu Đề",
       formType: "input",
       key: "reportSubject",
@@ -58,6 +52,7 @@ export const CreateReport = () => {
     setIsLoading(true);
     await useApi.post(CREATE_REPORT, {
       ...data,
+      issuerEmail: JSON.parse(token.accessToken).email,
       expectedResolutionDate: dateConstructor(data.expectedResolutionDate),
     });
     ref.current?.reload();
