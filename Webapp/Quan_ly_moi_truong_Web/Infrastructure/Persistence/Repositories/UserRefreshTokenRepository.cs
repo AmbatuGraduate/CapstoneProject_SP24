@@ -22,7 +22,7 @@ namespace Infrastructure.Persistence.Repositories
 
         public UserRefreshTokens GetRefreshRokenByUserId(string userId)
         {
-            return _userRefreshTokenDBContext.UserRefreshTokens.FirstOrDefault(x => x.UserId == userId);
+            return _userRefreshTokenDBContext.UserRefreshTokens.Where(x => x.UserId == userId).OrderByDescending(x => x.CreateAt).First();
         }
     }
 }

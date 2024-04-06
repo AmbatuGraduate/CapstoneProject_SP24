@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.Persistence;
+﻿
 using Application.Tree.Commands.Add;
 using Application.Tree.Commands.AutoUpdate;
 using Application.Tree.Commands.Delete;
@@ -19,8 +19,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [AllowAnonymous]
     [EnableCors("AllowAllHeaders")]
+    [AllowAnonymous]
     public class TreeController : ApiController
     {
         private readonly IMediator mediator;
@@ -35,6 +35,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        //[Authorize (Roles = "Admin")]
         public async Task<IActionResult> Get()
         {
             var token = _httpContextAccessor.HttpContext.Request.Cookies["u_tkn"];

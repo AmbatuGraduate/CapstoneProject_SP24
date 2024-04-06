@@ -14,12 +14,24 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
         private readonly IJwtTokenGenerator jwtTokenGenerator;
         private readonly IAuthenticationService authenticationService;
         private readonly IUserRefreshTokenRepository userRefreshTokenRepository;
+        private readonly IUserRepository userRepository;
+        private readonly IRoleRepository roleRepository;
+        private readonly IGroupRepository groupRepository;
 
-        public GoogleRefreshHandler(IJwtTokenGenerator jwtTokenGenerator, IAuthenticationService authenticationService, IUserRefreshTokenRepository userRefreshTokenRepository)
+        public GoogleRefreshHandler(IJwtTokenGenerator jwtTokenGenerator,
+            IAuthenticationService authenticationService,
+            IUserRefreshTokenRepository userRefreshTokenRepository,
+            IRoleRepository roleRepository,
+            IGroupRepository groupRepository,
+            IUserRepository userRepository)
         {
             this.authenticationService = authenticationService;
             this.jwtTokenGenerator = jwtTokenGenerator;
             this.userRefreshTokenRepository = userRefreshTokenRepository;
+
+            this.roleRepository = roleRepository;
+            this.groupRepository = groupRepository;
+            this.userRepository = userRepository;
         }
 
         public async Task<ErrorOr<GoogleAuthenticationResult>> Handle(GoogleRefreshQuery request, CancellationToken cancellationToken)
@@ -48,10 +60,16 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
                             GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(tokenData.id_token);
 
                             //generate new jwt token authen
-                            DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
-                            var token = jwtTokenGenerator.GenerateToken(payload.Subject, tokenData.access_token, date);
+                            var user = userRepository.GetById(payload.Subject);
 
-                            return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, payload.Email, token);
+                            DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
+
+                            var userRole = roleRepository.GetRole(user.RoleId).RoleName;
+                            var userDepartment = groupRepository.GetGroupDbById(user.DepartmentId).DepartmentName;
+
+                            var token = jwtTokenGenerator.GenerateToken(payload.Subject, userRole, userDepartment, tokenData.access_token, date);
+
+                            return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, payload.Email, token,userRole, userDepartment);
                         }
                     }
                 }

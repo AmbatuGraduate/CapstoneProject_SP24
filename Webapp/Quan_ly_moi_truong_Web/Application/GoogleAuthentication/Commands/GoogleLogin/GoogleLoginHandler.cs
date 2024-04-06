@@ -18,17 +18,22 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
         private readonly IAuthenticationService authenticationService;
         private readonly IUserRepository userRepository;
         private readonly IUserRefreshTokenRepository userRefreshTokenRepository;
+        private readonly IRoleRepository roleRepository;
+        private readonly IGroupRepository groupRepository;
 
         public GoogleLoginHandler(IJwtTokenGenerator jwtTokenGenerator, 
             IAuthenticationService authenticationService, 
             IUserRepository userRepository, 
-            IUserRefreshTokenRepository userRefreshTokenRepository, 
-            IHttpContextAccessor httpContextAccessor)
+            IUserRefreshTokenRepository userRefreshTokenRepository,
+            IRoleRepository roleRepository,
+            IGroupRepository groupRepository)
         {
             this.authenticationService = authenticationService;
             this.jwtTokenGenerator = jwtTokenGenerator;
             this.userRepository = userRepository;
             this.userRefreshTokenRepository = userRefreshTokenRepository;
+            this.roleRepository = roleRepository;
+            this.groupRepository = groupRepository;
         }
 
         public async Task<ErrorOr<GoogleAuthenticationResult>> Handle(GoogleLoginCommand request, CancellationToken cancellationToken)
@@ -44,15 +49,21 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                 // kiểm tra xem có lấy được payload không
                 if (payload != null)
                 {
+
+                    var user = userRepository.GetById(payload.Subject);
+
                     //Check if user is exist in DB
-                    if (userRepository.GetById(payload.Subject) == null)
+                    if (user == null)
                         return Errors.Authentication.InvalidCredentials;
 
                     //Kiểm tra hạn của id token
                     DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
                     if (date.CompareTo(DateTime.Now) == 1 && payload.Issuer.Contains("accounts.google.com"))
                     {
-                        var token = jwtTokenGenerator.GenerateToken(payload.Subject, tokenData.access_token, date);
+                        var userRole = roleRepository.GetRole(user.RoleId).RoleName;
+                        var userDepartment = groupRepository.GetGroupDbById(user.DepartmentId).DepartmentName;
+
+                        var token = jwtTokenGenerator.GenerateToken(payload.Subject, userRole, userDepartment ,tokenData.access_token, date);
 
                         System.Diagnostics.Debug.WriteLine("tkn " + token);
 
@@ -68,7 +79,7 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                         //Save refresh token to DB
                         userRefreshTokenRepository.AddRefreshRoken(refreshToken);
 
-                        return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, payload.Email ,token);
+                        return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, payload.Email, token, userRole, userDepartment);
                     }
                 }
             }

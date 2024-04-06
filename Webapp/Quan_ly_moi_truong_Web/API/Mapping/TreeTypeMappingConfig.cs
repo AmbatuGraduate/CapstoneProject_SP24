@@ -21,7 +21,7 @@ namespace API.Mapping
 
             config.NewConfig<TreeTypeResult, ListTreeTypeResponse>()
                   .Map(dest => dest.TreeTypeName, src => src.treeTypeResults.TreeTypeName)
-                  .Map(dest => dest.TreeTypeName, src => src.treeTypeResults.TreeTypeId);
+                  .Map(dest => dest.TreeTypeId, src => src.treeTypeResults.TreeTypeId);
         }
     }
 }
