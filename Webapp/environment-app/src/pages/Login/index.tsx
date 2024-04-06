@@ -17,7 +17,7 @@ export const Login = () => {
 
   const handleSuccess = (response: any) => {
     const authCode = response.code;
-    fetch("https://localhost:7024/api/auth/google", {
+    fetch("https://vesinhdanang.xyz:7024/api/auth/google", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export const Login = () => {
       .then((accessToken) => {
         // This block will be executed after the Promise resolves
         console.log("Authentication successful, access token: " + accessToken);
-        setToken("accessToken", JSON.stringify(accessToken), { maxAge: 15552000 }); // Save the access token
+        setToken("accessToken", JSON.stringify(accessToken)); // Save the access token
         navigate("/");
       })
       .catch((error) => {
