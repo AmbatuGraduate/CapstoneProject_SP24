@@ -102,7 +102,7 @@ export const DetailReport = () => {
         <div className="detail-cover-report" style={{ marginBottom: "20px", borderBottom: "1px solid rgb(212, 212, 212)", paddingBottom: "20px" }}>
           <div className="detail-content-left"></div>
           <div className="detail-content-right body">
-            {data.value.reportFormat.reportBody}
+            {data.value.reportFormat.reportBody?.split("\r\n")[1]}
           </div>
         </div>
 
