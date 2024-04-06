@@ -52,7 +52,6 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
                     {
                         if (DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwt_expire)).CompareTo(DateTime.Now) <= 0)
                         {
-                            System.Diagnostics.Debug.WriteLine("REFRESH : " + "NEW TOKEN");
 
                             var tokenData = await authenticationService.RefreshTokenWithGoogle(refresh_tkn.RefreshToken);
 
@@ -61,11 +60,10 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
 
                             //generate new jwt token authen
                             var user = userRepository.GetById(payload.Subject);
+                            var userRole = roleRepository.GetRole(user.RoleId).RoleName;
+                            var userDepartment = (userRole != "Admin") ? groupRepository.GetGroupDbById(user.DepartmentId).DepartmentName : "Admin";
 
                             DateTime date = DateTimeOffset.FromUnixTimeSeconds((long)payload.ExpirationTimeSeconds).LocalDateTime;
-
-                            var userRole = roleRepository.GetRole(user.RoleId).RoleName;
-                            var userDepartment = groupRepository.GetGroupDbById(user.DepartmentId).DepartmentName;
 
                             var token = jwtTokenGenerator.GenerateToken(payload.Subject, userRole, userDepartment, tokenData.access_token, date);
 

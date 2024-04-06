@@ -10,6 +10,6 @@
         int IntervalCutTime,
         Guid TreeTypeId,
         string Note,
-        string UserId
+        string Email
     );
 }
