@@ -4,7 +4,6 @@ import { DETAIL_REPORT, useApi } from "../../Api";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import { useCookies } from "react-cookie";
-import "./style.scss";
 import { dayFormat } from "../../utils";
 
 export const DetailReport = () => {
@@ -23,7 +22,7 @@ export const DetailReport = () => {
     UnResolved: "Chưa được xử lý",
   };
   const handleNavigate = () => {
-    navigate("/manage-report");
+    navigate(-1);
   };
 
   const fetchData = async () => {
@@ -73,16 +72,16 @@ export const DetailReport = () => {
     />
   ) : (
     <div className="main-layout row">
-      <div className="form-cover">
         <div
-          className="detail-cover-report"
-          style={{ marginBottom: "40px", textAlign: "right" }}
+          className="detail-cover"
+          style={{ marginBottom: "25px" }}
         >
           <div className="detail-content-left"></div>
           <div className="detail-content-right title">
             {data?.value?.reportFormat?.reportSubject.replace("[Report]", "")}
-          </div>
+          </div>         
         </div>
+        
         <div className="detail-cover-report" style={{ marginBottom: "35px" }}>
           <div className="detail-content-left">
             <img
@@ -98,23 +97,18 @@ export const DetailReport = () => {
             {data?.value?.reportFormat?.issuerEmail}
           </div>
         </div>
-        {/* <div className="detail-cover">
+      
+      <div className="report-form">
+        <div className="detail-cover-report" style={{ marginBottom: "20px", borderBottom: "1px solid rgb(212, 212, 212)", paddingBottom: "20px" }}>
           <div className="detail-content-left"></div>
-          <div className="detail-content-right">
-            <b>Report ID:</b> {data?.value?.reportFormat?.id}
-          </div>
-        </div> */}
-
-        <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
-          <div className="detail-content-left"></div>
-          <div className="detail-content-right">
+          <div className="detail-content-right body">
             {data.value.reportFormat.reportBody?.split("\r\n")[1]}
           </div>
         </div>
 
         <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
           <div className="detail-content-left"></div>
-          <div className="detail-content-right">
+          <div className="detail-content-right impact">
             <b>Trạng Thái:</b>{" "}
             <span
               className={
@@ -128,17 +122,17 @@ export const DetailReport = () => {
           </div>
         </div>
 
-        <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
+        <div className="detail-cover-report" style={{ marginBottom: "20px", borderBottom: "1px solid rgb(212, 212, 212)", paddingBottom: "20px" }}>
           <div className="detail-content-left"></div>
-          <div className="detail-content-right">
+          <div className="detail-content-right impact">
             <b>Mức Độ Ảnh Hưởng:</b>
             <span
               className={
                 data?.value?.reportFormat?.reportImpact == 0
                   ? "low"
                   : data?.value?.reportFormat?.reportImpact == 1
-                    ? "medium"
-                    : "HIGH"
+                  ? "medium"
+                  : "HIGH"
               }
             >
               {ReportImpact[data?.value?.reportFormat?.reportImpact]}
@@ -148,26 +142,34 @@ export const DetailReport = () => {
 
         <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
           <div className="detail-content-left"></div>
-          <div className="detail-content-right">
+          <div className="detail-content-right impact">
             <b>Cần Giải Quyết Trước:</b>{" "}
             {dayFormat(data?.value?.reportFormat?.expectedResolutionDate)}
           </div>
         </div>
 
-        <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
-          <div className="detail-content-left"></div>
-          <div className="detail-content-right">
-            <b>Ngày Giải Quyết:</b>{" "}
-            {dayFormat(data?.value?.reportFormat?.actualResolutionDate)}
-          </div>
-        </div>
+        {ReportStatus[data?.value?.reportFormat?.reportStatus] ==
+          ReportStatus.Resolved && (
+          <>
+            <div
+              className="detail-cover-report"
+              style={{ marginBottom: "20px", borderBottom: "1px solid rgb(212, 212, 212)", paddingBottom: "20px" }}
+            >
+              <div className="detail-content-left"></div>
+              <div className="detail-content-right impact">
+                <b>Ngày Giải Quyết:</b>{" "}
+                {dayFormat(data?.value?.reportFormat?.actualResolutionDate)}
+              </div>
+            </div>
 
-        <div className="detail-cover-report">
-          <div className="detail-content-left"></div>
-          <div className="detail-content-right">
-            <b>Phản Hồi:</b> {data?.value?.reportFormat?.reportResponse}
-          </div>
-        </div>
+            <div className="detail-cover-report">
+              <div className="detail-content-left"></div>
+              <div className="detail-content-right impact">
+                <b>Phản Hồi:</b> {data?.value?.reportFormat?.reportResponse}
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="button-cover grid">
           <Button
@@ -177,11 +179,13 @@ export const DetailReport = () => {
           >
             Trở Về
           </Button>
-          <Link to={`/response/${id}`}>
-            <Button className="btnLink" variant="success">
-              Phản Hồi
-            </Button>
-          </Link>
+          {JSON.parse(token.accessToken).role == "Admin" && (
+            <Link to={`/response/${id}`}>
+              <Button className="btnLink" variant="success">
+                Phản Hồi
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

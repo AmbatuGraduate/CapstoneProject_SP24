@@ -1,11 +1,9 @@
 import GoogleMapReact, { Coords } from "google-map-react";
 import Marker from "../../../public/assets/marker.svg";
-import { KeyboardEventHandler, useState } from "react";
-import "./style.scss";
-import axios from "axios";
+import { KeyboardEventHandler, useRef, useState } from "react";
 
 <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjRVUIuMwhHiyzshZ1nwvyZ1PGpUhLD7Y&callback=initMap&v=weekly"
   defer
 ></script>;
 const AnyReactComponent = (props: any) => (
@@ -44,7 +42,7 @@ export default function SimpleMap() {
       }}
     >
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyBqQfxxgCjLvTq9tCGjnjHxCVnX3acWXmY" }}
+        bootstrapURLKeys={{ key: "AIzaSyAjRVUIuMwhHiyzshZ1nwvyZ1PGpUhLD7Y" }}
         defaultCenter={defaultProps.center}
         defaultZoom={defaultProps.zoom}
       >
@@ -68,6 +66,8 @@ export function GoogleMap(props: GoogleMapProps) {
     lat: 16.041871,
     lng: 108.216446,
   });
+  const autocompleteInputRef = useRef<HTMLInputElement>(null);
+  let autocomplete: google.maps.places.Autocomplete;
 
   const [address, setAddress] = useState<string>("");
 
@@ -97,24 +97,59 @@ export function GoogleMap(props: GoogleMapProps) {
     );
 
   const onKeyDown = async (e: any) => {
+    console.log("sadasd");
     if (e.keyCode !== 13) return;
-    const addressURI = encodeURI(address);
-    const res = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyBqQfxxgCjLvTq9tCGjnjHxCVnX3acWXmY`
+    // const addressURI = encodeURI(address);
+    // const res = await axios.get(
+    //   `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyBqQfxxgCjLvTq9tCGjnjHxCVnX3acWXmY`
+    // );
+    // const data = res.data;
+    // console.log(data);
+    // if (data) {
+    //   setLocation(data.result[0].geometry.location);
+    // }
+    const center = { lat: 16.047079, lng: 108.20623 };
+    // Create a bounding box with sides ~10km away from the center point
+    const defaultBounds = {
+      north: center.lat + 0.1,
+      south: center.lat - 0.1,
+      east: center.lng + 0.1,
+      west: center.lng - 0.1,
+    };
+    const input = e.target as HTMLInputElement;
+    const options = {
+      bounds: defaultBounds,
+      componentRestrictions: { country: "VN" }, // Specify the country code (e.g., VN for Vietnam)
+      fields: ["address_components", "geometry", "icon", "name"],
+      strictBounds: false,
+    };
+    const autocomplete = new window.google.maps.places.Autocomplete(
+      input,
+      options
     );
-    const data = res.data;
-    if (data) {
-      setLocation(data.result[0].geometry.location);
-    }
+
+    // Add event listener to handle place selection
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      console.log(place); // Handle the selected place here
+      if (place.geometry && place.geometry.location) {
+        const latitude = place.geometry.location.lat();
+        const longitude = place.geometry.location.lng();
+
+        setLocation({ lat: latitude, lng: longitude });
+        console.log("Latitude:", latitude);
+        console.log("Longitude:", longitude);
+        // Xử lý tọa độ latitude và longitude ở đây
+      }
+    });
   };
 
   return (
-    // Important! Always set the container height explicitly
     <div className="google-map">
       <div className="form-group address">
         {/* <label htmlFor="exampleInputEmail1">Tuyến đường</label> */}
         <input
-
+          ref={autocompleteInputRef}
           className="form-control"
           id="exampleInputEmail1"
           aria-describedby="emailHelp"
@@ -128,7 +163,7 @@ export function GoogleMap(props: GoogleMapProps) {
         </small> */}
       </div>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyBqQfxxgCjLvTq9tCGjnjHxCVnX3acWXmY" }}
+        bootstrapURLKeys={{ key: "AIzaSyAjRVUIuMwhHiyzshZ1nwvyZ1PGpUhLD7Y" }}
         defaultCenter={defaultProps.center}
         center={location}
         defaultZoom={defaultProps.zoom}
