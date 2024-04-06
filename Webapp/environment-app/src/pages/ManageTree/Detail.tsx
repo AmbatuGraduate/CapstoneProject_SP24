@@ -10,6 +10,7 @@ import SimpleMap from "./MapIntergration";
 export const DetailTree = () => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
+  const { email = " " } = useParams();
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
   const handleNavigate = () => {
@@ -104,6 +105,15 @@ export const DetailTree = () => {
             <div className="detail-content-child-value">
               {dayFormat(data?.cutTime)}
             </div>
+          </div>
+        </div>
+
+        <div className="detail-cover">
+          <div className="detail-content-parent">
+            <div className="detail-content-child-label">Người Phụ Trách: </div>           
+            <Link to={`/manage-employee/${data?.user}`}>
+              <div className="detail-content-child-value">{data?.user}</div>
+            </Link>
           </div>
         </div>
 

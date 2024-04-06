@@ -84,13 +84,19 @@ export const UpdateTree = () => {
       key: "note",
       defaultValue: data?.note,
     },
+    {
+      label: "Người Phụ Trách",
+      formType: "textarea",
+      key: "note",
+      defaultValue: data?.note,
+    },
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
     await useApi.put(TREE_UPDATE, {
       ...data,
       plantTime: dateConstructor(data.plantTime),
-      updateBy: JSON.parse(token.accessToken).name,
+      updateBy: JSON.parse(token.accessToken).email,
       isExist: true,
     });
     console.log("UpdateTree", data);
