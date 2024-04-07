@@ -81,10 +81,11 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
 
             // notification to all manager tree trim calendar
             var treeTrimDepartmentId = "01egqt2p26jkcil"; // Id department of tree
+            var roleId = "abccde85-c7dc-4f78-9e4e-b1b3e7abee84"; // Id role
             var msg = eventResults.ToList().Count +  " Lịch cắt tỉa cây mới đã được tạo";
 
             // Get all user have department id is tree
-            var listUser = userRepository.GetAll().Where(x => x.DepartmentId == treeTrimDepartmentId).ToList();
+            var listUser = userRepository.GetAll().Where(x => x.DepartmentId == treeTrimDepartmentId && x.RoleId == Guid.Parse(roleId)).ToList();
 
             for (int i = 0; i < listUser.Count; i++)
             {
@@ -96,7 +97,7 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
                     MessageType = "Single",
                     NotificationDateTime = DateTime.Now,
                 };
-                notificationRepository.CreateNotification(notification);
+                await notificationRepository.CreateNotification(notification);
                 await notifyService.SendToUser(listUser[i].Email, msg);
             }
 
