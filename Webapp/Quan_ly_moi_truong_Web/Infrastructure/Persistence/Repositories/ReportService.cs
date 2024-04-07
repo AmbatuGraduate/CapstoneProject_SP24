@@ -58,6 +58,16 @@ namespace Infrastructure.Persistence.Repositories
                     Body = emailBody.ToString(),
                 };
                 email.To.Add("ambatuadmin@vesinhdanang.xyz");
+                // add image
+                if (reportFormat.ReportImage != null)
+                {
+                    string base64Data = reportFormat.ReportImage.Split(",")[1];
+                    byte[] imageBytes = Convert.FromBase64String(base64Data);
+                    var attachment = new Attachment(new MemoryStream(imageBytes), "image.jpg", "image/jpeg");
+                    email.Attachments.Add(attachment);
+                }
+
+                // send report
                 ReportFormat r = await SendEmail(email, reportFormat.AccessToken);
 
                 // add to db
@@ -114,51 +124,26 @@ namespace Infrastructure.Persistence.Repositories
             var credential = GoogleCredential.FromAccessToken(accessToken);
             var service = _gmailServiceFactory(credential);
 
-            // get email details
-            var request = service.Users.Messages.List("me");
-            request.Q = "subject:Report";
-            var response = await request.ExecuteAsync();
+            var messages = await GetMessages(service);
+            var messageDetails = await GetMessageDetails(service, messages);
 
-            ReportFormat reportFormat = new();
+            ReportFormat reportFormat = null;
 
-            foreach (var message in response.Messages)
+            foreach (var messageDetail in messageDetails)
             {
-
-                // get the details of the message
-                var messageRequest = service.Users.Messages.Get("me", message.Id);
-                var messageDetail = await messageRequest.ExecuteAsync();
-                if (messageDetail.Payload.Body.Data == null)
+                var body = GetBodyFromMessageDetail(messageDetail);
+                if (body == null)
                 {
                     continue;
                 }
 
-                // extract id from body
-                var base64Url = messageDetail.Payload.Body.Data;
-                var base64 = base64Url.Replace('-', '+').Replace('_', '/');
-                var bodyBytes = Convert.FromBase64String(base64);
-                var body = Encoding.UTF8.GetString(bodyBytes);
+                var reportID = GetReportIdFromBody(body);
 
-                var reportIDMatch = Regex.Match(body, @"Report ID: (.*)");
-                var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
-
-                // check if report id is in db
                 if (ReportExist(reportID) && reportID == id)
                 {
-                    // get report from db
                     var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == id);
 
-                    // report format
-                    reportFormat = new ReportFormat
-                    {
-                        Id = id,
-                        IssuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
-                        ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
-                        ReportBody = body,
-                        ReportStatus = reportDb.Status.ToString(),
-                        ReportImpact = reportDb.ReportImpact,
-                        ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
-                        ReportResponse = reportDb.ResponseId
-                    };
+                    reportFormat = CreateReportFormat(reportID, messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value, messageDetail, body, reportDb);
                     break;
                 }
             }
@@ -178,30 +163,20 @@ namespace Infrastructure.Persistence.Repositories
             var credential = GoogleCredential.FromAccessToken(accessToken);
             var service = _gmailServiceFactory(credential);
 
-            var request = service.Users.Messages.List("me");
-            request.Q = "subject:Report";
-            var response = await request.ExecuteAsync();
-
-            var messageDetailsTasks = response.Messages.Select(message =>
-                service.Users.Messages.Get("me", message.Id).ExecuteAsync());
-
-            var messageDetails = await Task.WhenAll(messageDetailsTasks);
+            var messages = await GetMessages(service);
+            var messageDetails = await GetMessageDetails(service, messages);
 
             var reportFormats = new List<ReportFormat>();
 
             foreach (var messageDetail in messageDetails)
             {
-                if (messageDetail.Payload.Body.Data == null)
+                var body = GetBodyFromMessageDetail(messageDetail);
+                if (body == null)
                 {
                     continue;
                 }
-                var base64Url = messageDetail.Payload.Body.Data;
-                var base64 = base64Url.Replace('-', '+').Replace('_', '/');
-                var bodyBytes = Convert.FromBase64String(base64);
-                var body = Encoding.UTF8.GetString(bodyBytes);
 
-                var reportIDMatch = Regex.Match(body, @"Report ID: (.*)");
-                var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
+                var reportID = GetReportIdFromBody(body);
 
                 if (reportID != null)
                 {
@@ -209,17 +184,9 @@ namespace Infrastructure.Persistence.Repositories
 
                     if (reportDb != null)
                     {
-                        var reportFormat = new ReportFormat
-                        {
-                            Id = reportID,
-                            IssuerEmail = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value,
-                            ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
-                            ReportBody = body,
-                            ReportStatus = reportDb.Status.ToString(),
-                            ReportImpact = reportDb.ReportImpact,
-                            ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
-                            ReportResponse = reportDb.ResponseId
-                        };
+                        var reportFormat = CreateReportFormat(reportID, messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value, messageDetail, body, reportDb);
+
+                        await AddImageToReportFormat(service, messageDetail, reportFormat);
 
                         reportFormats.Add(reportFormat);
                     }
@@ -236,9 +203,7 @@ namespace Infrastructure.Persistence.Repositories
                 var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _gmailServiceFactory(credential);
 
-                var request = service.Users.Messages.List("me");
-                request.Q = "subject:Report";
-                var response = await request.ExecuteAsync();
+                var response = await GetMessages(service);
 
                 var reportFormats = new List<ReportFormat>();
 
@@ -249,48 +214,26 @@ namespace Infrastructure.Persistence.Repositories
                     return reportFormats;
                 }
 
-                var messageDetailsTasks = response.Messages.Select(message =>
-                    service.Users.Messages.Get("me", message.Id).ExecuteAsync());
-
-                var messageDetails = await Task.WhenAll(messageDetailsTasks);
+                var messageDetails = await GetMessageDetails(service, response);
 
                 foreach (var messageDetail in messageDetails)
                 {
-                    if (messageDetail.Payload.Body.Data == null)
+                    var body = GetBodyFromMessageDetail(messageDetail);
+                    if (body == null)
                     {
                         continue;
                     }
-                    var base64Url = messageDetail.Payload.Body.Data;
-                    var base64 = base64Url.Replace('-', '+').Replace('_', '/');
-                    var bodyBytes = Convert.FromBase64String(base64);
-                    var body = Encoding.UTF8.GetString(bodyBytes);
 
-                    var reportIDMatch = Regex.Match(body, @"Report ID: (.*)");
-                    var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
+                    var reportID = GetReportIdFromBody(body);
 
                     var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == reportID);
 
                     if (reportDb != null && reportDb.IssuerGmail == gmail)
                     {
-                        var reportFormat = new ReportFormat
-                        {
-                            Id = reportID,
-                            IssuerEmail = gmail,
-                            ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
-                            ReportBody = body,
-                            ReportStatus = reportDb.Status.ToString(),
-                            ReportImpact = reportDb.ReportImpact,
-                            ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
-                            ActualResolutionDate = reportDb.ActualResolutionDate,
-                            ReportResponse = reportDb.ResponseId
-                        };
+                        var reportFormat = CreateReportFormat(reportID, gmail, messageDetail, body, reportDb);
+                        await AddImageToReportFormat(service, messageDetail, reportFormat);
 
                         reportFormats.Add(reportFormat);
-                    }
-
-                    if (reportFormats.Count == list.Count)
-                    {
-                        break;
                     }
                 }
 
@@ -301,6 +244,7 @@ namespace Infrastructure.Persistence.Repositories
                 throw;
             }
         }
+
 
         public Task<ReportFormat> ReponseReport(string accessToken, string reportID, string response, ReportStatus reportStatus)
         {
@@ -365,5 +309,110 @@ namespace Infrastructure.Persistence.Repositories
         {
             return context.Reports.Where(e => e.IssuerGmail == gmail).ToList();
         }
+
+        private async Task<IList<Message>> GetMessages(GmailService service)
+        {
+            var request = service.Users.Messages.List("me");
+            request.Q = "subject:Report";
+            var response = await request.ExecuteAsync();
+            return response.Messages;
+        }
+
+        // get message details
+        private async Task<Message[]> GetMessageDetails(GmailService service, IList<Message> messages)
+        {
+            var messageDetailsTasks = messages.Select(message =>
+                service.Users.Messages.Get("me", message.Id).ExecuteAsync());
+
+            return await Task.WhenAll(messageDetailsTasks);
+        }
+
+        // get body from message detail
+        private string GetBodyFromMessageDetail(Message messageDetail)
+        {
+            string data = messageDetail.Payload.Body.Data;
+            if (data == null && messageDetail.Payload.Parts != null)
+            {
+                foreach (var part in messageDetail.Payload.Parts)
+                {
+                    if (part.MimeType == "text/plain")
+                    {
+                        data = part.Body.Data;
+                        break;
+                    }
+                }
+            }
+
+            if (data == null)
+            {
+                return null;
+            }
+
+            var base64Url = data;
+            var base64 = base64Url.Replace('-', '+').Replace('_', '/');
+            var bodyBytes = Convert.FromBase64String(base64);
+            return Encoding.UTF8.GetString(bodyBytes);
+        }
+
+        // get report id from body
+        private string GetReportIdFromBody(string body)
+        {
+            var reportIDMatch = Regex.Match(body, @"Report ID: (.*?)(\r\n|\n)");
+            var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
+            return reportID;
+        }
+
+        // create report format
+        private ReportFormat CreateReportFormat(string reportID, string gmail, Message messageDetail, string body, Reports reportDb)
+        {
+            return new ReportFormat
+            {
+                Id = reportID,
+                IssuerEmail = gmail,
+                ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
+                ReportBody = body,
+                ReportStatus = reportDb.Status.ToString(),
+                ReportImpact = reportDb.ReportImpact,
+                ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
+                ActualResolutionDate = reportDb.ActualResolutionDate,
+                ReportResponse = reportDb.ResponseId
+            };
+        }
+
+        // add image to report format
+        private async Task AddImageToReportFormat(GmailService service, Message messageDetail, ReportFormat reportFormat)
+        {
+            if (messageDetail.Payload.Parts == null)
+            {
+                return;
+            }
+
+            foreach (var part in messageDetail.Payload.Parts)
+            {
+                if (part.MimeType == "image/jpeg")
+                {
+                    string imageBase64;
+                    if (part.Body.Data != null)
+                    {
+                        var imageData = part.Body.Data;
+                        imageBase64 = imageData.Replace('-', '+').Replace('_', '/');
+                    }
+                    else
+                    {
+                        var attachPart = service.Users.Messages.Attachments.Get("me", messageDetail.Id, part.Body.AttachmentId);
+                        var attachPartResponse = await attachPart.ExecuteAsync();
+                        imageBase64 = attachPartResponse.Data.Replace('-', '+').Replace('_', '/');
+                    }
+                    System.Diagnostics.Debug.WriteLine("image: " + imageBase64);
+
+                    // create a data url
+                    var photoUrl = $"data:{part.MimeType};base64,{imageBase64}";
+
+                    reportFormat.ReportImage = photoUrl;
+                    break;
+                }
+            }
+        }
+
     }
 }

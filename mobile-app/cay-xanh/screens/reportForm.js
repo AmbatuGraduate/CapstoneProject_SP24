@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ActivityIndicator } from "react-native";
+import { ScrollView, View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ActivityIndicator, Button, Image } from "react-native";
 import { Formik } from "formik";
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -7,6 +7,7 @@ import { Icon } from '@rneui/themed';
 import * as yup from 'yup';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { api } from "../shared/api";
+import { launchImageLibrary } from 'react-native-image-picker';
 
 
 const ReportSchema = yup.object({
@@ -27,12 +28,37 @@ export default function ReportForm({ onFormSuccess }) {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [loading, setLoading] = useState(false);
 
+
+    const selectImage = (setFieldValue) => {
+        let options = {
+            title: 'Chọn hoặc chụp ảnh',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+            mediaType: 'photo',
+            includeBase64: true,
+        };
+
+        launchImageLibrary(options, (response) => {
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.assets) {
+                const source = `data:image/jpeg;base64,${response.assets[0].base64}`;
+                setFieldValue('reportImage', source);
+            }
+        });
+    };
+
     return (
         <View style={styles.container}>
             <Formik
                 initialValues={{
                     reportSubject: '',
                     reportBody: '',
+                    reportImage: null,
                     reportImpact: 'Thấp',
                     reportBodyHeight: 100,
                     expectedResolutionDate: new Date()
@@ -52,6 +78,7 @@ export default function ReportForm({ onFormSuccess }) {
                         issuerEmail: issuerEmail,
                         reportSubject: values.reportSubject,
                         reportBody: values.reportBody,
+                        reportImage: values.reportImage,
                         expectedResolutionDate: values.expectedResolutionDate,
                         reportImpact: parseInt(values.reportImpact, 10),
                     }, {
@@ -73,7 +100,12 @@ export default function ReportForm({ onFormSuccess }) {
                 }}
             >
                 {(props) => (
-                    <View>
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}
+                        overScrollMode='never'
+                        padding={7}
+                    >
                         <TextInput
                             style={styles.input}
                             placeholder='Tiêu đề'
@@ -82,6 +114,8 @@ export default function ReportForm({ onFormSuccess }) {
                             onBlur={props.handleBlur('reportSubject')}
                         />
                         <Text style={styles.errorText}>{props.touched.reportSubject && props.errors.reportSubject}</Text>
+
+                        {/* body */}
                         <TextInput
                             multiline
                             style={[styles.bodyInput, { height: Math.max(100, props.values.reportBodyHeight) }]}
@@ -93,6 +127,14 @@ export default function ReportForm({ onFormSuccess }) {
                             value={props.values.reportBody}
                             onBlur={props.handleBlur('reportBody')}
                         />
+                        {props.values.reportImage && (
+                            <Image
+                                source={{ uri: props.values.reportImage }}
+                                style={{ width: 100, height: 100 }}
+                            />
+                        )}
+                        <Button title="Select Image" onPress={() => selectImage(props.setFieldValue)} />
+
                         <Text style={styles.errorText}>{props.touched.reportBody && props.errors.reportBody}</Text>
                         <View style={styles.impact}>
                             <Text style={styles.label}>Mức độ ảnh hưởng</Text>
@@ -146,10 +188,12 @@ export default function ReportForm({ onFormSuccess }) {
                             <Icon name="check" size={20} color="#fff" />
                             <Text style={styles.submitButtonText}>Gửi</Text>
                         </TouchableOpacity>
-                    </View>
+                    </ScrollView>
                 )}
             </Formik>
 
+
+            {/* loading screen */}
             <Modal
                 transparent={true}
                 visible={loading}

@@ -132,7 +132,7 @@ export default function Report({ navigation }) {
     }, [searchInput, reports]);
 
     const impactColors = {
-        0: '#ADF35B',
+        0: 'green',
         1: 'orange',
         2: 'red'
     };
@@ -143,7 +143,7 @@ export default function Report({ navigation }) {
             'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
         ];
         const date = new Date(dateString);
-        return `${date.getDate()} ${months[date.getMonth()]} năm ${date.getFullYear()}`;
+        return `${date.getDate()} / ${date.getMonth()} / ${date.getFullYear()}`;
     }
 
 
@@ -163,11 +163,12 @@ export default function Report({ navigation }) {
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            style={styles.records}
+                            style={[styles.records, item.reportStatus === 'UnResolved' ? styles.unresolved : styles.resolved]}
                             onPress={() => {
                                 navigation.navigate('ReportDetails', {
                                     reportId: item.id,
                                     reportBody: item.reportBody,
+                                    reportImage: item.reportImage,
                                     reportSubject: item.reportSubject.replace('[Report]', '').trim(),
                                     reportImpact: item.reportImpact,
                                     reportStatus: item.reportStatus,
@@ -187,19 +188,26 @@ export default function Report({ navigation }) {
                                 </View>
 
                             </View>
-                            <View style={styles.itemContainer}>
-                                <Text style={styles.itemTextSmall}>{
-                                    item.reportStatus === 'UnResolved'
-                                        ? <Text style={{ color: 'red', fontWeight: '500' }}>Chưa xử lý</Text>
-                                        : <Text style={{ color: 'green', fontWeight: '500' }}>Đã xử lý</Text>
-                                }</Text>
-                            </View>
-                            <View style={styles.itemContainer}>
-                                <Text style={styles.itemText}>Cần giải quyết trước: </Text>
-                            </View>
-                            <View style={styles.itemContainer}>
-                                <Text style={styles.itemTextSmall}>{formatDate(item.expectedResolutionDate)}</Text>
-                            </View>
+                            {item.reportStatus === 'UnResolved' ? (
+                                <>
+                                    <View style={styles.itemContainer}>
+                                        <Text style={styles.itemText}>Ngày cần giải quyết </Text>
+                                    </View>
+                                    <View style={styles.itemContainer}>
+                                        <Text style={styles.itemTextSmall}>{formatDate(item.expectedResolutionDate)}</Text>
+                                    </View>
+                                </>
+                            ) : (
+                                <View style={styles.statusContainer}>
+                                    <View style={styles.resolvedContainer}>
+                                        <Text style={styles.resolvedText}>Đã xử lý</Text>
+                                        <Icon name="check" size={20} color="green" />
+
+                                        {/* <Text style={styles.dateText}>{formatDate(item.actualResolutionDate)}</Text> */}
+
+                                    </View>
+                                </View>
+                            )}
                         </TouchableOpacity>
                     )}
                 />
@@ -353,7 +361,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     itemLabel: {
-        fontSize: 16,
+        fontSize: 18,
         fontFamily: 'nunito-regular',
         fontWeight: 'bold',
         flex: 0.75
@@ -366,7 +374,8 @@ const styles = StyleSheet.create({
     itemText: {
         fontSize: 13,
         flex: 0.75,
-        color: 'gray'
+        color: 'gray',
+        letterSpacing: 1,
     },
     emptyContainer: {
         flex: 1,
@@ -385,5 +394,34 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         color: '#333',
+    },
+    unresolved: {
+        backgroundColor: 'pink',
+    },
+    resolved: {
+        backgroundColor: '#E2FFE3',
+    },
+    resolvedText: {
+        fontSize: 16,
+        color: 'green',
+        fontWeight: 'bold',
+        paddingRight: 5,
+    },
+    statusContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 5,
+        paddingVertical: 5,
+        marginBottom: 10,
+    },
+    resolvedContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+    },
+    dateText: {
+        fontSize: 16,
+        color: '#333',
+        paddingLeft: 5,
     },
 })
