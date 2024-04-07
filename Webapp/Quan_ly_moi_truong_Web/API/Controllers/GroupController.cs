@@ -103,7 +103,7 @@ namespace API.Controllers
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
             }
 
-            return Ok(groupResult);
+            return Ok(groupResult.Value);
         }
 
         [HttpGet()]
