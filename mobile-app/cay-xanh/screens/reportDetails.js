@@ -1,13 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import { Icon } from '@rneui/themed';
 
 export default function ReportDetails({ route }) {
 
-    const { reportId, reportBody, reportSubject, reportImpact, reportStatus, reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
+    const { reportId, reportBody, reportImage, reportSubject, reportImpact, reportStatus, reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
 
     let cleanedReportSubject = reportSubject.replace(/\[Report\]/g, '').trim();
-
     let cleanedReportBody = reportBody.replace(/Report ID: .*|Expected Resolution Date: .*|Report Impact: .*/g, '');
 
     const impactLevels = {
@@ -23,8 +22,8 @@ export default function ReportDetails({ route }) {
     };
 
     const statusBackground = {
-        'UnResolved': 'pink',
-        'Resolved': '#8BE78B',
+        'UnResolved': '#FFA6A6', // light red
+        'Resolved': '#8BE78B', // light green
     };
 
     const reportStatuses = {
@@ -33,8 +32,8 @@ export default function ReportDetails({ route }) {
     };
 
     const statusColors = {
-        'UnResolved': 'red',
-        'Resolved': 'green',
+        'UnResolved': '#D32F2F', // dark red
+        'Resolved': '#388E3C', // dark green
     };
 
     return (
@@ -44,75 +43,78 @@ export default function ReportDetails({ route }) {
             <View style={styles.overview}>
                 <Text style={styles.subject}>{cleanedReportSubject}</Text>
                 <View style={styles.impactContainer}>
-                    <Text style={{ color: '#2282F3', fontSize: 18, fontWeight: '600' }}>Mức độ ảnh hưởng</Text>
-                    <View style={{ flexDirection: 'row' }}>
+                    <Text style={[styles.label, { color: '#2282F3' }]}>Mức độ ảnh hưởng</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[styles.impactText, { color: impactColors[reportImpact] }]}>{impactLevels[reportImpact]}</Text>
                         <Icon style={{ marginLeft: 10 }} name="warning" type="Ionicons" size={20} color={impactColors[reportImpact]} />
                     </View>
                 </View>
 
                 <View style={styles.impactContainer}>
-                    <Text style={{ color: '#2282F3', fontSize: 18, fontWeight: '600' }}>Trạng thái</Text>
-                    <Text style={[styles.statusText, { color: statusColors[reportStatus] }]}>{reportStatuses[reportStatus]}</Text>
+                    <Text style={[styles.label, { color: '#2282F3' }]}>Trạng thái</Text>
+                    <Text style={[styles.statusText, { backgroundColor: statusBackground[reportStatus], color: statusColors[reportStatus] }]}>{reportStatuses[reportStatus]}</Text>
                 </View>
-
             </View>
 
-
             <View style={styles.overview}>
-                <Text style={{ color: '#2282F3', fontSize: 18, fontWeight: '600' }}>Nội dung</Text>
+                {reportImage && <Image source={{ uri: reportImage }} style={styles.image} />}
+                <Text style={[styles.label, { color: '#2282F3' }]}>Nội dung</Text>
                 <Text style={styles.bodyText}>{cleanedReportBody}</Text>
-                <Text style={[styles.bodyText, styles.dateText]}>Cần giải quyết trước -  {expectedResolutionDate}</Text>
+                {reportStatus !== 'Resolved' && (
+                    <Text style={styles.dateText}>Cần giải quyết trước - {expectedResolutionDate}</Text>
+                )}
             </View>
 
-            {/* if response != null, add display response */}
             <View style={styles.overview}>
-                <Text style={{ color: '#2282F3', fontSize: 18, fontWeight: '600' }}>Phản hồi</Text>
-                {reportResponse
-
-                    ? <View>
+                <Text style={[styles.label, { color: '#2282F3' }]}>Phản hồi</Text>
+                {reportResponse ? (
+                    <View>
                         <Text style={styles.bodyText}>{reportResponse}</Text>
-                        <Text style={styles.resDate}>Phản hồi ngày: {actualResolutionDate} </Text>
+                        <Text style={styles.resDate}>Phản hồi ngày: {actualResolutionDate}</Text>
                     </View>
-                    : <Text style={styles.noRes}>Chưa có phản hồi...</Text>
-                }
+                ) : (
+                    <Text style={styles.noRes}>Chưa có phản hồi...</Text>
+                )}
             </View>
-
-
-        </ScrollView >
-    )
+        </ScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20, // Increase padding
+        padding: 20,
     },
     overview: {
-        backgroundColor: '#F5F5F5', // Lighter background color
-        padding: 30, // Increase padding
-        marginBottom: 20, // Increase margin
-        borderRadius: 15, // Increase border radius
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 }, // Increase shadow offset
-        shadowOpacity: 0.25, // Decrease shadow opacity
-        shadowRadius: 3.84,
-        elevation: 5,
+        backgroundColor: '#F5F5F5',
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        borderRadius: 15,
     },
     subject: {
-        fontSize: 24, // Increase font size
+        fontSize: 24,
         fontFamily: 'quolibet',
         fontWeight: 'bold',
-        marginBottom: 15, // Increase margin
+        marginBottom: 10,
+        color: '#2282F3',
+        textAlign: 'center',
     },
     impactContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginVertical: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#eee',
         paddingBottom: 10,
+    },
+    label: {
+        fontSize: 16,
+        fontFamily: 'quolibet',
+        fontWeight: '600',
+        fontWeight: 'bold',
+        paddingTop: 20,
+        borderBottomWidth: 1,
+        borderBottomColor: 'lightgrey',
     },
     impactText: {
         fontSize: 18,
@@ -123,21 +125,24 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'quolibet',
         fontWeight: 'bold',
-        color: '#333',
-        padding: 6,
+        paddingVertical: 6,
+        paddingHorizontal: 12,
         borderRadius: 15,
     },
     bodyText: {
-        fontSize: 18,
-        fontFamily: 'quolibet',
-        color: '#333',
+        fontSize: 16,
         lineHeight: 24,
-        paddingTop: 30
+        color: '#333',
+        letterSpacing: 0.5,
     },
     dateText: {
-        fontSize: 14, // Increase font size
-        fontWeight: 'bold', // Make it bold
-        marginTop: 15, // Add margin top for more space above the date
+        fontSize: 16,
+        fontFamily: 'quolibet',
+        fontWeight: 'bold',
+        backgroundColor: '#FFD700',
+        padding: 5,
+        borderRadius: 15,
+        textAlign: 'center',
     },
     noRes: {
         fontSize: 18,
@@ -151,5 +156,11 @@ const styles = StyleSheet.create({
         color: '#838383',
         fontWeight: 'bold',
         marginTop: 10,
-    }
-})
+    },
+    image: {
+        width: '100%',
+        height: 200,
+        borderRadius: 15,
+        marginTop: 10,
+    },
+});
