@@ -113,9 +113,11 @@ export default function ReportForm({ onFormSuccess }) {
                             value={props.values.reportSubject}
                             onBlur={props.handleBlur('reportSubject')}
                         />
-                        <Text style={styles.errorText}>{props.touched.reportSubject && props.errors.reportSubject}</Text>
+                        <Text style={styles.errorText}>
+                            {props.touched.reportSubject && props.errors.reportSubject}
+                        </Text>
 
-                        <Text style={styles.errorText}>{props.touched.reportBody && props.errors.reportBody}</Text>
+
                         <View style={styles.impact}>
                             <Text style={styles.label}>Mức độ ảnh hưởng</Text>
                             <RadioButton.Group
@@ -178,6 +180,7 @@ export default function ReportForm({ onFormSuccess }) {
                             value={props.values.reportBody}
                             onBlur={props.handleBlur('reportBody')}
                         />
+                        <Text style={styles.errorText}>{props.touched.reportBody && props.errors.reportBody}</Text>
 
                         {/* image */}
 
@@ -239,9 +242,11 @@ export default function ReportForm({ onFormSuccess }) {
 
 const styles = StyleSheet.create({
     errorText: {
-        color: 'red',
+        color: '#FF0000', // Bright red color for better visibility
         marginBottom: 10,
         marginTop: -10,
+        fontSize: 12, // Larger font size for better readability
+        fontWeight: 'bold'
     },
     dateContainer: {
         flexDirection: 'row',
