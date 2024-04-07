@@ -2,6 +2,7 @@
 using Application.GoogleAuthentication.Common;
 using Application.GoogleAuthentication.Queries.GoogleAccessToken;
 using Application.Report.Commands.Create;
+using Application.Report.Commands.Delete;
 using Application.Report.Commands.Response;
 using Application.Report.Common;
 using Application.Report.Queries.GetById;
@@ -306,6 +307,28 @@ namespace API.Controllers
             }
 
             return Ok(result);
+        }
+
+        // delete report
+        [HttpDelete]
+        public async Task<IActionResult> DeleteReport(string id)
+        {
+
+/*            // declare accesstoken
+            var jwt = Request.Cookies["u_tkn"];
+            if (String.IsNullOrEmpty(jwt))
+            {
+                return BadRequest("u_tkn cookie is missing");
+            }
+            System.Diagnostics.Debug.WriteLine("token: " + jwt);
+            ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+            if (token.IsError)
+            {
+                return BadRequest("Invalid token");
+            }*/
+
+            await mediator.Send(new DeleteReportCommand(id));
+            return Ok();
         }
     }
 }
