@@ -42,8 +42,6 @@ namespace Domain.Entities.Tree
         [DataMember]
         public bool isCut { get; set; } = true;
 
-        [DataMember]
-        public bool isExist { get; set; } = true;
 
         [DataMember]
         public string UserId { get; set; }

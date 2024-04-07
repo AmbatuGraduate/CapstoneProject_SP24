@@ -36,6 +36,18 @@ namespace Infrastructure.Persistence.Repositories
             return _treeDbContext.Trees.FirstOrDefault(t => t.TreeCode == treeCode);
         }
 
+        public void DeleteTree(Trees tree)
+        {
+            try
+            {
+                _treeDbContext.Trees.Remove(tree);
+                _treeDbContext.SaveChanges();
+            }catch(Exception ex)
+            {
+                throw;
+            }
+        }
+
         public Trees UpdateTree(Trees tree)
         {
             _treeDbContext.Trees.Update(tree);

@@ -50,8 +50,7 @@ namespace Application.Tree.Commands.Update
                 TreeTypeId = request.TreeTypeId,
                 IntervalCutTime = request.IntervalCutTime,
                 UserId = userId,
-                Note = request.Note,
-                isExist = oldTree.isExist
+                Note = request.Note
             };
 
             var result = new AddTreeResult(treeRepository.UpdateTree(tree).TreeCode);
