@@ -35,9 +35,13 @@ namespace Application.Calendar.TreeCalendar.Commands.UpdateJobStatus
                         // update tree cutTime
                         treeNeedUpdated.CutTime = CalculateTreeNextCutTime(treeNeedUpdated.CutTime, treeNeedUpdated.IntervalCutTime);
                         _treeRepository.UpdateTree(treeNeedUpdated);
-                        eventResult = true;
                     }
                 }
+                eventResult = true;
+            }
+            else
+            {
+                eventResult = true;
             }
             return new MyUpdatedJobStatusResult(eventResult);
         }

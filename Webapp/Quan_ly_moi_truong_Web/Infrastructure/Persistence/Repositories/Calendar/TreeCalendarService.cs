@@ -99,14 +99,27 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                 if (retrievedEvent != null)
                 {
                     string newJobStatus = ConvertToJobWorkingStatusString(jobWorkingStatus);
-                    if (retrievedEvent.ExtendedProperties.Private__ != null
+                    if (retrievedEvent.ExtendedProperties != null && retrievedEvent.ExtendedProperties.Private__ != null
                         && retrievedEvent.ExtendedProperties.Private__.ContainsKey(EventExtendedProperties.JobWorkingStatus))
                     {
                         retrievedEvent.ExtendedProperties.Private__[EventExtendedProperties.JobWorkingStatus] = newJobStatus;
+                        listTreesNeedUpdated = retrievedEvent.ExtendedProperties.Private__.ContainsKey(EventExtendedProperties.Tree) ?
+                            retrievedEvent.ExtendedProperties.Private__[EventExtendedProperties.Tree] : "";
+                    }
+                    else
+                    {
+                        retrievedEvent.ExtendedProperties = new Event.ExtendedPropertiesData
+                        {
+                            Private__ = new Dictionary<string, string>
+                            {
+                                {EventExtendedProperties.JobWorkingStatus, ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart)},
+                                {EventExtendedProperties.Tree, ""},
+                                {EventExtendedProperties.DepartmentEmail, "" }
+                            }
+                        };
                     }
                     service.Events.Update(retrievedEvent, calendarId, eventId)
                         .Execute();
-                    listTreesNeedUpdated = retrievedEvent.ExtendedProperties.Private__[EventExtendedProperties.Tree];
                 }
                 return listTreesNeedUpdated;
             }
@@ -142,7 +155,8 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         DateTimeDateTimeOffset = DateTime.Parse(myEvent.End.DateTime),
                         TimeZone = TimeZone
                     };
-                    retrievedEvent.Attendees = myEvent.Attendees
+                    retrievedEvent.Attendees
+                        .Where(attendee => !string.IsNullOrEmpty(attendee.Email)) // Skip attendees with null or empty email
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
                         .ToList();
 
@@ -214,14 +228,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                             .ToList() : new List<UserEventResult>(),
                     ExtendedProperties = new EventExtendedProperties
                     {
-                        PrivateProperties = (Dictionary<string, string>)(retrievenedEvent.ExtendedProperties?.Private__ != null
-                        ? new Dictionary<string, string>
-                        {
-                            {EventExtendedProperties.JobWorkingStatus, retrievenedEvent.ExtendedProperties?.Private__[EventExtendedProperties.JobWorkingStatus]},
-                            {EventExtendedProperties.Tree, retrievenedEvent.ExtendedProperties?.Private__[EventExtendedProperties.Tree]},
-                            {EventExtendedProperties.DepartmentEmail, retrievenedEvent.ExtendedProperties?.Private__[EventExtendedProperties.DepartmentEmail] }
-                        }
-                        : new Dictionary<string, string>())
+                        PrivateProperties = (Dictionary<string, string>)(retrievenedEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
                     }
                 };
                 return myEvent;
@@ -274,14 +281,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                             .ToList() : new List<UserEventResult>(),
                         ExtendedProperties = new EventExtendedProperties
                         {
-                            PrivateProperties = (Dictionary<string, string>)(returnEvent.ExtendedProperties?.Private__ != null
-                        ? new Dictionary<string, string>
-                        {
-                            {EventExtendedProperties.JobWorkingStatus, returnEvent.ExtendedProperties?.Private__[EventExtendedProperties.JobWorkingStatus]},
-                            {EventExtendedProperties.Tree, returnEvent.ExtendedProperties?.Private__[EventExtendedProperties.Tree]},
-                            {EventExtendedProperties.DepartmentEmail, returnEvent.ExtendedProperties?.Private__[EventExtendedProperties.DepartmentEmail] }
-                        }
-                        : new Dictionary<string, string>())
+                            PrivateProperties = (Dictionary<string, string>)(returnEvent.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
                         }
                     })
                     .ToList<MyEvent>();
