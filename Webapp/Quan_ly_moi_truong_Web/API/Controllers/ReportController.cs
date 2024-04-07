@@ -75,7 +75,7 @@ namespace API.Controllers
                 request.IssuerEmail,
                 request.ReportSubject,
                 request.ReportBody,
-                request.ReportImage,
+                request.ReportImages,
                 request.ExpectedResolutionDate,
                 request.ReportImpact
             );

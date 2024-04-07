@@ -29,7 +29,7 @@ export default function ReportForm({ onFormSuccess }) {
     const [loading, setLoading] = useState(false);
 
 
-    const selectImage = (setFieldValue) => {
+    const selectImage = (props) => {
         let options = {
             title: 'Chọn hoặc chụp ảnh',
             storageOptions: {
@@ -38,6 +38,7 @@ export default function ReportForm({ onFormSuccess }) {
             },
             mediaType: 'photo',
             includeBase64: true,
+            selectionLimit: 0, // set to 0 for unlimited selection
         };
 
         launchImageLibrary(options, (response) => {
@@ -46,8 +47,8 @@ export default function ReportForm({ onFormSuccess }) {
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
             } else if (response.assets) {
-                const source = `data:image/jpeg;base64,${response.assets[0].base64}`;
-                setFieldValue('reportImage', source);
+                const sources = response.assets.map(asset => `data:image/jpeg;base64,${asset.base64}`);
+                props.setFieldValue('reportImages', [...props.values.reportImages, ...sources]);
             }
         });
     };
@@ -58,7 +59,7 @@ export default function ReportForm({ onFormSuccess }) {
                 initialValues={{
                     reportSubject: '',
                     reportBody: '',
-                    reportImage: null,
+                    reportImages: [],
                     reportImpact: 'Thấp',
                     reportBodyHeight: 100,
                     expectedResolutionDate: new Date()
@@ -78,7 +79,7 @@ export default function ReportForm({ onFormSuccess }) {
                         issuerEmail: issuerEmail,
                         reportSubject: values.reportSubject,
                         reportBody: values.reportBody,
-                        reportImage: values.reportImage,
+                        reportImages: values.reportImages,
                         expectedResolutionDate: values.expectedResolutionDate,
                         reportImpact: parseInt(values.reportImpact, 10),
                     }, {
@@ -90,7 +91,6 @@ export default function ReportForm({ onFormSuccess }) {
                     })
                         .then((response) => {
                             setLoading(false);
-                            console.log('Success:', response.data);
                             onFormSuccess();
                         })
                         .catch((error) => {
@@ -115,26 +115,6 @@ export default function ReportForm({ onFormSuccess }) {
                         />
                         <Text style={styles.errorText}>{props.touched.reportSubject && props.errors.reportSubject}</Text>
 
-                        {/* body */}
-                        <TextInput
-                            multiline
-                            style={[styles.bodyInput, { height: Math.max(100, props.values.reportBodyHeight) }]}
-                            placeholder='Vấn đề cần báo cáo'
-                            onChangeText={props.handleChange('reportBody')}
-                            onContentSizeChange={(event) => {
-                                props.setFieldValue('reportBodyHeight', event.nativeEvent.contentSize.height)
-                            }}
-                            value={props.values.reportBody}
-                            onBlur={props.handleBlur('reportBody')}
-                        />
-                        {props.values.reportImage && (
-                            <Image
-                                source={{ uri: props.values.reportImage }}
-                                style={{ width: 100, height: 100 }}
-                            />
-                        )}
-                        <Button title="Select Image" onPress={() => selectImage(props.setFieldValue)} />
-
                         <Text style={styles.errorText}>{props.touched.reportBody && props.errors.reportBody}</Text>
                         <View style={styles.impact}>
                             <Text style={styles.label}>Mức độ ảnh hưởng</Text>
@@ -144,16 +124,18 @@ export default function ReportForm({ onFormSuccess }) {
                                 onBlur={props.handleBlur('reportImpact')}
                             >
                                 <View style={styles.radioButton}>
-                                    <RadioButton value="0" color='maroon' uncheckedColor='grey' />
                                     <Text style={styles.radioButtonTextLow}>THẤP</Text>
+                                    <RadioButton value="0" color='green' uncheckedColor='grey' />
                                 </View>
                                 <View style={styles.radioButton}>
-                                    <RadioButton value="1" color='maroon' uncheckedColor='grey' />
                                     <Text style={styles.radioButtonTextMedium}>VỪA</Text>
+                                    <RadioButton value="1" color='orange' uncheckedColor='grey' />
+
                                 </View>
                                 <View style={styles.radioButton}>
-                                    <RadioButton value="2" color='maroon' uncheckedColor='grey' />
                                     <Text style={styles.radioButtonTextHigh}>CAO</Text>
+                                    <RadioButton value="2" color='red' uncheckedColor='grey' />
+
                                 </View>
                             </RadioButton.Group>
                         </View>
@@ -183,6 +165,50 @@ export default function ReportForm({ onFormSuccess }) {
                             />
                         )}
                         <Text style={styles.errorText}>{props.touched.expectedResolutionDate && props.errors.expectedResolutionDate}</Text>
+
+                        {/* body */}
+                        <TextInput
+                            multiline
+                            style={[styles.bodyInput, { height: Math.max(100, props.values.reportBodyHeight) }]}
+                            placeholder='Chi tiết báo cáo'
+                            onChangeText={props.handleChange('reportBody')}
+                            onContentSizeChange={(event) => {
+                                props.setFieldValue('reportBodyHeight', event.nativeEvent.contentSize.height)
+                            }}
+                            value={props.values.reportBody}
+                            onBlur={props.handleBlur('reportBody')}
+                        />
+
+                        {/* image */}
+
+                        <TouchableOpacity
+                            style={styles.imageButton}
+                            onPress={() => selectImage(props)}
+                        >
+                            <Icon name="file-photo-o" type="font-awesome" size={24} color="#2282F3" />
+                        </TouchableOpacity>
+
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                            {props.values.reportImages && props.values.reportImages.map((image, index) => (
+                                <View key={index} style={styles.imageContainer}>
+                                    <Image
+                                        source={{ uri: image }}
+                                        style={styles.image}
+                                    />
+                                    <TouchableOpacity
+                                        style={styles.removeImageButton}
+                                        onPress={() => {
+                                            const newImages = [...props.values.reportImages];
+                                            newImages.splice(index, 1);
+                                            props.setFieldValue('reportImages', newImages);
+                                        }}
+                                    >
+                                        <Icon name="remove" size={20} type="font-awesome" style={styles.rmvImg} color="#fff" />
+                                    </TouchableOpacity>
+                                </View>
+                            ))}
+                        </View>
+
 
                         <TouchableOpacity style={styles.submitButton} onPress={props.handleSubmit}>
                             <Icon name="check" size={20} color="#fff" />
@@ -275,6 +301,7 @@ const styles = StyleSheet.create({
     radioButton: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         padding: 10,
     },
     radioButtonTextLow: {
@@ -314,4 +341,35 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
 
     },
+    image: {
+        width: 75,
+        height: 75,
+        borderRadius: 15,
+        marginBottom: 10,
+    },
+    imageButton: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    imageContainer: {
+        position: 'relative',
+        paddingRight: 10,
+    },
+    removeImageButton: {
+        position: 'absolute',
+        right: 0,
+        top: 0,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    rmvImg: {
+        backgroundColor: 'black',
+        borderRadius: 50,
+    }
 });
