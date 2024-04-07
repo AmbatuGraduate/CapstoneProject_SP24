@@ -1,10 +1,11 @@
 import React from "react";
 import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import { Icon } from '@rneui/themed';
+import Swiper from 'react-native-swiper';
 
 export default function ReportDetails({ route }) {
 
-    const { reportId, reportBody, reportImage, reportSubject, reportImpact, reportStatus, reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
+    const { reportId, reportBody, reportImages, reportSubject, reportImpact, reportStatus, reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
 
     let cleanedReportSubject = reportSubject.replace(/\[Report\]/g, '').trim();
     let cleanedReportBody = reportBody.replace(/Report ID: .*|Expected Resolution Date: .*|Report Impact: .*/g, '');
@@ -37,46 +38,69 @@ export default function ReportDetails({ route }) {
     };
 
     return (
-        <ScrollView
-            style={styles.container}
-        >
-            <View style={styles.overview}>
-                <Text style={styles.subject}>{cleanedReportSubject}</Text>
-                <View style={styles.impactContainer}>
-                    <Text style={[styles.label, { color: '#2282F3' }]}>Mức độ ảnh hưởng</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={[styles.impactText, { color: impactColors[reportImpact] }]}>{impactLevels[reportImpact]}</Text>
-                        <Icon style={{ marginLeft: 10 }} name="warning" type="Ionicons" size={20} color={impactColors[reportImpact]} />
+        <View style={styles.container}>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+                overScrollMode='never'
+            >
+                <View style={styles.overview}>
+                    <Text style={styles.subject}>{cleanedReportSubject}</Text>
+                    <View style={styles.impactContainer}>
+                        <Text style={[styles.label, { color: '#2282F3' }]}>Mức độ ảnh hưởng</Text>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Text style={[styles.impactText, { color: impactColors[reportImpact] }]}>{impactLevels[reportImpact]}</Text>
+                            <Icon style={{ marginLeft: 10 }} name="warning" type="Ionicons" size={20} color={impactColors[reportImpact]} />
+                        </View>
+                    </View>
+
+                    <View style={styles.impactContainer}>
+                        <Text style={[styles.label, { color: '#2282F3' }]}>Trạng thái</Text>
+                        <Text style={[styles.statusText, { backgroundColor: statusBackground[reportStatus], color: statusColors[reportStatus] }]}>{reportStatuses[reportStatus]}</Text>
                     </View>
                 </View>
 
-                <View style={styles.impactContainer}>
-                    <Text style={[styles.label, { color: '#2282F3' }]}>Trạng thái</Text>
-                    <Text style={[styles.statusText, { backgroundColor: statusBackground[reportStatus], color: statusColors[reportStatus] }]}>{reportStatuses[reportStatus]}</Text>
+                <View style={styles.overview}>
+                    {reportImages && (
+                        <View style={{ height: 300 }}>
+
+                            <Swiper
+                                showsButtons={false}
+                                loop={false}
+                                showsPagination={true}
+                                dot={<View style={{ backgroundColor: 'rgba(0,0,0,.2)', width: 8, height: 8, borderRadius: 4, marginLeft: 1, marginRight: 1, marginTop: 3, marginBottom: 3 }} />}
+                                activeDot={<View style={{ backgroundColor: '#007aff', width: 8, height: 8, borderRadius: 4, marginLeft: 1, marginRight: 1, marginTop: 3, marginBottom: 3 }} />}
+                                paginationStyle={{
+                                    bottom: 60,
+                                }}
+                            >
+                                {reportImages.map((image, index) => (
+                                    <Image key={index} source={{ uri: image }} style={styles.image} />
+                                ))}
+                            </Swiper>
+
+                        </View>
+                    )}
+                    <Text style={[styles.label, { color: '#2282F3' }]}>Nội dung</Text>
+                    <Text style={styles.bodyText}>{cleanedReportBody}</Text>
+                    {reportStatus !== 'Resolved' && (
+                        <Text style={styles.dateText}>Cần giải quyết trước - {expectedResolutionDate}</Text>
+                    )}
                 </View>
-            </View>
 
-            <View style={styles.overview}>
-                {reportImage && <Image source={{ uri: reportImage }} style={styles.image} />}
-                <Text style={[styles.label, { color: '#2282F3' }]}>Nội dung</Text>
-                <Text style={styles.bodyText}>{cleanedReportBody}</Text>
-                {reportStatus !== 'Resolved' && (
-                    <Text style={styles.dateText}>Cần giải quyết trước - {expectedResolutionDate}</Text>
-                )}
-            </View>
-
-            <View style={styles.overview}>
-                <Text style={[styles.label, { color: '#2282F3' }]}>Phản hồi</Text>
-                {reportResponse ? (
-                    <View>
-                        <Text style={styles.bodyText}>{reportResponse}</Text>
-                        <Text style={styles.resDate}>Phản hồi ngày: {actualResolutionDate}</Text>
-                    </View>
-                ) : (
-                    <Text style={styles.noRes}>Chưa có phản hồi...</Text>
-                )}
-            </View>
-        </ScrollView>
+                <View style={styles.overview}>
+                    <Text style={[styles.label, { color: '#2282F3' }]}>Phản hồi</Text>
+                    {reportResponse ? (
+                        <View>
+                            <Text style={styles.bodyText}>{reportResponse}</Text>
+                            <Text style={styles.resDate}>Phản hồi ngày: {actualResolutionDate}</Text>
+                        </View>
+                    ) : (
+                        <Text style={styles.noRes}>Chưa có phản hồi...</Text>
+                    )}
+                </View>
+            </ScrollView>
+        </View>
     );
 }
 
@@ -90,6 +114,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 15,
+        flex: 1
     },
     subject: {
         fontSize: 24,
@@ -162,5 +187,7 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 15,
         marginTop: 10,
+        borderWidth: 2,
+        borderColor: 'grey',
     },
 });

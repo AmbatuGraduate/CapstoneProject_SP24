@@ -58,13 +58,19 @@ namespace Infrastructure.Persistence.Repositories
                     Body = emailBody.ToString(),
                 };
                 email.To.Add("ambatuadmin@vesinhdanang.xyz");
-                // add image
-                if (reportFormat.ReportImage != null)
+                // add images
+                if (reportFormat.ReportImages != null)
                 {
-                    string base64Data = reportFormat.ReportImage.Split(",")[1];
-                    byte[] imageBytes = Convert.FromBase64String(base64Data);
-                    var attachment = new Attachment(new MemoryStream(imageBytes), "image.jpg", "image/jpeg");
-                    email.Attachments.Add(attachment);
+                    foreach (var reportImage in reportFormat.ReportImages)
+                    {
+                        string base64Data = reportImage.Split(",")[1];
+                        string mimeType = reportImage.Split(",")[0].Split(";")[0].Split(":")[1];
+                        string extension = mimeType.Split("/")[1];
+
+                        byte[] imageBytes = Convert.FromBase64String(base64Data);
+                        var attachment = new Attachment(new MemoryStream(imageBytes), $"image.{extension}", mimeType);
+                        email.Attachments.Add(attachment);
+                    }
                 }
 
                 // send report
@@ -144,6 +150,10 @@ namespace Infrastructure.Persistence.Repositories
                     var reportDb = context.Reports.FirstOrDefault(e => e.ReportId == id);
 
                     reportFormat = CreateReportFormat(reportID, messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "From")?.Value, messageDetail, body, reportDb);
+
+                    // Add images to the report format
+                    await AddImageToReportFormat(service, messageDetail, reportFormat);
+
                     break;
                 }
             }
@@ -319,7 +329,7 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // get message details
-        private async Task<Message[]> GetMessageDetails(GmailService service, IList<Message> messages)
+        private static async Task<Message[]> GetMessageDetails(GmailService service, IList<Message> messages)
         {
             var messageDetailsTasks = messages.Select(message =>
                 service.Users.Messages.Get("me", message.Id).ExecuteAsync());
@@ -328,7 +338,7 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // get body from message detail
-        private string GetBodyFromMessageDetail(Message messageDetail)
+        private static string GetBodyFromMessageDetail(Message messageDetail)
         {
             string data = messageDetail.Payload.Body.Data;
             if (data == null && messageDetail.Payload.Parts != null)
@@ -355,7 +365,7 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // get report id from body
-        private string GetReportIdFromBody(string body)
+        private static string GetReportIdFromBody(string body)
         {
             var reportIDMatch = Regex.Match(body, @"Report ID: (.*?)(\r\n|\n)");
             var reportID = reportIDMatch.Success ? reportIDMatch.Groups[1].Value.Trim() : null;
@@ -363,7 +373,7 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // create report format
-        private ReportFormat CreateReportFormat(string reportID, string gmail, Message messageDetail, string body, Reports reportDb)
+        private static ReportFormat CreateReportFormat(string reportID, string gmail, Message messageDetail, string body, Reports reportDb)
         {
             return new ReportFormat
             {
@@ -380,16 +390,18 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // add image to report format
-        private async Task AddImageToReportFormat(GmailService service, Message messageDetail, ReportFormat reportFormat)
+        private static async Task AddImageToReportFormat(GmailService service, Message messageDetail, ReportFormat reportFormat)
         {
             if (messageDetail.Payload.Parts == null)
             {
                 return;
             }
 
+            reportFormat.ReportImages = new List<string>(); 
+
             foreach (var part in messageDetail.Payload.Parts)
             {
-                if (part.MimeType == "image/jpeg")
+                if (part.MimeType.StartsWith("image/")) 
                 {
                     string imageBase64;
                     if (part.Body.Data != null)
@@ -403,13 +415,11 @@ namespace Infrastructure.Persistence.Repositories
                         var attachPartResponse = await attachPart.ExecuteAsync();
                         imageBase64 = attachPartResponse.Data.Replace('-', '+').Replace('_', '/');
                     }
-                    System.Diagnostics.Debug.WriteLine("image: " + imageBase64);
 
                     // create a data url
                     var photoUrl = $"data:{part.MimeType};base64,{imageBase64}";
 
-                    reportFormat.ReportImage = photoUrl;
-                    break;
+                    reportFormat.ReportImages.Add(photoUrl);
                 }
             }
         }

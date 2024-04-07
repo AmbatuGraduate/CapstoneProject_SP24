@@ -49,7 +49,7 @@ export default function Report({ navigation }) {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             const atoken = await AsyncStorage.getItem("@accessToken");
             if (atoken !== null) {
-                const url = `https://vesinhdanang.xyz:7024/api/Report/GetReportsByUser?email=${useremail}`;
+                const url = `http://192.168.1.7:45455/api/Report/GetReportsByUser?email=${useremail}`;
 
                 api.get(url, {
                     headers: {
@@ -168,7 +168,7 @@ export default function Report({ navigation }) {
                                 navigation.navigate('ReportDetails', {
                                     reportId: item.id,
                                     reportBody: item.reportBody,
-                                    reportImage: item.reportImage,
+                                    reportImages: item.reportImages,
                                     reportSubject: item.reportSubject.replace('[Report]', '').trim(),
                                     reportImpact: item.reportImpact,
                                     reportStatus: item.reportStatus,
@@ -276,7 +276,7 @@ export default function Report({ navigation }) {
                             setModalOpen(false);
                         }}
                     >
-                        <Icon name="remove" type="font-awesome" size={30} color="#2282F3" />
+                        <Icon name="remove" type="font-awesome" size={24} color="#000" />
                     </TouchableOpacity>
                     <Text style={styles.modalHeaderText}>Báo cáo vấn đề</Text>
 
