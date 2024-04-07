@@ -13,5 +13,6 @@ namespace Application.Common.Interfaces.Persistence
         Trees CreateTree(Trees tree);
 
         Trees UpdateTree(Trees tree);
+        void DeleteTree(Trees tree);
     }
 }
