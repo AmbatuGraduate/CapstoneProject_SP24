@@ -423,5 +423,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         paddingLeft: 5,
+        fontWeight: 'bold',
+
     },
 })
