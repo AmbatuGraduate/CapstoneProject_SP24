@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { TREE_DETAIL, TREE_TYPE_LIST, TREE_UPDATE, useApi } from "../../Api";
+import {
+  EMPLOYEE_LIST,
+  TREE_DETAIL,
+  TREE_TYPE_LIST,
+  TREE_UPDATE,
+  useApi,
+} from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor, dayFormat } from "../../utils";
 import { useCookies } from "react-cookie";
@@ -51,7 +57,7 @@ export const UpdateTree = () => {
       optionExtra: {
         url: TREE_TYPE_LIST,
         _key: "treeTypeName",
-        _value: "v",
+        _value: "treeTypeId",
       },
     },
     {
@@ -86,20 +92,23 @@ export const UpdateTree = () => {
     },
     {
       label: "Người Phụ Trách",
-      formType: "textarea",
-      key: "note",
-      defaultValue: data?.note,
+      formType: "select",
+      key: "email",
+      optionExtra: {
+        url: EMPLOYEE_LIST,
+        _key: "email",
+        _value: "email",
+      },
     },
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
-    await useApi.put(TREE_UPDATE, {
+    await useApi.put(TREE_UPDATE.replace(":id", id), {
       ...data,
       plantTime: dateConstructor(data.plantTime),
-      updateBy: JSON.parse(token.accessToken).email,
-      isExist: true,
     });
     console.log("UpdateTree", data);
+    navigate(-1)
   };
 
   return (

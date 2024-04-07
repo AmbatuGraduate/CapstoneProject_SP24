@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { TREE_DETAIL, useApi } from "../../Api";
 import { dayFormat } from "../../utils";
-import "./style.scss";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import SimpleMap from "./MapIntergration";
@@ -48,60 +47,46 @@ export const DetailTree = () => {
         <div className="detail-cover">
           <div className="detail-content-parent">
             <div className="detail-content-child-label">Mã Số Cây: </div>
-            <div className="detail-content-child-value">
-              {data?.treeCode}
-            </div>
+            <div className="detail-content-child-value">{data?.treeCode}</div>
           </div>
         </div>
 
         <div className="detail-cover">
           <div className="detail-content-parent">
             <div className="detail-content-child-label">Tên Đường: </div>
-            <div className="detail-content-child-value">
-              {data?.streetName}
-            </div>
+            <div className="detail-content-child-value">{data?.streetName}</div>
           </div>
         </div>
 
         <div className="detail-cover">
           <div className="detail-content-parent">
             <div className="detail-content-child-label">Loại Cây: </div>
-            <div className="detail-content-child-value">
-              {data?.treeType}
-            </div>
+            <div className="detail-content-child-value">{data?.treeType}</div>
           </div>
         </div>
 
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">
-              Đường Kính Thân:{" "}
-            </div>
+            <div className="detail-content-child-label">Đường Kính Thân: </div>
             <div className="detail-content-child-value">
               {data?.bodyDiameter}
             </div>
           </div>
           <div className="detail-content-parent">
             <div className="detail-content-child-label">Tán Lá: </div>
-            <div className="detail-content-child-value">
-              {data?.leafLength}
-            </div>
+            <div className="detail-content-child-value">{data?.leafLength}</div>
           </div>
         </div>
 
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">
-              Thời Điểm Trồng:{" "}
-            </div>
+            <div className="detail-content-child-label">Thời Điểm Trồng: </div>
             <div className="detail-content-child-value">
               {dayFormat(data?.plantTime)}
             </div>
           </div>
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">
-              Thời Điểm Cắt:{" "}
-            </div>
+            <div className="detail-content-child-label">Thời Điểm Cắt: </div>
             <div className="detail-content-child-value">
               {dayFormat(data?.cutTime)}
             </div>
@@ -110,8 +95,8 @@ export const DetailTree = () => {
 
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Người Phụ Trách: </div>           
-            <Link to={`/manage-employee/${data?.user}`}>
+            <div className="detail-content-child-label">Người Phụ Trách: </div>
+            <Link to={`/manage-employee/email=${data?.user}`}>
               <div className="detail-content-child-value">{data?.user}</div>
             </Link>
           </div>

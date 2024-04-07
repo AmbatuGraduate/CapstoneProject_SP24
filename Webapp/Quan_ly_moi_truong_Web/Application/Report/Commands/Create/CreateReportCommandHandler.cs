@@ -36,6 +36,7 @@ namespace Application.Report.Commands.Create
                 IssuerEmail = request.IssuerEmail,
                 ReportSubject = request.ReportSubject,
                 ReportBody = request.ReportBody,
+                ReportImage = request.ReportImage,
                 ExpectedResolutionDate = request.ExpectedResolutionDate,
                 ReportImpact = request.ReportImpact
             };
