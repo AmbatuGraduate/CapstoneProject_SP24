@@ -168,7 +168,7 @@ export default function Report({ navigation }) {
                                 navigation.navigate('ReportDetails', {
                                     reportId: item.id,
                                     reportBody: item.reportBody,
-                                    reportImage: item.reportImage,
+                                    reportImages: item.reportImages,
                                     reportSubject: item.reportSubject.replace('[Report]', '').trim(),
                                     reportImpact: item.reportImpact,
                                     reportStatus: item.reportStatus,
@@ -276,7 +276,7 @@ export default function Report({ navigation }) {
                             setModalOpen(false);
                         }}
                     >
-                        <Icon name="remove" type="font-awesome" size={30} color="#2282F3" />
+                        <Icon name="remove" type="font-awesome" size={24} color="#000" />
                     </TouchableOpacity>
                     <Text style={styles.modalHeaderText}>Báo cáo vấn đề</Text>
 
@@ -423,5 +423,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
         paddingLeft: 5,
+        fontWeight: 'bold',
+
     },
 })

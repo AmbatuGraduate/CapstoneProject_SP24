@@ -10,7 +10,7 @@ namespace Application.Report.Commands.Create
         string IssuerEmail,
         string ReportSubject,
         string ReportBody,
-        string? ReportImage,
+        List<string>? ReportImages,
         DateTime ExpectedResolutionDate,
         ReportImpact ReportImpact
 
