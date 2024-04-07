@@ -49,7 +49,6 @@
     "react-native-toast-message": "^2.2.0",
     "react-native-url-polyfill": "^2.0.0",
     "react-native-web": "~0.19.6",
-    "undefined": "react-native-vision-camera\\",
     "yup": "^1.4.0"
   },
   "devDependencies": {
