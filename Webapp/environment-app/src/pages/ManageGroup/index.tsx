@@ -63,10 +63,10 @@ export const ManageGroup = () => {
               border: "none",
               padding: "0.5rem 1rem",
             }}
-            onClick={() => navigate("/manage-report/create")}
+            onClick={() => navigate(-1)}
           >
             <MdAddCircleOutline className="iconAdd" />
-            Thêm báo cáo
+            Thêm bộ phận
           </Button>
         }
       />
