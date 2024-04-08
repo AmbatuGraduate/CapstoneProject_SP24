@@ -4,6 +4,7 @@ using Application.Tree.Commands.Update;
 using Application.Tree.Common;
 using Application.Tree.Queries.GetById;
 using Application.Tree.Queries.GetByTreeCode;
+using Application.Tree.Queries.ListCut;
 using Contract.Tree;
 using Mapster;
 
@@ -42,8 +43,13 @@ namespace API.Mapping
             config.NewConfig<string, GetByTreeCodeQuery>()
                 .MapWith(dest => new GetByTreeCodeQuery(dest));
 
+
+            config.NewConfig<string, ListTreeCutQuery>()
+                .MapWith(dest => new ListTreeCutQuery(dest));
+
             config.NewConfig<Guid, GetByIdQuery>()
                 .Map(dest => dest.TreeId, src => src);
+
 
             config.NewConfig<TreeResult, ListTreeResponse>()
                 .Map(dest => dest.TreeCode, src => src.TreeCode)

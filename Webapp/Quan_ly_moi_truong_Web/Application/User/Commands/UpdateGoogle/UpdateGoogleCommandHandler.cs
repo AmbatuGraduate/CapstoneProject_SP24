@@ -27,7 +27,7 @@ namespace Application.User.Commands.UpdateGoogle
                 Password = request.Password,
                 PhoneNumber = request.phone,
                 Address = request.address,
-                BirthDate = DateOnly.Parse(request.birthDate),
+                BirthDate = request.birthDate,
                 DepartmentEmail = request.departmentEmail,
             };
 

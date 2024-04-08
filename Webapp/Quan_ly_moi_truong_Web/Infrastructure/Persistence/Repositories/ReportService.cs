@@ -207,12 +207,14 @@ namespace Infrastructure.Persistence.Repositories
         }
 
         // delete report
-        public async Task DeleteReport(string id)
+        public async Task<Reports> DeleteReport(string id)
         {
             // delete report from db
             var report = await context.Reports.FirstOrDefaultAsync(e => e.ReportId == id);
             context.Reports.Remove(report);
             await context.SaveChangesAsync();
+
+            return report;
         }   
 
         public async Task<List<ReportFormat>> GetReportsByUser(string accessToken, string gmail)
