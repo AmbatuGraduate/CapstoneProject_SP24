@@ -2,11 +2,11 @@ name: CI/CD Deploy project for FE
 
 # Event trigger git action
 on:
-  workflow_dispatch: # manual run action
   push: # when push to branch
     branches: [ "dev" ]  # choose branch dev
     paths: 
       - 'Webapp/environment-app/**'
+  workflow_dispatch: # manual run action
 
 env: 
    # For run build react => can not run build becasue CI = true
@@ -32,6 +32,7 @@ jobs:
           rm -rf package-lock.json
           npm cache clean --force
           npm i
+          npm i -S @react-google-maps/api
           npm run build
           
       - name: Copy files to Azure VM
