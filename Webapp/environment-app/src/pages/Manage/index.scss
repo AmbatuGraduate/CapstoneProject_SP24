@@ -1,0 +1,179 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f3f4;
+}
+
+.notification-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+
+div.notification {
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin: 10px 20px;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302), 0 1px 3px 1px rgba(60, 64, 67, 0.149);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    div.message {
+
+        h6,
+        p {
+            margin: 0;
+        }
+
+        font-weight: 900;
+        font-size: 1.25rem;
+    }
+
+    div.notificationDateTime {
+        color: #5f6368;
+        text-align: right;
+        font-weight: 700;
+    }
+
+    h2 {
+        margin: 0 0 10px 0;
+        color: #202124;
+        font-size: 1.2em;
+        font-weight: 500;
+    }
+
+    p {
+        margin: 0;
+        color: #5f6368;
+
+        &:last-child {
+            margin-top: 10px;
+        }
+    }
+}
+
+button.loadMore {
+    background: none;
+    border: none;
+    color: green;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 0;
+    align-self: center;
+
+
+    &:hover {
+        color: #2b78e4;
+    }
+}
+
+.notification.today {
+    background-color: #ffffff;
+}
+
+
+.notification-header {
+    display: flex;
+    align-items: center;
+    align-self: flex-start;
+    border-bottom: 1px solid lightgray;
+    width: 100%;
+    margin-bottom: 1%;
+
+}
+
+.notification-title {
+    font-weight: bold;
+    font-size: 2em;
+    align-self: center;
+    padding-top: 20px;
+}
+
+.notification-count {
+    padding: 3px 12px;
+    background-color: #09317D;
+    color: #fff;
+    border-radius: 25%;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-left: 10px;
+    align-self: center;
+}
+
+.notification-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.fa-bell {
+    color: #03BD63;
+    font-size: 2em;
+    margin-right: 10px;
+}
+
+.weather {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 40%;
+    border-bottom: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+
+
+
+    img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .weather-condition {
+        color: gray;
+        font-weight: bold;
+        margin-right: 8%;
+    }
+
+    .vertical-line {
+        border-left: 1px solid #ccc;
+        height: 60px;
+    }
+
+    .weather-detail {
+        .currentDay {
+            font-size: 1em;
+            color: gray;
+            margin-left: 3%;
+        }
+
+        border-radius: 10px;
+
+        p {
+            margin: 0;
+        }
+
+        .temp {
+            font-size: 5em;
+            font-weight: bold;
+            color: gray;
+
+            .degree {
+                font-size: 0.5em;
+                vertical-align: super;
+                color: lightgray
+            }
+        }
+
+        .humidity {
+            font-size: 1em;
+            color: #333;
+        }
+    }
+}
