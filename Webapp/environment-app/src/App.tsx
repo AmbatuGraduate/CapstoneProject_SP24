@@ -26,6 +26,7 @@ import { CreateCleaningSchedule } from "./pages/ManageCleaningSchedule/Create";
 import { DetailCleaningSchedule } from "./pages/ManageCleaningSchedule/Detail";
 import { UpdateCleaningSchedule } from "./pages/ManageCleaningSchedule/Update";
 import { Manage } from "./pages/Manage";
+import { ManageGroup } from "./pages/ManageGroup";
 
 function App() {
   const router = createBrowserRouter([
@@ -147,8 +148,8 @@ function App() {
           element: <ResponseReport />,
         },
         {
-          path: "manage",
-          element: <ResponseReport />,
+          path: "manage-group",
+          element: <ManageGroup />,
         },
       ],
     },

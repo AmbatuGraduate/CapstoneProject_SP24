@@ -44,3 +44,5 @@ export const CREATE_REPORT = "/Report/CreateReport"
 export const DETAIL_REPORT = "/Report/GetReportById/?id=:id"
 export const RESPONSE_REPORT = "/Report/ResponseReport"
 
+export const GROUP_LIST = "/Group/GetAllGroups"
+
