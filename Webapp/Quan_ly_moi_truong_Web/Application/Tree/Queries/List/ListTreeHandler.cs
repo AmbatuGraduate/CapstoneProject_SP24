@@ -9,13 +9,11 @@ namespace Application.Tree.Queries.List
     {
         private readonly ITreeRepository treeRepository;
         private readonly ITreeTypeRepository treeTypeRepository;
-        private readonly IUserRepository userRepository;
 
-        public ListTreeHandler(ITreeRepository treeRepository, ITreeTypeRepository treeTypeRepository, IUserRepository userRepository)
+        public ListTreeHandler(ITreeRepository treeRepository, ITreeTypeRepository treeTypeRepository)
         {
             this.treeRepository = treeRepository;
             this.treeTypeRepository = treeTypeRepository;
-            this.userRepository = userRepository;
         }
 
         public async Task<ErrorOr<List<TreeResult>>> Handle(ListTreeQuery request, CancellationToken cancellationToken)
