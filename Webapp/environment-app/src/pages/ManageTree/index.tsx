@@ -152,9 +152,9 @@ export const ManageTree = () => {
             Thêm Cây
           </Button>
         }
-        filter={(row) => {
-          return row.isExist == true;
-        }}
+        // filter={(row) => {
+        //   return row.isExist == true;
+        // }}
       />
     </div>
   );
