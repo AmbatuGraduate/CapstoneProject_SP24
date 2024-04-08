@@ -10,6 +10,7 @@ import { LuTrees } from "react-icons/lu";
 import { PiTrashSimpleBold } from "react-icons/pi";
 import { TbLayoutDashboard } from "react-icons/tb";
 import { IoHomeOutline } from "react-icons/io5";
+import { GrGroup } from "react-icons/gr";
 
 // import router
 import { NavLink } from "react-router-dom";
@@ -32,9 +33,7 @@ const Sidebar = () => {
           <li className="listItem">
             <NavLink to="/" className="menuLink flex">
               <IoHomeOutline className="icon" />
-              <span className="smallText d-none d-md-inline ">
-                Trang Chủ
-              </span>
+              <span className="smallText d-none d-md-inline ">Trang Chủ</span>
             </NavLink>
           </li>
 
@@ -43,6 +42,15 @@ const Sidebar = () => {
               <TbLayoutDashboard className="icon" />
               <span className="smallText d-none d-md-inline ">
                 Quản Lý Báo Cáo
+              </span>
+            </NavLink>
+          </li>
+
+          <li className="listItem">
+            <NavLink to="/manage-group" className="menuLink flex">
+              <GrGroup className="icon" />
+              <span className="smallText d-none d-md-inline">
+                Quản Lý Bộ Phận
               </span>
             </NavLink>
           </li>

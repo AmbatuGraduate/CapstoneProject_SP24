@@ -146,6 +146,10 @@ function App() {
           path: "response/:id",
           element: <ResponseReport />,
         },
+        {
+          path: "manage",
+          element: <ResponseReport />,
+        },
       ],
     },
     {
