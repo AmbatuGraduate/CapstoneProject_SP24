@@ -8,7 +8,7 @@
         string Password,
         string phone,
         string address,
-        string birthDate,
+        DateTime birthDate,
         string departmentEmail
         );
 }
