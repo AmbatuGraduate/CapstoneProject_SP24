@@ -5,13 +5,27 @@ import './index.scss';
 import { useCookies } from 'react-cookie';
 
 export const Manage = () => {
+  type Notification = {
+    id: number;
+    username: string;
+    message: string;
+    notificationDateTime: string;
+  };
+  interface Weather {
+    current: {
+      temp_c: number;
+      condition: {
+        icon: string;
+        text: string;
+      };
+    };
+  }
   const [hubConnection, setHubConnection] = useState<signalR.HubConnection | null>(null);
-  const [notifications, setNotifications] = useState<string[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [username, setUsername] = useState('');
   const [page, setPage] = useState(1);
   const [token] = useCookies(["accessToken"]);
-  const [weather, setWeather] = useState(null);
-
+  const [weather, setWeather] = useState<Weather | null>(null);
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -60,11 +74,12 @@ export const Manage = () => {
     })
       .then((res) => {
         setNotifications(prevNotifications => {
-          const existingIds = new Set(prevNotifications.map(a => a.id));
+          const existingIds = new Set(prevNotifications.map((a, index) => ({ id: index, message: a })));
           const newNotifications = res.data.filter(a => !existingIds.has(a.id));
           return [...prevNotifications, ...newNotifications];
         });
       })
+
       .catch((error) => {
         console.log('There has been a problem with fetch operation: ', error.message);
       });
