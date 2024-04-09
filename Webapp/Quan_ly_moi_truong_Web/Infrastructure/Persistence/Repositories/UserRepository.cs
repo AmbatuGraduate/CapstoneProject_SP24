@@ -223,7 +223,7 @@ namespace Infrastructure.Persistence.Repositories
                     Password = user.Password,
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
-                    BirthDate = user.BirthDate,
+                    BirthDate = newUser.Relations != null && newUser.Relations.Count > 0 ? DateTime.ParseExact(newUser.Relations[0].Value, "dd/MM/yyyy", CultureInfo.InvariantCulture) : new DateTime(),
                     DepartmentEmail = user.DepartmentEmail,
                 };
 
