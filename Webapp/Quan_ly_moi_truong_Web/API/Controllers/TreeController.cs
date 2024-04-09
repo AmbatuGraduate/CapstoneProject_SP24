@@ -11,6 +11,7 @@ using Application.Tree.Queries.ListCut;
 using Contract.Tree;
 using Domain.Common.Errors;
 using ErrorOr;
+using Infrastructure.Authentication.AuthenticationAttribute;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -22,7 +23,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]/[action]")]
     [EnableCors("AllowAllHeaders")]
-    [AllowAnonymous]
+    //[AllowAnonymous]
     public class TreeController : ApiController
     {
         private readonly IMediator mediator;
@@ -37,7 +38,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        //[Authorize (Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.TREE_DEPARTMENT)]
+        [HasPermission(Permission.ADMIN)]
         public async Task<IActionResult> Get()
         {
             var token = _httpContextAccessor.HttpContext.Request.Cookies["u_tkn"];

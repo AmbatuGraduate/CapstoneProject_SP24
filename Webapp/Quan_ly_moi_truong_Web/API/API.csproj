@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Attribution\**" />
+    <Content Remove="Attribution\**" />
+    <EmbeddedResource Remove="Attribution\**" />
+    <None Remove="Attribution\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.14">
@@ -24,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attribution\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
