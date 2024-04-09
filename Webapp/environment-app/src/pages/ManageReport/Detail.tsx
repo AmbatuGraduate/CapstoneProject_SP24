@@ -72,32 +72,31 @@ export const DetailReport = () => {
     />
   ) : (
     <div className="main-layout row">
-        <div
-          className="detail-cover"
-          style={{ marginBottom: "25px" }}
-        >
-          <div className="detail-content-left"></div>
-          <div className="detail-content-right title">
-            {data?.value?.reportFormat?.reportSubject.replace("[Report]", "")}
-          </div>         
+      <div
+        className="detail-cover"
+        style={{ marginBottom: "25px" }}
+      >
+        <div className="detail-content-right title">
+          {data?.value?.reportFormat?.reportSubject.replace("[Report]", "")}
         </div>
-        
-        <div className="detail-cover-report" style={{ marginBottom: "35px" }}>
-          <div className="detail-content-left">
-            <img
-              style={{
-                width: "50px",
-                borderRadius: "50%",
-              }}
-              src={JSON.parse(token.accessToken).image}
-              alt="Admin Image"
-            />
-          </div>
-          <div className="detail-content-right email">
-            {data?.value?.reportFormat?.issuerEmail}
-          </div>
+      </div>
+
+      <div className="detail-cover-report" style={{ marginBottom: "35px" }}>
+        <div className="detail-content-left">
+          <img
+            style={{
+              width: "50px",
+              borderRadius: "50%",
+            }}
+            src={JSON.parse(token.accessToken).image}
+            alt="Admin Image"
+          />
         </div>
-      
+        <div className="detail-content-right email">
+          {data?.value?.reportFormat?.issuerEmail}
+        </div>
+      </div>
+
       <div className="report-form">
         <div className="detail-cover-report" style={{ marginBottom: "20px", borderBottom: "1px solid rgb(212, 212, 212)", paddingBottom: "20px" }}>
           <div className="detail-content-left"></div>
@@ -131,8 +130,8 @@ export const DetailReport = () => {
                 data?.value?.reportFormat?.reportImpact == 0
                   ? "low"
                   : data?.value?.reportFormat?.reportImpact == 1
-                  ? "medium"
-                  : "HIGH"
+                    ? "medium"
+                    : "HIGH"
               }
             >
               {ReportImpact[data?.value?.reportFormat?.reportImpact]}
@@ -150,26 +149,26 @@ export const DetailReport = () => {
 
         {ReportStatus[data?.value?.reportFormat?.reportStatus] ==
           ReportStatus.Resolved && (
-          <>
-            <div
-              className="detail-cover-report"
-              style={{ marginBottom: "20px", borderBottom: "1px solid rgb(212, 212, 212)", paddingBottom: "20px" }}
-            >
-              <div className="detail-content-left"></div>
-              <div className="detail-content-right impact">
-                <b>Ngày Giải Quyết:</b>{" "}
-                {dayFormat(data?.value?.reportFormat?.actualResolutionDate)}
+            <>
+              <div
+                className="detail-cover-report"
+                style={{ marginBottom: "20px", borderBottom: "1px solid rgb(212, 212, 212)", paddingBottom: "20px" }}
+              >
+                <div className="detail-content-left"></div>
+                <div className="detail-content-right impact">
+                  <b>Ngày Giải Quyết:</b>{" "}
+                  {dayFormat(data?.value?.reportFormat?.actualResolutionDate)}
+                </div>
               </div>
-            </div>
 
-            <div className="detail-cover-report">
-              <div className="detail-content-left"></div>
-              <div className="detail-content-right impact">
-                <b>Phản Hồi:</b> {data?.value?.reportFormat?.reportResponse}
+              <div className="detail-cover-report">
+                <div className="detail-content-left"></div>
+                <div className="detail-content-right impact">
+                  <b>Phản Hồi:</b> {data?.value?.reportFormat?.reportResponse}
+                </div>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )}
 
         <div className="button-cover grid">
           <Button
