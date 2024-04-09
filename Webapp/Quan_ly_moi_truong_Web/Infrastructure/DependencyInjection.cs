@@ -9,6 +9,7 @@ using Google.Apis.Calendar.v3;
 using Google.Apis.Gmail.v1;
 using Google.Apis.Services;
 using Infrastructure.Authentication;
+using Infrastructure.Authentication.AuthenticationAttribute;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Repositories;
 using Infrastructure.Persistence.Repositories.BackgroundTaskQueue;
@@ -19,6 +20,7 @@ using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -183,6 +185,11 @@ namespace Infrastructure
                     options.ClientSecret = googleApiSettings.ClientSecret;
                     options.Scope.Add("https://www.googleapis.com/auth/calendar");
                 });
+
+
+            services.AddAuthorization();
+            services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
             return services;
         }

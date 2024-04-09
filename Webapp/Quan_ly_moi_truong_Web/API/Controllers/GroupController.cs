@@ -42,6 +42,7 @@ namespace API.Controllers
         }
 
         [HttpGet()]
+
         public async Task<IActionResult> GetGroupByGroupEmail(string groupEmail)
         {
             string accessToken;

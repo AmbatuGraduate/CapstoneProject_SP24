@@ -31,7 +31,6 @@ namespace API.Controllers
     [EnableCors("AllowAllHeaders")]
     [Route("api/auth")]
     [AllowAnonymous]
-
     public class AuthenticationController : ApiController
     {
         private readonly IMediator mediator;

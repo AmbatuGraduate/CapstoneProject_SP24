@@ -8,7 +8,6 @@
         float BodyDiameter,
         float LeafLength,
         DateTime CutTime,
-        bool isCut,
-        bool isExist
+        bool isCut
     );
 }
