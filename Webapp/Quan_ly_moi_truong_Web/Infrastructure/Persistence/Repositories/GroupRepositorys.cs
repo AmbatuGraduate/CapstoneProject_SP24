@@ -74,19 +74,22 @@ namespace Infrastructure.Persistence.Repositories
                 {
                     var memberDB = allDBUsers.FirstOrDefault(x => x.Email.Equals(member.Email, StringComparison.OrdinalIgnoreCase));
                     var memberGoogle = allGoogleUsers.Result.FirstOrDefault(x => x.Email.Equals(member.Email, StringComparison.OrdinalIgnoreCase));
-                    users.Add(
-                        new GoogleUser()
-                        {
-                            Id = member.Id,
-                            Email = member.Email,
-                            Picture = _userRepository.GetGoogleUserImage(accessToken, member.Email).Result,
-                            Name = memberGoogle.Name,
-                            Department = _userRepository.GetDepartmentNameById(memberDB.DepartmentId),
-                            PhoneNumber = memberGoogle.PhoneNumber,
-                            Role = _userRepository.GetRoleNameById(memberDB.RoleId.ToString()),
-                            BirthDate = memberGoogle.BirthDate,
-                            Address = memberGoogle.Address
-                        });
+                    if(memberDB != null && memberGoogle != null)
+                    {
+                        users.Add(
+                            new GoogleUser()
+                            {
+                                Id = member.Id,
+                                Email = member.Email,
+                                Picture = _userRepository.GetGoogleUserImage(accessToken, member.Email).Result,
+                                Name = memberGoogle.Name,
+                                Department = _userRepository.GetDepartmentNameById(memberDB.DepartmentId),
+                                PhoneNumber = memberGoogle.PhoneNumber,
+                                Role = _userRepository.GetRoleNameById(memberDB.RoleId.ToString()),
+                                BirthDate = memberGoogle.BirthDate,
+                                Address = memberGoogle.Address
+                            });
+                    }
                 }
                 return users;
             }
