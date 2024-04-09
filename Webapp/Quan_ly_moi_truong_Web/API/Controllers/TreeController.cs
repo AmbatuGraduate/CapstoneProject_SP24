@@ -38,9 +38,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [HasPermission(Permission.TREE_DEPARTMENT)]
-        [HasPermission(Permission.ADMIN)]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT+ ","+Permission.ADMIN)]
         public async Task<IActionResult> Get()
         {
             var token = _httpContextAccessor.HttpContext.Request.Cookies["u_tkn"];
@@ -62,6 +61,8 @@ namespace API.Controllers
         }
 
         [HttpGet("{TreeId}")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> GetById(string TreeId)
         {
             var query = mapper.Map<GetByIdQuery>(Guid.Parse(TreeId));
@@ -76,6 +77,8 @@ namespace API.Controllers
         }
 
         [HttpGet("{TreeCode}")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> GetByTreeCode(string TreeCode)
         {
             var query = mapper.Map<GetByTreeCodeQuery>(TreeCode);
@@ -91,6 +94,8 @@ namespace API.Controllers
         }
 
         [HttpGet("{Address}")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> GetCut(string Address)
         {
             var query = mapper.Map<ListTreeCutQuery>(Address);
@@ -111,6 +116,8 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> Add(AddTreeRequest request)
         {
             var command = mapper.Map<AddTreeCommand>(request);
@@ -124,6 +131,8 @@ namespace API.Controllers
         }
 
         [HttpDelete("{TreeCode}")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> Delete(string TreeCode)
         {
             var command = mapper.Map<DeleteTreeCommand>(TreeCode);
@@ -136,6 +145,8 @@ namespace API.Controllers
         }
 
         [HttpPut("{TreeCode}")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> Update(string TreeCode, UpdateTreeRequest request)
         {
             var command = mapper.Map<UpdateTreeCommand>((TreeCode, request));
