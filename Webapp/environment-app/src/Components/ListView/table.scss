@@ -11,6 +11,7 @@
   min-width: 60rem;
   .table {
     background-color: var(--whiteColor);
+    box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
     thead {
       &.thread-primary {
         border-collapse: collapse;
@@ -28,22 +29,31 @@
       }
     }
     tbody {
+      tr {
+        vertical-align: middle;
+        height: 4rem;
+      }
       background-color: var(--whiteColor);
       td {
         border: none;
         padding: 0.5rem;
         font-size: var(--normalFontSize);
-        vertical-align: middle;
       }
       .shortText {
         text-align: center;
+        margin: 0;
         img {
           height: 10rem;
           width: auto;
         }
       }
+      h6 {
+        margin: 0;
+      }
       .linkCode {
         color: var(--PrimaryColor);
+        padding: 0.5rem;
+        border-radius: 1rem;
         text-decoration: none;
       }
       .linkCode:hover {
@@ -51,7 +61,8 @@
       }
 
       .btn {
-        position: relative;
+        // padding: auto;
+        // position: relative;
         color: var(--textColor);
         z-index: 1000;
         box-shadow: none;
@@ -117,16 +128,14 @@
     --bs-btn-border-radius: 2rem;
     height: 3.5rem;
     font-weight: bold;
+    color: var(--whiteColor);
   }
   .iconAdd {
     font-size: 2rem;
     margin-right: 0.25rem;
   }
 }
-.addForm {
-  border: none;
-  border-radius: none;
-}
+
 .modal-content {
   border: none;
   border-radius: none;

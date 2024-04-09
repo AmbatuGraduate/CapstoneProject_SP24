@@ -9,6 +9,12 @@ export const dateConstructor = (day: string) => {
   return new Date(y, m - 1, d)
 }
 
+export const convertDateFormat = (dateString) => {
+  const [day, month, year] = dateString.split('/'); // Tách ngày, tháng và năm từ chuỗi
+  const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // Chuẩn hóa định dạng ngày
+  return formattedDate;
+};
+
 export const timeFormat = (day: string | Date) => {
   return dayjs(day).format("HH:mm");
 };

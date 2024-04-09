@@ -7,7 +7,6 @@ import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { useRef, useState } from "react";
 
-import { BiSolidEdit } from "react-icons/bi";
 import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageTree = () => {
@@ -152,9 +151,6 @@ export const ManageTree = () => {
             Thêm Cây
           </Button>
         }
-        filter={(row) => {
-          return row.isExist == true;
-        }}
       />
     </div>
   );

@@ -27,6 +27,7 @@ import { DetailCleaningSchedule } from "./pages/ManageCleaningSchedule/Detail";
 import { UpdateCleaningSchedule } from "./pages/ManageCleaningSchedule/Update";
 import { Manage } from "./pages/Manage";
 
+
 function App() {
   const router = createBrowserRouter([
     {

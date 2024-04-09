@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { EMPLOYEE_ADD, useApi } from "../../Api";
+import { DEPARTMENT_LIST, EMPLOYEE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -36,6 +35,11 @@ export const CreateEmployee = () => {
       key: "password",
     },
     {
+      label: "Ngày Sinh",
+      formType: "date",
+      key: "birthDate",
+    },
+    {
       label: "Số Điện Thoại",
       formType: "input",
       key: "phone",
@@ -47,21 +51,56 @@ export const CreateEmployee = () => {
       key: "address",
     },
     {
-      label: "Ngày Sinh",
-      formType: "date",
-      key: "birthDate",
+      label: "Bộ Phận",
+      formType: "select",
+      key: "departmentEmail",
+      optionExtra: {
+        url: DEPARTMENT_LIST,
+        _key: "name",
+        _value: "email",
+      },
     },
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
     setIsLoading(true);
-    await useApi.post(EMPLOYEE_ADD, {
+
+    // Ensure birthDate is in the correct format (dd/mm/yyyy)
+    const [day, month, year] = data.birthDate.split('/').map(Number);
+    const parsedDate = new Date(year, month - 1, day);
+
+    // Check if parsedDate is a valid date
+    if (isNaN(parsedDate.getTime())) {
+      console.error('Invalid date format for birthDate');
+      setIsLoading(false);
+      return;
+    }
+
+    // Convert birthDate to ISO string
+    const birthDate = parsedDate.toISOString();
+
+    const requestData = {
       ...data,
-      birthDate: dateConstructor(data.birthDate),
-    });
-    ref.current?.reload();
-    navigate("/manage-employee");
+      birthDate: birthDate,
+    };
+
+    try {
+      // Call the API to add employee
+      await useApi.post(EMPLOYEE_ADD, requestData);
+
+      // Reload the ref if available
+      if (ref.current) {
+        ref.current.reload();
+      }
+
+      // Navigate to manage-employee page
+      navigate("/manage-employee");
+    } catch (error) {
+      console.error("Error while adding employee:", error);
+      setIsLoading(false); // Reset loading state if there's an error
+    }
   };
+
 
   return (
     <div className="form-cover">

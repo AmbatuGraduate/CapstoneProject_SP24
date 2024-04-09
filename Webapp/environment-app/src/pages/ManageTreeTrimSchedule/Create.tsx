@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { EMPLOYEE_LIST, TREE_LIST, TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
+import { DEPARTMENT_LIST, EMPLOYEE_LIST, TREE_LIST, TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
@@ -19,22 +19,6 @@ export const CreateTreeTrimSchedule = () => {
             key: "summary",
         },
         {
-            label: "Địa Chỉ",
-            formType: "input",
-            key: "location",
-            placeholder: "Ví dụ: 29 Sơn Thủy Đông 2, Hòa Hải, Ngũ Hành Sơn",
-        },
-        {
-            label: "Bắt Đầu Từ",
-            formType: "datetime",
-            key: "start.dateTime",
-        },
-        {
-            label: "Kết Thúc Trước",
-            formType: "datetime",
-            key: "end.dateTime",
-        },
-        {
             label: "Cây Cần Cẳt",
             formType: "select",
             key: "treeId",
@@ -45,10 +29,30 @@ export const CreateTreeTrimSchedule = () => {
             },
         },
         {
-            label: "Bộ Phận",
+            label: "Bắt Đầu Từ",
+            formType: "datetime",
+            key: "start.dateTime",
+        },
+        {
+            label: "Địa Chỉ",
             formType: "input",
+            key: "location",
+            placeholder: "Ví dụ: 29 Sơn Thủy Đông 2, Hòa Hải, Ngũ Hành Sơn",
+        },
+        {
+            label: "Kết Thúc Trước",
+            formType: "datetime",
+            key: "end.dateTime",
+        },
+        {
+            label: "Bộ Phận",
+            formType: "select",
             key: "departmentEmail",
-            defaultValue: "cayxanh@vesinhdanang.xyz",
+            optionExtra: {
+                url: DEPARTMENT_LIST,
+                _key: "name",
+                _value: "email",
+            },
         },
         {
             label: "Nhân Viên Thực Hiện",

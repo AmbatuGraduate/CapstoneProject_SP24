@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { TREE_TRIM_SCHEDULE_DETAIL, useApi } from "../../Api";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
-import { dayFormat, timeFormat } from "../../utils";
+import { dayFormat, taskStatus, timeFormat } from "../../utils";
 
 export const DetailTreeTrimSchedule = () => {
     const navigate = useNavigate();
@@ -77,6 +77,15 @@ export const DetailTreeTrimSchedule = () => {
 
                 <div className="detail-cover">
                     <div className="detail-content-parent">
+                        <div className="detail-content-child-label">Cây Cần Cắt: </div>
+                        <div className="detail-content-child-value">
+                            {data?.myEvent.extendedProperties.privateProperties.Tree}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="detail-cover">
+                    <div className="detail-content-parent">
                         <div className="detail-content-child-label">Thời Gian Làm Việc</div>
                     </div>
                     <div className="detail-content-parent">
@@ -95,9 +104,9 @@ export const DetailTreeTrimSchedule = () => {
 
                 <div className="detail-cover">
                     <div className="detail-content-parent">
-                        <div className="detail-content-child-label">Cây Cần Cắt: </div>
+                        <div className="detail-content-child-label">Ghi Chú: </div>
                         <div className="detail-content-child-value">
-                            {data?.myEvent.extendedProperties.privateProperties.Tree}
+                            {data?.myEvent.description}
                         </div>
                     </div>
                 </div>
@@ -107,8 +116,13 @@ export const DetailTreeTrimSchedule = () => {
                         <div className="detail-content-child-label">
                             Tình Trạng Công Việc:{" "}
                         </div>
-                        <div className="detail-content-child-value">
-                            {data?.myEvent.extendedProperties.privateProperties.JobWorkingStatus}
+                        <div className="detail-content-child-value" style={{
+                            color: taskStatus(
+                                data?.myEvent.extendedProperties.privateProperties.JobWorkingStatus
+                            ).color,
+                            fontWeight: "bold",
+                        }}>
+                            {taskStatus(data?.myEvent.extendedProperties.privateProperties.JobWorkingStatus).text}
                         </div>
                     </div>
                 </div>

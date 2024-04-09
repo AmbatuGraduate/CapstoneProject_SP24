@@ -67,13 +67,15 @@ export const DetailTree = () => {
 
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Đường Kính Thân: </div>
+            <div className="detail-content-child-label">Đường Kính Thân (cm): </div>
             <div className="detail-content-child-value">
               {data?.bodyDiameter}
             </div>
           </div>
+        </div>
+        <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Tán Lá: </div>
+            <div className="detail-content-child-label">Tán Lá (cm): </div>
             <div className="detail-content-child-value">{data?.leafLength}</div>
           </div>
         </div>
@@ -85,6 +87,8 @@ export const DetailTree = () => {
               {dayFormat(data?.plantTime)}
             </div>
           </div>
+        </div>
+        <div className="detail-cover">
           <div className="detail-content-parent">
             <div className="detail-content-child-label">Thời Điểm Cắt: </div>
             <div className="detail-content-child-value">

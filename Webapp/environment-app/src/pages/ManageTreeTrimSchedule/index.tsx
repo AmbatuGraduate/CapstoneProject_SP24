@@ -85,7 +85,7 @@ export const ManageTreeTrimSchedule = () => {
           </h6>
         );
       },
-      width: "8%",
+      width: "10%",
     },
     {
       header: "Tiêu Đề",
@@ -159,7 +159,7 @@ export const ManageTreeTrimSchedule = () => {
       accessorFn(row) {
         return <h6>{row.location}</h6>;
       },
-      width: "30%",
+      width: "25%",
     },
     {
       header: "Trạng Thái",
