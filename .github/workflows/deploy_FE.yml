@@ -32,7 +32,8 @@ jobs:
           rm -rf package-lock.json
           npm cache clean --force
           npm i
-          npm i -S @react-google-maps/api
+          npm i @types/google.maps --save-dev
+          npm install react-slick --save
           npm run build
           
       - name: Copy files to Azure VM

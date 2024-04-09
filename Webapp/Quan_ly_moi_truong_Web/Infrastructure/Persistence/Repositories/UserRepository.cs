@@ -9,6 +9,7 @@ using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 
 namespace Infrastructure.Persistence.Repositories
 {
@@ -89,7 +90,7 @@ namespace Infrastructure.Persistence.Repositories
                     Department = GetDepartmentNameById(userDb.DepartmentId),
                     PhoneNumber = user.Phones != null ?  user.Phones[0].Value : string.Empty,
                     Role = GetRoleNameById(userDb.RoleId.ToString()),
-                    BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
+                    BirthDate = user.Relations != null ? DateTime.ParseExact(user.Relations[0].Value, "dd/MM/yyyy", CultureInfo.InvariantCulture) : new DateTime(),
                     Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                 };
                 return userResult;
@@ -147,7 +148,7 @@ namespace Infrastructure.Persistence.Repositories
                             Department = GetDepartmentNameById(userDb.DepartmentId),
                             PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
                             Role = GetRoleNameById(userDb.RoleId.ToString()),
-                            BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
+                            BirthDate = user.Relations != null ? DateTime.ParseExact(user.Relations[0].Value, "dd/MM/yyyy", CultureInfo.InvariantCulture) : new DateTime(),
                             Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                         });
                     }
@@ -222,7 +223,7 @@ namespace Infrastructure.Persistence.Repositories
                     Password = user.Password,
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
-                    BirthDate = user.BirthDate,
+                    BirthDate = newUser.Relations != null && newUser.Relations.Count > 0 ? DateTime.ParseExact(newUser.Relations[0].Value, "dd/MM/yyyy", CultureInfo.InvariantCulture) : new DateTime(),
                     DepartmentEmail = user.DepartmentEmail,
                 };
 
