@@ -40,6 +40,8 @@ export const DetailTree = () => {
     />
   ) : (
     <div className="main-layout row">
+      <h4 className="title">Xem Thông Tin Chi Tiết Cây</h4>
+      <hr className="line" />
       <div className="map col-md-6">
         <SimpleMap />
       </div>

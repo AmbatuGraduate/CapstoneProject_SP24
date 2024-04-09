@@ -61,10 +61,10 @@ export const ManageTreeTrimSchedule = () => {
         description: selectedRowData.description,
         location: selectedRowData.location,
         start: {
-          dateTime: selectedRowData.start
+          dateTime: new Date(selectedRowData.start).toISOString()
         },
         end: {
-          dateTime: selectedRowData.end
+          dateTime: new Date(selectedRowData.end).toISOString()
         },
         attendees: [
           {

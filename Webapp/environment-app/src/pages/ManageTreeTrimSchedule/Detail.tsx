@@ -38,6 +38,8 @@ export const DetailTreeTrimSchedule = () => {
         />
     ) : (
         <div className="main-layout row">
+            <h4 className="title">Xem Thông Tin Chi Tiết Lịch Cắt Tỉa</h4>
+            <hr className="line" />
             <div className="detail-content col-md-4">
                 <div className="detail-cover">
                     <div className="detail-content-parent">

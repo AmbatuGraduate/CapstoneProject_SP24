@@ -133,6 +133,8 @@ export const DetailEmployee = () => {
   ) : (
     <div >
       <div className="main-layout row ">
+        <h4 className="title">Xem Thông Tin Chi Tiết Nhân Viên</h4>
+        <hr className="line" />
         <div className="image col-md-2 ">
           <div><img src={data?.picture || '../assets/imgs/avatar.jpg'} alt="userAvatar" /></div>
         </div>
