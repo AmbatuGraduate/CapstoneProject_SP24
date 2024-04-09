@@ -7,6 +7,7 @@ using Domain.Enums;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
+using System.Globalization;
 
 namespace Infrastructure.Persistence.Repositories.Calendar
 {
@@ -51,16 +52,16 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     Location = myEvent.location,
                     Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
-                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.Start.DateTime),
+                        DateTimeDateTimeOffset = DateTime.ParseExact(myEvent.Start.DateTime, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         TimeZone = TimeZone
                     },
                     End = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
-                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.End.DateTime),
+                        DateTimeDateTimeOffset = DateTime.ParseExact(myEvent.End.DateTime, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                         TimeZone = TimeZone
                     },
                     Attendees = myEvent.Attendees
-                        .Where(attendee => !string.IsNullOrEmpty(attendee.Email)) // Skip attendees with null or empty email
+                        .Where(attendee => !string.IsNullOrEmpty(attendee.Email)) 
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
                         .ToList(),
                     ExtendedProperties = new Event.ExtendedPropertiesData
@@ -368,6 +369,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
 
                 foreach (var eventItem in events.Items)
                 {
+                    System.Diagnostics.Debug.WriteLine("date: " + eventItem.Start.DateTime);
                     myEvents.Add(new MyEvent
                     {
                         Id = eventItem.Id,
