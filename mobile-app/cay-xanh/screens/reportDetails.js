@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
 import { Icon } from '@rneui/themed';
 import Swiper from 'react-native-swiper';
 
+
 export default function ReportDetails({ route }) {
 
     const { reportId, reportBody, reportImages, reportSubject, reportImpact, reportStatus, reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
@@ -123,13 +124,12 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         color: '#2282F3',
         textAlign: 'center',
+        paddingBottom: 20,
     },
     impactContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
         paddingBottom: 10,
     },
     label: {
@@ -137,9 +137,7 @@ const styles = StyleSheet.create({
         fontFamily: 'quolibet',
         fontWeight: '600',
         fontWeight: 'bold',
-        paddingTop: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: 'lightgrey',
+        textDecorationLine: 'underline',
     },
     impactText: {
         fontSize: 18,
@@ -185,9 +183,11 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: 200,
+        resizeMode: 'cover',
         borderRadius: 15,
         marginTop: 10,
         borderWidth: 2,
         borderColor: 'grey',
+
     },
 });

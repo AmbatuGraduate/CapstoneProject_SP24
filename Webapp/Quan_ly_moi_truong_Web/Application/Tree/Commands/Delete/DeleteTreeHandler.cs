@@ -24,8 +24,7 @@ namespace Application.Tree.Commands.Delete
                 return Errors.GetTreeById.getTreeFail;
 
             var tree = treeRepository.GetTreeByTreeCode(request.TreeCode);
-            tree.isExist = false;
-            treeRepository.UpdateTree(tree);
+            treeRepository.DeleteTree(tree);
 
             return new AddTreeResult(tree.TreeCode);
         }

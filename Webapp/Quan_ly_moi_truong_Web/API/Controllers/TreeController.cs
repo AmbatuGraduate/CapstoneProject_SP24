@@ -7,6 +7,7 @@ using Application.Tree.Common;
 using Application.Tree.Queries.GetById;
 using Application.Tree.Queries.GetByTreeCode;
 using Application.Tree.Queries.List;
+using Application.Tree.Queries.ListCut;
 using Contract.Tree;
 using Domain.Common.Errors;
 using ErrorOr;
@@ -15,6 +16,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace API.Controllers
 {
@@ -83,6 +85,26 @@ namespace API.Controllers
             }
 
             return Ok(mapper.Map<DetailTreeResponse>(result.Value));
+        }
+
+        [HttpGet("{Address}")]
+        public async Task<IActionResult> GetCut(string Address)
+        {
+            var query = mapper.Map<ListTreeCutQuery>(Address);
+
+            ErrorOr<List<TreeResult>> list = await mediator.Send(query);
+
+            if (list.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+            }
+
+            List<ListTreeResponse> trees = new List<ListTreeResponse>();
+            foreach (var tree in list.Value)
+            {
+                trees.Add(mapper.Map<ListTreeResponse>(tree));
+            }
+            return Ok(trees);
         }
 
         [HttpPost]

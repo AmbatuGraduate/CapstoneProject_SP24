@@ -76,10 +76,10 @@ export default function Profile({ navigation }) {
 
             {/* ------------------------------------------------------------------- */}
             {/* Edit profile Container */}
-            <TouchableOpacity style={styles.submitButton} onPress={() => { navigation.navigate('ChangePassword') }}>
+            {/* <TouchableOpacity style={styles.submitButton} onPress={() => { navigation.navigate('ChangePassword') }}>
                 <Icon name="edit" size={20} color="#fff" />
                 <Text style={styles.submitButtonText}>Đổi mật khẩu</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
         </LinearGradient>
     )
 }
@@ -147,8 +147,6 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 15,
         marginBottom: 20,
-        position: 'absolute',
-        bottom: 0,
         alignSelf: 'center',
         shadowColor: '#000', // Add shadow
         shadowOffset: {
