@@ -90,7 +90,7 @@ namespace Infrastructure.Persistence.Repositories
                     Department = GetDepartmentNameById(userDb.DepartmentId),
                     PhoneNumber = user.Phones != null ?  user.Phones[0].Value : string.Empty,
                     Role = GetRoleNameById(userDb.RoleId.ToString()),
-                    BirthDate = user.Relations != null ? DateTime.ParseExact(user.Relations[0].Value, "dd/MM/yyyy", CultureInfo.InvariantCulture) : new DateTime(),
+                    BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
                     Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                 };
                 return userResult;
@@ -148,7 +148,7 @@ namespace Infrastructure.Persistence.Repositories
                             Department = GetDepartmentNameById(userDb.DepartmentId),
                             PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
                             Role = GetRoleNameById(userDb.RoleId.ToString()),
-                            BirthDate = user.Relations != null ? DateTime.ParseExact(user.Relations[0].Value, "dd/MM/yyyy", CultureInfo.InvariantCulture) : new DateTime(),
+                            BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
                             Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                         });
                     }
@@ -223,7 +223,7 @@ namespace Infrastructure.Persistence.Repositories
                     Password = user.Password,
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
-                    BirthDate = newUser.Relations != null && newUser.Relations.Count > 0 ? DateTime.ParseExact(newUser.Relations[0].Value, "dd/MM/yyyy", CultureInfo.InvariantCulture) : new DateTime(),
+                    BirthDate = user.BirthDate,
                     DepartmentEmail = user.DepartmentEmail,
                 };
 
