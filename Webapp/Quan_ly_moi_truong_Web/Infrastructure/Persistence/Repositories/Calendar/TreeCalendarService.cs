@@ -52,12 +52,12 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                     Location = myEvent.location,
                     Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
-                        DateTimeDateTimeOffset = DateTime.ParseExact(myEvent.Start.DateTime, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.Start.DateTime),
                         TimeZone = TimeZone
                     },
                     End = new Google.Apis.Calendar.v3.Data.EventDateTime()
                     {
-                        DateTimeDateTimeOffset = DateTime.ParseExact(myEvent.End.DateTime, "dd/MM/yyyy", CultureInfo.InvariantCulture),
+                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.End.DateTime),
                         TimeZone = TimeZone
                     },
                     Attendees = myEvent.Attendees
