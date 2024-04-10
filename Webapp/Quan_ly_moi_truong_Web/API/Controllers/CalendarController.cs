@@ -269,48 +269,48 @@ namespace API.Controllers
             return Ok(list.Value);
         }
 
-        //[HttpPut]
-        //[Authorize(Roles = "Admin, Manager")]
-        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
-        //public async Task<IActionResult> AutoUpdateCalendarJobStatus(CalendarTypeEnum calendarTypeEnum)
-        //{
-        //    var httpContext = _httpContextAccessor.HttpContext;
-        //    //Access HttpContext
-        //    var token = httpContext.Request.Cookies["u_tkn"];
-        //    System.Diagnostics.Debug.WriteLine("Checking: " + token);
-        //    var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
-        //    ErrorOr<List<MyUpdatedJobStatusResult>> list = await mediator.Send(new AutoUpdateJobStatusCommand(token, calendarId.Value));
-
-        //    if (list.IsError)
-        //    {
-        //        return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
-        //    }
-
-        //    //Use signalR
-
-        //    return Ok(list.Value);
-        //}
-
-        // auto add events
-        [HttpPost]
+        [HttpPut]
         [Authorize(Roles = "Admin, Manager")]
         [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
-        public async Task<IActionResult> AutoAddCalendarEvent(CalendarTypeEnum calendarTypeEnum)
+        public async Task<IActionResult> AutoUpdateCalendarJobStatus(CalendarTypeEnum calendarTypeEnum)
         {
             var httpContext = _httpContextAccessor.HttpContext;
             //Access HttpContext
             var token = httpContext.Request.Cookies["u_tkn"];
             System.Diagnostics.Debug.WriteLine("Checking: " + token);
             var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
-            ErrorOr<List<MyAddedEventResult>> list = await mediator.Send(new AutoAddTreeCalendarCommand(token, calendarId.Value));
+            ErrorOr<List<MyUpdatedJobStatusResult>> list = await mediator.Send(new AutoUpdateJobStatusCommand(token, calendarId.Value));
 
             if (list.IsError)
             {
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
             }
 
+            //Use signalR
+
             return Ok(list.Value);
         }
+
+        // auto add events
+        //[HttpPost]
+        //[Authorize(Roles = "Admin, Manager")]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
+        //public async Task<IActionResult> AutoAddCalendarEvent(CalendarTypeEnum calendarTypeEnum)
+        //{
+        //    var httpContext = _httpContextAccessor.HttpContext;
+        //    //Access HttpContext
+        //    var token = httpContext.Request.Cookies["u_tkn"];
+        //    System.Diagnostics.Debug.WriteLine("Checking: " + token);
+        //    var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+        //    ErrorOr<List<MyAddedEventResult>> list = await mediator.Send(new AutoAddTreeCalendarCommand(token, calendarId.Value));
+
+        //    if (list.IsError)
+        //    {
+        //        return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+        //    }
+
+        //    return Ok(list.Value);
+        //}
 
         // update events
         [HttpPost()]
