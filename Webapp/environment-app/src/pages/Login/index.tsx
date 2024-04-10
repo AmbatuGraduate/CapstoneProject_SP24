@@ -10,10 +10,10 @@ export const Login = () => {
   const [token, setToken] = useCookies(["accessToken"]);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (token.accessToken) navigate("/");
-  //   return;
-  // }, [token.accessToken]);
+  useEffect(() => {
+    if (token.accessToken) navigate("/");
+    return;
+  }, [token.accessToken]);
 
   const handleSuccess = (response: any) => {
     const authCode = response.code;
@@ -37,9 +37,9 @@ export const Login = () => {
       })
       .then((accessToken) => {
         // This block will be executed after the Promise resolves
-        // console.log("Authentication successful, access token: " + accessToken);
-        // setToken("accessToken", JSON.stringify(accessToken)); // Save the access token
-        // navigate("/");
+        console.log("Authentication successful, access token: " + accessToken);
+        setToken("accessToken", JSON.stringify(accessToken)); // Save the access token
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
