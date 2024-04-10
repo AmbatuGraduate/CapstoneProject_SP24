@@ -12,7 +12,6 @@ export const DetailGroup = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
 
-
   const handleDelete = async (id: string) => {
     await useApi.delete(EMPLOYEE_DELETE.replace(":id", id));
     ref.current?.reload();
@@ -24,7 +23,7 @@ export const DetailGroup = () => {
       accessorFn(row) {
         return (
           <div>
-            <button type="button" className="btn btn-click" onClick={() => { }}>
+            <button type="button" className="btn btn-click" onClick={() => {}}>
               <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
             </button>
           </div>
@@ -74,14 +73,21 @@ export const DetailGroup = () => {
       header: "Ảnh",
       accessorFn(row) {
         if (row.picture == null) {
-          return <h6 className="shortText"><img src="../assets/imgs/avatar.jpg" /></h6>;
+          return (
+            <h6 className="shortText">
+              <img src="../assets/imgs/avatar.jpg" />
+            </h6>
+          );
         } else {
-          return <h6 className="shortText"><img src={row.picture} /></h6>;
+          return (
+            <h6 className="shortText">
+              <img src={row.picture} />
+            </h6>
+          );
         }
       },
       width: "10%",
     },
-
   ];
 
   return (
@@ -98,7 +104,7 @@ export const DetailGroup = () => {
               border: "none",
               padding: "0.5rem 1rem",
             }}
-            onClick={() => navigate("/manage-employee/create")}
+            onClick={() => navigate(-1)}
           >
             <MdAddCircleOutline className="iconAdd" />
             Thêm Nhân Viên

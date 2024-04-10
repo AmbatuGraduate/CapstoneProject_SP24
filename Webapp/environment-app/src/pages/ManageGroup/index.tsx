@@ -1,24 +1,37 @@
 import { Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { GROUP_LIST } from "../../Api";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { GROUP_DELETE, GROUP_LIST, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
-import { ReportImpact, ReportStatus, dayFormat } from "../../utils";
 import { useRef } from "react";
-
 import { MdAddCircleOutline } from "react-icons/md";
+import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageGroup = () => {
+  const { id = "" } = useParams();
   const navigate = useNavigate();
   const ref = useRef<any>();
   // TODO get list
 
-  // const handleDelete = async (id: string) => {
-  //   await useApi.delete(TREE_DELETE.replace(":id", id));
-  //   ref.current?.reload();
-  // };
+  const handleDelete = async (id: string) => {
+    await useApi.delete(GROUP_DELETE.replace(":id", id));
+    ref.current?.reload();
+  };
 
   const columns: Column[] = [
+    {
+      header: "",
+      accessorFn(row) {
+        return (
+          <div>
+            <button type="button" className="btn btn-click" onClick={() => { }}>
+              <ModalDelete handleDelete={() => handleDelete(row.email)} />
+            </button>
+          </div>
+        );
+      },
+      width: "2%",
+    },
     {
       header: "Email",
       accessorFn(longRow) {
@@ -47,6 +60,12 @@ export const ManageGroup = () => {
         return <h6 className="shortText">{row.description}</h6>;
       },
     },
+    {
+      header: "Số nhân viên",
+      accessorFn(row) {
+        return <h6 className="shortText">{row.directMembersCount}</h6>;
+      },
+    },
   ];
 
   return (
@@ -63,7 +82,7 @@ export const ManageGroup = () => {
               border: "none",
               padding: "0.5rem 1rem",
             }}
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/manage-group/create")}
           >
             <MdAddCircleOutline className="iconAdd" />
             Thêm bộ phận
