@@ -33,7 +33,7 @@ namespace Application.Calendar.TreeCalendar.Commands.Add
             // notification to all manager tree trim calendar
             var msg = "Bạn vừa có 1 lịch cắt tỉa cây";
 
-            if(eventResult.Attendees != null)
+            if(eventResult != null && eventResult.Attendees != null)
             {
                 for (int i = 0; i < eventResult.Attendees.Count; i++)
                 {
