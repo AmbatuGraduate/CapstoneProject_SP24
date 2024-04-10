@@ -13,8 +13,10 @@ using Application.User.Queries.List;
 using Contract.User.Google;
 using Domain.Common.Errors;
 using ErrorOr;
+using Infrastructure.Authentication.AuthenticationAttribute;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -97,6 +99,8 @@ namespace API.Controllers
 
         // get all google users
         [HttpGet("GetGoogleUsers")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetGoogleUsers()
         {
             var clientType = Request.Headers["Client-Type"];
@@ -244,6 +248,8 @@ namespace API.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> DeleteGoogleUser(string userEmail)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -287,6 +293,8 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.ADMIN)]
         public async Task<IActionResult> AddGoogleUser(AddGoogleUserRequest request)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -344,6 +352,8 @@ namespace API.Controllers
 
         // user is employee in db
         [HttpGet]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> IsEmployee(string email)
         {
             ErrorOr<bool> isEmployee = await mediator.Send(new ExistEmployeeQuery(email));

@@ -55,8 +55,9 @@ namespace Infrastructure
             services.AddSession();
 
             // Add repositories dependency injection
-            services.AddSingleton<IHostedService, BackgroundQueueProcessor>();
-            services.AddHttpClient<BackgroundQueueProcessor>();
+            //services.AddSingleton<IHostedService, BackgroundQueueProcessor>();
+            //services.AddHttpClient<BackgroundQueueProcessor>();
+            services.AddHostedService<BackgroundQueueProcessor>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // Add services dependency injection
