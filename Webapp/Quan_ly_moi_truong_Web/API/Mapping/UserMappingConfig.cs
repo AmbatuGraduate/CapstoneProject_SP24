@@ -29,8 +29,7 @@ namespace API.Mapping
                 .Map(dest => dest.Department, src => src.googleUser.Department)
                 .Map(dest => dest.PhoneNumber, src => src.googleUser.PhoneNumber)
                 .Map(dest => dest.Role, src => src.googleUser.Role)
-                .Map(dest => dest.address, src => src.googleUser.Address)
-                .Map(dest => dest.birthDate, src => src.googleUser.BirthDate.ToString());
+                .Map(dest => dest.address, src => src.googleUser.Address);
 
         }
     }

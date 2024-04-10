@@ -232,7 +232,6 @@ namespace API.Controllers
                 request.Password,
                 request.phone,
                 request.address,
-                request.birthDate,
                 request.departmentEmail
             );
 
@@ -335,7 +334,6 @@ namespace API.Controllers
                 request.Password,
                 request.phone,
                 request.address,
-                request.birthDate,
                 request.departmentEmail
             );
 
