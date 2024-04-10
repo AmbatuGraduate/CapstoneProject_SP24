@@ -86,7 +86,6 @@ namespace Infrastructure.Persistence.Repositories
                                 Department = _userRepository.GetDepartmentNameById(memberDB.DepartmentId),
                                 PhoneNumber = memberGoogle.PhoneNumber,
                                 Role = _userRepository.GetRoleNameById(memberDB.RoleId.ToString()),
-                                BirthDate = memberGoogle.BirthDate,
                                 Address = memberGoogle.Address
                             });
                     }

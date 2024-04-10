@@ -9,7 +9,6 @@
          string Department,
          string PhoneNumber,
          string Role,
-         string address,
-         string birthDate
+         string address
     );
 }
