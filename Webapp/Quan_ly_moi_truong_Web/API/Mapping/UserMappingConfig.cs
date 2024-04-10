@@ -27,6 +27,7 @@ namespace API.Mapping
                 .Map(dest => dest.Name, src => src.googleUser.Name)
                 .Map(dest => dest.Picture, src => src.googleUser.Picture)
                 .Map(dest => dest.Department, src => src.googleUser.Department)
+                .Map(dest => dest.DepartmentEmail, src => src.googleUser.DepartmentEmail)
                 .Map(dest => dest.PhoneNumber, src => src.googleUser.PhoneNumber)
                 .Map(dest => dest.Role, src => src.googleUser.Role)
                 .Map(dest => dest.address, src => src.googleUser.Address);
