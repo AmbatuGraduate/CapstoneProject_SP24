@@ -5,6 +5,8 @@ import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 import { dayFormat } from "../../utils";
+import "react-image-gallery/styles/scss/image-gallery.scss";
+import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
 
 export enum EReportImpact {
   LOW = 0,
@@ -74,6 +76,12 @@ export const DetailReport = () => {
   //     }));
   //   }
   // }, [JSON.stringify(data)]);
+  const images: ReactImageGalleryItem[] =
+    data?.reportFormat?.reportImages?.map((img) => ({
+      original: img,
+      thumbnail: img
+    })) || [];
+
 
   return data ? (
     <div className="main-layout row">
@@ -191,11 +199,17 @@ export const DetailReport = () => {
           </>
         )}
 
-        <div className="detail-cover-report">
+        {/* <div className="detail-cover-report">
           <div className="image-container">
             {data.reportFormat.reportImages.map((image, index) => (
               <img key={index} src={image} alt={`Image ${index + 1}`} />
             ))}
+          </div>
+        </div> */}
+
+        <div className="detail-cover-report">
+          <div className="image-container">
+            <ImageGallery items={images} />;
           </div>
         </div>
 
