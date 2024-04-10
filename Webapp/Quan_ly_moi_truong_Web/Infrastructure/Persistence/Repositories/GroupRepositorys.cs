@@ -84,9 +84,11 @@ namespace Infrastructure.Persistence.Repositories
                                 Picture = _userRepository.GetGoogleUserImage(accessToken, member.Email).Result,
                                 Name = memberGoogle.Name,
                                 Department = _userRepository.GetDepartmentNameById(memberDB.DepartmentId),
+                                DepartmentEmail = _userRepository.GetDepartmentEmailById(memberDB.DepartmentId),
                                 PhoneNumber = memberGoogle.PhoneNumber,
                                 Role = _userRepository.GetRoleNameById(memberDB.RoleId.ToString()),
-                                Address = memberGoogle.Address
+                                Address = memberGoogle.Address,
+                                
                             });
                     }
                 }

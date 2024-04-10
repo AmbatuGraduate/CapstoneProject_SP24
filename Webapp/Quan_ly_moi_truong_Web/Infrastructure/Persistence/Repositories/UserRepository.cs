@@ -88,6 +88,7 @@ namespace Infrastructure.Persistence.Repositories
                     Email = user.PrimaryEmail,
                     Picture = photoUrl, // use the photoUrl from the request
                     Department = GetDepartmentNameById(userDb.DepartmentId),
+                    DepartmentEmail = GetDepartmentEmailById(userDb.DepartmentId),
                     PhoneNumber = user.Phones != null ?  user.Phones[0].Value : string.Empty,
                     Role = GetRoleNameById(userDb.RoleId.ToString()), 
                     Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
@@ -145,6 +146,7 @@ namespace Infrastructure.Persistence.Repositories
                             Name = user.Name.FullName,
                             Picture = photoUrl, // use the photoUrl from the request
                             Department = GetDepartmentNameById(userDb.DepartmentId),
+                            DepartmentEmail = GetDepartmentEmailById(userDb.DepartmentId),
                             PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
                             Role = GetRoleNameById(userDb.RoleId.ToString()),
                             Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
@@ -201,7 +203,7 @@ namespace Infrastructure.Persistence.Repositories
                         Id = newUser.Id,
                         UserCode = ConvertToUserCodeString(UserCode.EM_NHS_QD),
                         Email = newUser.PrimaryEmail,
-                        RoleId = new Guid(ConvertToUserRoleId(UserRole.Employee)),
+                        RoleId = new Guid(ConvertToUserRoleId(user.UserRole != (int)UserRole.None ? (UserRole)user.UserRole :  UserRole.Employee)),
                         DepartmentId = !user.DepartmentEmail.IsNullOrEmpty() && GetGroupByEmail(user.DepartmentEmail) != null ? 
                             GetGroupByEmail(user.DepartmentEmail).DepartmentId : 
                             DepartmentConstant.DefaultDepartmentId 
@@ -218,6 +220,7 @@ namespace Infrastructure.Persistence.Repositories
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
                     DepartmentEmail = user.DepartmentEmail,
+                    UserRole = user.UserRole,
                 };
 
                 return addGoogleUser;
@@ -303,6 +306,7 @@ namespace Infrastructure.Persistence.Repositories
                     userDb.DepartmentId = !user.DepartmentEmail.IsNullOrEmpty() && GetGroupByEmail(user.DepartmentEmail) != null ?
                             GetGroupByEmail(user.DepartmentEmail).DepartmentId :
                             DepartmentConstant.DefaultDepartmentId;
+                    userDb.RoleId = new Guid(ConvertToUserRoleId(user.UserRole != (int)UserRole.None ? (UserRole)user.UserRole : UserRole.Employee));
                     Update(userDb);
                 }
 
@@ -312,9 +316,10 @@ namespace Infrastructure.Persistence.Repositories
                     Name = updatedUser.Name.GivenName + updatedUser.Name.FamilyName,
                     FamilyName = updatedUser.Name.FamilyName,
                     Password = updatedUser.Password,
-                    PhoneNumber = user.PhoneNumber,
-                    Address = user.Address,
-                    DepartmentEmail = user.DepartmentEmail
+                    PhoneNumber = updatedUser.Phones != null ? updatedUser.Phones[0].Value : string.Empty,
+                    Address = updatedUser.Addresses != null ? updatedUser.Addresses[0].Locality : string.Empty,
+                    DepartmentEmail = GetDepartmentNameById(userDb.DepartmentId),
+                    UserRole = user.UserRole
                 };
 
                 return updateGoogleUser;
@@ -427,10 +432,25 @@ namespace Infrastructure.Persistence.Repositories
             return webDbContext.Departments.SingleOrDefault(d => d.DepartmentId == departmentId).DepartmentName;
         }
 
+        public string GetDepartmentEmailById(string departmentId)
+        {
+            return webDbContext.Departments.SingleOrDefault(d => d.DepartmentId == departmentId).DepartmentEmail;
+        }
+
         // get role name by id
         public string GetRoleNameById(string roleId)
         {
             return webDbContext.Roles.SingleOrDefault(r => r.RoleId == Guid.Parse(roleId)).RoleName;
+        }
+
+        public string GetRoleNameByRoleEnum(UserRole userRole)
+        {
+            return userRole switch
+            {
+                UserRole.Employee => "Employee",
+                UserRole.Manager => "Manager",
+                UserRole.Admin => "Admin"
+            };
         }
     }
 }

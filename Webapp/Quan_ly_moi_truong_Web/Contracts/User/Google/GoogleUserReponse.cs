@@ -7,6 +7,7 @@
          string Name,
          string Picture,
          string Department,
+         string DepartmentEmail,
          string PhoneNumber,
          string Role,
          string address

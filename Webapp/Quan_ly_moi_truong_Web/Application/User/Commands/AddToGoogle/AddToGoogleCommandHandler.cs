@@ -28,6 +28,7 @@ namespace Application.User.Commands.AddToGoogle
                 PhoneNumber = request.phone,
                 Address = request.address,
                 DepartmentEmail = request.departmentEmail,
+                UserRole = request.userRole
             };
 
             var userResult = await userRepository.AddGoogleUser(AddGoogleUser);
