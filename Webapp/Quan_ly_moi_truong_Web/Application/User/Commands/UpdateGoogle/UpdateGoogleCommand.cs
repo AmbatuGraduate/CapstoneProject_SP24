@@ -13,7 +13,6 @@ namespace Application.User.Commands.UpdateGoogle
         string Password,
         string phone,
         string address,
-        DateTime birthDate,
         string departmentEmail
      ) : IRequest<ErrorOr<UpdateGoogleUserRecord>>;
 }

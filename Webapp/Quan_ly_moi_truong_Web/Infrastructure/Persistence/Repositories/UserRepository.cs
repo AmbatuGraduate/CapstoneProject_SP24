@@ -89,8 +89,7 @@ namespace Infrastructure.Persistence.Repositories
                     Picture = photoUrl, // use the photoUrl from the request
                     Department = GetDepartmentNameById(userDb.DepartmentId),
                     PhoneNumber = user.Phones != null ?  user.Phones[0].Value : string.Empty,
-                    Role = GetRoleNameById(userDb.RoleId.ToString()),
-                    BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
+                    Role = GetRoleNameById(userDb.RoleId.ToString()), 
                     Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                 };
                 return userResult;
@@ -148,7 +147,6 @@ namespace Infrastructure.Persistence.Repositories
                             Department = GetDepartmentNameById(userDb.DepartmentId),
                             PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
                             Role = GetRoleNameById(userDb.RoleId.ToString()),
-                            BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
                             Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                         });
                     }
@@ -188,10 +186,6 @@ namespace Infrastructure.Persistence.Repositories
                     Addresses = new List<UserAddress>
                     {
                         new UserAddress { Locality = user.Address}
-                    },
-                    Relations = new List<UserRelation>
-                    {
-                        new UserRelation { Value = user.BirthDate.ToString()}
                     }
             };
 
@@ -223,7 +217,6 @@ namespace Infrastructure.Persistence.Repositories
                     Password = user.Password,
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
-                    BirthDate = user.BirthDate,
                     DepartmentEmail = user.DepartmentEmail,
                 };
 
@@ -298,13 +291,6 @@ namespace Infrastructure.Persistence.Repositories
                         new UserAddress { Locality = user.Address}
                     };
                 }
-                if (!string.IsNullOrEmpty(user.BirthDate.ToString()))
-                {
-                    currentUser.Relations = new List<UserRelation>
-                    {
-                        new UserRelation { Value = user.BirthDate.ToString()}
-                    };
-                }
 
                 var request = service.Users.Update(currentUser, user_id);
                 var updatedUser = await request.ExecuteAsync();
@@ -328,7 +314,6 @@ namespace Infrastructure.Persistence.Repositories
                     Password = updatedUser.Password,
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
-                    BirthDate = user.BirthDate,
                     DepartmentEmail = user.DepartmentEmail
                 };
 
