@@ -41,7 +41,7 @@ export const DetailTree = () => {
   ) : (
     <div className="main-layout row">
       <div className="map col-md-6">
-        <SimpleMap />
+        <SimpleMap location={data.streetName} />
       </div>
       <div className="detail-content col-md-6">
         <div className="detail-cover">
