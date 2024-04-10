@@ -19,18 +19,6 @@ export const ManageReport = () => {
   // };
 
   const columns: Column[] = [
-    // {
-    //   header: "Chỉnh sửa",
-    //   accessorFn(row) {
-    //     return (
-    //       <div>
-    //         <button type="button" className="btn btn-click" onClick={() => {}}>
-    //           <ModalDelete handleDelete={() => handleDelete(row.id)} />
-    //         </button>
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       header: "Người Gửi",
       accessorFn(longRow) {

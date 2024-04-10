@@ -36,13 +36,6 @@ export const CreateTree = () => {
       },
     },
     {
-      label: "Tuyến Đường",
-      formType: "jsx",
-      key: "location",
-      onRender: <GoogleMap />
-
-    },
-    {
       label: "Đường Kính Thân (cm)",
       formType: "number",
       key: "bodyDiameter",
@@ -124,7 +117,7 @@ export const CreateTree = () => {
     {
       label: "Người Phụ Trách",
       formType: "select",
-      key: "id",
+      key: "email",
       optionExtra: {
         url: EMPLOYEE_LIST,
         _key: "email",
@@ -142,8 +135,6 @@ export const CreateTree = () => {
         ...data,
         cutTime: dateConstructor(data.cutTime),
         plantTime: dateConstructor(data.plantTime),
-        userId: JSON.parse(token.accessToken).email,
-        isExist: true,
       });
       ref.current?.reload();
       navigate("/manage-tree");
