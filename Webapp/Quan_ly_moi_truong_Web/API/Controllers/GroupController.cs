@@ -13,6 +13,7 @@ using Application.Group.Queries.GetGroup;
 using Application.User.Common.List;
 using ErrorOr;
 using Google.Apis.Admin.Directory.directory_v1.Data;
+using Infrastructure.Authentication.AuthenticationAttribute;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +43,8 @@ namespace API.Controllers
         }
 
         [HttpGet()]
-
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetGroupByGroupEmail(string groupEmail)
         {
             string accessToken;
@@ -69,6 +71,8 @@ namespace API.Controllers
         }
 
         [HttpGet()]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetAllMembersOfGroup(string groupEmail)
         {
             string accessToken;
@@ -95,6 +99,8 @@ namespace API.Controllers
         }
 
         [HttpGet()]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetAllGroups()
         {
             ErrorOr<List<GroupResult>> groupResult = await mediator.Send(new GetAllGroupsQuery());
@@ -108,6 +114,8 @@ namespace API.Controllers
         }
 
         [HttpGet()]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetAllGroupsByUserEmail(string userEmail)
         {
             string accessToken;
@@ -134,6 +142,8 @@ namespace API.Controllers
         }
 
         [HttpPost()]
+        [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.ADMIN)]
         public async Task<IActionResult> AddGroup(AddGoogleGroup group)
         {
             string accessToken;
@@ -160,6 +170,8 @@ namespace API.Controllers
         }
 
         [HttpPost()]
+        [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.ADMIN)]
         public async Task<IActionResult> UpdateGroup(UpdateGoogleGroup group)
         {
             string accessToken;
@@ -186,6 +198,8 @@ namespace API.Controllers
         }
 
         [HttpDelete()]
+        [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.ADMIN)]
         public async Task<IActionResult> DeleteGroup(string groupEmail)
         {
             string accessToken;

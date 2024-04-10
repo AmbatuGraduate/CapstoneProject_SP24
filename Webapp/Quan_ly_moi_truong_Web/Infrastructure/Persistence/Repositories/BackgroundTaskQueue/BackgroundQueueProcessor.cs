@@ -1,64 +1,66 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Google.Apis.Auth.OAuth2;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
 {
-    public class BackgroundQueueProcessor : IHostedService, IDisposable
+    public class BackgroundQueueProcessor : BackgroundService
     {
-        private Timer _timer;
+        private readonly string[] scopes = { "https://www.googleapis.com/auth/calendar" };
+        private readonly string serviceAccount = "vesinhdanang@cayxanh-412707.iam.gserviceaccount.com";
+
         private readonly HttpClient _httpClient;
         public BackgroundQueueProcessor(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(5)); // Change the interval as needed
-            return Task.CompletedTask;
-        }
-
-        private async void DoWork(object state)
-        {
-            try
+            while (!stoppingToken.IsCancellationRequested)
             {
-                await Task.Delay(TimeSpan.FromDays(1));
-
-                // Prepare the HTTP request
-                var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7024/api/tree/AutoUpdate");
-
-                // Send the request and get the response
-                var response = await _httpClient.SendAsync(request);
-
-                // Check if the response is successful
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    // Handle successful response
-                    var content = await response.Content.ReadAsStringAsync();
-                    System.Diagnostics.Debug.WriteLine("API call successful: " + content);
+
+                    var certificate = new X509Certificate2("E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan_ly_moi_truong_Web\\API\\cayxanh-412707-2feafeea429d.p12", "notasecret", X509KeyStorageFlags.Exportable);
+
+                    ServiceAccountCredential credential = new ServiceAccountCredential(
+                       new ServiceAccountCredential.Initializer(serviceAccount)
+                       {
+                           Scopes = scopes
+                       }.FromCertificate(certificate));
+
+                    // Prepare the HTTP request
+                    var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7024/api/tree/AutoUpdate");
+
+                    // Send the request and get the response
+                    var response = await _httpClient.SendAsync(request);
+
+                    // Check if the response is successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Handle successful response
+                        var content = response.Content.ReadAsStringAsync();
+                        System.Diagnostics.Debug.WriteLine("API call successful: " + content);
+                    }
+                    else
+                    {
+                        var reason = response.Content.ReadAsStringAsync();
+                        // Handle unsuccessful response
+                        System.Diagnostics.Debug.WriteLine("API call unsuccessful: " + reason);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    var reason = await response.Content.ReadAsStringAsync();
-                    // Handle unsuccessful response
-                    System.Diagnostics.Debug.WriteLine("API call unsuccessful: " + reason);
+                    // Handle exceptions
+                    System.Diagnostics.Debug.WriteLine("Error calling API: " + ex.Message);
                 }
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions
-                System.Diagnostics.Debug.WriteLine("Error calling API: " + ex.Message);
-            }
-        }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            _timer?.Change(Timeout.Infinite, 0);
-            return Task.CompletedTask;
-        }
-
-        public void Dispose()
-        {
-            _timer?.Dispose();
+                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ using Application.Report.Queries.ListByUser;
 using Application.Report.Queries.ListFromDb;
 using Application.Report.Queries.ListLateReport;
 using ErrorOr;
+using Infrastructure.Authentication.AuthenticationAttribute;
 using MapsterMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -269,6 +270,8 @@ namespace API.Controllers
 
         // response report
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.ADMIN)]
         public async Task<IActionResult> ResponseReport([FromBody] ReponseReportRequest request)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -311,6 +314,8 @@ namespace API.Controllers
 
         // delete report
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
+        [HasPermission(Permission.ADMIN)]
         public async Task<IActionResult> DeleteReport(string id)
         {
 
