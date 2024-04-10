@@ -78,13 +78,14 @@ export default function Report({ navigation }) {
                             data[currentDate].push({ ...item, date, time: time.split('+')[0], day: currentDate });
                         });
                         setTransformedData(data);
-                        setLoading(false);
                         setEmptyReport('Không có báo cáo nào');
                     })
                     .catch((error) => {
                         console.log('There has been a problem with fetch operation: ', error.message);
-                        setLoading(false);
                         setEmptyReport('Lỗi kết nối!');
+                    })
+                    .finally(() => {
+                        setLoading(false);
                     });
             } else {
                 console.log('token null');
@@ -97,12 +98,9 @@ export default function Report({ navigation }) {
     }
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            // The screen is focused
-            // Call any action
+            setLoading(true);
             getReports();
         });
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
     }, [navigation]);
 
@@ -138,10 +136,6 @@ export default function Report({ navigation }) {
     };
 
     function formatDate(dateString) {
-        const months = [
-            'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-            'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
-        ];
         const date = new Date(dateString);
         return `${date.getDate()} / ${date.getMonth()} / ${date.getFullYear()}`;
     }
@@ -368,7 +362,7 @@ const styles = StyleSheet.create({
     },
     itemTextSmall: {
         fontSize: 14,
-        fontWeight: '500',
+        fontWeight: '600',
         color: 'grey'
     },
     itemText: {
@@ -376,6 +370,7 @@ const styles = StyleSheet.create({
         flex: 0.75,
         color: 'gray',
         letterSpacing: 1,
+        fontWeight: 'bold',
     },
     emptyContainer: {
         flex: 1,

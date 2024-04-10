@@ -102,6 +102,7 @@ function Routes() {
                     component={HomeStackRouting}
                     options={{
                         drawerLabel: 'Trang chủ',
+                        drawerItemStyle: { justifyContent: 'flex-end' },
                         drawerIcon: ({ color, size }) => (
                             <Icon name="home" type='font-awesome' color="#ff6b9b" size={size} />
                         ),
@@ -112,6 +113,8 @@ function Routes() {
                     component={ProfileStackRouting}
                     options={{
                         drawerLabel: 'Hồ sơ',
+                        drawerItemStyle: { justifyContent: 'flex-end' },
+
                         drawerIcon: ({ color, size }) => (
                             <Icon name="user-circle-o" type='font-awesome' color="#ff6b9b" size={size} />
                         ),
@@ -122,6 +125,7 @@ function Routes() {
                     name="Tasks"
                     options={{
                         drawerLabel: 'Lịch trình',
+                        drawerItemStyle: { justifyContent: 'flex-end' },
                         drawerIcon: ({ color, size }) => (
                             <Icon name="calendar" type='font-awesome' color="#ff6b9b" size={size} />
                         ),
@@ -132,8 +136,10 @@ function Routes() {
                     name="Report"
                     options={{
                         drawerLabel: 'Báo cáo vấn đề',
+                        drawerItemStyle: { justifyContent: 'flex-end' },
+
                         drawerIcon: ({ color, size }) => (
-                            <Icon name="file-text" type='font-awesome' color="#ff6b9b" size={size} />
+                            <Icon name="file-text-o" type='font-awesome' color="#ff6b9b" size={size} />
                         ),
                     }}>
                     {props => <ReportStackRouting {...props} />}
@@ -144,8 +150,9 @@ function Routes() {
                     name="Logout"
                     options={{
                         drawerLabel: 'Đăng xuất',
+                        drawerItemStyle: { justifyContent: 'flex-end' },
                         drawerIcon: ({ color, size }) => (
-                            <Icon name="logout" color="#ff6b9b" size={size} />
+                            <Icon name="sign-out" type='font-awesome' color="#ff6b9b" size={size} />
                         ),
                     }}>
                     {props => <LogoutScreen {...props} setUser={setUser} />}

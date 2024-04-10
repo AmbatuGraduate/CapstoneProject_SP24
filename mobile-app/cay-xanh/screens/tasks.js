@@ -96,13 +96,14 @@ export default function TasksList({ navigation }) {
                         else {
                             console.log('Unexpected response from API:', res);
                         }
-                        setLoading(false);
                         setEmptyEvents('Không có công việc nào trong ngày này');
                     })
                     .catch((error) => {
                         console.log('There has been a problem with fetch operation: ', error.message);
-                        setLoading(false);
                         setEmptyEvents('Không tải được dữ liệu, vui lòng thử lại sau');
+                    })
+                    .finally(() => {
+                        setLoading(false);
                     });
             } else {
                 console.log('token null');
@@ -116,15 +117,11 @@ export default function TasksList({ navigation }) {
         }
     }
 
-    // Events list not change when add new data, only change if  reload
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            // The screen is focused
-            // Call any action
             getEvents();
         });
 
-        // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
     }, [navigation]);
 
@@ -170,14 +167,10 @@ export default function TasksList({ navigation }) {
                 end={{ x: 0, y: 1 }}
             >
                 <FlatList
-                    // The data prop is the array of tasks for the selected date.
                     data={items}
-                    // The keyExtractor prop is a function that returns a unique identifier for each task.
                     keyExtractor={(item) => item.id.toString()}
-                    // The renderItem prop is a function that returns a component for each task.
                     renderItem={({ item }) => (
                         <TouchableOpacity
-                            // Apply styles to the TouchableOpacity.
                             style={[
                                 styles.records,
                                 item.extendedProperties.privateProperties?.JobWorkingStatus === 'Done' ? styles.doneBackground :
@@ -185,7 +178,6 @@ export default function TasksList({ navigation }) {
                                         item.extendedProperties.privateProperties?.JobWorkingStatus === 'In Progress' ? styles.inProgressBackground :
                                             (item.extendedProperties.privateProperties?.JobWorkingStatus === 'Not Start' || !item.extendedProperties.privateProperties?.JobWorkingStatus) ? styles.notStartBackground : null
                             ]}
-                            // When the TouchableOpacity is pressed, navigate to the 'TaskDetails' screen.
                             onPress={() => {
                                 navigation.navigate('TaskDetails', {
                                     key: item.id,
