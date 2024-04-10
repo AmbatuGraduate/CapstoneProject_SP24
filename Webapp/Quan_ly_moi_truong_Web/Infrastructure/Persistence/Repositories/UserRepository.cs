@@ -81,6 +81,10 @@ namespace Infrastructure.Persistence.Repositories
                     // photo not found => null
                 }
 
+                // Change format DD/MM/YYYY -> MM/DD/YYYY
+                var splitStringDate = user.Relations[0].Value.Split("/");
+                var dob = splitStringDate[1] + "/" + splitStringDate[0] + "/" + splitStringDate[2];
+
                 userResult = new GoogleUser
                 {
                     Id = user.Id,
@@ -89,8 +93,8 @@ namespace Infrastructure.Persistence.Repositories
                     Picture = photoUrl, // use the photoUrl from the request
                     Department = GetDepartmentNameById(userDb.DepartmentId),
                     PhoneNumber = user.Phones != null ?  user.Phones[0].Value : string.Empty,
-                    Role = GetRoleNameById(userDb.RoleId.ToString()),
-                    BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
+                    Role = GetRoleNameById(userDb.RoleId.ToString()), 
+                    BirthDate = user.Relations != null ? DateTime.Parse(dob) : new DateTime(),
                     Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                 };
                 return userResult;
@@ -139,6 +143,10 @@ namespace Infrastructure.Persistence.Repositories
                             // photo not found => null
                         }
 
+                        // Change format DD/MM/YYYY -> MM/DD/YYYY
+                        var splitStringDate = user.Relations[0].Value.Split("/");
+                        var dob = splitStringDate[1] + "/" + splitStringDate[0] + "/" + splitStringDate[2];
+
                         users.Add(new GoogleUser
                         {
                             Id = user.Id,
@@ -148,7 +156,7 @@ namespace Infrastructure.Persistence.Repositories
                             Department = GetDepartmentNameById(userDb.DepartmentId),
                             PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
                             Role = GetRoleNameById(userDb.RoleId.ToString()),
-                            BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
+                            BirthDate = user.Relations != null ? DateTime.Parse(dob) : new DateTime(),
                             Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                         });
                     }
