@@ -37,71 +37,75 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
         {
             List<MyAddedEventResult> eventResults = new List<MyAddedEventResult>();
 
-            var accessToken = _jwtTokenGenerator.DecodeTokenToGetAccessToken(request.accessToken);
-
-            var getAllTree = _treeRepository.GetAllTrees().Where(tree => !tree.isCut);
-
-            var treeByAddress = getAllTree
-                .GroupBy(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty).Split(",")[0])
-                .ToDictionary(
-                    group => group.Key,
-                    group => group.Where(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty).Split(",")[0].ToLower() == group.Key.Split(",")[0].ToLower())
-                .ToList()).ToList();
-
-            foreach (var group in treeByAddress)
+            try
             {
-                System.Diagnostics.Debug.WriteLine("Group: " + group.Key + " - " + group.Value.Count);
-                //list tree seprate with comma
-                string treeFormat = string.Empty;
-                foreach (var item in group.Value)
+                var getAllTree = _treeRepository.GetAllTrees().Where(tree => !tree.isCut);
+
+                var treeByAddress = getAllTree
+                    .GroupBy(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty).Split(",")[0])
+                    .ToDictionary(
+                        group => group.Key,
+                        group => group.Where(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty).Split(",")[0].ToLower() == group.Key.Split(",")[0].ToLower())
+                    .ToList()).ToList();
+
+                foreach (var group in treeByAddress)
                 {
-                    treeFormat += item.TreeCode + ",";
+                    System.Diagnostics.Debug.WriteLine("Group: " + group.Key + " - " + group.Value.Count);
+                    //list tree seprate with comma
+                    string treeFormat = string.Empty;
+                    foreach (var item in group.Value)
+                    {
+                        treeFormat += item.TreeCode + ",";
+                    }
+
+                    var addedEvent = new MyAddedEvent
+                    {
+                        Summary = "Lịch cắt tỉa cây tại " + group.Key,
+                        Description = "Đến thởi điểm cắt tỉa các cây đã đến hạn tại đường " + group.Key,
+                        location = group.Key,
+                        TreeId = treeFormat,
+                        Start = new EventDateTime
+                        {
+                            DateTime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                        },
+                        End = new EventDateTime
+                        {
+                            DateTime = DateTime.Now.AddHours(3).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                        },
+                        Attendees = new List<User>()
+                    };
+
+                    var result = await _treeCalendarService.AddEvent(request.accessToken, request.calendarId, addedEvent);
+                    eventResults.Add(new MyAddedEventResult(result));
                 }
 
-                var addedEvent = new MyAddedEvent
+                // notification to all manager tree trim calendar
+                var treeTrimDepartmentId = "01egqt2p26jkcil"; // Id department of tree
+                var roleId = "abccde85-c7dc-4f78-9e4e-b1b3e7abee84"; // Id role
+                var msg = eventResults.ToList().Count + " Lịch cắt tỉa cây mới đã được tạo";
+
+                // Get all user have department id is tree
+                var listUser = userRepository.GetAll().Where(x => x.DepartmentId == treeTrimDepartmentId && x.RoleId == Guid.Parse(roleId)).ToList();
+
+                for (int i = 0; i < listUser.Count; i++)
                 {
-                    Summary = "Lịch cắt tỉa cây tại " + group.Key,
-                    Description = "Đến thởi điểm cắt tỉa các cây đã đến hạn tại đường " + group.Key,
-                    location = group.Key,
-                    TreeId = treeFormat,
-                    Start = new EventDateTime
+                    var notification = new Domain.Entities.Notification.Notifications
                     {
-                        DateTime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
-                    },
-                    End = new EventDateTime
-                    {
-                        DateTime = DateTime.Now.AddHours(3).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
-                    },
-                    Attendees = new List<User>()
-                };
-
-                var result = await _treeCalendarService.AddEvent(accessToken, request.calendarId, addedEvent);
-                eventResults.Add(new MyAddedEventResult(result));
+                        Id = Guid.NewGuid(),
+                        Username = listUser[i].Email,
+                        Message = msg,
+                        MessageType = "Single",
+                        NotificationDateTime = DateTime.Now,
+                    };
+                    await notificationRepository.CreateNotification(notification);
+                    await notifyService.SendToUser(listUser[i].Email, msg);
+                }
             }
-
-            // notification to all manager tree trim calendar
-            var treeTrimDepartmentId = "01egqt2p26jkcil"; // Id department of tree
-            var roleId = "abccde85-c7dc-4f78-9e4e-b1b3e7abee84"; // Id role
-            var msg = eventResults.ToList().Count +  " Lịch cắt tỉa cây mới đã được tạo";
-
-            // Get all user have department id is tree
-            var listUser = userRepository.GetAll().Where(x => x.DepartmentId == treeTrimDepartmentId && x.RoleId == Guid.Parse(roleId)).ToList();
-
-            for (int i = 0; i < listUser.Count; i++)
+            catch (Exception ex)
             {
-                var notification = new Domain.Entities.Notification.Notifications
-                {
-                    Id = Guid.NewGuid(),
-                    Username = listUser[i].Email,
-                    Message = msg,
-                    MessageType = "Single",
-                    NotificationDateTime = DateTime.Now,
-                };
-                await notificationRepository.CreateNotification(notification);
-                await notifyService.SendToUser(listUser[i].Email, msg);
+                Console.WriteLine("ERROR CREATE CALENDAR: " + ex.Message);
             }
-
             return eventResults;
         }
     }
-}
+} 

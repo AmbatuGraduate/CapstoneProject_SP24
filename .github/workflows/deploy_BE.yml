@@ -26,6 +26,7 @@ jobs:
         run: |
           dotnet build ./Webapp/Quan_ly_moi_truong_Web/API/API.csproj --configuration Release
           dotnet publish ./Webapp/Quan_ly_moi_truong_Web/API/API.csproj --configuration Release -o ./BE
+          cp -r ./Webapp/Quan_ly_moi_truong_Web/Certification ./BE
           
       - name: Remove existing files and folders on Azure VM
         uses: appleboy/ssh-action@master

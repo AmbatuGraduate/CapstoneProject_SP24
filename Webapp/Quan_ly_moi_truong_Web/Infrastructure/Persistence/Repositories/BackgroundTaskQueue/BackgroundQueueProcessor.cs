@@ -1,64 +1,118 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Application.Calendar.TreeCalendar.Commands.AutoAdd;
+using Application.Calendar.TreeCalendar.Queries.GetCalendarByDepartmentEmail;
+using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
+using Domain.Enums;
+using Google.Apis.Auth.OAuth2;
+using GoogleApi.Interfaces;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
 {
-    public class BackgroundQueueProcessor : IHostedService, IDisposable
+    public class BackgroundQueueProcessor : BackgroundService
     {
-        private Timer _timer;
+        private readonly string[] scopes = { "https://www.googleapis.com/auth/calendar" };
+        private readonly string serviceAccount = "vesinhdanang@cayxanh-412707.iam.gserviceaccount.com";
+
+        //private readonly IMediator _mediator;
+
+        private readonly IServiceProvider _serviceProvider;
+
         private readonly HttpClient _httpClient;
-        public BackgroundQueueProcessor(HttpClient httpClient)
+        public BackgroundQueueProcessor(HttpClient httpClient, IServiceProvider serviceProvider)
         {
             _httpClient = httpClient;
+            _serviceProvider = serviceProvider;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(5)); // Change the interval as needed
-            return Task.CompletedTask;
-        }
+            // Making a run at the midnight
+            //var now = DateTime.Now;
+            //var hours = 23 - now.Hour;
+            //var minutes = 59 - now.Minute;
+            //var seconds = 59 - now.Second;
+            //var secondTillMidnight = hours * 3600 + minutes * 60 + seconds;
+            //await Task.Delay(TimeSpan.FromSeconds(secondTillMidnight), stoppingToken);
 
-        private async void DoWork(object state)
-        {
-            try
+            // For Testing
+
+            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
+
+
+            while (!stoppingToken.IsCancellationRequested)
             {
-                await Task.Delay(TimeSpan.FromDays(1));
-
-                // Prepare the HTTP request
-                var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7024/api/tree/AutoUpdate");
-
-                // Send the request and get the response
-                var response = await _httpClient.SendAsync(request);
-
-                // Check if the response is successful
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    // Handle successful response
-                    var content = await response.Content.ReadAsStringAsync();
-                    System.Diagnostics.Debug.WriteLine("API call successful: " + content);
+
+                    // Run auto update status cut of the trees
+                    // Prepare the HTTP request
+                    var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7024/api/tree/AutoUpdate");
+
+                    // Send the request and get the response
+                    var response = await _httpClient.SendAsync(request);
+
+                    // Check if the response is successful
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // Handle successful response
+                        var content = response.Content.ReadAsStringAsync();
+                        System.Diagnostics.Debug.WriteLine("API call successful: " + content);
+                    }
+                    else
+                    {
+                        var reason = response.Content.ReadAsStringAsync();
+                        // Handle unsuccessful response
+                        System.Diagnostics.Debug.WriteLine("API call unsuccessful: " + reason);
+                    }
+
+                    // Run auto create calendar(s) for every tree have cut status is true
+                    var currDirectory = Environment.CurrentDirectory;
+                    string filePath = Directory.GetParent(currDirectory).FullName;
+                    var certificate = new X509Certificate2(filePath + "\\Certification\\cayxanh-412707-2feafeea429d.p12", "notasecret", X509KeyStorageFlags.Exportable); // Create a cert for key of Account service
+
+                    // Create credential to get token
+                    ServiceAccountCredential credential = new ServiceAccountCredential(
+                           new ServiceAccountCredential.Initializer(serviceAccount)
+                           {
+                               Scopes = scopes
+                           }.FromCertificate(certificate));
+
+                    if (credential != null)
+                    {
+                        // Make a request get access token
+                        await credential.RequestAccessTokenAsync(CancellationToken.None);
+
+                        // Get access token from request
+                        string accessToken = credential.GetAccessTokenForRequestAsync().Result;
+
+                        using (var scope = _serviceProvider.CreateScope())
+                        {
+                            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                            // Get calendar Id by calendar type
+                            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(CalendarTypeEnum.CayXanh));
+                            var addEvents = await mediator.Send(new AutoAddTreeCalendarCommand(accessToken, calendarId.Value));
+                            var listEvents = addEvents.Value;
+
+                            Console.WriteLine("CREATE CALENDAR SUCCESSFUL:" + listEvents.Count);
+                        }
+
+
+                    }
+
+
                 }
-                else
+                catch (Exception ex)
                 {
-                    var reason = await response.Content.ReadAsStringAsync();
-                    // Handle unsuccessful response
-                    System.Diagnostics.Debug.WriteLine("API call unsuccessful: " + reason);
+                    // Handle exceptions
+                    System.Diagnostics.Debug.WriteLine("Error calling API: " + ex.Message);
                 }
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions
-                System.Diagnostics.Debug.WriteLine("Error calling API: " + ex.Message);
-            }
-        }
 
-        public Task StopAsync(CancellationToken cancellationToken)
-        {
-            _timer?.Change(Timeout.Infinite, 0);
-            return Task.CompletedTask;
-        }
 
-        public void Dispose()
-        {
-            _timer?.Dispose();
+            }
         }
     }
 }
