@@ -1,8 +1,12 @@
-﻿using Google.Apis.Auth.OAuth2;
-using Microsoft.Extensions.Configuration;
+﻿using Application.Calendar.TreeCalendar.Commands.AutoAdd;
+using Application.Calendar.TreeCalendar.Queries.GetCalendarByDepartmentEmail;
+using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
+using Domain.Enums;
+using Google.Apis.Auth.OAuth2;
+using GoogleApi.Interfaces;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
-using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
@@ -12,27 +16,38 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
         private readonly string[] scopes = { "https://www.googleapis.com/auth/calendar" };
         private readonly string serviceAccount = "vesinhdanang@cayxanh-412707.iam.gserviceaccount.com";
 
+        //private readonly IMediator _mediator;
+
+        private readonly IServiceProvider _serviceProvider;
+
         private readonly HttpClient _httpClient;
-        public BackgroundQueueProcessor(HttpClient httpClient)
+        public BackgroundQueueProcessor(HttpClient httpClient, IServiceProvider serviceProvider)
         {
             _httpClient = httpClient;
+            _serviceProvider = serviceProvider;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            // Making a run at the midnight
+            //var now = DateTime.Now;
+            //var hours = 23 - now.Hour;
+            //var minutes = 59 - now.Minute;
+            //var seconds = 59 - now.Second;
+            //var secondTillMidnight = hours * 3600 + minutes * 60 + seconds;
+            //await Task.Delay(TimeSpan.FromSeconds(secondTillMidnight), stoppingToken);
+
+            // For Testing
+
+            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
+
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
 
-                    var certificate = new X509Certificate2("E:\\Project\\Đồ Án\\CapstoneProject_SP24\\Webapp\\Quan_ly_moi_truong_Web\\API\\cayxanh-412707-2feafeea429d.p12", "notasecret", X509KeyStorageFlags.Exportable);
-
-                    ServiceAccountCredential credential = new ServiceAccountCredential(
-                       new ServiceAccountCredential.Initializer(serviceAccount)
-                       {
-                           Scopes = scopes
-                       }.FromCertificate(certificate));
-
+                    // Run auto update status cut of the trees
                     // Prepare the HTTP request
                     var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7024/api/tree/AutoUpdate");
 
@@ -52,6 +67,43 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
                         // Handle unsuccessful response
                         System.Diagnostics.Debug.WriteLine("API call unsuccessful: " + reason);
                     }
+
+                    // Run auto create calendar(s) for every tree have cut status is true
+                    var currDirectory = Environment.CurrentDirectory;
+                    string filePath = Directory.GetParent(currDirectory).FullName;
+                    var certificate = new X509Certificate2(filePath + "\\Certification\\cayxanh-412707-2feafeea429d.p12", "notasecret", X509KeyStorageFlags.Exportable); // Create a cert for key of Account service
+
+                    // Create credential to get token
+                    ServiceAccountCredential credential = new ServiceAccountCredential(
+                           new ServiceAccountCredential.Initializer(serviceAccount)
+                           {
+                               Scopes = scopes
+                           }.FromCertificate(certificate));
+
+                    if (credential != null)
+                    {
+                        // Make a request get access token
+                        await credential.RequestAccessTokenAsync(CancellationToken.None);
+
+                        // Get access token from request
+                        string accessToken = credential.GetAccessTokenForRequestAsync().Result;
+
+                        using (var scope = _serviceProvider.CreateScope())
+                        {
+                            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+                            // Get calendar Id by calendar type
+                            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(CalendarTypeEnum.CayXanh));
+                            var addEvents = await mediator.Send(new AutoAddTreeCalendarCommand(accessToken, calendarId.Value));
+                            var listEvents = addEvents.Value;
+
+                            Console.WriteLine("CREATE CALENDAR SUCCESSFUL:" + listEvents.Count);
+                        }
+
+
+                    }
+
+
                 }
                 catch (Exception ex)
                 {
@@ -59,7 +111,7 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
                     System.Diagnostics.Debug.WriteLine("Error calling API: " + ex.Message);
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(10), stoppingToken);
+
             }
         }
     }
