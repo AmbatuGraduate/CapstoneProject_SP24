@@ -1,14 +1,18 @@
 import { Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { REPORT_LIST } from "../../Api";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { REPORT_BY_USER, REPORT_LIST } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { ReportImpact, ReportStatus, dayFormat } from "../../utils";
 import { useRef } from "react";
 
 import { MdAddCircleOutline } from "react-icons/md";
+import { useCookies } from "react-cookie";
 
 export const ManageReport = () => {
+  const [token] = useCookies(["accessToken"]);
+  const isAdmin = JSON.parse(token.accessToken).role === "Admin";
+  const { email = "" } = useParams();
   const navigate = useNavigate();
   const ref = useRef<any>();
   // TODO get list
@@ -93,10 +97,11 @@ export const ManageReport = () => {
     <div>
       <ListView
         ref={ref}
-        listURL={REPORT_LIST}
+        listURL={isAdmin ? REPORT_LIST : REPORT_BY_USER.replace(":email", email)}
         columns={columns}
         bottom={
-          <Button
+          isAdmin ? null : (
+            <Button
             variant="success"
             style={{
               backgroundColor: "hsl(94, 59%, 35%)",
@@ -107,7 +112,8 @@ export const ManageReport = () => {
           >
             <MdAddCircleOutline className="iconAdd" />
             Thêm báo cáo
-          </Button>
+          </Button>  
+          ) 
         }
         transform={(data: any) => data?.value?.map((i) => i.reportFormat) || []}
       />
