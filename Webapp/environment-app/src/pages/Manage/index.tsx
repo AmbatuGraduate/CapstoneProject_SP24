@@ -50,6 +50,7 @@ export const Manage = () => {
     const createHubConnection = async () => {
       const hubConnect = new signalR.HubConnectionBuilder()
         .withUrl("https://vesinhdanang.xyz:7024/chatHub")
+        // .withUrl("https://localhost:7024/chatHub")
         .build();
       try {
         await hubConnect.start();
@@ -59,27 +60,6 @@ export const Manage = () => {
           .catch(function (error) {
             return console.error(error);
           });
-
-        hubConnect.on("ReceivedNotification", (message) => {
-          console.log(message);
-          setNotifications(prevNotifications => [...prevNotifications, message]);
-        });
-
-        hubConnect.on("ReceivedPersonalNotification", (message, user) => {
-          console.log(user + " - " + message);
-          setNotifications(prevNotifications => {
-            const newNotification = {
-              id: prevNotifications.length,
-              username: user,
-              message: message,
-              notificationDateTime: new Date().toLocaleString('en-US'),
-            };
-            const newNotifications = [newNotification, ...prevNotifications];
-            console.log("New notifications: " + newNotifications);
-            return newNotifications;
-          });
-        });
-
       } catch (err) {
         console.error(err);
       }
@@ -87,29 +67,53 @@ export const Manage = () => {
     }
 
     createHubConnection();
-  }, []);
 
-  useEffect(() => {
-    if (username) {
-      console.log('username: ' + username);
-      axios.get(`https://vesinhdanang.xyz:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((res) => {
-          setNotifications(prevNotifications => {
-            const existingIds = new Set(prevNotifications.map((a, index) => ({ id: index, message: a })));
-            const newNotifications = res.data.filter(a => !existingIds.has(a.id));
-            return [...prevNotifications, ...newNotifications];
-          });
-        })
-        .catch((error) => {
-          console.log('There has been a problem with fetch operation: ', error.message);
+    axios.get(`https://vesinhdanang.xyz:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
+      // axios.get(`https://localhost:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => {
+        setNotifications(prevNotifications => {
+          const existingIds = new Set(prevNotifications.map((a, index) => ({ id: index, message: a })));
+          const newNotifications = res.data.filter(a => !existingIds.has(a.id));
+          return [...prevNotifications, ...newNotifications];
         });
-    }
+      })
+
+      .catch((error) => {
+        console.log('There has been a problem with fetch operation: ', error.message);
+      });
+
+    return () => {
+      hubConnection?.stop();
+    };
   }, [username, page]);
 
+  useEffect(() => {
+    if (hubConnection) {
+      hubConnection.on("ReceivedNotification", (message) => {
+        console.log(message);
+        setNotifications(prevNotifications => [...prevNotifications, message]);
+      });
+
+      hubConnection.on("ReceivedPersonalNotification", (message, user) => {
+        console.log(user + " - " + message);
+        setNotifications(prevNotifications => {
+          const newNotification = {
+            id: prevNotifications.length,
+            username: user,
+            message: message,
+            notificationDateTime: new Date().toLocaleString('en-US'),
+          };
+          const newNotifications = [newNotification, ...prevNotifications];
+          console.log("New notifications: " + newNotifications);
+          return newNotifications;
+        });
+      });
+    }
+  }, [hubConnection]);
 
 
   const todaysNotifications = notifications.filter(notification => {
