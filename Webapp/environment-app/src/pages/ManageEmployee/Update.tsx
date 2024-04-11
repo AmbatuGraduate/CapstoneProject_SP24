@@ -2,15 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DEPARTMENT_LIST, EMPLOYEE_DETAIL, EMPLOYEE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dayFormat } from "../../utils";
-import { useCookies } from "react-cookie";
 
 export const UpdateEmployee = () => {
   const navigate = useNavigate();
   const { email = "" } = useParams();
   const [data, setData] = useState<any>();
-  const [token] = useCookies(["accessToken"]);
-  const [address, setAddress] = useState<string | null>("");
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
 
@@ -58,7 +54,7 @@ export const UpdateEmployee = () => {
     {
       label: "Số Điện Thoại",
       formType: "input",
-      key: "phoneNumber",
+      key: "phone",
       defaultValue: data?.phoneNumber,
     },
     {
@@ -75,7 +71,7 @@ export const UpdateEmployee = () => {
     {
       label: "Chức Vụ",
       formType: "select",
-      key: "role",
+      key: "userRole",
       options: [
         {
           key: "Nhân Viên",
@@ -110,7 +106,7 @@ export const UpdateEmployee = () => {
     setIsLoading(true);
 
     try {
-      await useApi.post(EMPLOYEE_UPDATE, {
+      await useApi.put(EMPLOYEE_UPDATE, {
         ...data,
         password: ""
       });

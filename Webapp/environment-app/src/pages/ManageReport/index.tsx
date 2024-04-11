@@ -23,7 +23,7 @@ export const ManageReport = () => {
       header: "Người Gửi",
       accessorFn(longRow) {
         return (
-          <h6 className="shortText">
+          <h6 className="shortText linkDiv">
             <Link
               className="linkCode"
               style={{ fontWeight: "bold" }}

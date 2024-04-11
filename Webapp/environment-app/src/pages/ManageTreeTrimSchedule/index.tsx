@@ -165,7 +165,7 @@ export const ManageTreeTrimSchedule = () => {
       header: "Tiêu Đề",
       accessorFn(row) {
         return (
-          <h6 >
+          <h6 className="linkDiv">
             <Link
               className="linkCode"
               style={{ fontWeight: "bold", textAlign: "center" }}

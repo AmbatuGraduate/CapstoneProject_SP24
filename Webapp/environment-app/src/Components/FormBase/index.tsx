@@ -172,6 +172,9 @@ export const FormBase = (props: Props) => {
       if (f.key === "status") {
         data[f.key] = Number((e.target as any)?.[f.key].value);
       }
+      if (f.key === "userRole") {
+        data[f.key] = Number((e.target as any)?.[f.key].value);
+      }
     });
     console.log(data);
     onSave && onSave(data);

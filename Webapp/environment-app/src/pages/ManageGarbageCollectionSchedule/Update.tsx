@@ -1,9 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { GARBAGE_COLLECTION_DETAIL, GARBAGE_COLLECTION_UPDATE, useApi } from "../../Api";
+import { EMPLOYEE_LIST, GARBAGE_COLLECTION_DETAIL, GARBAGE_COLLECTION_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor } from "../../utils";
 import { useEffect, useRef, useState } from "react";
-import { useCookies } from "react-cookie";
 
 export const UpdateGarbageCollectionSchedule = () => {
     const navigate = useNavigate();
@@ -11,7 +9,6 @@ export const UpdateGarbageCollectionSchedule = () => {
     const [data, setData] = useState<any>();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
-    const [token] = useCookies(["accessToken"]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,7 +27,7 @@ export const UpdateGarbageCollectionSchedule = () => {
         {
             label: "Tiêu Đề",
             formType: "input",
-            key: "sumary",
+            key: "summary",
             defaultValue: data?.myEvent.summary,
         },
         {
@@ -51,26 +48,87 @@ export const UpdateGarbageCollectionSchedule = () => {
             key: "end.dateTime",
         },
         {
-            label: "Nhân Viên Thực Hiện",
+            label: "Bộ Phận",
             formType: "input",
-            key: "attendees",
-            defaultValue: data?.myEvent.attendees[0].fullName,
+            key: "departmentEmail",
+            defaultValue: data?.myEvent.extendedProperties.privateProperties.DepartmentEmail,
+            disabled: true,
+        },
+        {
+            label: "Nhân Viên Thực Hiện",
+            formType: "select",
+            key: "attendees.email",
+            optionExtra: {
+                url: EMPLOYEE_LIST,
+                _key: "name",
+                _value: "email",
+            },
+            defaultValue: data?.myEvent?.attendees[0]?.fullName,
         },
         {
             label: "Ghi Chú",
             formType: "textarea",
             key: "description",
-            placeholder: "Ví dụ: Cần lưu ý...",
+            defaultValue: data?.myEvent?.description,
         },
     ];
 
     const handleSubmit = async (data: Record<string, any>) => {
         setIsLoading(true);
-        await useApi.post(GARBAGE_COLLECTION_UPDATE, {
-            ...data,
-        });
-        ref.current?.reload();
-        navigate("/manage-garbagecollection-schedule");
+
+        // Process start dateTime
+        const startDateTimeParts = data["start.dateTime"].split(" "); // Split date and time
+        const startDateParts = startDateTimeParts[1].split("/"); // Split day, month, and year
+        const formattedStartDateTime = `${startDateParts[2]}-${startDateParts[1]}-${startDateParts[0]}T${startDateTimeParts[0]}:00+07:00`;
+
+        // Process end dateTime
+        const endDateTimeParts = data["end.dateTime"].split(" "); // Split date and time
+        const endDateParts = endDateTimeParts[1].split("/"); // Split day, month, and year
+        const formattedEndDateTime = `${endDateParts[2]}-${endDateParts[1]}-${endDateParts[0]}T${endDateTimeParts[0]}:00+07:00`;
+
+        try {
+            // Lấy danh sách nhân viên từ API
+            const employeeListResponse = await useApi.get(EMPLOYEE_LIST);
+            const employeeList = employeeListResponse.data; // Giả sử dữ liệu trả về là một mảng
+
+            // Lấy thông tin nhân viên thực hiện từ data
+            const selectedEmployee = data["attendees.email"];
+
+            // Tìm nhân viên được chọn trong danh sách nhân viên và lấy thông tin của họ
+            const selectedEmployeeInfo = employeeList.find((employee: any) => employee.email === selectedEmployee);
+
+            // Kiểm tra xem nhân viên có tồn tại trong danh sách không
+            if (!selectedEmployeeInfo) {
+                throw new Error("Không tìm thấy thông tin của nhân viên được chọn.");
+            }
+
+            // Tạo đối tượng attendee chứa tên và email của nhân viên
+            const attendee = {
+                name: selectedEmployeeInfo.name,
+                email: selectedEmployee
+            };
+
+            const requestData = {
+                ...data,
+                start: { dateTime: formattedStartDateTime },
+                end: { dateTime: formattedEndDateTime },
+                attendees: [attendee], // Sử dụng thông tin nhân viên thu được
+                treeId: ""
+            };
+
+            delete requestData["start.dateTime"];
+            delete requestData["end.dateTime"];
+            delete requestData["attendees.email"]
+            delete requestData["departmentEmail"]
+
+            await useApi.post(GARBAGE_COLLECTION_UPDATE.replace(":id", id), requestData);
+            ref.current?.reload();
+            navigate(-1)
+        } catch (error) {
+            console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
+            setIsLoading(false);
+            // Xử lý lỗi tại đây (ví dụ: hiển thị thông báo lỗi cho người dùng)
+        }
     };
 
     return (
@@ -79,7 +137,7 @@ export const UpdateGarbageCollectionSchedule = () => {
             <FormBase
                 fields={fields}
                 onSave={handleSubmit}
-                onCancel={() => navigate("/manage-garbagecollection-schedule")}
+                onCancel={() => navigate(-1)}
             />
         </div>
     );

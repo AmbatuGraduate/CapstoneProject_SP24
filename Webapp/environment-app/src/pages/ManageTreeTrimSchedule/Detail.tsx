@@ -43,13 +43,21 @@ export const DetailTreeTrimSchedule = () => {
             <div className="detail-content col-md-4">
                 <div className="detail-cover">
                     <div className="detail-content-parent">
+                        <div className="detail-content-child-label">Bộ Phận Quản Lý: </div>
+                        <div className="detail-content-child-value">
+                            {data?.myEvent.extendedProperties.privateProperties.DepartmentEmail}
+                        </div>
+                    </div>
+                </div>
+                <div className="detail-cover">
+                    <div className="detail-content-parent">
                         <div className="detail-content-child-label">Nhân Viên Thực Hiện: </div>
                         <div className="detail-content-child-value">
                             {data?.myEvent && data?.myEvent.attendees && data?.myEvent.attendees.length <= 0 ? (
                                 <div>Cần thêm nhân viên thực hiện</div>
                             ) : (
                                 data?.myEvent?.attendees?.map(attendee => (
-                                    <Link className="linkCode" to={`/manage-employee/email=${attendee.user.email}`} key={attendee.id}>{attendee.fullName}</Link>
+                                    <Link className="linkCode" style={{ display: 'block' }} to={`/manage-employee/email=${attendee.user.email}`} key={attendee.id}>{attendee.fullName}</Link>
                                 ))
                             )}
                         </div>
