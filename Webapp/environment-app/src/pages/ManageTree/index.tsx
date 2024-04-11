@@ -70,7 +70,7 @@ export const ManageTree = () => {
       header: "Mã Số Cây",
       accessorFn(row) {
         return (
-          <h6 className="shortText">
+          <h6 className="shortText linkDiv" >
             <Link
               className="linkCode"
               style={{ fontWeight: "bold" }}

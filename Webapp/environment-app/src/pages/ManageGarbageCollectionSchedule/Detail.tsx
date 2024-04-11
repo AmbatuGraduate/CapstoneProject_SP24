@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { GARBAGE_COLLECTION_DETAIL, useApi } from "../../Api";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
-import { dayFormat, timeFormat } from "../../utils";
+import { dayFormat, taskStatus, timeFormat } from "../../utils";
 
 export const DetailGarbageCollectionSchedule = () => {
     const navigate = useNavigate();
@@ -38,7 +38,17 @@ export const DetailGarbageCollectionSchedule = () => {
         />
     ) : (
         <div className="main-layout row">
+            <h4 className="title">Xem Thông Tin Chi Tiết Lịch Thu Gom Rác</h4>
+            <hr className="line" />
             <div className="detail-content col-md-4">
+                <div className="detail-cover">
+                    <div className="detail-content-parent">
+                        <div className="detail-content-child-label">Bộ Phận Quản Lý: </div>
+                        <div className="detail-content-child-value">
+                            {data?.myEvent.extendedProperties.privateProperties.DepartmentEmail}
+                        </div>
+                    </div>
+                </div>
                 <div className="detail-cover">
                     <div className="detail-content-parent">
                         <div className="detail-content-child-label">Nhân Viên Thực Hiện: </div>
@@ -47,7 +57,7 @@ export const DetailGarbageCollectionSchedule = () => {
                                 <div>Cần thêm nhân viên thực hiện</div>
                             ) : (
                                 data?.myEvent?.attendees?.map(attendee => (
-                                    <Link className="linkCode" to={`/manage-employee/email=${attendee.user.email}`} key={attendee.id}>{attendee.fullName}</Link>
+                                    <Link className="linkCode" style={{ display: 'block' }} to={`/manage-employee/email=${attendee.user.email}`} key={attendee.id}>{attendee.fullName}</Link>
                                 ))
                             )}
                         </div>
@@ -95,11 +105,25 @@ export const DetailGarbageCollectionSchedule = () => {
 
                 <div className="detail-cover">
                     <div className="detail-content-parent">
+                        <div className="detail-content-child-label">Ghi Chú: </div>
+                        <div className="detail-content-child-value">
+                            {data?.myEvent.description}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="detail-cover">
+                    <div className="detail-content-parent">
                         <div className="detail-content-child-label">
                             Tình Trạng Công Việc:{" "}
                         </div>
-                        <div className="detail-content-child-value">
-                            {data?.myEvent.extendedProperties.privateProperties.JobWorkingStatus}
+                        <div className="detail-content-child-value" style={{
+                            color: taskStatus(
+                                data?.myEvent.extendedProperties.privateProperties.JobWorkingStatus
+                            ).color,
+                            fontWeight: "bold",
+                        }}>
+                            {taskStatus(data?.myEvent.extendedProperties.privateProperties.JobWorkingStatus).text}
                         </div>
                     </div>
                 </div>

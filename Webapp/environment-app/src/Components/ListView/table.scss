@@ -52,17 +52,15 @@
       }
       .linkCode {
         color: var(--PrimaryColor);
-        padding: 0.5rem;
-        border-radius: 1rem;
         text-decoration: none;
       }
-      .linkCode:hover {
+      .linkDiv:hover {
         background-color: var(--paleGreen);
+        padding: 0.5rem;
+        border-radius: 1rem;
       }
 
       .btn {
-        // padding: auto;
-        // position: relative;
         color: var(--textColor);
         z-index: 1000;
         box-shadow: none;

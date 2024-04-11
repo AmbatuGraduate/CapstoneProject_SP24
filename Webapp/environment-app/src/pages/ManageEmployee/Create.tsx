@@ -2,13 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { DEPARTMENT_LIST, EMPLOYEE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
-import { useCookies } from "react-cookie";
 
 export const CreateEmployee = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
-  const [token] = useCookies(["accessToken"]);
 
   const fields: Field[] = [
     {
@@ -58,7 +56,7 @@ export const CreateEmployee = () => {
     {
       label: "Chức Vụ",
       formType: "select",
-      key: "role",
+      key: "userRole",
       options: [
         {
           key: "Nhân Viên",
