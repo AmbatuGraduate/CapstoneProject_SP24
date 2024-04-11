@@ -2,13 +2,13 @@
 {
     public record UpdateGoogleUserRequest
     (
-        string Name,
-        string FamilyName,
+        string? Name,
+        string? FamilyName,
         string Email,
-        string Password,
-        string phone,
-        string address,
-        DateTime birthDate,
-        string departmentEmail
+        string? Password,
+        string? phone,
+        string? address,
+        string? departmentEmail,
+        int userRole
         );
 }

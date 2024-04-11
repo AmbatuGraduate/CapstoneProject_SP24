@@ -201,7 +201,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         DateTimeDateTimeOffset = DateTime.Parse(myEvent.End.DateTime),
                         TimeZone = TimeZone
                     };
-                    retrievedEvent.Attendees
+                    retrievedEvent.Attendees = myEvent.Attendees
                         .Where(attendee => !string.IsNullOrEmpty(attendee.Email)) // Skip attendees with null or empty email
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
                         .ToList();

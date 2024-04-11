@@ -88,9 +88,9 @@ namespace Infrastructure.Persistence.Repositories
                     Email = user.PrimaryEmail,
                     Picture = photoUrl, // use the photoUrl from the request
                     Department = GetDepartmentNameById(userDb.DepartmentId),
+                    DepartmentEmail = GetDepartmentEmailById(userDb.DepartmentId),
                     PhoneNumber = user.Phones != null ?  user.Phones[0].Value : string.Empty,
-                    Role = GetRoleNameById(userDb.RoleId.ToString()),
-                    BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
+                    Role = GetRoleNameById(userDb.RoleId.ToString()), 
                     Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                 };
                 return userResult;
@@ -146,9 +146,9 @@ namespace Infrastructure.Persistence.Repositories
                             Name = user.Name.FullName,
                             Picture = photoUrl, // use the photoUrl from the request
                             Department = GetDepartmentNameById(userDb.DepartmentId),
+                            DepartmentEmail = GetDepartmentEmailById(userDb.DepartmentId),
                             PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
                             Role = GetRoleNameById(userDb.RoleId.ToString()),
-                            BirthDate = user.Relations != null ? DateTime.Parse(user.Relations[0].Value) : new DateTime(),
                             Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
                         });
                     }
@@ -188,10 +188,6 @@ namespace Infrastructure.Persistence.Repositories
                     Addresses = new List<UserAddress>
                     {
                         new UserAddress { Locality = user.Address}
-                    },
-                    Relations = new List<UserRelation>
-                    {
-                        new UserRelation { Value = user.BirthDate.ToString()}
                     }
             };
 
@@ -207,7 +203,7 @@ namespace Infrastructure.Persistence.Repositories
                         Id = newUser.Id,
                         UserCode = ConvertToUserCodeString(UserCode.EM_NHS_QD),
                         Email = newUser.PrimaryEmail,
-                        RoleId = new Guid(ConvertToUserRoleId(UserRole.Employee)),
+                        RoleId = new Guid(ConvertToUserRoleId(user.UserRole != (int)UserRole.None ? (UserRole)user.UserRole :  UserRole.Employee)),
                         DepartmentId = !user.DepartmentEmail.IsNullOrEmpty() && GetGroupByEmail(user.DepartmentEmail) != null ? 
                             GetGroupByEmail(user.DepartmentEmail).DepartmentId : 
                             DepartmentConstant.DefaultDepartmentId 
@@ -223,8 +219,8 @@ namespace Infrastructure.Persistence.Repositories
                     Password = user.Password,
                     PhoneNumber = user.PhoneNumber,
                     Address = user.Address,
-                    BirthDate = user.BirthDate,
                     DepartmentEmail = user.DepartmentEmail,
+                    UserRole = user.UserRole,
                 };
 
                 return addGoogleUser;
@@ -298,13 +294,6 @@ namespace Infrastructure.Persistence.Repositories
                         new UserAddress { Locality = user.Address}
                     };
                 }
-                if (!string.IsNullOrEmpty(user.BirthDate.ToString()))
-                {
-                    currentUser.Relations = new List<UserRelation>
-                    {
-                        new UserRelation { Value = user.BirthDate.ToString()}
-                    };
-                }
 
                 var request = service.Users.Update(currentUser, user_id);
                 var updatedUser = await request.ExecuteAsync();
@@ -317,6 +306,7 @@ namespace Infrastructure.Persistence.Repositories
                     userDb.DepartmentId = !user.DepartmentEmail.IsNullOrEmpty() && GetGroupByEmail(user.DepartmentEmail) != null ?
                             GetGroupByEmail(user.DepartmentEmail).DepartmentId :
                             DepartmentConstant.DefaultDepartmentId;
+                    userDb.RoleId = new Guid(ConvertToUserRoleId(user.UserRole != (int)UserRole.None ? (UserRole)user.UserRole : UserRole.Employee));
                     Update(userDb);
                 }
 
@@ -326,10 +316,10 @@ namespace Infrastructure.Persistence.Repositories
                     Name = updatedUser.Name.GivenName + updatedUser.Name.FamilyName,
                     FamilyName = updatedUser.Name.FamilyName,
                     Password = updatedUser.Password,
-                    PhoneNumber = user.PhoneNumber,
-                    Address = user.Address,
-                    BirthDate = user.BirthDate,
-                    DepartmentEmail = user.DepartmentEmail
+                    PhoneNumber = updatedUser.Phones != null ? updatedUser.Phones[0].Value : string.Empty,
+                    Address = updatedUser.Addresses != null ? updatedUser.Addresses[0].Locality : string.Empty,
+                    DepartmentEmail = GetDepartmentNameById(userDb.DepartmentId),
+                    UserRole = user.UserRole
                 };
 
                 return updateGoogleUser;
@@ -442,10 +432,25 @@ namespace Infrastructure.Persistence.Repositories
             return webDbContext.Departments.SingleOrDefault(d => d.DepartmentId == departmentId).DepartmentName;
         }
 
+        public string GetDepartmentEmailById(string departmentId)
+        {
+            return webDbContext.Departments.SingleOrDefault(d => d.DepartmentId == departmentId).DepartmentEmail;
+        }
+
         // get role name by id
         public string GetRoleNameById(string roleId)
         {
             return webDbContext.Roles.SingleOrDefault(r => r.RoleId == Guid.Parse(roleId)).RoleName;
+        }
+
+        public string GetRoleNameByRoleEnum(UserRole userRole)
+        {
+            return userRole switch
+            {
+                UserRole.Employee => "Employee",
+                UserRole.Manager => "Manager",
+                UserRole.Admin => "Admin"
+            };
         }
     }
 }

@@ -27,8 +27,8 @@ namespace Application.User.Commands.UpdateGoogle
                 Password = request.Password,
                 PhoneNumber = request.phone,
                 Address = request.address,
-                BirthDate = request.birthDate,
                 DepartmentEmail = request.departmentEmail,
+                UserRole = request.userRole,
             };
 
             var userResult = await userRepository.UpdateGoogleUser(updateGoogleUser);
