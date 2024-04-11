@@ -25,7 +25,7 @@ const Sidebar = () => {
   return (
     <div className="sideBar ">
       <div className="logoDiv flex">
-        <img src="assets/imgs/logo.jpg" alt="Image_name" />
+        <img src="assets/imgs/logoEco.png" alt="Image_name" />
       </div>
       <hr className="line" />
       <div className="menuDiv p-0">

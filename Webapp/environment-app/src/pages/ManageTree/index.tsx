@@ -7,7 +7,6 @@ import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { useRef, useState } from "react";
 
-import { BiSolidEdit } from "react-icons/bi";
 import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageTree = () => {
@@ -36,7 +35,7 @@ export const ManageTree = () => {
       header: "Mã Số Cây",
       accessorFn(row) {
         return (
-          <h6 className="shortText">
+          <h6 className="shortText linkDiv" >
             <Link
               className="linkCode"
               style={{ fontWeight: "bold" }}
@@ -117,9 +116,6 @@ export const ManageTree = () => {
             Thêm Cây
           </Button>
         }
-        // filter={(row) => {
-        //   return row.isExist == true;
-        // }}
       />
     </div>
   );

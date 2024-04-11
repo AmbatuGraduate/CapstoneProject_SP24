@@ -1,27 +1,24 @@
 import { useNavigate } from "react-router-dom";
-import { EMPLOYEE_ADD, useApi } from "../../Api";
+import { DEPARTMENT_LIST, EMPLOYEE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
-import { useCookies } from "react-cookie";
 
 export const CreateEmployee = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
-  const [token] = useCookies(["accessToken"]);
 
   const fields: Field[] = [
     {
       label: "Họ",
       formType: "input",
-      key: "familyName",
+      key: "name",
       placeholder: "Ví dụ: Nguyễn",
     },
     {
       label: "Tên",
       formType: "input",
-      key: "name",
+      key: "familyName",
       placeholder: "Ví dụ: Văn A",
     },
     {
@@ -47,20 +44,50 @@ export const CreateEmployee = () => {
       key: "address",
     },
     {
-      label: "Ngày Sinh",
-      formType: "date",
-      key: "birthDate",
+      label: "Bộ Phận",
+      formType: "select",
+      key: "departmentEmail",
+      optionExtra: {
+        url: DEPARTMENT_LIST,
+        _key: "name",
+        _value: "email",
+      },
+    },
+    {
+      label: "Chức Vụ",
+      formType: "select",
+      key: "userRole",
+      options: [
+        {
+          key: "Nhân Viên",
+          value: 1,
+        },
+        {
+          key: "Quản Lý",
+          value: 2,
+        },
+        {
+          key: "Quản Trị Viên",
+          value: 3,
+        },
+      ],
     },
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
     setIsLoading(true);
-    await useApi.post(EMPLOYEE_ADD, {
-      ...data,
-      birthDate: dateConstructor(data.birthDate),
-    });
-    ref.current?.reload();
-    navigate("/manage-employee");
+
+    try {
+      await useApi.post(EMPLOYEE_ADD, {
+        ...data,
+      });
+      ref.current?.reload();
+      navigate("/manage-employee");
+    } catch (error) {
+      console.error("Error creating employee:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

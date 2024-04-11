@@ -11,16 +11,13 @@
         cursor: pointer;
 
         img {
-            width: 75%;
-            margin-right: 0.5rem;
-            background: var(--inputColor);
-            border-radius: 2px;
-            padding: 0.2rem;
+            width: 100%;
             min-width: 3rem;
         }
     }
     .line {
         margin: 1rem;
+        margin-top: 0;
     }
     .menuDiv,
     .settingDiv {

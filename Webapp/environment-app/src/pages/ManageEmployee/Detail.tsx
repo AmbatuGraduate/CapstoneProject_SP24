@@ -131,92 +131,93 @@ export const DetailEmployee = () => {
       size={60}
     />
   ) : (
-    <div className="main-layout row">
-      <div className="image col-md-2">
-        <div><img src={data?.picture || '../assets/imgs/avatar.jpg'} alt="userAvatar" /></div>
-      </div>
-      <div className="detail-content col-md-10">
-        <div className="detail-cover">
-          <div className="detail-content-parent">
-            <div className="detail-content-child-label">Tên Nhân Viên: </div>
-            <div className="detail-content-child-value">
-              {data?.name}
-            </div>
-          </div>
+    <div >
+      <div className="main-layout row ">
+        <h4 className="title">Xem Thông Tin Chi Tiết Nhân Viên</h4>
+        <hr className="line" />
+        <div className="image col-md-2 ">
+          <div><img src={data?.picture || '../assets/imgs/avatar.jpg'} alt="userAvatar" /></div>
         </div>
-
-        <div className="detail-cover">
-          <div className="detail-content-parent">
-            <div className="detail-content-child-label">Email: </div>
-            <div className="detail-content-child-value">
-              {data?.email}
+        <div className="detail-content col-md-10">
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">Tên Nhân Viên: </div>
+              <div className="detail-content-child-value">
+                {data?.name}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="detail-cover">
-          <div className="detail-content-parent">
-            <div className="detail-content-child-label">Số Điện Thoại: </div>
-            <div className="detail-content-child-value">
-              {data?.phoneNumber}
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">Email: </div>
+              <div className="detail-content-child-value">
+                {data?.email}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="detail-cover">
-          <div className="detail-content-parent">
-            <div className="detail-content-child-label">
-              Bộ Phận:{" "}
-            </div>
-            <div className="detail-content-child-value">
-              {data?.department}
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">Số Điện Thoại: </div>
+              <div className="detail-content-child-value">
+                {data?.phoneNumber}
+              </div>
             </div>
           </div>
-          <div className="detail-content-parent">
-            <div className="detail-content-child-label">Chức Vụ: </div>
-            <div className="detail-content-child-value">
-              {data?.role}
+
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">
+                Bộ Phận:{" "}
+              </div>
+              <div className="detail-content-child-value">
+                {data?.department}
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className="detail-cover">
-          <div className="detail-content-parent">
-            <div className="detail-content-child-label">
-              Ngày Sinh:{" "}
-            </div>
-            <div className="detail-content-child-value">
-              {dayFormat(data?.birthDate)}
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">Chức Vụ: </div>
+              <div className="detail-content-child-value">
+                {data?.role}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="detail-cover">
-          <div className="detail-content-parent">
-            <div className="detail-content-child-label">
-              Địa Chỉ Thường Trú:{" "}
-            </div>
-            <div className="detail-content-child-value">
-              {data?.address}
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">
+                Địa Chỉ Thường Trú:{" "}
+              </div>
+              <div className="detail-content-child-value">
+                {data?.address}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="button-cover grid">
-          <Button
-            className="btnCancel"
-            variant="danger"
-            onClick={handleNavigate}
-          >
-            Trở Về
-          </Button>
-          <Link to={`/manage-employee/${data?.email}/update`}>
-            <Button className="btnLink" variant="success">
-              Cập Nhật
+          <div className="button-cover grid">
+            <Button
+              className="btnCancel"
+              variant="danger"
+              onClick={handleNavigate}
+            >
+              Trở Về
             </Button>
-          </Link>
+            <Link to={`/manage-employee/${data?.email}/update`}>
+              <Button className="btnLink" variant="success">
+                Bảo Mật
+              </Button>
+            </Link>
+            <Link to={`/manage-employee/${data?.email}/update`}>
+              <Button className="btnLink" variant="success">
+                Cập Nhật
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
+
 
       <div>
         <ListView

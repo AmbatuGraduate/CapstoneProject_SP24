@@ -61,7 +61,6 @@ export const FormBase = (props: Props) => {
     const [startDate, setStartDate] = useState<Date | null>(
       props.selected || new Date()
     );
-    const [places, setPlaces] = useState([]);
 
     useEffect(() => {
       if (optionExtra) {
@@ -76,44 +75,6 @@ export const FormBase = (props: Props) => {
       );
       setStartDate(currentTime);
     }, [props.affectValue]);
-
-    // useEffect(() => {
-    //   if (props.googleAddress) {
-    //     const center = { lat: 16.047079, lng: 108.20623 };
-    //     // Create a bounding box with sides ~10km away from the center point
-    //     const defaultBounds = {
-    //       north: center.lat + 0.1,
-    //       south: center.lat - 0.1,
-    //       east: center.lng + 0.1,
-    //       west: center.lng - 0.1,
-    //     };
-    //     const input = document.getElementById("pac-input");
-    //     const options = {
-    //       bounds: defaultBounds,
-    //       componentRestrictions: { locality: "Da Nang" },
-    //       fields: ["address_components", "geometry", "icon", "name"],
-    //       strictBounds: false,
-    //     };
-    //     const autocomplete = new window.google.maps.places.Autocomplete(
-    //       input,
-    //       options
-    //     );
-
-    //     // Add event listener to handle place selection
-    //     autocomplete.addListener("place_changed", () => {
-    //       const place = autocomplete.getPlace();
-    //       console.log(place); // Handle the selected place here
-    //       if (place.geometry && place.geometry.location) {
-    //         const latitude = place.geometry.location.lat();
-    //         const longitude = place.geometry.location.lng();
-    //         console.log("Latitude:", latitude);
-    //         console.log("Longitude:", longitude);
-    //         // Xử lý tọa độ latitude và longitude ở đây
-    //       }
-    //     });
-    //     console.log(places);
-    //   }
-    // }, [props.value]);
 
     const fetchDataForFormSelect = async (option: OptionExtra) => {
       const res = await useApi.get(option.url);
@@ -149,7 +110,7 @@ export const FormBase = (props: Props) => {
           <Form.Control
             {...rest}
             as="textarea"
-            rows={3}
+            rows={4}
             name={key}
             disabled={_disabled}
           />
@@ -209,6 +170,9 @@ export const FormBase = (props: Props) => {
         data[f.key] = Number((e.target as any)?.[f.key].value);
       }
       if (f.key === "status") {
+        data[f.key] = Number((e.target as any)?.[f.key].value);
+      }
+      if (f.key === "userRole") {
         data[f.key] = Number((e.target as any)?.[f.key].value);
       }
     });

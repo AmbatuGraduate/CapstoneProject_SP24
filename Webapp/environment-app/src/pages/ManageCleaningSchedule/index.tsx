@@ -1,16 +1,100 @@
 import { Button, Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { useApi, ClEANING_SCHEDULE, ClEANING_SCHEDULE_DELETE } from "../../Api";
+import { useApi, ClEANING_SCHEDULE, ClEANING_SCHEDULE_DELETE, ClEANING_SCHEDULE_UPDATE, ClEANING_SCHEDULE_DETAIL, EMPLOYEE_LIST } from "../../Api";
 import { ListView } from "../../Components/ListView";
-import { Column } from "../../Components/ListView/Table";
-import { taskStatus, timeFormat } from "../../utils";
+import { dayFormat, taskStatus, timeFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageCleaningSchedule = () => {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const [employees, setEmployees] = useState<employee[]>([]);
+  const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
+  const [hoveringRows, setHoveringRows] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState(null); // Thêm state mới để lưu trữ id của hàng được chọn
+  const navigate = useNavigate();
+  const ref = useRef<any>();
+
+  type employee = {
+    id: string;
+    email: string;
+    name: string;
+  };
+
+  useEffect(() => {
+    async function fetchEmployees() {
+      try {
+        const response = await useApi.get(EMPLOYEE_LIST);
+        setEmployees(response.data);
+      } catch (error) {
+        console.error("Error fetching employees: ", error);
+      }
+    }
+    fetchEmployees();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Kiểm tra xem đã chọn nhân viên chưa
+      if (!selectedEmployeeId) {
+        throw new Error("Vui lòng chọn nhân viên");
+      }
+
+      // Lấy thông tin nhân viên được chọn từ danh sách nhân viên
+      const selectedEmployee = employees.find((employee) => employee.email === selectedEmployeeId);
+
+      if (!selectedEmployee) {
+        throw new Error("Không tìm thấy thông tin của nhân viên được chọn.");
+      }
+
+      // Tạo đối tượng attendee từ thông tin nhân viên
+      const attendee = {
+        name: selectedEmployee.name,
+        email: selectedEmployee.email
+      };
+
+      // Lấy dữ liệu hiện tại của hàng được chọn
+      // @ts-ignore or @ts-expect-error
+      const response = await useApi.get(ClEANING_SCHEDULE_DETAIL.replace(":id", selectedRowId));
+      const selectedRowData = response.data.myEvent;
+
+      const updatedRowData = {
+        summary: selectedRowData.summary,
+        description: selectedRowData.description,
+        location: selectedRowData.location,
+        start: {
+          dateTime: new Date(selectedRowData.start).toISOString()
+        },
+        end: {
+          dateTime: new Date(selectedRowData.end).toISOString()
+        },
+        attendees: [
+          {
+            name: attendee.name,
+            email: attendee.email
+          }
+        ]
+      };
+
+
+      // Gửi yêu cầu cập nhật lịch cắt tỉa
+      // @ts-ignore or @ts-expect-error
+      await useApi.post(ClEANING_SCHEDULE_UPDATE.replace(":id", selectedRowId), updatedRowData);
+
+      // Reload danh sách sau khi cập nhật thành công
+      ref.current.reload();
+      setShowModal(false); // Đóng modal sau khi gửi yêu cầu thành công
+    } catch (error) {
+      console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
+      // Xử lý lỗi tại đây (ví dụ: hiển thị thông báo lỗi cho người dùng)
+    }
+  };
+
 
   const calculateModalPosition = (event) => {
     const buttonRect = event.target.getBoundingClientRect();
@@ -23,12 +107,6 @@ export const ManageCleaningSchedule = () => {
     setModalPosition({ top, left });
   };
 
-
-  const [hoveringRows, setHoveringRows] = useState({});
-  const [showModal, setShowModal] = useState(false);
-  const navigate = useNavigate();
-
-  // Hàm xử lý sự kiện khi chuột di chuột vào hàng
   const handleMouseEnter = (id) => {
     setHoveringRows((prevHoveringRows) => ({
       ...prevHoveringRows,
@@ -36,7 +114,6 @@ export const ManageCleaningSchedule = () => {
     }));
   };
 
-  // Hàm xử lý sự kiện khi chuột di ra khỏi hàng
   const handleMouseLeave = (id) => {
     setHoveringRows((prevHoveringRows) => ({
       ...prevHoveringRows,
@@ -44,14 +121,12 @@ export const ManageCleaningSchedule = () => {
     }));
   };
 
-  const ref = useRef<any>();
-
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id) => {
     await useApi.delete(ClEANING_SCHEDULE_DELETE.replace(":id", id));
-    ref.current?.reload();
+    ref.current.reload();
   };
 
-  const columns: Column[] = [
+  const columns = [
     {
       header: "",
       accessorFn(row) {
@@ -74,13 +149,24 @@ export const ManageCleaningSchedule = () => {
           </h6>
         );
       },
+      width: "8%",
+    },
+    {
+      header: "Ngày Làm",
+      accessorFn(row) {
+        return (
+          <h6 className="shortText">
+            {dayFormat(row.end)}
+          </h6>
+        );
+      },
       width: "10%",
     },
     {
       header: "Tiêu Đề",
       accessorFn(row) {
         return (
-          <h6 >
+          <h6 className="linkDiv" >
             <Link
               className="linkCode"
               style={{ fontWeight: "bold", textAlign: "center" }}
@@ -99,20 +185,20 @@ export const ManageCleaningSchedule = () => {
         const isRowHovering = hoveringRows[row.id];
 
         if (isRowHovering) {
-          return ( // Hiển thị "Thêm nhân viên" khi chuột di chuyển vào
+          return (
             <h6
               style={{ fontWeight: "bold", cursor: "pointer", color: "#FB6D48" }}
               onMouseLeave={() => handleMouseLeave(row.id)}
               onClick={(event) => {
-                calculateModalPosition(event); // Tính toán vị trí của modal khi nhấn vào nút
-                setShowModal(true); // Hiển thị modal
+                setSelectedRowId(row.id); // Lưu id của hàng được chọn
+                calculateModalPosition(event);
+                setShowModal(true);
               }}
             >
               Thêm nhân viên
             </h6>
           );
         } else {
-          // Kiểm tra và hiển thị dữ liệu như ban đầu khi không hover
           if (
             row.attendees &&
             row.attendees.length == 1 &&
@@ -134,9 +220,7 @@ export const ManageCleaningSchedule = () => {
             row.attendees[0].user.email
           ) {
             return <h6 >{row.attendees[0].fullName},{row.attendees[1].fullName},...</h6>;
-          }
-
-          else {
+          } else {
             return <h6 onMouseEnter={() => handleMouseEnter(row.id)} style={{ color: "orange" }}>Cần thêm nhân viên thực hiện</h6>;
           }
         }
@@ -148,7 +232,7 @@ export const ManageCleaningSchedule = () => {
       accessorFn(row) {
         return <h6>{row.location}</h6>;
       },
-      width: "35%",
+      width: "25%",
     },
     {
       header: "Trạng Thái",
@@ -205,13 +289,24 @@ export const ManageCleaningSchedule = () => {
                 <Modal.Title>Thêm Nhân Viên Thực Hiện</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                {/* Form để nhập tên nhân viên */}
-                <form >
+                <form onSubmit={handleSubmit}>
                   <label>
-                    <input style={{ width: "300px" }} type="text" />
+                    Chọn nhân viên:
+                    <select
+                      style={{ width: "300px" }}
+                      value={selectedEmployeeId}
+                      onChange={(e) => setSelectedEmployeeId(e.target.value)}
+                    >
+                      <option value="">Chọn nhân viên</option>
+                      {employees.map((employee) => (
+                        <option key={employee.id} value={employee.email}>
+                          {employee.name}
+                        </option>
+                      ))}
+                    </select>
                   </label>
+                  <button type="submit">Xác nhận</button>
                 </form>
-                <button type="submit">Xác nhận</button>
               </Modal.Body>
             </Modal>
           </>

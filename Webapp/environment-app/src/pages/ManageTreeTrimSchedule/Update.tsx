@@ -1,9 +1,7 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { EMPLOYEE_LIST, TREE_TRIM_SCHEDULE_DETAIL, TREE_TRIM_SCHEDULE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor } from "../../utils";
 import { useEffect, useRef, useState } from "react";
-import { useCookies } from "react-cookie";
 
 export const UpdateTreeTrimSchedule = () => {
     const navigate = useNavigate();
@@ -11,7 +9,6 @@ export const UpdateTreeTrimSchedule = () => {
     const [data, setData] = useState<any>();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
-    const [token] = useCookies(["accessToken"]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -79,7 +76,7 @@ export const UpdateTreeTrimSchedule = () => {
             label: "Ghi Chú",
             formType: "textarea",
             key: "description",
-            placeholder: "Ví dụ: Cần lưu ý...",
+            defaultValue: data?.myEvent?.description,
         },
     ];
 
@@ -129,11 +126,10 @@ export const UpdateTreeTrimSchedule = () => {
             delete requestData["end.dateTime"];
             delete requestData["attendees.email"]
             delete requestData["departmentEmail"]
-            delete requestData["treeId"]
 
             await useApi.post(TREE_TRIM_SCHEDULE_UPDATE.replace(":id", id), requestData);
             ref.current?.reload();
-            navigate("/manage-treetrim-schedule");
+            navigate(-1)
         } catch (error) {
             console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
             setIsLoading(false);
@@ -146,7 +142,7 @@ export const UpdateTreeTrimSchedule = () => {
             <FormBase
                 fields={fields}
                 onSave={handleSubmit}
-                onCancel={() => navigate("/manage-treetrim-schedule")}
+                onCancel={() => navigate(-1)}
             />
         </div>
     );

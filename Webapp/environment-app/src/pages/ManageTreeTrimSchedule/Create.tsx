@@ -1,18 +1,42 @@
 import { useNavigate } from "react-router-dom";
-import { EMPLOYEE_LIST, TREE_LIST, TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
+import { DEPARTMENT_EMPLOYEE, DEPARTMENT_LIST, EMPLOYEE_LIST, TREE_ADDRESS, TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
-import { Value } from "sass";
 
 export const CreateTreeTrimSchedule = () => {
     const navigate = useNavigate();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
-    const [token] = useCookies(["accessToken"]);
+    const [departmentEmail, setDepartmentEmail] = useState<string | null>(null);
 
     const fields: Field[] = [
+        {
+            label: "Bộ Phận",
+            formType: "select",
+            key: "departmentEmail",
+            optionExtra: {
+                url: DEPARTMENT_LIST,
+                _key: "name",
+                _value: "email",
+            },
+            onChange: (e) => setDepartmentEmail(e.target.value),
+        },
+        {
+            label: "Nhân Viên Thực Hiện",
+            formType: "select",
+            key: "attendees.email",
+            // optionExtra: {
+            //     url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
+            //     _key: "value.name",
+            //     _value: "value.email",
+            // },
+            optionExtra: {
+                url: EMPLOYEE_LIST,
+                _key: "name",
+                _value: "email",
+            },
+        },
         {
             label: "Tiêu Đề",
             formType: "input",
@@ -33,32 +57,6 @@ export const CreateTreeTrimSchedule = () => {
             label: "Kết Thúc Trước",
             formType: "datetime",
             key: "end.dateTime",
-        },
-        {
-            label: "Cây Cần Cẳt",
-            formType: "select",
-            key: "treeId",
-            optionExtra: {
-                url: TREE_LIST,
-                _key: "treeCode",
-                _value: "treeCode",
-            },
-        },
-        {
-            label: "Bộ Phận",
-            formType: "input",
-            key: "departmentEmail",
-            defaultValue: "cayxanh@vesinhdanang.xyz",
-        },
-        {
-            label: "Nhân Viên Thực Hiện",
-            formType: "select",
-            key: "attendees.email",
-            optionExtra: {
-                url: EMPLOYEE_LIST,
-                _key: "name",
-                _value: "email",
-            },
         },
         {
             label: "Ghi Chú",
@@ -96,6 +94,11 @@ export const CreateTreeTrimSchedule = () => {
             if (!selectedEmployeeInfo) {
                 throw new Error("Không tìm thấy thông tin của nhân viên được chọn.");
             }
+            const selectedAddress = data["location"]
+
+            const treeListResponse = await useApi.get(TREE_ADDRESS.replace(":address", selectedAddress));
+            const treeList = treeListResponse.data;
+            console.log(treeList.treeCode);
 
             // Tạo đối tượng attendee chứa tên và email của nhân viên
             const attendee = {
@@ -103,11 +106,15 @@ export const CreateTreeTrimSchedule = () => {
                 email: selectedEmployee
             };
 
+            const treeCodes = treeList.map((tree: any) => tree.treeCode);
+            const treeId = treeCodes.join(',');
+
             const requestData = {
                 ...data,
                 start: { dateTime: formattedStartDateTime },
                 end: { dateTime: formattedEndDateTime },
                 attendees: [attendee], // Sử dụng thông tin nhân viên thu được
+                treeId: treeId,
             };
 
             delete requestData["start.dateTime"];
