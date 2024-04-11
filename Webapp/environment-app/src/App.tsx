@@ -29,6 +29,7 @@ import { Manage } from "./pages/Manage";
 import { ManageGroup } from "./pages/ManageGroup";
 import { CreateGroup } from "./pages/ManageGroup/Create";
 import { DetailGroup } from "./pages/ManageGroup/Detail";
+import { Profile } from "./pages/Login/Profile";
 
 
 function App() {
@@ -161,6 +162,10 @@ function App() {
         {
           path: "/manage-group/:email",
           element: <DetailGroup />,
+        },
+        {
+          path: "/myprofile",
+          element: <Profile />,
         },
       ],
     },
