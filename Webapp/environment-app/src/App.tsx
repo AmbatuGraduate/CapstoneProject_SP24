@@ -28,6 +28,7 @@ import { UpdateCleaningSchedule } from "./pages/ManageCleaningSchedule/Update";
 import { Manage } from "./pages/Manage";
 import { ManageGroup } from "./pages/ManageGroup";
 import { CreateGroup } from "./pages/ManageGroup/Create";
+import { DetailGroup } from "./pages/ManageGroup/Detail";
 
 
 function App() {
@@ -156,6 +157,10 @@ function App() {
         {
           path: "/manage-group/create",
           element: <CreateGroup />,
+        },
+        {
+          path: "/manage-group/:email",
+          element: <DetailGroup />,
         },
       ],
     },
