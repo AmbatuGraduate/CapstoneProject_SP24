@@ -49,8 +49,8 @@ export const Manage = () => {
   useEffect(() => {
     const createHubConnection = async () => {
       const hubConnect = new signalR.HubConnectionBuilder()
-        // .withUrl("https://vesinhdanang.xyz:7024/chatHub")
-        .withUrl("https://localhost:7024/chatHub")
+        .withUrl("https://vesinhdanang.xyz:7024/chatHub")
+        // .withUrl("https://localhost:7024/chatHub")
         .build();
       try {
         await hubConnect.start();
@@ -68,8 +68,8 @@ export const Manage = () => {
 
     createHubConnection();
 
-    // axios.get(`https://vesinhdanang.xyz:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
-      axios.get(`https://localhost:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
+    axios.get(`https://vesinhdanang.xyz:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
+      // axios.get(`https://localhost:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
       headers: {
         "Content-Type": "application/json",
       },
