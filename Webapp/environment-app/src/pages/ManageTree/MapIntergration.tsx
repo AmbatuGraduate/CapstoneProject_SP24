@@ -46,10 +46,9 @@ export default function SimpleMap(props: SimpleMapProps) {
     // Important! Always set the container height explicitly
     <div
       style={{
-        height: "60vh",
+        height: "100%",
         width: "100%",
-        display: "flex",
-        alignItems: "center",
+        padding: "3rem"
       }}
     >
       <GoogleMapReact
@@ -78,6 +77,7 @@ export function GoogleMap(props: GoogleMapProps) {
     lng: 108.216446,
   });
   const autocompleteInputRef = useRef<HTMLInputElement>(null);
+
   let autocomplete: google.maps.places.Autocomplete;
 
   const [address, setAddress] = useState<string>("");

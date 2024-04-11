@@ -79,7 +79,7 @@ export const UpdateTreeTrimSchedule = () => {
             label: "Ghi Chú",
             formType: "textarea",
             key: "description",
-            placeholder: "Ví dụ: Cần lưu ý...",
+            defaultValue: data?.myEvent?.description,
         },
     ];
 
@@ -133,7 +133,7 @@ export const UpdateTreeTrimSchedule = () => {
 
             await useApi.post(TREE_TRIM_SCHEDULE_UPDATE.replace(":id", id), requestData);
             ref.current?.reload();
-            navigate("/manage-treetrim-schedule");
+            navigate(-1)
         } catch (error) {
             console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
             setIsLoading(false);
@@ -146,7 +146,7 @@ export const UpdateTreeTrimSchedule = () => {
             <FormBase
                 fields={fields}
                 onSave={handleSubmit}
-                onCancel={() => navigate("/manage-treetrim-schedule")}
+                onCancel={() => navigate(-1)}
             />
         </div>
     );

@@ -40,7 +40,7 @@ export const CreateTree = () => {
       formType: "number",
       key: "bodyDiameter",
       googleAddress: false,
-      placeholder: "Ví dụ: 150",
+      placeholder: "Ví dụ: 50",
     },
     {
       label: "Tán Lá (cm)",
@@ -67,18 +67,6 @@ export const CreateTree = () => {
       affectValue: intervalCutTime,
       affectDate: plantTime || new Date(),
       googleAddress: false,
-      // onChange: (e) => {
-      //   const plantTimeValue = data["plantTime"];
-      //   const plantTime = dateConstructor(plantTimeValue);
-      //   const intervalCutTime = parseInt(e.target.value) || 0;
-      //   const newCutTime = new Date(
-      //     plantTime.getFullYear(),
-      //     plantTime.getMonth() + intervalCutTime,
-      //     plantTime.getDate()
-      //   );
-      //   newCutTime.setMonth(newCutTime.getMonth() + intervalCutTime);
-      //   setCutTime(newCutTime);
-      // },
     },
     {
       label: "Khoảng Thời Gian Cắt (Tháng)",

@@ -34,18 +34,21 @@ export const ManageGroup = () => {
           </h6>
         );
       },
+      width: "30%",
     },
     {
       header: "Tên bộ phận",
       accessorFn(row) {
-        return <h6>{row.name}</h6>;
+        return <h6 className="shortText">{row.name}</h6>;
       },
+      width: "30%",
     },
     {
       header: "Mô tả",
       accessorFn(row) {
         return <h6 className="shortText">{row.description}</h6>;
       },
+      width: "40%",
     },
   ];
 
@@ -66,7 +69,7 @@ export const ManageGroup = () => {
             onClick={() => navigate(-1)}
           >
             <MdAddCircleOutline className="iconAdd" />
-            Thêm bộ phận
+            Thêm Bộ Phận
           </Button>
         }
       />

@@ -5,6 +5,7 @@ import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { useRef } from "react";
+import { roleFormat } from "../../utils";
 
 import { MdAddCircleOutline } from "react-icons/md";
 
@@ -13,31 +14,19 @@ export const ManageEmployee = () => {
   const ref = useRef<any>();
 
 
-  const handleDelete = async (id: string) => {
-    await useApi.delete(EMPLOYEE_DELETE.replace(":id", id));
+  const handleDelete = async (email: string) => {
+    await useApi.delete(EMPLOYEE_DELETE.replace(":email", email));
     ref.current?.reload();
   };
 
   const columns: Column[] = [
-    // {
-    //   header: "",
-    //   accessorFn(row) {
-    //     return (
-    //       <input
-    //         type="checkbox"
-    //         onChange={(e) => handleCheckboxChange(e, row.id)}
-    //         checked={selectedRows.includes(row.id)}
-    //       />
-    //     );
-    //   },
-    // },
     {
       header: "",
       accessorFn(row) {
         return (
           <div>
             <button type="button" className="btn btn-click" onClick={() => { }}>
-              <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
+              <ModalDelete handleDelete={() => handleDelete(row.email)} />
             </button>
           </div>
         );
@@ -78,7 +67,7 @@ export const ManageEmployee = () => {
     {
       header: "Chức Vụ",
       accessorFn(row) {
-        return <h6 className="shortText">{row.role}</h6>;
+        return <h6 className="shortText">{roleFormat(row.role).text}</h6>;
       },
       width: "10%",
     },
@@ -116,6 +105,9 @@ export const ManageEmployee = () => {
             Thêm Nhân Viên
           </Button>
         }
+        filter={(row) => {
+          return row.role != "Admin";
+        }}
       />
     </div>
   );
