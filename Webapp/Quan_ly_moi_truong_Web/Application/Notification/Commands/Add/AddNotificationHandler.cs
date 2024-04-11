@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces.Persistence.Notifiy;
+﻿using Application.Calendar;
+using Application.Common.Interfaces.Persistence.Notifiy;
 using Application.Notification.Common;
 using Domain.Entities.Notification;
 using ErrorOr;
@@ -20,13 +21,14 @@ namespace Application.Notification.Commands.Add
         {
             await Task.CompletedTask;
 
-            var notification = new Notifications
+            var notification = new Domain.Entities.Notification.Notifications
             {
                 Id = Guid.NewGuid(),
+                Sender = "Hệ Thống",
                 Username = request.Username,
                 Message = request.Message,
-                MessageType = request.MessageType,
-                NotificationDateTime = DateTime.UtcNow,
+                MessageType = "Single",
+                NotificationDateTime = DateTime.Now,
             };
 
             var createdNotification = await _notificationRepository.CreateNotification(notification);

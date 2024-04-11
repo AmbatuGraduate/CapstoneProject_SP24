@@ -85,6 +85,51 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
+        public async Task<MyAddedEvent> AutoAddEvent(CalendarService service, string calendarId, MyAddedEvent myEvent)
+        {
+            await Task.CompletedTask;
+            try
+            {
+                var addedEvent = new Event()
+                {
+                    Summary = myEvent.Summary,
+                    Description = myEvent.Description,
+                    Location = myEvent.location,
+                    Start = new Google.Apis.Calendar.v3.Data.EventDateTime()
+                    {
+                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.Start.DateTime),
+                        TimeZone = TimeZone
+                    },
+                    End = new Google.Apis.Calendar.v3.Data.EventDateTime()
+                    {
+                        DateTimeDateTimeOffset = DateTime.Parse(myEvent.End.DateTime),
+                        TimeZone = TimeZone
+                    },
+                    Attendees = myEvent.Attendees
+                        .Where(attendee => !string.IsNullOrEmpty(attendee.Email))
+                        .Select(attendee => new EventAttendee { Email = attendee.Email })
+                        .ToList(),
+                    ExtendedProperties = new Event.ExtendedPropertiesData
+                    {
+                        Private__ = new Dictionary<string, string>
+                        {
+                            {EventExtendedProperties.JobWorkingStatus, ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart)},
+                            {EventExtendedProperties.Tree, myEvent.TreeId},
+                            {EventExtendedProperties.DepartmentEmail, myEvent.DepartmentEmail }
+                        }
+                    }
+                };
+                EventsResource.InsertRequest insertRequest = service.Events.Insert(addedEvent, calendarId);
+                Event createdEvent = insertRequest.Execute();
+                return myEvent;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message} - {ex.ToString()}");
+                return null;
+            }
+        }
+
         // update job status
         public async Task<string> UpdateJobStatus(string accessToken, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
         {
@@ -156,7 +201,7 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                         DateTimeDateTimeOffset = DateTime.Parse(myEvent.End.DateTime),
                         TimeZone = TimeZone
                     };
-                    retrievedEvent.Attendees
+                    retrievedEvent.Attendees = myEvent.Attendees
                         .Where(attendee => !string.IsNullOrEmpty(attendee.Email)) // Skip attendees with null or empty email
                         .Select(attendee => new EventAttendee { Email = attendee.Email })
                         .ToList();

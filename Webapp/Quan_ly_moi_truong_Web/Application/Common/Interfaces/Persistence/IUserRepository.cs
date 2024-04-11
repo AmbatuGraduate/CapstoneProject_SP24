@@ -2,6 +2,7 @@
 using Application.User.Common.List;
 using Application.User.Common.UpdateUser;
 using Domain.Entities.User;
+using Domain.Enums;
 
 namespace Application.Common.Interfaces.Persistence
 {
@@ -17,6 +18,7 @@ namespace Application.Common.Interfaces.Persistence
 
         void Update(Users user);
         string GetDepartmentNameById(string departmentId);
+        string GetDepartmentEmailById(string departmentId);
         string GetRoleNameById(string roleId);
         Task<string> GetGoogleUserImage(string accessToken, string userEmail);
 
@@ -29,5 +31,7 @@ namespace Application.Common.Interfaces.Persistence
         Task<UpdateGoogleUser> UpdateGoogleUser(UpdateGoogleUser user);
 
         Task<bool> DeleteGoogleUser(string accessToken, string userEmail);
+
+        string ConvertToUserRoleId(UserRole role);
     }
 }
