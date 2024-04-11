@@ -79,7 +79,7 @@ export const UpdateTreeTrimSchedule = () => {
             label: "Ghi Chú",
             formType: "textarea",
             key: "description",
-            placeholder: "Ví dụ: Cần lưu ý...",
+            defaultValue: data?.myEvent?.description,
         },
     ];
 

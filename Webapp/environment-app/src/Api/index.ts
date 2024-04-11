@@ -6,10 +6,11 @@ export const EMPLOYEE_LIST = "/User/GetGoogleUsers/GetGoogleUsers";
 export const EMPLOYEE_DETAIL = "/User/GetGoogleUser?:email";
 export const EMPLOYEE_ADD = "/User/AddGoogleUser";
 export const EMPLOYEE_UPDATE = "/User/UpdateGoogleUser";
-export const EMPLOYEE_DELETE = "/User/DeleteGoogleUser";
+export const EMPLOYEE_DELETE = "/User/DeleteGoogleUser?userEmail=:email";
 export const EMPLOYEE_SCHEDULE = "/Calendar/GetCalendarEventsByAttendeeEmail?calendarTypeEnum=1&attendeeEmail=:email";
 
 export const DEPARTMENT_LIST = "/Group/GetAllGroups";
+export const DEPARTMENT_EMPLOYEE = "/Group/GetAllMembersOfGroup?groupEmail=:groupEmail";
 
 export const TREE_LIST = "/Tree/Get";
 export const TREE_DETAIL = "/Tree/GetByTreeCode/:id";

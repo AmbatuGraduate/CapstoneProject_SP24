@@ -14,13 +14,13 @@ export const CreateEmployee = () => {
     {
       label: "Họ",
       formType: "input",
-      key: "familyName",
+      key: "name",
       placeholder: "Ví dụ: Nguyễn",
     },
     {
       label: "Tên",
       formType: "input",
-      key: "name",
+      key: "familyName",
       placeholder: "Ví dụ: Văn A",
     },
     {
@@ -33,11 +33,6 @@ export const CreateEmployee = () => {
       label: "Mật Khẩu",
       formType: "input",
       key: "password",
-    },
-    {
-      label: "Ngày Sinh",
-      formType: "date",
-      key: "birthDate",
     },
     {
       label: "Số Điện Thoại",
@@ -65,42 +60,18 @@ export const CreateEmployee = () => {
   const handleSubmit = async (data: Record<string, any>) => {
     setIsLoading(true);
 
-    // Ensure birthDate is in the correct format (dd/mm/yyyy)
-    const [day, month, year] = data.birthDate.split('/').map(Number);
-    const parsedDate = new Date(year, month - 1, day);
-
-    // Check if parsedDate is a valid date
-    if (isNaN(parsedDate.getTime())) {
-      console.error('Invalid date format for birthDate');
-      setIsLoading(false);
-      return;
-    }
-
-    // Convert birthDate to ISO string
-    const birthDate = parsedDate.toISOString();
-
-    const requestData = {
-      ...data,
-      birthDate: birthDate,
-    };
-
     try {
-      // Call the API to add employee
-      await useApi.post(EMPLOYEE_ADD, requestData);
-
-      // Reload the ref if available
-      if (ref.current) {
-        ref.current.reload();
-      }
-
-      // Navigate to manage-employee page
+      await useApi.post(EMPLOYEE_ADD, {
+        ...data,
+      });
+      ref.current?.reload();
       navigate("/manage-employee");
     } catch (error) {
-      console.error("Error while adding employee:", error);
-      setIsLoading(false); // Reset loading state if there's an error
+      console.error("Error creating employee:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
-
 
   return (
     <div className="form-cover">

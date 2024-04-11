@@ -9,7 +9,7 @@ import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageTreeTrimSchedule = () => {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
-  const [employees, setEmployees] = useState([]);
+  const [employees, setEmployees] = useState<employee[]>([]);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
   const [hoveringRows, setHoveringRows] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -17,6 +17,11 @@ export const ManageTreeTrimSchedule = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
 
+  type employee = {
+    id: string;
+    email: string;
+    name: string;
+  };
 
   useEffect(() => {
     async function fetchEmployees() {
@@ -53,6 +58,7 @@ export const ManageTreeTrimSchedule = () => {
       };
 
       // Lấy dữ liệu hiện tại của hàng được chọn
+      // @ts-ignore or @ts-expect-error
       const response = await useApi.get(TREE_TRIM_SCHEDULE_DETAIL.replace(":id", selectedRowId));
       const selectedRowData = response.data.myEvent;
 
@@ -76,6 +82,7 @@ export const ManageTreeTrimSchedule = () => {
 
 
       // Gửi yêu cầu cập nhật lịch cắt tỉa
+      // @ts-ignore or @ts-expect-error
       await useApi.post(TREE_TRIM_SCHEDULE_UPDATE.replace(":id", selectedRowId), updatedRowData);
 
       // Reload danh sách sau khi cập nhật thành công

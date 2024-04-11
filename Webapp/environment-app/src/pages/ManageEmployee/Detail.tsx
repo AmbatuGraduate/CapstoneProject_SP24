@@ -188,17 +188,6 @@ export const DetailEmployee = () => {
           <div className="detail-cover">
             <div className="detail-content-parent">
               <div className="detail-content-child-label">
-                Ngày Sinh:{" "}
-              </div>
-              <div className="detail-content-child-value">
-                {dayFormat(data?.birthDate)}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">
                 Địa Chỉ Thường Trú:{" "}
               </div>
               <div className="detail-content-child-value">

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { EMPLOYEE_DETAIL, EMPLOYEE_UPDATE, useApi } from "../../Api";
+import { DEPARTMENT_LIST, EMPLOYEE_DETAIL, EMPLOYEE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dayFormat } from "../../utils";
 import { useCookies } from "react-cookie";
@@ -11,6 +11,8 @@ export const UpdateEmployee = () => {
   const [data, setData] = useState<any>();
   const [token] = useCookies(["accessToken"]);
   const [address, setAddress] = useState<string | null>("");
+  const ref = useRef<any>();
+  const [, setIsLoading] = useState(false);
 
   const fetch = async () => {
     try {
@@ -25,18 +27,27 @@ export const UpdateEmployee = () => {
     fetch();
   }, []);
 
+  const splitFullName = (fullName: string) => {
+    const parts = fullName.split(" ");
+    const lastName = parts[0]; // Lấy phần tử đầu tiên của chuỗi
+    const firstName = parts.slice(1).join(" "); // Lấy các phần tử còn lại và ghép lại thành họ và tên
+    return { firstName, lastName };
+  };
+
+  const { firstName, lastName } = splitFullName(data?.name || "");
+
   const fields: Field[] = [
     {
-      label: "Tên Nhân Viên",
+      label: "Họ",
       formType: "input",
       key: "name",
-      defaultValue: data?.name,
+      defaultValue: lastName,
     },
     {
-      label: "Ngày Sinh",
+      label: "Tên",
       formType: "input",
-      key: "birthDate",
-      defaultValue: dayFormat(data?.birthDate),
+      key: "familyName",
+      defaultValue: firstName,
     },
     {
       label: "Email",
@@ -52,16 +63,21 @@ export const UpdateEmployee = () => {
     },
     {
       label: "Bộ Phận",
-      formType: "input",
-      key: "department",
+      formType: "select",
+      key: "departmentEmail",
+      optionExtra: {
+        url: DEPARTMENT_LIST,
+        _key: "name",
+        _value: "email",
+      },
       defaultValue: data?.department,
     },
-    {
-      label: "Chức Vụ",
-      formType: "input",
-      key: "role",
-      defaultValue: data?.role,
-    },
+    // {
+    //   label: "Chức Vụ",
+    //   formType: "input",
+    //   key: "role",
+    //   defaultValue: data?.role,
+    // },
 
     {
       label: "Địa Chỉ Thường Trú",
@@ -77,10 +93,19 @@ export const UpdateEmployee = () => {
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
-    await useApi.put(EMPLOYEE_UPDATE, {
-      ...data,
-    });
-    console.log("UpdateTree", data);
+    setIsLoading(true);
+
+    try {
+      await useApi.post(EMPLOYEE_UPDATE, {
+        ...data,
+      });
+      ref.current?.reload();
+      navigate(-1)
+    } catch (error) {
+      console.error("Error update employee:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -89,7 +114,7 @@ export const UpdateEmployee = () => {
       <FormBase
         fields={fields}
         onSave={handleSubmit}
-        onCancel={() => navigate("/manage-employee")}
+        onCancel={() => navigate(-1)}
       />
     </div>
   );

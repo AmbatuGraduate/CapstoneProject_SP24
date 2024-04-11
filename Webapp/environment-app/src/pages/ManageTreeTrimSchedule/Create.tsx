@@ -1,16 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { DEPARTMENT_LIST, EMPLOYEE_LIST, TREE_LIST, TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
+import { DEPARTMENT_EMPLOYEE, DEPARTMENT_LIST, EMPLOYEE_LIST, TREE_LIST, TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
-import { Value } from "sass";
 
 export const CreateTreeTrimSchedule = () => {
     const navigate = useNavigate();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
     const [token] = useCookies(["accessToken"]);
+    const [departmentEmail, setDepartmentEmail] = useState<string | null>(null);
 
     const fields: Field[] = [
         {
@@ -53,15 +52,16 @@ export const CreateTreeTrimSchedule = () => {
                 _key: "name",
                 _value: "email",
             },
+            onChange: (e) => setDepartmentEmail(e.target.value),
         },
         {
             label: "Nhân Viên Thực Hiện",
             formType: "select",
             key: "attendees.email",
             optionExtra: {
-                url: EMPLOYEE_LIST,
-                _key: "name",
-                _value: "email",
+                url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
+                _key: "value.name",
+                _value: "value.email",
             },
         },
         {

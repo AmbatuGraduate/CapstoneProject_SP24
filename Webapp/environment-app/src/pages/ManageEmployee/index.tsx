@@ -13,31 +13,19 @@ export const ManageEmployee = () => {
   const ref = useRef<any>();
 
 
-  const handleDelete = async (id: string) => {
-    await useApi.delete(EMPLOYEE_DELETE.replace(":id", id));
+  const handleDelete = async (email: string) => {
+    await useApi.delete(EMPLOYEE_DELETE.replace(":email", email));
     ref.current?.reload();
   };
 
   const columns: Column[] = [
-    // {
-    //   header: "",
-    //   accessorFn(row) {
-    //     return (
-    //       <input
-    //         type="checkbox"
-    //         onChange={(e) => handleCheckboxChange(e, row.id)}
-    //         checked={selectedRows.includes(row.id)}
-    //       />
-    //     );
-    //   },
-    // },
     {
       header: "",
       accessorFn(row) {
         return (
           <div>
             <button type="button" className="btn btn-click" onClick={() => { }}>
-              <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
+              <ModalDelete handleDelete={() => handleDelete(row.email)} />
             </button>
           </div>
         );
