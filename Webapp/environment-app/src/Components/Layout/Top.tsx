@@ -18,7 +18,7 @@ const Top = () => {
 
   const LogOut = async () => {
     try {
-      await fetch("https://vesinhdanang.xyz:7024/api/auth/googlelogout", {
+      await fetch("https://localhost:7024/api/auth/googlelogout", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

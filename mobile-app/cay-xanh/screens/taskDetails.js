@@ -149,11 +149,14 @@ export default function TaskDetails({ route }) {
                     <Text style={styles.dateText}>{formattedDate}</Text>
 
                     <View style={styles.detailsContainer}>
+
+
                         <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
                             <Icon name="leaf" type="font-awesome" size={20} color="green" />
-                            <Text style={styles.nameText}>Chi tiết công việc</Text>
+                            <Text style={styles.nameText}>
+                                {treeArray && treeArray.length > 0 ? 'Cắt tỉa cây có mã số' : 'Chi tiết công việc'}
+                            </Text>
                         </View>
-
                         {treeArray.map((item, index) => (
                             <Text key={index} style={styles.infoText}>{item.trim()}</Text>
                         ))}

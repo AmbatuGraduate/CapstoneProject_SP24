@@ -144,8 +144,6 @@ namespace API.Controllers
 
         // get google calendar events by department email
         [HttpGet()]
-        [Authorize(Roles = "Admin, Manager, Employee")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetCalendarEventsByDepartmentEmail(CalendarTypeEnum calendarTypeEnum, string departmentEmail)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -294,25 +292,25 @@ namespace API.Controllers
         }
 
         // auto add events
-        [HttpGet]
-        [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
-        public async Task<IActionResult> AutoAddCalendarEvent(CalendarTypeEnum calendarTypeEnum)
-        {
-            var httpContext = _httpContextAccessor.HttpContext;
-            //Access HttpContext
-            var token = httpContext.Request.Cookies["u_tkn"];
-            System.Diagnostics.Debug.WriteLine("Checking: " + token);
-            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
-            ErrorOr<List<MyAddedEventResult>> list = await mediator.Send(new AutoAddTreeCalendarCommand(token, calendarId.Value));
+        //[HttpPost]
+        //[Authorize(Roles = "Admin, Manager")]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
+        //public async Task<IActionResult> AutoAddCalendarEvent(CalendarTypeEnum calendarTypeEnum)
+        //{
+        //    var httpContext = _httpContextAccessor.HttpContext;
+        //    //Access HttpContext
+        //    var token = httpContext.Request.Cookies["u_tkn"];
+        //    System.Diagnostics.Debug.WriteLine("Checking: " + token);
+        //    var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+        //    ErrorOr<List<MyAddedEventResult>> list = await mediator.Send(new AutoAddTreeCalendarCommand(token, calendarId.Value));
 
-            if (list.IsError)
-            {
-                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
-            }
+        //    if (list.IsError)
+        //    {
+        //        return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
+        //    }
 
-            return Ok(list.Value);
-        }
+        //    return Ok(list.Value);
+        //}
 
         // update events
         [HttpPost()]

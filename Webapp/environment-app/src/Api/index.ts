@@ -47,3 +47,6 @@ export const CREATE_REPORT = "/Report/CreateReport"
 export const DETAIL_REPORT = "/Report/GetReportById/?id=:id"
 export const RESPONSE_REPORT = "/Report/ResponseReport"
 
+export const GROUP_LIST = "/Group/GetAllGroups"
+export const GROUP_EMPLOYEE = "/Group/GetAllMembersOfGroup/?groupEmail=email"
+

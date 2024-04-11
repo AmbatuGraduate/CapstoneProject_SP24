@@ -37,6 +37,7 @@ namespace Application.Report.Commands.Delete
             var notification = new Domain.Entities.Notification.Notifications
             {
                 Id = Guid.NewGuid(),
+                Sender = "ambatuadmin@vesinhdanang.xyz",
                 Username = usserEmail,
                 Message = msg,
                 MessageType = "Single",

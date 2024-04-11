@@ -37,7 +37,6 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
         {
             List<MyAddedEventResult> eventResults = new List<MyAddedEventResult>();
 
-            var accessToken = _jwtTokenGenerator.DecodeTokenToGetAccessToken(request.accessToken);
 
             var getAllTree = _treeRepository.GetAllTrees().Where(tree => !tree.isCut);
 
@@ -62,27 +61,28 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
                 {
                     Summary = "Lịch cắt tỉa cây tại " + group.Key,
                     Description = "Đến thởi điểm cắt tỉa các cây đã đến hạn tại đường " + group.Key,
-                    location = group.Key,
+                    location = group.Key + ",Đà Nẵng",
                     TreeId = treeFormat,
+                    DepartmentEmail = "cayxanh@vesinhdanang.xyz",
                     Start = new EventDateTime
                     {
-                        DateTime = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                        DateTime = DateTime.Now.ToLocalTime().ToString()
                     },
                     End = new EventDateTime
                     {
-                        DateTime = DateTime.Now.AddHours(3).ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")
+                        DateTime = DateTime.Now.AddHours(3).ToLocalTime().ToString()
                     },
                     Attendees = new List<User>()
                 };
 
-                var result = await _treeCalendarService.AddEvent(accessToken, request.calendarId, addedEvent);
+                var result = await _treeCalendarService.AutoAddEvent(request.Service, request.CalendarId, addedEvent);
                 eventResults.Add(new MyAddedEventResult(result));
             }
 
             // notification to all manager tree trim calendar
             var treeTrimDepartmentId = "01egqt2p26jkcil"; // Id department of tree
             var roleId = "abccde85-c7dc-4f78-9e4e-b1b3e7abee84"; // Id role
-            var msg = eventResults.ToList().Count +  " Lịch cắt tỉa cây mới đã được tạo";
+            var msg = eventResults.ToList().Count + " Lịch cắt tỉa cây mới đã được tạo";
 
             // Get all user have department id is tree
             var listUser = userRepository.GetAll().Where(x => x.DepartmentId == treeTrimDepartmentId && x.RoleId == Guid.Parse(roleId)).ToList();
@@ -92,6 +92,7 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
                 var notification = new Domain.Entities.Notification.Notifications
                 {
                     Id = Guid.NewGuid(),
+                    Sender = "Hệ Thống",
                     Username = listUser[i].Email,
                     Message = msg,
                     MessageType = "Single",
@@ -100,6 +101,19 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
                 await notificationRepository.CreateNotification(notification);
                 await notifyService.SendToUser(listUser[i].Email, msg);
             }
+
+            // Send notification to admin about new calendar created
+            var notifyAmin = new Domain.Entities.Notification.Notifications
+            {
+                Id = Guid.NewGuid(),
+                Sender = "Hệ Thống",
+                Username = "ambatuadmin@vesinhdanang.xyz",
+                Message = "Vừa có lịch mới được tạo",
+                MessageType = "Single",
+                NotificationDateTime = DateTime.Now,
+            };
+            await notificationRepository.CreateNotification(notifyAmin);
+            await notifyService.SendToUser("ambatuadmin@vesinhdanang.xyz", msg);
 
             return eventResults;
         }

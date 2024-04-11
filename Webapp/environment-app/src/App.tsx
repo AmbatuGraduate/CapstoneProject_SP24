@@ -26,6 +26,7 @@ import { CreateCleaningSchedule } from "./pages/ManageCleaningSchedule/Create";
 import { DetailCleaningSchedule } from "./pages/ManageCleaningSchedule/Detail";
 import { UpdateCleaningSchedule } from "./pages/ManageCleaningSchedule/Update";
 import { Manage } from "./pages/Manage";
+import { ManageGroup } from "./pages/ManageGroup";
 
 
 function App() {
@@ -146,6 +147,10 @@ function App() {
         {
           path: "response/:id",
           element: <ResponseReport />,
+        },
+        {
+          path: "manage-group",
+          element: <ManageGroup />,
         },
       ],
     },

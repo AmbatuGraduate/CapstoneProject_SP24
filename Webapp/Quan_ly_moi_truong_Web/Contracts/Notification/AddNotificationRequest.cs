@@ -2,6 +2,7 @@
 {
     public record AddNotificationRequest
     (
+        string Sender,
         string Username,
         string Message,
         string MessageType,

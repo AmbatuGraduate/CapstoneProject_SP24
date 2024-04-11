@@ -3,6 +3,7 @@
     public record ListNotificationResponse
     (
         Guid Id,
+        string Sender,
         string Username,
         string Message,
         string MessageType,

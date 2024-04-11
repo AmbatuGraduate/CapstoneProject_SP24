@@ -1,6 +1,7 @@
 import GoogleMapReact, { Coords } from "google-map-react";
 import Marker from "../../../public/assets/marker.svg";
-import { KeyboardEventHandler, useRef, useState } from "react";
+import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
+import axios from "axios";
 
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjRVUIuMwhHiyzshZ1nwvyZ1PGpUhLD7Y&callback=initMap&v=weekly"
@@ -16,20 +17,30 @@ export type MarkerType = {
   lat: number;
   lng: number;
 };
+type SimpleMapProps = {
+  location?: string;
+};
+export default function SimpleMap(props: SimpleMapProps) {
+  const [treeLocation, setTreeLocation] = useState<MarkerType>({
+    lat: 16.041871,
+    lng: 108.216446,
+  });
 
-export default function SimpleMap() {
-  // const [data, setData] = useState<any>();
-  // const [treeLocation, setTreeLocation] = useState<MarkerType>({
-  //   lat: 0.0,
-  //   lng: 0,
-  // });
-  const defaultProps = {
-    center: {
-      lat: 16.041871,
-      lng: 108.216446,
-    },
-    zoom: 15,
+  const fetch = async () => {
+    const addressURI = encodeURI(props?.location || "Da nang");
+    const res = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyBqQfxxgCjLvTq9tCGjnjHxCVnX3acWXmY`
+    );
+    const data = res.data;
+    console.log(data);
+    if (data) {
+      if (data) setTreeLocation(data.results?.[0].geometry.location);
+    }
   };
+
+  useEffect(() => {
+    fetch();
+  }, []);
 
   return (
     // Important! Always set the container height explicitly
@@ -42,13 +53,13 @@ export default function SimpleMap() {
     >
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyAjRVUIuMwhHiyzshZ1nwvyZ1PGpUhLD7Y" }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
+        defaultZoom={15}
+        center={treeLocation}
       >
         {
           <AnyReactComponent
-            lat={16.041871} // Lấy tọa độ lat từ treeLocation
-            lng={108.216446} // Lấy tọa độ lng từ treeLocation
+            lat={treeLocation.lat} // Lấy tọa độ lat từ treeLocation
+            lng={treeLocation.lng} // Lấy tọa độ lng từ treeLocation
           />
         }
       </GoogleMapReact>

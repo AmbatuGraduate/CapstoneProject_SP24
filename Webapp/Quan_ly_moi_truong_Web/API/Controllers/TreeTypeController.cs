@@ -6,8 +6,10 @@ using Application.TreeType.Queries.List;
 using Contract.TreeType;
 using Domain.Common.Errors;
 using ErrorOr;
+using Infrastructure.Authentication.AuthenticationAttribute;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -25,6 +27,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> Get()
         {
             ErrorOr<List<TreeTypeResult>> list = await mediator.Send(new ListTreeTypeQuery());
@@ -44,6 +48,8 @@ namespace API.Controllers
         }
 
         [HttpGet("{TreeTypeId}")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> GetById(string TreeTypeId)
         {
             var query = mapper.Map<GetByIdQuery>(Guid.Parse(TreeTypeId));
@@ -59,6 +65,8 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> Add(AddTreeTypeRequest request)
         {
             var command = mapper.Map<AddTreeTypeCommand>(request);
@@ -72,6 +80,8 @@ namespace API.Controllers
         }
 
         [HttpPut("{Id}")]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> Update(string Id, UpdateTreeTypeRequest request)
         {
             var command = mapper.Map<UpdateTreeTypeCommand>((Guid.Parse(Id), request));
