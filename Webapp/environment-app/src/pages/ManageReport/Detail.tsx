@@ -155,8 +155,8 @@ export const DetailReport = () => {
                 data.reportFormat?.reportImpact === EReportImpact.LOW
                   ? "low"
                   : data.reportFormat?.reportImpact === EReportImpact.MEDIUM
-                    ? "medium"
-                    : "HIGH"
+                  ? "medium"
+                  : "HIGH"
               }
             >
               {ReportImpact[data.reportFormat?.reportImpact]}
@@ -174,30 +174,30 @@ export const DetailReport = () => {
 
         {ReportStatus[data.reportFormat?.reportStatus] ==
           ReportStatus.Resolved && (
-            <>
-              <div
-                className="detail-cover-report"
-                style={{
-                  marginBottom: "20px",
-                  borderBottom: "1px solid rgb(212, 212, 212)",
-                  paddingBottom: "20px",
-                }}
-              >
-                <div className="detail-content-left"></div>
-                <div className="detail-content-right impact">
-                  <b>Ngày Giải Quyết:</b>{" "}
-                  {dayFormat(data.reportFormat?.actualResolutionDate)}
-                </div>
+          <>
+            <div
+              className="detail-cover-report"
+              style={{
+                marginBottom: "20px",
+                borderBottom: "1px solid rgb(212, 212, 212)",
+                paddingBottom: "20px",
+              }}
+            >
+              <div className="detail-content-left"></div>
+              <div className="detail-content-right impact">
+                <b>Ngày Giải Quyết:</b>{" "}
+                {dayFormat(data.reportFormat?.actualResolutionDate)}
               </div>
+            </div>
 
-              <div className="detail-cover-report">
-                <div className="detail-content-left"></div>
-                <div className="detail-content-right impact">
-                  <b>Phản Hồi:</b> {data.reportFormat?.reportResponse}
-                </div>
+            <div className="detail-cover-report">
+              <div className="detail-content-left"></div>
+              <div className="detail-content-right impact">
+                <b>Phản Hồi:</b> {data.reportFormat?.reportResponse}
               </div>
-            </>
-          )}
+            </div>
+          </>
+        )}
 
         {/* <div className="detail-cover-report">
           <div className="image-container">

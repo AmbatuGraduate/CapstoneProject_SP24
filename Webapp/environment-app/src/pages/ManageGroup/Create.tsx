@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { TREE_ADD, useApi } from "../../Api";
+import { EMPLOYEE_LIST, TREE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -32,9 +32,14 @@ export const CreateGroup = () => {
     },
     {
       label: "Nhân viên",
-      formType: "input",
+      formType: "select",
       key: "members",
       placeholder: "Ví dụ: abc@vesinhdanang.xyz",
+      optionExtra: {
+        url: EMPLOYEE_LIST,
+        _key: "email",
+        _value: "email",
+      },
     },
   ];
 
@@ -45,7 +50,7 @@ export const CreateGroup = () => {
       await useApi.post(TREE_ADD, {
         ...data,
         adminCreated: true,
-        owners: JSON.parse(token.accessToken).role == "Admin"
+        owners: JSON.parse(token.accessToken).role === "Admin" && JSON.parse(token.accessToken).email
       });
       ref.current?.reload();
       navigate("/manage-tree");
@@ -58,7 +63,7 @@ export const CreateGroup = () => {
 
   return (
     <div className="form-cover">
-      <h4>Thêm cây</h4>
+      <h4>Thêm bộ phận</h4>
       <FormBase
         fields={fields}
         onSave={handleSubmit}
