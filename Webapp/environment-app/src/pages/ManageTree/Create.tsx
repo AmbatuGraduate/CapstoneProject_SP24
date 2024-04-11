@@ -2,9 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { EMPLOYEE_LIST, TREE_ADD, TREE_TYPE_LIST, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
-import { GoogleMap } from "./MapIntergration";
 
 export const CreateTree = () => {
   const navigate = useNavigate();
@@ -15,6 +14,9 @@ export const CreateTree = () => {
   const [intervalCutTime, setIntervalCutTime] = useState<number>(0);
   const [token] = useCookies(["accessToken"]);
   const [address, setAddress] = useState<string | null>("");
+  useEffect(() => {
+    console.log("rerender");
+  }, []);
 
   const fields: Field[] = [
     {
@@ -80,7 +82,7 @@ export const CreateTree = () => {
         // const plantTime = dateConstructor(plantTimeValue);
         const newCutTime = new Date();
         newCutTime.setMonth(newCutTime.getMonth() + 3);
-        // newCutTime.setMonth(newCutTime.getMonth() + intervalCutTime);
+        newCutTime.setMonth(newCutTime.getMonth() + intervalCutTime);
         setCutTime(newCutTime);
       },
     },
