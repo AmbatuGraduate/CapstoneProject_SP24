@@ -1,5 +1,6 @@
 ﻿using Application.Calendar;
 using Domain.Enums;
+using Google.Apis.Calendar.v3;
 
 namespace Application.Common.Interfaces.Persistence.Schedules
 {
@@ -17,6 +18,8 @@ namespace Application.Common.Interfaces.Persistence.Schedules
         Task<MyEvent> GetEventById(string accessToken, string calendarId, string eventId);                  // get all events by attendee email
 
         Task<MyAddedEvent> AddEvent(string token, string calendarId, MyAddedEvent myEvent);                             // add event
+
+        Task<MyAddedEvent> AutoAddEvent(CalendarService service, string calendarId, MyAddedEvent myEvent);              // auto add event
 
         Task<MyUpdatedEvent> UpdateEvent(string token, string calendarId, MyUpdatedEvent myEvent, string eventId);      // update event
 
