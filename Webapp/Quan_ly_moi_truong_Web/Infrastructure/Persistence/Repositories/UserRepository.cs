@@ -120,37 +120,42 @@ namespace Infrastructure.Persistence.Repositories
                         // get user in db by email
                         var userDb = GetByEmail(user.PrimaryEmail);
 
-                        // get user's photo
-                        string? photoUrl = null;
-                        try
+                        if(userDb != null)
                         {
-                            var photoRequest = service.Users.Photos.Get(user.PrimaryEmail);
-                            var photoResult = await photoRequest.ExecuteAsync();
-                            if (photoResult?.PhotoData != null)
+                            string? photoUrl = null;
+                            try
                             {
-                                // convert  URL-safe base64 string to standard base64 string
-                                string base64PhotoData = photoResult.PhotoData.Replace('-', '+').Replace('_', '/');
-                                // create a data url
-                                photoUrl = $"data:{photoResult.MimeType};base64,{base64PhotoData}";
+                                var photoRequest = service.Users.Photos.Get(user.PrimaryEmail);
+                                var photoResult = await photoRequest.ExecuteAsync();
+                                if (photoResult?.PhotoData != null)
+                                {
+                                    // convert  URL-safe base64 string to standard base64 string
+                                    string base64PhotoData = photoResult.PhotoData.Replace('-', '+').Replace('_', '/');
+                                    // create a data url
+                                    photoUrl = $"data:{photoResult.MimeType};base64,{base64PhotoData}";
+                                }
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            // photo not found => null
+                            catch (Exception ex)
+                            {
+                                // photo not found => null
+                            }
+
+                            users.Add(new GoogleUser
+                            {
+                                Id = user.Id,
+                                Email = user.PrimaryEmail,
+                                Name = user.Name.FullName,
+                                Picture = photoUrl, // use the photoUrl from the request
+                                Department = GetDepartmentNameById(userDb.DepartmentId),
+                                DepartmentEmail = GetDepartmentEmailById(userDb.DepartmentId),
+                                PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
+                                Role = GetRoleNameById(userDb.RoleId.ToString()),
+                                Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
+                            });
                         }
 
-                        users.Add(new GoogleUser
-                        {
-                            Id = user.Id,
-                            Email = user.PrimaryEmail,
-                            Name = user.Name.FullName,
-                            Picture = photoUrl, // use the photoUrl from the request
-                            Department = GetDepartmentNameById(userDb.DepartmentId),
-                            DepartmentEmail = GetDepartmentEmailById(userDb.DepartmentId),
-                            PhoneNumber = user.Phones != null ? user.Phones[0].Value : string.Empty,
-                            Role = GetRoleNameById(userDb.RoleId.ToString()),
-                            Address = user.Addresses != null ? user.Addresses[0].Locality : string.Empty
-                        });
+                        // get user's photo
+                       
                     }
                 }
             }
