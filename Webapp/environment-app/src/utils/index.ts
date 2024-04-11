@@ -36,6 +36,19 @@ export const taskStatus = (status) => {
   }
 };
 
+export const roleFormat = (role) => {
+  switch (role) {
+    case "Employee":
+      return { text: "Nhân viên" };
+    case "Manager":
+      return { text: "Quản lý" };
+    case "Admin":
+      return { text: "Quản trị viên" };
+    default:
+      return { text: role };
+  }
+};
+
 const ReportImpactType = {
   LOW: 0,
   MEDIUM: 1,

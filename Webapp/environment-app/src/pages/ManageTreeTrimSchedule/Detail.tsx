@@ -76,15 +76,18 @@ export const DetailTreeTrimSchedule = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className="detail-cover">
                     <div className="detail-content-parent">
                         <div className="detail-content-child-label">Cây Cần Cắt: </div>
                         <div className="detail-content-child-value">
-                            {data?.myEvent.extendedProperties.privateProperties.Tree}
+                            {data?.myEvent.extendedProperties.privateProperties.Tree &&
+                                data.myEvent.extendedProperties.privateProperties.Tree.split(',').map((tree, index) => (
+                                    <div key={index}>{tree.trim()}</div>
+                                ))}
                         </div>
                     </div>
                 </div>
+
 
                 <div className="detail-cover">
                     <div className="detail-content-parent">

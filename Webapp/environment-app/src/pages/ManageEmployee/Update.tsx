@@ -72,12 +72,26 @@ export const UpdateEmployee = () => {
       },
       defaultValue: data?.department,
     },
-    // {
-    //   label: "Chức Vụ",
-    //   formType: "input",
-    //   key: "role",
-    //   defaultValue: data?.role,
-    // },
+    {
+      label: "Chức Vụ",
+      formType: "select",
+      key: "role",
+      options: [
+        {
+          key: "Nhân Viên",
+          value: 1,
+        },
+        {
+          key: "Quản Lý",
+          value: 2,
+        },
+        {
+          key: "Quản Trị Viên",
+          value: 3,
+        },
+      ],
+      defaultValue: data?.role,
+    },
 
     {
       label: "Địa Chỉ Thường Trú",
@@ -98,6 +112,7 @@ export const UpdateEmployee = () => {
     try {
       await useApi.post(EMPLOYEE_UPDATE, {
         ...data,
+        password: ""
       });
       ref.current?.reload();
       navigate(-1)

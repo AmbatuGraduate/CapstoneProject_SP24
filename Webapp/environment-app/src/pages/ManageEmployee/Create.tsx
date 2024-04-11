@@ -55,6 +55,25 @@ export const CreateEmployee = () => {
         _value: "email",
       },
     },
+    {
+      label: "Chức Vụ",
+      formType: "select",
+      key: "role",
+      options: [
+        {
+          key: "Nhân Viên",
+          value: 1,
+        },
+        {
+          key: "Quản Lý",
+          value: 2,
+        },
+        {
+          key: "Quản Trị Viên",
+          value: 3,
+        },
+      ],
+    },
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {

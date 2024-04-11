@@ -5,6 +5,7 @@ import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { useRef } from "react";
+import { roleFormat } from "../../utils";
 
 import { MdAddCircleOutline } from "react-icons/md";
 
@@ -66,7 +67,7 @@ export const ManageEmployee = () => {
     {
       header: "Chức Vụ",
       accessorFn(row) {
-        return <h6 className="shortText">{row.role}</h6>;
+        return <h6 className="shortText">{roleFormat(row.role).text}</h6>;
       },
       width: "10%",
     },
@@ -104,6 +105,9 @@ export const ManageEmployee = () => {
             Thêm Nhân Viên
           </Button>
         }
+        filter={(row) => {
+          return row.role != "Admin";
+        }}
       />
     </div>
   );

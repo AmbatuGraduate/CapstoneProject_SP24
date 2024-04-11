@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { DEPARTMENT_EMPLOYEE, DEPARTMENT_LIST, EMPLOYEE_LIST, TREE_LIST, TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
+import { DEPARTMENT_EMPLOYEE, DEPARTMENT_LIST, EMPLOYEE_LIST, TREE_ADDRESS, TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -8,41 +8,9 @@ export const CreateTreeTrimSchedule = () => {
     const navigate = useNavigate();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
-    const [token] = useCookies(["accessToken"]);
     const [departmentEmail, setDepartmentEmail] = useState<string | null>(null);
 
     const fields: Field[] = [
-        {
-            label: "Tiêu Đề",
-            formType: "input",
-            key: "summary",
-        },
-        {
-            label: "Cây Cần Cẳt",
-            formType: "select",
-            key: "treeId",
-            optionExtra: {
-                url: TREE_LIST,
-                _key: "treeCode",
-                _value: "treeCode",
-            },
-        },
-        {
-            label: "Bắt Đầu Từ",
-            formType: "datetime",
-            key: "start.dateTime",
-        },
-        {
-            label: "Địa Chỉ",
-            formType: "input",
-            key: "location",
-            placeholder: "Ví dụ: 29 Sơn Thủy Đông 2, Hòa Hải, Ngũ Hành Sơn",
-        },
-        {
-            label: "Kết Thúc Trước",
-            formType: "datetime",
-            key: "end.dateTime",
-        },
         {
             label: "Bộ Phận",
             formType: "select",
@@ -58,11 +26,37 @@ export const CreateTreeTrimSchedule = () => {
             label: "Nhân Viên Thực Hiện",
             formType: "select",
             key: "attendees.email",
+            // optionExtra: {
+            //     url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
+            //     _key: "value.name",
+            //     _value: "value.email",
+            // },
             optionExtra: {
-                url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
-                _key: "value.name",
-                _value: "value.email",
+                url: EMPLOYEE_LIST,
+                _key: "name",
+                _value: "email",
             },
+        },
+        {
+            label: "Tiêu Đề",
+            formType: "input",
+            key: "summary",
+        },
+        {
+            label: "Địa Chỉ",
+            formType: "input",
+            key: "location",
+            placeholder: "Ví dụ: 29 Sơn Thủy Đông 2, Hòa Hải, Ngũ Hành Sơn",
+        },
+        {
+            label: "Bắt Đầu Từ",
+            formType: "datetime",
+            key: "start.dateTime",
+        },
+        {
+            label: "Kết Thúc Trước",
+            formType: "datetime",
+            key: "end.dateTime",
         },
         {
             label: "Ghi Chú",
@@ -100,6 +94,11 @@ export const CreateTreeTrimSchedule = () => {
             if (!selectedEmployeeInfo) {
                 throw new Error("Không tìm thấy thông tin của nhân viên được chọn.");
             }
+            const selectedAddress = data["location"]
+
+            const treeListResponse = await useApi.get(TREE_ADDRESS.replace(":address", selectedAddress));
+            const treeList = treeListResponse.data;
+            console.log(treeList.treeCode);
 
             // Tạo đối tượng attendee chứa tên và email của nhân viên
             const attendee = {
@@ -107,11 +106,15 @@ export const CreateTreeTrimSchedule = () => {
                 email: selectedEmployee
             };
 
+            const treeCodes = treeList.map((tree: any) => tree.treeCode);
+            const treeId = treeCodes.join(',');
+
             const requestData = {
                 ...data,
                 start: { dateTime: formattedStartDateTime },
                 end: { dateTime: formattedEndDateTime },
                 attendees: [attendee], // Sử dụng thông tin nhân viên thu được
+                treeId: treeId,
             };
 
             delete requestData["start.dateTime"];

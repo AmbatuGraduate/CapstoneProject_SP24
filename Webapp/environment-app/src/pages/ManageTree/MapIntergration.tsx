@@ -77,6 +77,7 @@ export function GoogleMap(props: GoogleMapProps) {
     lng: 108.216446,
   });
   const autocompleteInputRef = useRef<HTMLInputElement>(null);
+
   let autocomplete: google.maps.places.Autocomplete;
 
   const [address, setAddress] = useState<string>("");
