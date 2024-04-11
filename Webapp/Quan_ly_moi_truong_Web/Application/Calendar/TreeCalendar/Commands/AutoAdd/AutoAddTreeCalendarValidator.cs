@@ -6,8 +6,8 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
     {
         public AutoAddTreeCalendarValidator()
         {
-            RuleFor(x => x.accessToken).NotEmpty().NotNull();
-            RuleFor(x => x.calendarId).NotEmpty().NotNull();
+            RuleFor(x => x.Service).NotEmpty().NotNull();
+            RuleFor(x => x.CalendarId).NotEmpty().NotNull();
         }
     }
 }

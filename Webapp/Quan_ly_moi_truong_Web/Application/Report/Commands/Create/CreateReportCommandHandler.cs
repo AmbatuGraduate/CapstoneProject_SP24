@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces.Persistence;
+﻿using Application.Calendar;
+using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Persistence.Notifiy;
 using Application.Report.Common;
 using Domain.Entities.Report;
@@ -61,6 +62,7 @@ namespace Application.Report.Commands.Create
             var notification = new Domain.Entities.Notification.Notifications
             {
                 Id = Guid.NewGuid(),
+                Sender = reportResult.IssuerEmail,
                 Username = "ambatuadmin@vesinhdanang.xyz",
                 Message = msg,
                 MessageType = "Single",

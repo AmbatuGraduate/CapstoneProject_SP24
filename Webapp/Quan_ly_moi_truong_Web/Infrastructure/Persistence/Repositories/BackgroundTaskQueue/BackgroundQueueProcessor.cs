@@ -3,6 +3,8 @@ using Application.Calendar.TreeCalendar.Queries.GetCalendarByDepartmentEmail;
 using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
 using Domain.Enums;
 using Google.Apis.Auth.OAuth2;
+using Google.Apis.Calendar.v3;
+using Google.Apis.Services;
 using GoogleApi.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,16 +32,14 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             // Making a run at the midnight
-            //var now = DateTime.Now;
-            //var hours = 23 - now.Hour;
-            //var minutes = 59 - now.Minute;
-            //var seconds = 59 - now.Second;
-            //var secondTillMidnight = hours * 3600 + minutes * 60 + seconds;
-            //await Task.Delay(TimeSpan.FromSeconds(secondTillMidnight), stoppingToken);
+            var now = DateTime.Now;
+            var hours = 23 - now.Hour;
+            var minutes = 59 - now.Minute;
+            var seconds = 59 - now.Second;
+            var secondTillMidnight = hours * 3600 + minutes * 60 + seconds;
+            await Task.Delay(TimeSpan.FromSeconds(secondTillMidnight), stoppingToken);
 
-            // For Testing
-
-            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
+            //await Task.Delay(TimeSpan.FromMinutes(30), stoppingToken);
 
 
             while (!stoppingToken.IsCancellationRequested)
@@ -77,16 +77,23 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
                     ServiceAccountCredential credential = new ServiceAccountCredential(
                            new ServiceAccountCredential.Initializer(serviceAccount)
                            {
+                               //KeyId = "2feafeea429d58b66b7733282bd19af6899bdada",
+                               User = "ambatuadmin@vesinhdanang.xyz",
                                Scopes = scopes
                            }.FromCertificate(certificate));
 
+                    
+
                     if (credential != null)
                     {
-                        // Make a request get access token
-                        await credential.RequestAccessTokenAsync(CancellationToken.None);
 
-                        // Get access token from request
-                        string accessToken = credential.GetAccessTokenForRequestAsync().Result;
+                        // Create the calendar service
+                        var service = new CalendarService(new BaseClientService.Initializer()
+                        {
+                            HttpClientInitializer = credential,
+                            ApplicationName = "Calendar Account Service",
+                        });
+
 
                         using (var scope = _serviceProvider.CreateScope())
                         {
@@ -94,7 +101,7 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
 
                             // Get calendar Id by calendar type
                             var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(CalendarTypeEnum.CayXanh));
-                            var addEvents = await mediator.Send(new AutoAddTreeCalendarCommand(accessToken, calendarId.Value));
+                            var addEvents = await mediator.Send(new AutoAddTreeCalendarCommand(service, calendarId.Value));
                             var listEvents = addEvents.Value;
 
                             Console.WriteLine("CREATE CALENDAR SUCCESSFUL:" + listEvents.Count);
