@@ -8,13 +8,13 @@ import { MdAddCircleOutline } from "react-icons/md";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageGroup = () => {
-  const { departmentEmail = "" } = useParams();
+  const { email = "" } = useParams();
   const navigate = useNavigate();
   const ref = useRef<any>();
   // TODO get list
 
   const handleDelete = async (id: string) => {
-    await useApi.delete(GROUP_DELETE.replace(":email", departmentEmail));
+    await useApi.delete(GROUP_DELETE.replace(":email", email));
     ref.current?.reload();
   };
 
@@ -24,8 +24,8 @@ export const ManageGroup = () => {
       accessorFn(row) {
         return (
           <div>
-            <button type="button" className="btn btn-click" onClick={() => { }}>
-              <ModalDelete handleDelete={() => handleDelete(row.departmentEmail)} />
+            <button type="button" className="btn btn-click" onClick={() => {}}>
+              <ModalDelete handleDelete={() => handleDelete(row.email)} />
             </button>
           </div>
         );
@@ -40,7 +40,7 @@ export const ManageGroup = () => {
             <Link
               className="linkCode"
               style={{ fontWeight: "bold" }}
-              to={`/manage-group/email=${departmentEmail}`}
+              to={`/manage-group/detail/${longRow.email}`}
             >
               {longRow.email}
             </Link>
@@ -66,7 +66,17 @@ export const ManageGroup = () => {
     {
       header: "Số nhân viên",
       accessorFn(row) {
-        return <h6 className="shortText">{row.directMembersCount}</h6>;
+        return (
+          <h6 className="shortText">
+            <Link
+              className="linkCode"
+              style={{ fontWeight: "bold" }}
+              to={`/manage-group/employee/${row.email}`}
+            >
+              {row.directMembersCount}
+            </Link>
+          </h6>
+        );
       },
     },
   ];
