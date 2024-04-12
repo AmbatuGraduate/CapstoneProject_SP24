@@ -95,7 +95,7 @@ namespace API.Controllers
                 return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
             }
 
-            return Ok(usersResult);
+            return Ok(usersResult.Value);
         }
 
         [HttpGet()]

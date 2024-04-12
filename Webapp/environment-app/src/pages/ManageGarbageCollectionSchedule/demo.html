@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chat</title>
+</head>
+
+<body>
+    <p id="">Thông báo: <p id="notify"></p> </p>
+
+    <div>
+        <span id="username">Quan</span>
+        <img src="" alt="" id="avatar">
+        <a href="home.html">Signout</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js"
+        integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"
+        integrity="sha512-7rhBJh1om/W5Ztx7WiYOR9h2wlSaTmPyQMoHFtbT/FVNIA12y6S6I8HY9mrBS1uJ3dSU/R3qaSAXsGYuRjMDxg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://localhost:7024/chatHub")
+            .build();
+
+        connection.start()
+            .then(function () {
+                // Connection established
+                console.log('start connection');
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+
+        connection.on("OnConnected", function () {
+            OnConnected()
+        });
+
+        function OnConnected() {
+            var username = $('#username').text();
+            connection.invoke("SaveUserConnection", username)
+                .catch(function (error) {
+                    return console.error(error);
+                });
+        }
+
+        connection.on("ReceivedNotification", function (msg) {
+            console.log(msg);
+            $('#notify').text(msg)
+        });
+
+        connection.on("ReceivedPersonalNotification", function (msg, user) {
+            console.log(user + " - " +  msg);
+            $('#notify').text(user + ' - ' + msg)
+        });
+    </script>
+</body>
+
+</html>

@@ -20,11 +20,8 @@ namespace API.Mapping
                   .MapWith(dest => new GoogleRefreshQuery(dest));
 
             config.NewConfig<GoogleAuthenticationResult, AuthenticationResponse>()
-                  .Map(dest => dest.Name, src => src.name)
-                  .Map(dest => dest.Image, src => src.avatar)
-                  .Map(dest => dest.Email, src => src.email)
-                  .Map(dest => dest.Role, src => src.role)
-                  .Map(dest => dest.Department, src => src.department);
+                  .MapWith(dest => new AuthenticationResponse(dest.name, dest.avatar, dest.email, dest.role, dest.department, dest.expire_in));
+
 
 
             config.NewConfig<GoogleRefreshResultMobile, AccessTokenResMobile>()
