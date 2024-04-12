@@ -12,7 +12,11 @@ import { useCookies } from "react-cookie";
 export const ManageReport = () => {
   const [token] = useCookies(["accessToken"]);
   const isAdmin = JSON.parse(token.accessToken).role === "Admin";
-  const { email = "" } = useParams();
+  const isUser = JSON.parse(token.accessToken);
+
+
+  console.log(isUser);
+  const email = isUser.email;
   const navigate = useNavigate();
   const ref = useRef<any>();
   // TODO get list
@@ -26,6 +30,7 @@ export const ManageReport = () => {
     {
       header: "Người Gửi",
       accessorFn(longRow) {
+        console.log(longRow)
         return (
           <h6 className="shortText linkDiv">
             <Link
@@ -46,7 +51,7 @@ export const ManageReport = () => {
         const modifiedSubject = row.reportSubject.replace("[Report]", "");
         return <h6>{modifiedSubject}</h6>;
       },
-      width: "20%",
+      width: "8%",
     },
     {
       header: "Cần Giải Quyết Trước",
@@ -89,7 +94,7 @@ export const ManageReport = () => {
           </h6>
         );
       },
-      width: "15%",
+      width: "20%",
     },
   ];
 
