@@ -13,7 +13,7 @@ export const CreateTreeTrimSchedule = () => {
         {
             label: "Bộ Phận",
             formType: "select",
-            key: "departmentEmail",
+            keyName: "departmentEmail",
             optionExtra: {
                 url: DEPARTMENT_LIST,
                 _key: "name",
@@ -24,7 +24,7 @@ export const CreateTreeTrimSchedule = () => {
         {
             label: "Nhân Viên Thực Hiện",
             formType: "select",
-            key: "attendees.email",
+            keyName: "attendees.email",
             optionExtra: {
                 url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
                 _key: "name",
@@ -34,28 +34,28 @@ export const CreateTreeTrimSchedule = () => {
         {
             label: "Tiêu Đề",
             formType: "input",
-            key: "summary",
+            keyName: "summary",
         },
         {
             label: "Địa Chỉ",
             formType: "input",
-            key: "location",
+            keyName: "location",
             placeholder: "Ví dụ: 29 Sơn Thủy Đông 2, Hòa Hải, Ngũ Hành Sơn",
         },
         {
             label: "Bắt Đầu Từ",
             formType: "datetime",
-            key: "start.dateTime",
+            keyName: "start.dateTime",
         },
         {
             label: "Kết Thúc Trước",
             formType: "datetime",
-            key: "end.dateTime",
+            keyName: "end.dateTime",
         },
         {
             label: "Ghi Chú",
             formType: "textarea",
-            key: "description",
+            keyName: "description",
             placeholder: "Ví dụ: Cần lưu ý...",
         },
     ];

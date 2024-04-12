@@ -14,26 +14,26 @@ export const CreateGroup = () => {
     {
       label: "Email",
       formType: "input",
-      key: "email",
+      keyName: "email",
       required: true,
       placeholder: "Ví dụ: quanlyvesinh@vesinhdanang.xyz",
     },
     {
       label: "Tên Bộ Phận",
       formType: "input",
-      key: "name",
+      keyName: "name",
       placeholder: "Ví dụ: Bộ phận quản lý..",
     },
     {
       label: "Mô tả",
       formType: "input",
-      key: "description",
+      keyName: "description",
       placeholder: "Ví dụ: Bộ phận quản lý..",
     },
     {
       label: "Nhân viên",
       formType: "select",
-      key: "members",
+      keyName: "members",
       placeholder: "Ví dụ: abc@vesinhdanang.xyz",
       optionExtra: {
         url: EMPLOYEE_LIST,

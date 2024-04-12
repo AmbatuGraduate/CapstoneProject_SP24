@@ -36,31 +36,31 @@ export const UpdateEmployee = () => {
     {
       label: "Họ",
       formType: "input",
-      key: "name",
+      keyName: "name",
       defaultValue: lastName,
     },
     {
       label: "Tên",
       formType: "input",
-      key: "familyName",
+      keyName: "familyName",
       defaultValue: firstName,
     },
     {
       label: "Email",
       formType: "input",
-      key: "email",
+      keyName: "email",
       defaultValue: data?.email,
     },
     {
       label: "Số Điện Thoại",
       formType: "input",
-      key: "phone",
+      keyName: "phone",
       defaultValue: data?.phoneNumber,
     },
     {
       label: "Bộ Phận",
       formType: "select",
-      key: "departmentEmail",
+      keyName: "departmentEmail",
       optionExtra: {
         url: DEPARTMENT_LIST,
         _key: "name",
@@ -71,7 +71,7 @@ export const UpdateEmployee = () => {
     {
       label: "Chức Vụ",
       formType: "select",
-      key: "userRole",
+      keyName: "userRole",
       options: [
         {
           key: "Nhân Viên",
@@ -92,7 +92,7 @@ export const UpdateEmployee = () => {
     {
       label: "Địa Chỉ Thường Trú",
       formType: "input",
-      key: "address",
+      keyName: "address",
       defaultValue: data?.address,
       // googleAddress: true,
       // value: address,

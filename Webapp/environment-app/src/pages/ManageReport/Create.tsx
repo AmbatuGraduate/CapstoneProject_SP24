@@ -15,22 +15,22 @@ export const CreateReport = () => {
     {
       label: "Tiêu Đề",
       formType: "input",
-      key: "reportSubject",
+      keyName: "reportSubject",
     },
     {
       label: "Nội Dung",
       formType: "input",
-      key: "reportBody",
+      keyName: "reportBody",
     },
     {
       label: "Cần Giải Quyết Trước",
       formType: "date",
-      key: "expectedResolutionDate",
+      keyName: "expectedResolutionDate",
     },
     {
       label: "Mức Độ Ảnh Hưởng",
       formType: "select",
-      key: "reportImpact",
+      keyName: "reportImpact",
       options: [
         {
           key: "Thấp",

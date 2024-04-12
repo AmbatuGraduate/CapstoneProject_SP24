@@ -35,14 +35,14 @@ export const UpdateTree = () => {
     {
       label: "Mã Cây",
       formType: "input",
-      key: "treeCode",
+      keyName: "treeCode",
       defaultValue: data?.treeCode,
       disabled: true,
     },
     {
       label: "Tuyến Đường",
       formType: "input",
-      key: "treeLocation",
+      keyName: "treeLocation",
       defaultValue: data?.streetName,
       // googleAddress: true,
       // value: address,
@@ -53,7 +53,7 @@ export const UpdateTree = () => {
     {
       label: "Loại Cây",
       formType: "select",
-      key: "treeTypeId",
+      keyName: "treeTypeId",
       optionExtra: {
         url: TREE_TYPE_LIST,
         _key: "treeTypeName",
@@ -63,37 +63,37 @@ export const UpdateTree = () => {
     {
       label: "Đường Kính Thân",
       formType: "number",
-      key: "bodyDiameter",
+      keyName: "bodyDiameter",
       defaultValue: data?.bodyDiameter,
     },
     {
       label: "Tán Lá",
       formType: "number",
-      key: "leafLength",
+      keyName: "leafLength",
       defaultValue: data?.leafLength,
     },
     {
       label: "Thời Điểm Trồng",
       formType: "date",
-      key: "plantTime",
+      keyName: "plantTime",
       defaultValue: dayFormat(data?.plantTime),
     },
     {
       label: "Khoảng Thời Gian Cắt",
       formType: "number",
-      key: "intervalCutTime",
+      keyName: "intervalCutTime",
       defaultValue: dayFormat(data?.intervalCutTime),
     },
     {
       label: "Ghi Chú",
       formType: "textarea",
-      key: "note",
+      keyName: "note",
       defaultValue: data?.note,
     },
     {
       label: "Người Phụ Trách",
       formType: "select",
-      key: "email",
+      keyName: "email",
       optionExtra: {
         url: EMPLOYEE_LIST,
         _key: "email",
@@ -108,7 +108,7 @@ export const UpdateTree = () => {
       plantTime: dateConstructor(data.plantTime),
     });
     console.log("UpdateTree", data);
-    navigate(-1)
+    navigate(-1);
   };
 
   return (

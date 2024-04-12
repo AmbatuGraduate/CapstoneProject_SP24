@@ -28,37 +28,37 @@ export const UpdateCleaningSchedule = () => {
         {
             label: "Tiêu Đề",
             formType: "input",
-            key: "summary",
+            keyName: "summary",
             defaultValue: data?.myEvent.summary,
         },
         {
             label: "Địa Chỉ",
             formType: "input",
-            key: "location",
+            keyName: "location",
             defaultValue: data?.myEvent.location,
         },
         {
             label: "Bắt Đầu Từ",
             formType: "datetime",
-            key: "start.dateTime",
+            keyName: "start.dateTime",
             defaultValue: data?.myEvent.start,
         },
         {
             label: "Kết Thúc Trước",
             formType: "datetime",
-            key: "end.dateTime",
+            keyName: "end.dateTime",
         },
         {
             label: "Bộ Phận",
             formType: "input",
-            key: "departmentEmail",
+            keyName: "departmentEmail",
             defaultValue: data?.myEvent.extendedProperties.privateProperties.DepartmentEmail,
             disabled: true,
         },
         {
             label: "Nhân Viên Thực Hiện",
             formType: "select",
-            key: "attendees.email",
+            keyName: "attendees.email",
             optionExtra: {
                 url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', data?.myEvent.extendedProperties.privateProperties.DepartmentEmail),
                 _key: "name",
@@ -69,7 +69,7 @@ export const UpdateCleaningSchedule = () => {
         {
             label: "Ghi Chú",
             formType: "textarea",
-            key: "description",
+            keyName: "description",
             defaultValue: data?.myEvent?.description,
         },
     ];
