@@ -8,7 +8,7 @@ import { ImProfile } from "react-icons/im";
 import { MdLogout } from "react-icons/md";
 
 const Top = () => {
-  const [token, setToken] = useCookies(["accessToken"]);
+  const [token] = useCookies(["accessToken"]);
   const [isOpen, setIsOpen] = useState(false);
   const [, , removeCookie] = useCookies(["accessToken"]);
 
@@ -22,8 +22,11 @@ const Top = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Credentials": "true",
           Authorization: `Bearer ${token.accessToken}`,
         },
+        credentials: "include",
       });
 
       removeCookie("accessToken"); // Xóa cookie khi đăng xuất thành công

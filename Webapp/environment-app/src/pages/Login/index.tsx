@@ -58,7 +58,7 @@ export const Login = () => {
     <div className="login-page">
       <div className="container">
         <div className="left">
-          <img src="/assets/imgs/logoEco.png" alt="Image" />
+          <img src="/assets/imgs/logoEcoo.png" alt="Image" />
         </div>
         <div className="right">
           <h1>Xin chào!</h1>

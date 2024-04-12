@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { EMPLOYEE_LIST, GARBAGE_COLLECTION_DETAIL, GARBAGE_COLLECTION_UPDATE, useApi } from "../../Api";
+import { DEPARTMENT_EMPLOYEE, EMPLOYEE_LIST, GARBAGE_COLLECTION_DETAIL, GARBAGE_COLLECTION_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useEffect, useRef, useState } from "react";
 
@@ -59,7 +59,7 @@ export const UpdateGarbageCollectionSchedule = () => {
             formType: "select",
             key: "attendees.email",
             optionExtra: {
-                url: EMPLOYEE_LIST,
+                url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', data?.myEvent.extendedProperties.privateProperties.DepartmentEmail),
                 _key: "name",
                 _value: "email",
             },

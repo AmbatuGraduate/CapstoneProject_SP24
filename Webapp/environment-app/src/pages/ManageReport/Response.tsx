@@ -40,7 +40,7 @@ export const ResponseReport = () => {
       reportID: id,
     });
     ref.current?.reload();
-    navigate("/manage-report");
+    navigate(-1);
   };
 
   return (
@@ -49,7 +49,7 @@ export const ResponseReport = () => {
       <FormBase
         fields={fields}
         onSave={handleSubmit}
-        onCancel={() => navigate("/manage-report")}
+        onCancel={() => navigate(-1)}
       />
     </div>
   );
