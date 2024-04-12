@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { CREATE_REPORT, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor } from "../../utils";
+import { ReportImpact, dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -46,6 +46,11 @@ export const CreateReport = () => {
         },
       ],
     },
+    {
+      label: "Hình ảnh",
+      formType: "input",
+      keyName: "reportImages",
+    },
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
@@ -54,6 +59,7 @@ export const CreateReport = () => {
       ...data,
       issuerEmail: JSON.parse(token.accessToken).email,
       expectedResolutionDate: dateConstructor(data.expectedResolutionDate),
+      reportImpact: Number(data?.reportImpact)
     });
     ref.current?.reload();
     navigate("/manage-report");

@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { GROUP_DELETE, GROUP_LIST, useApi } from "../../Api";
+import { DEPARTMENT_LIST, GROUP_DELETE, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { useRef } from "react";
@@ -85,7 +85,7 @@ export const ManageGroup = () => {
     <div>
       <ListView
         ref={ref}
-        listURL={GROUP_LIST}
+        listURL={DEPARTMENT_LIST}
         columns={columns}
         bottom={
           <Button
