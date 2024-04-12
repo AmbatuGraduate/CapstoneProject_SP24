@@ -2,13 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { DEPARTMENT_EMPLOYEE, DEPARTMENT_LIST, EMPLOYEE_LIST, TREE_ADDRESS, TREE_TRIM_SCHEDULE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
-import { useCookies } from "react-cookie";
 
 export const CreateTreeTrimSchedule = () => {
     const navigate = useNavigate();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
-    const [departmentEmail, setDepartmentEmail] = useState<string | null>(null);
+    const [departmentEmail, setDepartmentEmail] = useState<any>();
 
     const fields: Field[] = [
         {
@@ -26,13 +25,8 @@ export const CreateTreeTrimSchedule = () => {
             label: "Nhân Viên Thực Hiện",
             formType: "select",
             key: "attendees.email",
-            // optionExtra: {
-            //     url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
-            //     _key: "value.name",
-            //     _value: "value.email",
-            // },
             optionExtra: {
-                url: EMPLOYEE_LIST,
+                url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
                 _key: "name",
                 _value: "email",
             },

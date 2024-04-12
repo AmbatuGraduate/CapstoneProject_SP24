@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./style.scss";
+import { useCookies } from "react-cookie";
 
 // Imported Icons
 import { BsQuestionCircle } from "react-icons/bs";
@@ -15,8 +16,11 @@ import { GrGroup } from "react-icons/gr";
 // import router
 import { NavLink } from "react-router-dom";
 
+
+
 const Sidebar = () => {
   const [showCard, setShowCard] = useState(false);
+  const [token] = useCookies(["accessToken"]);
 
   const toggleCard = () => {
     setShowCard(!showCard);
@@ -25,11 +29,14 @@ const Sidebar = () => {
   return (
     <div className="sideBar ">
       <div className="logoDiv flex">
-        <img src="assets/imgs/logoEco.png" alt="Image_name" />
+        <NavLink to="/" style={{ width: '100%' }}>
+          <img src="assets/imgs/logoEcoo.png" alt="Image_name" />
+        </NavLink>
       </div>
       <hr className="line" />
       <div className="menuDiv p-0">
         <ul className="menuLists grid">
+
           <li className="listItem">
             <NavLink to="/" className="menuLink flex">
               <IoHomeOutline className="icon" />
@@ -46,14 +53,16 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
-          <li className="listItem">
-            <NavLink to="/manage-group" className="menuLink flex">
-              <GrGroup className="icon" />
-              <span className="smallText d-none d-md-inline">
-                Quản Lý Bộ Phận
-              </span>
-            </NavLink>
-          </li>
+          {JSON.parse(token.accessToken).role == "Admin" && (
+            <li className="listItem">
+              <NavLink to="/manage-group" className="menuLink flex">
+                <GrGroup className="icon" />
+                <span className="smallText d-none d-md-inline">
+                  Quản Lý Bộ Phận
+                </span>
+              </NavLink>
+            </li>
+          )}
 
           <li className="listItem">
             <NavLink to="/manage-employee" className="menuLink flex">
@@ -64,44 +73,52 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
-          <li className="listItem">
-            <NavLink to="/manage-tree" className="menuLink flex ">
-              <LuTrees className="icon" />
-              <span className="smallText d-none d-md-inline">
-                Quản Lý Cây Xanh
-              </span>
-            </NavLink>
-          </li>
+          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).department == "Quan ly cay xanh")) && (
+            <li className="listItem">
+              <NavLink to="/manage-tree" className="menuLink flex ">
+                <LuTrees className="icon" />
+                <span className="smallText d-none d-md-inline">
+                  Quản Lý Cây Xanh
+                </span>
+              </NavLink>
+            </li>
+          )}
 
-          <li className="listItem">
-            <NavLink to="/manage-treetrim-schedule" className="menuLink flex">
-              <GiTreeBranch className="icon" />
-              <span className="smallText d-none d-md-inline">
-                Quản Lý Lịch Cắt Tỉa
-              </span>
-            </NavLink>
-          </li>
+          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).department == "Quan ly cay xanh")) && (
+            <li className="listItem">
+              <NavLink to="/manage-treetrim-schedule" className="menuLink flex">
+                <GiTreeBranch className="icon" />
+                <span className="smallText d-none d-md-inline">
+                  Quản Lý Lịch Cắt Tỉa
+                </span>
+              </NavLink>
+            </li>
+          )}
 
-          <li className="listItem">
-            <NavLink to="/manage-cleaning-schedule" className="menuLink flex">
-              <FaTreeCity className="icon" />
-              <span className="smallText d-none d-md-inline">
-                Quản Lý Lịch Vệ Sinh Đô Thị
-              </span>
-            </NavLink>
-          </li>
+          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).department == "Quan ly quet don")) && (
+            <li className="listItem">
+              <NavLink to="/manage-cleaning-schedule" className="menuLink flex">
+                <FaTreeCity className="icon" />
+                <span className="smallText d-none d-md-inline">
+                  Quản Lý Lịch Vệ Sinh Đô Thị
+                </span>
+              </NavLink>
+            </li>
+          )}
 
-          <li className="listItem">
-            <NavLink
-              to="/manage-garbagecollection-schedule"
-              className="menuLink flex"
-            >
-              <PiTrashSimpleBold className="icon" />
-              <span className="smallText d-none d-md-inline">
-                Quản Lý Lịch Thu Gom Rác
-              </span>
-            </NavLink>
-          </li>
+          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).department == "Quan ly thu gom rac")) && (
+            <li className="listItem">
+              <NavLink
+                to="/manage-garbagecollection-schedule"
+                className="menuLink flex"
+              >
+                <PiTrashSimpleBold className="icon" />
+                <span className="smallText d-none d-md-inline">
+                  Quản Lý Lịch Thu Gom Rác
+                </span>
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
 

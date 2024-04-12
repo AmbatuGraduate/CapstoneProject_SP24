@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { EMPLOYEE_LIST, TREE_TRIM_SCHEDULE_DETAIL, TREE_TRIM_SCHEDULE_UPDATE, useApi } from "../../Api";
+import { DEPARTMENT_EMPLOYEE, EMPLOYEE_LIST, TREE_TRIM_SCHEDULE_DETAIL, TREE_TRIM_SCHEDULE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useEffect, useRef, useState } from "react";
 
@@ -55,22 +55,22 @@ export const UpdateTreeTrimSchedule = () => {
             disabled: true,
         },
         {
+            label: "Bộ Phận",
+            formType: "input",
+            key: "departmentEmail",
+            defaultValue: data?.myEvent.extendedProperties.privateProperties.DepartmentEmail,
+            disabled: true,
+        },
+        {
             label: "Nhân Viên Thực Hiện",
             formType: "select",
             key: "attendees.email",
             optionExtra: {
-                url: EMPLOYEE_LIST,
+                url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', data?.myEvent.extendedProperties.privateProperties.DepartmentEmail),
                 _key: "name",
                 _value: "email",
             },
             defaultValue: data?.myEvent?.attendees[0]?.fullName,
-        },
-        {
-            label: "Bộ Phận",
-            formType: "input",
-            key: "departmentEmail",
-            defaultValue: "cayxanh@vesinhdanang.xyz",
-            disabled: true,
         },
         {
             label: "Ghi Chú",

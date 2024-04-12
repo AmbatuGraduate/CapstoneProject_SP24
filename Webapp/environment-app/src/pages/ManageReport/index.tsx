@@ -42,7 +42,7 @@ export const ManageReport = () => {
         const modifiedSubject = row.reportSubject.replace("[Report]", "");
         return <h6>{modifiedSubject}</h6>;
       },
-      width: "8%",
+      width: "20%",
     },
     {
       header: "Cần Giải Quyết Trước",
@@ -85,7 +85,7 @@ export const ManageReport = () => {
           </h6>
         );
       },
-      width: "20%",
+      width: "15%",
     },
   ];
 
