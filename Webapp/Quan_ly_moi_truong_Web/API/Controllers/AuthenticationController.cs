@@ -83,7 +83,7 @@ namespace API.Controllers
             return Ok("User is logged out");
         }
 
-        [HttpPost("refresh")]
+        [HttpGet("refresh")]
         [Authorize]
         public async Task<IActionResult> Refresh()
         {
