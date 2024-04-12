@@ -16,7 +16,6 @@ namespace Application.Tree.Commands.Add
             RuleFor(x => x.CutTime).NotEmpty();
             RuleFor(x => x.IntervalCutTime).NotEmpty();
             RuleFor(x => x.TreeTypeId).NotEmpty();
-            RuleFor(x => x.Note).NotEmpty();
             RuleFor(x => x.Email).NotEmpty();
         }
     }
