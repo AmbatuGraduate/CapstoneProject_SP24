@@ -36,6 +36,7 @@ jobs:
           npm install react-slick --save
           npm install react-image-gallery
           npm install --save @types/react-image-gallery
+          npm i react-router-dom
           npm run build
           
       - name: Copy files to Azure VM

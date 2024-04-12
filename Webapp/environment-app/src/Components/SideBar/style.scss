@@ -12,7 +12,9 @@
 
         img {
             width: 100%;
+            height: 5rem;
             min-width: 3rem;
+            object-fit: cover;
         }
     }
     .line {

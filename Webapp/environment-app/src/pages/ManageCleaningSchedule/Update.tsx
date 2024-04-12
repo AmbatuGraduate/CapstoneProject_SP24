@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { ClEANING_SCHEDULE_DETAIL, ClEANING_SCHEDULE_UPDATE, EMPLOYEE_LIST, useApi } from "../../Api";
+import { ClEANING_SCHEDULE_DETAIL, ClEANING_SCHEDULE_UPDATE, DEPARTMENT_EMPLOYEE, EMPLOYEE_LIST, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useEffect, useRef, useState } from "react";
 
@@ -9,6 +9,7 @@ export const UpdateCleaningSchedule = () => {
     const [data, setData] = useState<any>();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,7 +60,7 @@ export const UpdateCleaningSchedule = () => {
             formType: "select",
             key: "attendees.email",
             optionExtra: {
-                url: EMPLOYEE_LIST,
+                url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', data?.myEvent.extendedProperties.privateProperties.DepartmentEmail),
                 _key: "name",
                 _value: "email",
             },

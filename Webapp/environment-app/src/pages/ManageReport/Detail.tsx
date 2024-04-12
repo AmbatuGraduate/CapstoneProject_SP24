@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { DETAIL_REPORT, useApi } from "../../Api";
+import { DETAIL_REPORT, EMPLOYEE_DETAIL, useApi } from "../../Api";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import { useCookies } from "react-cookie";
@@ -20,6 +20,8 @@ export const DetailReport = () => {
   const { id = "" } = useParams();
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [employeeDetail, setEmployeeDetail] = useState<any>();
+  const [employeeDetailLoaded, setEmployeeDetailLoaded] = useState<boolean>(false);
 
   const ReportImpact = {
     0: "Thấp",
@@ -35,47 +37,38 @@ export const DetailReport = () => {
     navigate(-1);
   };
 
-  const fetchData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await useApi.get(DETAIL_REPORT.replace(":id", id));
-      const data = response.data.value;
-      setData(data);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.error("Error fetching tree detail:", error);
-    } finally {
-      setLoading(false);
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await useApi.get(DETAIL_REPORT.replace(":id", id));
+        const data = response.data.value;
+        setData(data);
+        if (data) {
+          await fetchEmployeeDetail(data.reportFormat?.issuerEmail);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error("Error fetching tree detail:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [id]);
 
-  useEffect(() => {
-    // console.log("id", id);
+  const fetchEmployeeDetail = async (email: string) => {
+    try {
+      const response = await useApi.get(EMPLOYEE_DETAIL.replace(":email", "email=" + email));
+      const employeeDetail = response.data;
+      setEmployeeDetail(employeeDetail);
+      setEmployeeDetailLoaded(true); // Đánh dấu rằng dữ liệu đã được tải thành công
+    } catch (error) {
+      console.error("Error fetching employee detail:", error);
+    }
+  };
 
-    // console.log(loading);
-    fetchData();
-  }, []);
-
-  // useEffect(() => {
-  //   if (data && data.value && data.value.reportFormat) {
-  //     // const cleanedReportBody = data.value.reportFormat.reportBody.replace(
-  //     //   /Report ID: .|Expected Resolution Date: .|Report Impact: .*/g,
-  //     //   ""
-  //     // );
-  //     console.log("data,", data);
-  //     setData((prevData) => ({
-  //       ...prevData,
-  //       value: {
-  //         ...prevData.value,
-  //         reportFormat: {
-  //           ...prevData.value.reportFormat,
-  //           reportBody: data.value.reportFormat.reportBody?.split("\r\n")[1],
-  //         },
-  //       },
-  //     }));
-  //   }
-  // }, [JSON.stringify(data)]);
   const images: ReactImageGalleryItem[] =
     data?.reportFormat?.reportImages?.map((img) => ({
       original: img,
@@ -85,131 +78,105 @@ export const DetailReport = () => {
 
   return data ? (
     <div className="main-layout row">
-      <div className="detail-cover" style={{ marginBottom: "25px" }}>
-        <div className="detail-content-left"></div>
-        <div className="detail-content-right title">
-          {data.reportFormat?.reportSubject.replace("[Report]", "")}
+      <div className="detail-cover">
+        <div style={{ display: 'flex', justifyContent: "space-between" }}>
+          <h4 className="title">
+            Tiêu Đề:
+            {data.reportFormat?.reportSubject.replace("[Report]", "")}
+          </h4>
+          <div className="detail-content-right impact" style={{ margin: 'auto 1rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <b>Trạng Thái:</b>
+              <span
+                className={
+                  data.reportFormat?.reportStatus == "Resolved"
+                    ? "resolved"
+                    : "unresolved"
+                }
+              >
+                {ReportStatus[data.reportFormat?.reportStatus]}
+              </span>
+            </div>
+            <div>
+              <b>Mức Độ Ảnh Hưởng:</b>{" "}
+              <span
+                className={
+                  data.reportFormat?.reportImpact === EReportImpact.LOW
+                    ? "low"
+                    : data.reportFormat?.reportImpact === EReportImpact.MEDIUM
+                      ? "medium"
+                      : "HIGH"
+                }
+              >
+                {ReportImpact[data.reportFormat?.reportImpact]}
+              </span>
+            </div>
+          </div>
         </div>
+        <hr className="line" style={{ margin: '0' }} />
       </div>
 
-      <div className="detail-cover-report" style={{ marginBottom: "35px" }}>
-        <div className="detail-content-left">
-          <img
-            style={{
-              width: "50px",
-              borderRadius: "50%",
-            }}
-            src={JSON.parse(token.accessToken).image}
-            alt="Admin Image"
-          />
+      <div className="detail-cover-report" style={{ display: 'flex', justifyContent: "space-between" }}>
+        <div className="detail-content-right">
+          <div style={{ display: 'flex' }}>
+            <img
+              style={{
+                width: "50px",
+                borderRadius: "50%",
+                margin: '0 1rem'
+              }}
+              src={employeeDetailLoaded ? employeeDetail?.picture : '../assets/imgs/avatar.jpg'}
+              alt="issuer"
+            />
+            <div>
+              <h5>{data.reportFormat?.issuerEmail}</h5>
+              <h6>{employeeDetail?.name}</h6>
+            </div>
+          </div>
         </div>
-        <div className="detail-content-right email">
-          {data.reportFormat?.issuerEmail}
+        <div className="detail-content-right impact" style={{ marginRight: '1rem' }}>
+          <b>Cần Giải Quyết Trước:</b>{" "}
+          {dayFormat(data.reportFormat?.expectedResolutionDate)}
         </div>
       </div>
 
       <div className="report-form">
-        <div
-          className="detail-cover-report"
-          style={{
-            marginBottom: "20px",
-            borderBottom: "1px solid rgb(212, 212, 212)",
-            paddingBottom: "20px",
-          }}
-        >
-          <div className="detail-content-left"></div>
+        <div className="detail-cover-report">
           <div className="detail-content-right body">
             {data.reportFormat.reportBody?.split("\r\n")[1]}
           </div>
         </div>
 
-        <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
-          <div className="detail-content-left"></div>
-          <div className="detail-content-right impact">
-            <b>Trạng Thái:</b>{" "}
-            <span
-              className={
-                data.reportFormat?.reportStatus == "Resolved"
-                  ? "resolved"
-                  : "unresolved"
-              }
-            >
-              {ReportStatus[data.reportFormat?.reportStatus]}
-            </span>
-          </div>
-        </div>
-
-        <div
-          className="detail-cover-report"
-          style={{
-            marginBottom: "20px",
-            borderBottom: "1px solid rgb(212, 212, 212)",
-            paddingBottom: "20px",
-          }}
-        >
-          <div className="detail-content-left"></div>
-          <div className="detail-content-right impact">
-            <b>Mức Độ Ảnh Hưởng:</b>
-            <span
-              className={
-                data.reportFormat?.reportImpact === EReportImpact.LOW
-                  ? "low"
-                  : data.reportFormat?.reportImpact === EReportImpact.MEDIUM
-                  ? "medium"
-                  : "HIGH"
-              }
-            >
-              {ReportImpact[data.reportFormat?.reportImpact]}
-            </span>
-          </div>
-        </div>
-
-        <div className="detail-cover-report" style={{ marginBottom: "20px" }}>
-          <div className="detail-content-left"></div>
-          <div className="detail-content-right impact">
-            <b>Cần Giải Quyết Trước:</b>{" "}
-            {dayFormat(data.reportFormat?.expectedResolutionDate)}
-          </div>
-        </div>
-
-        {ReportStatus[data.reportFormat?.reportStatus] ==
-          ReportStatus.Resolved && (
-          <>
-            <div
-              className="detail-cover-report"
-              style={{
-                marginBottom: "20px",
-                borderBottom: "1px solid rgb(212, 212, 212)",
-                paddingBottom: "20px",
-              }}
-            >
-              <div className="detail-content-left"></div>
-              <div className="detail-content-right impact">
-                <b>Ngày Giải Quyết:</b>{" "}
-                {dayFormat(data.reportFormat?.actualResolutionDate)}
-              </div>
-            </div>
-
-            <div className="detail-cover-report">
-              <div className="detail-content-left"></div>
-              <div className="detail-content-right impact">
-                <b>Phản Hồi:</b> {data.reportFormat?.reportResponse}
-              </div>
-            </div>
-          </>
-        )}
-
-        {/* <div className="detail-cover-report">
-          <div className="image-container">
-            {data.reportFormat.reportImages.map((image, index) => (
-              <img key={index} src={image} alt={`Image ${index + 1}`} />
-            ))}
-          </div>
-        </div> */}
+        <hr className="line" style={{ marginTop: '3rem', opacity: '.1' }} />
 
         <div className="detail-cover-report">
           <div className="image-container">
-            <ImageGallery items={images} />;
+            <ImageGallery items={images} showThumbnails={false} showFullscreenButton={false} showPlayButton={false} />
+          </div>
+        </div>
+
+        <hr className="line" style={{ opacity: '.1' }} />
+
+        <div className="detail-cover-report" >
+          <div className="detail-content-right impact" style={{ display: 'grid', marginLeft: '3rem', marginTop: '1rem', marginRight: '1rem', marginBottom: '1rem', width: '100%' }}>
+            <h5>Phản Hồi:</h5>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div>{data.reportFormat?.reportResponse}</div>
+              <div>
+                {ReportStatus[data.reportFormat?.reportStatus] ==
+                  ReportStatus.Resolved && (
+                    <>
+                      <div className="detail-cover-report" >
+                        <div className="detail-content-left"></div>
+                        <div className="detail-content-right">
+                          <b>Ngày Giải Quyết:</b>{" "}
+                          {dayFormat(data.reportFormat?.actualResolutionDate)}
+                        </div>
+                      </div>
+                    </>
+                  )}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -221,7 +188,7 @@ export const DetailReport = () => {
           >
             Trở Về
           </Button>
-          {JSON.parse(token.accessToken).role == "Admin" && (
+          {(JSON.parse(token.accessToken).role == "Admin" && data.reportFormat?.reportStatus == "UnResolved") && (
             <Link to={`/response/${id}`}>
               <Button className="btnLink" variant="success">
                 Phản Hồi

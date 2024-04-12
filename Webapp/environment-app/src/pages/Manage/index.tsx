@@ -64,12 +64,13 @@ export const Manage = () => {
         console.error(err);
       }
       setHubConnection(hubConnect);
+
     }
 
     createHubConnection();
 
     axios.get(`https://vesinhdanang.xyz:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
-      // axios.get(`https://localhost:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
+    // axios.get(`https://localhost:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -135,7 +136,7 @@ export const Manage = () => {
             <p className="currentDay">
               {new Date().toLocaleDateString('vi-VN', { weekday: 'long' })}, {new Date().toLocaleDateString('vi-VN')}
             </p>
-            <p className="temp">{weather.current.temp_c} <span className="degree">°</span></p>
+            <p className="temp">{weather.current.temp_c} <span className="degree">°C</span></p>
           </div>
           <div className="vertical-line"></div>
           <div className="weather-condition">
