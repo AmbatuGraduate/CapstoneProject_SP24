@@ -20,7 +20,7 @@ namespace API.Mapping
                   .MapWith(dest => new GoogleRefreshQuery(dest));
 
             config.NewConfig<GoogleAuthenticationResult, AuthenticationResponse>()
-                  .MapWith(dest => new AuthenticationResponse(dest.name, dest.avatar, dest.email, dest.role, dest.department, dest.expire_in));
+                  .MapWith(dest => new AuthenticationResponse(dest.name, dest.avatar, dest.email, dest.role, dest.department, dest.departmentEmail,dest.expire_in));
 
 
 

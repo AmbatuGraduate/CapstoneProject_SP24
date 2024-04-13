@@ -34,7 +34,8 @@ axiosClient.interceptors.request.use(
 
     if(expire < Date.now())
     {
-      const response = await axios.post('https://vesinhdanang.xyz:7024/api/auth/refresh',
+      const response = await axios.get('https://vesinhdanang.xyz:7024/api/auth/refresh',
+      // const response = await axios.get('https://localhost:7024/api/auth/refresh',
         {
           withCredentials: true,
           headers: {
@@ -44,6 +45,10 @@ axiosClient.interceptors.request.use(
           },
         }
       )
+      // .then((res) => {
+      //   console.log(res.data);
+      //   document.cookie= "accessToken="+encodeURIComponent(JSON.stringify(res.data));
+      // })
     }
 
     return config;
