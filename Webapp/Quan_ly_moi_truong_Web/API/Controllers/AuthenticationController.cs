@@ -83,13 +83,13 @@ namespace API.Controllers
             return Ok("User is logged out");
         }
 
-        [HttpPost("refresh")]
+        [HttpGet("refresh")]
         [Authorize]
         public async Task<IActionResult> Refresh()
         {
             if( !_httpContextAccessor.HttpContext.Request.Cookies.TryGetValue("u_tkn", out var token))
             {
-                return Problem(statusCode: StatusCodes.Status404NotFound, title: "Cookie is null");
+                return Problem(statusCode: StatusCodes.Status204NoContent, title: "Cookie is null");
             }
 
             var query = mapper.Map<GoogleRefreshQuery>(token);
@@ -97,7 +97,7 @@ namespace API.Controllers
             ErrorOr<GoogleAuthenticationResult> authResult = await mediator.Send(query);
 
             if (authResult.IsError && authResult.FirstError == Errors.Authentication.ExpireRefreshToken)
-                return Problem(statusCode: StatusCodes.Status404NotFound, title: authResult.FirstError.Description);
+                return Problem(statusCode: StatusCodes.Status204NoContent, title: authResult.FirstError.Description);
 
 
             _httpContextAccessor.HttpContext.Response.Cookies.Append("u_tkn", authResult.Value.token, new CookieOptions()
