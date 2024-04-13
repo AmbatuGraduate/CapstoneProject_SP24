@@ -9,7 +9,7 @@
 
 /* Colors and Styles (Defauly) */
 :root {
-  --PrimaryColor: hsl(94, 59%, 35%);
+  --PrimaryColor: #528e25;
   --HoverColor: #bdf094;
   --paleGreen: hsl(96, 75%, 89%);
   --whiteColor: hsl(0, 0%, 100%);
@@ -43,7 +43,7 @@ li {
 }
 
 .icon {
-  font-size: var(--h2FontSize);
+  font-size: var(--h1FontSize);
   cursor: pointer;
 }
 

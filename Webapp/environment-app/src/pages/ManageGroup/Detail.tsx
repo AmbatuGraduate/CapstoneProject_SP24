@@ -4,9 +4,10 @@ import { EMPLOYEE_LIST, EMPLOYEE_DELETE, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { useRef } from "react";
+import React, { useRef } from "react";
 
 import { MdAddCircleOutline } from "react-icons/md";
+
 
 export const DetailGroup = () => {
   const navigate = useNavigate();

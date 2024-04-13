@@ -127,6 +127,11 @@
     height: 3.5rem;
     font-weight: bold;
     color: var(--whiteColor);
+    border: none;
+    background-color: var(--PrimaryColor);
+    &:hover {
+      background-color: rgb(0, 138, 0);
+    }
   }
 
   .iconAdd {

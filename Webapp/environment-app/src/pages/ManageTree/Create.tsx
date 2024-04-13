@@ -3,8 +3,6 @@ import { EMPLOYEE_LIST, TREE_ADD, TREE_TYPE_LIST, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
-import { useCookies } from "react-cookie";
-import { GoogleMap } from "./MapIntergration";
 
 export const CreateTree = () => {
   const navigate = useNavigate();
@@ -13,7 +11,6 @@ export const CreateTree = () => {
   const [cutTime, setCutTime] = useState<Date | null>(null);
   const [plantTime, setPlantTime] = useState<Date | null>(null);
   const [intervalCutTime, setIntervalCutTime] = useState<number>(0);
-  const [token] = useCookies(["accessToken"]);
   const [address, setAddress] = useState<string | null>("");
 
   const fields: Field[] = [

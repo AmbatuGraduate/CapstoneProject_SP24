@@ -267,11 +267,6 @@ export const ManageTreeTrimSchedule = () => {
           <>
             <Button
               variant="success"
-              style={{
-                backgroundColor: "hsl(94, 59%, 35%)",
-                border: "none",
-                padding: "0.5rem 1rem",
-              }}
               onClick={() => navigate("/manage-treetrim-schedule/create")}
             >
               <MdAddCircleOutline className="iconAdd" />

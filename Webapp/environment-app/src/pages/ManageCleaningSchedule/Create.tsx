@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ClEANING_SCHEDULE_ADD, DEPARTMENT_LIST, EMPLOYEE_LIST, useApi } from "../../Api";
+import { ClEANING_SCHEDULE_ADD, DEPARTMENT_LIST, EMPLOYEE_LIST, useApi, DEPARTMENT_EMPLOYEE } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
 
@@ -7,7 +7,7 @@ export const CreateCleaningSchedule = () => {
     const navigate = useNavigate();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
-    const [departmentEmail, setDepartmentEmail] = useState<string | null>(null);
+    const [departmentEmail, setDepartmentEmail] = useState<any>();
 
     const fields: Field[] = [
         {
@@ -25,15 +25,10 @@ export const CreateCleaningSchedule = () => {
             label: "Nhân Viên Thực Hiện",
             formType: "select",
             key: "attendees.email",
-            // optionExtra: {
-            //     url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
-            //     _key: "value.name",
-            //     _value: "value.email",
-            // },
             optionExtra: {
-                url: EMPLOYEE_LIST,
-                _key: "name",
-                _value: "email",
+                url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
+                _key: "value.name",
+                _value: "value.email",
             },
         },
         {

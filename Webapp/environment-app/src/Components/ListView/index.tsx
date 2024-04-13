@@ -19,7 +19,7 @@ type DataResponse = {
 };
 
 type Props = {
-  listURL: string;
+  listURL: any;
   columns: Column[];
   bottom?: React.ReactNode;
   filter?: (row: any) => boolean;
