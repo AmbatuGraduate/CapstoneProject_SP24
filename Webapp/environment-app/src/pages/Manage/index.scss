@@ -13,7 +13,7 @@ body {
 
 div.notification {
     background-color: #f0f0f0;
-    padding: 20px;
+    padding: 15px;
     margin: 10px 20px;
     box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
     display: flex;
@@ -28,19 +28,21 @@ div.notification {
         }
 
         font-weight: 900;
-        font-size: 1.25rem;
+        font-size: var(--h3FontSize);
     }
 
     div.notificationDateTime {
         color: #5f6368;
         text-align: right;
         font-weight: 700;
+        &p {
+            margin: auto;
+        }
     }
 
     h2 {
         margin: 0 0 10px 0;
         color: #202124;
-        font-size: 1.2em;
         font-weight: 500;
     }
 
@@ -76,8 +78,6 @@ button.loadMore {
 
 .notification-header {
     display: flex;
-    align-items: center;
-    align-self: flex-start;
     border-bottom: 1px solid lightgray;
     width: 100%;
     margin-bottom: 1%;
@@ -85,7 +85,7 @@ button.loadMore {
 
 .notification-title {
     font-weight: bold;
-    font-size: 2em;
+    font-size: var(--h1FontSize);
     align-self: center;
     padding-top: 20px;
 }
@@ -94,7 +94,7 @@ button.loadMore {
     padding: 3px 10px;
     background-color: var(--PrimaryColor);
     color: #fff;
-    border-radius: 25%;
+    border-radius: 0.75rem;
     font-size: 1.2em;
     font-weight: bold;
     margin-left: 10px;
@@ -128,7 +128,7 @@ button.loadMore {
     }
 
     .weather-condition {
-        color: gray;
+        color: var(--textColor);
         font-weight: bold;
         margin-right: 8%;
     }
@@ -154,7 +154,7 @@ button.loadMore {
         .temp {
             font-size: 5em;
             font-weight: bold;
-            color: gray;
+            color: var(--textColor);
 
             .degree {
                 font-size: 0.5em;

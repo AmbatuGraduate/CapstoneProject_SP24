@@ -7,10 +7,13 @@ import { ReportImpact, ReportStatus, dayFormat } from "../../utils";
 import { useRef } from "react";
 
 import { MdAddCircleOutline } from "react-icons/md";
+import { useCookies } from "react-cookie";
 
 export const ManageReport = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
+
+  const [token] = useCookies(["accessToken"]);
   // TODO get list
 
   // const handleDelete = async (id: string) => {
@@ -85,7 +88,7 @@ export const ManageReport = () => {
           </h6>
         );
       },
-      width: "15%",
+      width: "15 %",
     },
   ];
 
@@ -96,18 +99,15 @@ export const ManageReport = () => {
         listURL={REPORT_LIST}
         columns={columns}
         bottom={
-          <Button
-            variant="success"
-            style={{
-              backgroundColor: "hsl(94, 59%, 35%)",
-              border: "none",
-              padding: "0.5rem 1rem",
-            }}
-            onClick={() => navigate("/manage-report/create")}
-          >
-            <MdAddCircleOutline className="iconAdd" />
-            Thêm báo cáo
-          </Button>
+          (JSON.parse(token.accessToken).role != "Admin") && (
+            <Button
+              variant="success"
+              onClick={() => navigate("/manage-report/create")}
+            >
+              <MdAddCircleOutline className="iconAdd" />
+              Thêm báo cáo
+            </Button>
+          )
         }
         transform={(data: any) => data?.value?.map((i) => i.reportFormat) || []}
       />

@@ -3,14 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { GROUP_LIST } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
-import { ReportImpact, ReportStatus, dayFormat } from "../../utils";
 import { useRef } from "react";
 
 import { MdAddCircleOutline } from "react-icons/md";
+import { useCookies } from "react-cookie";
 
 export const ManageGroup = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
+  const [token] = useCookies(["accessToken"]);
   // TODO get list
 
   // const handleDelete = async (id: string) => {
@@ -59,18 +60,15 @@ export const ManageGroup = () => {
         listURL={GROUP_LIST}
         columns={columns}
         bottom={
-          <Button
-            variant="success"
-            style={{
-              backgroundColor: "hsl(94, 59%, 35%)",
-              border: "none",
-              padding: "0.5rem 1rem",
-            }}
-            onClick={() => navigate(-1)}
-          >
-            <MdAddCircleOutline className="iconAdd" />
-            Thêm Bộ Phận
-          </Button>
+          (JSON.parse(token.accessToken).role == "Admin") && (
+            <Button
+              variant="success"
+              onClick={() => navigate(-1)}
+            >
+              <MdAddCircleOutline className="iconAdd" />
+              Thêm Bộ Phận
+            </Button>
+          )
         }
       />
     </div>
