@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { EMPLOYEE_LIST, EMPLOYEE_DELETE, useApi } from "../../Api";
+import { EMPLOYEE_LIST, EMPLOYEE_DELETE, useApi, DEPARTMENT_EMPLOYEE } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
@@ -8,11 +8,12 @@ import { useRef } from "react";
 import { roleFormat } from "../../utils";
 
 import { MdAddCircleOutline } from "react-icons/md";
+import { useCookies } from "react-cookie";
 
 export const ManageEmployee = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
-
+  const [token] = useCookies(["accessToken"]);
 
   const handleDelete = async (email: string) => {
     await useApi.delete(EMPLOYEE_DELETE.replace(":email", email));
@@ -85,20 +86,17 @@ export const ManageEmployee = () => {
 
   ];
 
+  const listURL = JSON.parse(token.accessToken).role === "Admin" ? EMPLOYEE_LIST : DEPARTMENT_EMPLOYEE.replace(':groupEmail', JSON.parse(token.accessToken).departmentEmail);
+
   return (
     <div>
       <ListView
         ref={ref}
-        listURL={EMPLOYEE_LIST}
+        listURL={listURL}
         columns={columns}
         bottom={
           <Button
             variant="success"
-            style={{
-              backgroundColor: "hsl(94, 59%, 35%)",
-              border: "none",
-              padding: "0.5rem 1rem",
-            }}
             onClick={() => navigate("/manage-employee/create")}
           >
             <MdAddCircleOutline className="iconAdd" />

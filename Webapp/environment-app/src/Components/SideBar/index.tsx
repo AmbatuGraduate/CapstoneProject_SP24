@@ -28,12 +28,12 @@ const Sidebar = () => {
 
   return (
     <div className="sideBar ">
-      <div className="logoDiv flex">
-        <NavLink to="/" style={{ width: '100%' }}>
+      <div className="logoDiv flex ">
+        <NavLink className="d-none d-md-inline" to="/" style={{ width: '100%' }}>
           <img src="assets/imgs/logoEcoo.png" alt="Image_name" />
         </NavLink>
       </div>
-      <hr className="line" />
+      <hr className="line d-none d-md-block" />
       <div className="menuDiv p-0">
         <ul className="menuLists grid">
 
@@ -53,7 +53,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
-          {JSON.parse(token.accessToken).role == "Admin" && (
+          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "Manager") && (
             <li className="listItem">
               <NavLink to="/manage-group" className="menuLink flex">
                 <GrGroup className="icon" />

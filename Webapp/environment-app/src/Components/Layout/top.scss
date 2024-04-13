@@ -10,7 +10,7 @@
       }
 
       p {
-        font-size: var(--normalFontSize);
+        font-size: var(--h3FontSize);
         color: var(--textColor);
         font-weight: 500;
       }
@@ -82,7 +82,7 @@
           }
           button:hover {
             background-color: var(--paleGreen);
-            color: var(--PrimaryColor);
+            color: var(--blackColor);
             border: var(--paleGreen);
           }
           .menuLine {
