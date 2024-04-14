@@ -46,9 +46,12 @@ namespace Infrastructure.Persistence.Repositories
                 emailBody.Append("");
                 emailBody.AppendLine(reportFormat.ReportBody);
                 emailBody.Append("");
+                emailBody.AppendLine("Issue Location: " + reportFormat.IssueLocation);
+                emailBody.Append("");
                 emailBody.AppendLine("Expected Resolution Date: " + reportFormat.ExpectedResolutionDate);
                 emailBody.Append("");
                 emailBody.AppendLine("Report Impact: " + reportFormat.ReportImpact);
+               
 
                 // Create report
                 var email = new MailMessage
@@ -392,6 +395,7 @@ namespace Infrastructure.Persistence.Repositories
                 IssuerEmail = gmail,
                 ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
                 ReportBody = body,
+                IssueLocation = Regex.Match(body, @"Issue Location: (.*?)(\r\n|\n)").Groups[1].Value.Trim(),
                 ReportStatus = reportDb.Status.ToString(),
                 ReportImpact = reportDb.ReportImpact,
                 ExpectedResolutionDate = reportDb.ExpectedResolutionDate,

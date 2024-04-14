@@ -49,7 +49,7 @@ export default function Report({ navigation }) {
             var useremail = JSON.parse(await AsyncStorage.getItem("@user"))?.email;
             const atoken = await AsyncStorage.getItem("@accessToken");
             if (atoken !== null) {
-                const url = `https://vesinhdanang.xyz:7024/api/Report/GetReportsByUser?email=${useremail}`;
+                const url = `http://172.21.0.195:45455/api/Report/GetReportsByUser?email=${useremail}`;
 
                 api.get(url, {
                     headers: {
@@ -162,6 +162,7 @@ export default function Report({ navigation }) {
                                 navigation.navigate('ReportDetails', {
                                     reportId: item.id,
                                     reportBody: item.reportBody,
+                                    issueLocation: item.issueLocation,
                                     reportImages: item.reportImages,
                                     reportSubject: item.reportSubject.replace('[Report]', '').trim(),
                                     reportImpact: item.reportImpact,
