@@ -395,7 +395,7 @@ namespace Infrastructure.Persistence.Repositories
                 IssuerEmail = gmail,
                 ReportSubject = messageDetail.Payload.Headers.FirstOrDefault(h => h.Name == "Subject")?.Value,
                 ReportBody = body,
-                IssueLocation = Regex.Match(body, @"Issue Location: (.*?)(\r\n|\n)").Groups[1].Value.Trim(),
+                IssueLocation = reportDb.IssueLocation,
                 ReportStatus = reportDb.Status.ToString(),
                 ReportImpact = reportDb.ReportImpact,
                 ExpectedResolutionDate = reportDb.ExpectedResolutionDate,
