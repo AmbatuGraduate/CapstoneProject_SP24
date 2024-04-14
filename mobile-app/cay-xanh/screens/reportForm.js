@@ -14,14 +14,14 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 
 
 const ReportSchema = yup.object({
-    reportSubject: yup.string().required('Tiêu đề không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
-    reportBody: yup.string().required('Nội dung báo cáo không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
-    issueLocation: yup.string().required('Địa điểm không được bỏ trống'),
+    reportSubject: yup.string().required('Nhập tiêu đề báo cáo').min(4, 'Ít nhất 4 ký tự'),
+    reportBody: yup.string().required('Nhập nội dung chi tiết báo cáo').min(4, 'Ít nhất 4 ký tự'),
+    issueLocation: yup.string().required('Nhập địa chỉ cụ thể'),
     reportImpact: yup.string().required('Mức độ ảnh hưởng là bắt buộc').test('is-impact', 'Chọn mức độ ảnh hưởng', (value) => {
         const parsedValue = parseInt(value, 10);
         return parsedValue >= 0 && parsedValue <= 2;
     }),
-    expectedResolutionDate: yup.date().required('Ngày dự kiến giải quyết là bắt buộc').test('is-future', 'Ngày dự kiến giải quyết phải trong tương lai', (value) => {
+    expectedResolutionDate: yup.date().required('Hãy nhập ngày cần giải quyết').test('is-future', 'Ngày cần giải quyết phải trong tương lai', (value) => {
         return value >= new Date();
     }),
 });
@@ -183,7 +183,7 @@ export default function ReportForm({ onFormSuccess }) {
 
 
                                     <Text style={styles.errorText}>
-                                        {props.touched.reportSubject && props.errors.reportSubject}
+                                        {props.touched.issueLocation && props.errors.issueLocation}
                                     </Text>
 
 
