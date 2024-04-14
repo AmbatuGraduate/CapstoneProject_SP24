@@ -6,11 +6,12 @@ import Swiper from 'react-native-swiper';
 
 export default function ReportDetails({ route }) {
 
-    const { reportId, reportBody, reportImages, reportSubject, reportImpact, reportStatus, reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
+    const { reportId, reportBody, issueLocation,
+        reportImages, reportSubject, reportImpact, reportStatus,
+        reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
 
     let cleanedReportSubject = reportSubject.replace(/\[Report\]/g, '').trim();
-    let cleanedReportBody = reportBody.replace(/Report ID: .*|Expected Resolution Date: .*|Report Impact: .*/g, '');
-
+    let cleanedReportBody = reportBody.replace(/Report ID: .*|Expected Resolution Date: .*|Report Impact: .*|Issue Location: .*/g, '').trim();
     const impactLevels = {
         0: 'Thấp',
         1: 'Vừa',
@@ -82,8 +83,14 @@ export default function ReportDetails({ route }) {
 
                         </View>
                     )}
-                    <Text style={[styles.label, { color: '#2282F3' }]}>Nội dung</Text>
-                    <Text style={styles.bodyText}>{cleanedReportBody}</Text>
+                    <View style={styles.bodySection}>
+                        <Text style={[styles.label, { color: '#2282F3' }]}>Địa điểm</Text>
+                        <Text style={styles.bodyText}>{issueLocation}</Text>
+                        <Text style={[styles.label, { color: '#2282F3' }]}>Nội dung</Text>
+                        <Text style={styles.bodyText}>{cleanedReportBody}</Text>
+                    </View>
+
+
                     {reportStatus !== 'Resolved' && (
                         <Text style={styles.dateText}>Cần giải quyết trước - {expectedResolutionDate}</Text>
                     )}
@@ -108,7 +115,8 @@ export default function ReportDetails({ route }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingBottom: 20,
     },
     overview: {
         backgroundColor: '#F5F5F5',
@@ -153,10 +161,16 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     bodyText: {
-        fontSize: 16,
+        fontSize: 20,
         lineHeight: 24,
         color: '#333',
         letterSpacing: 0.5,
+        fontFamily: 'quolibet',
+        padding: 10,
+        borderRadius: 15,
+        backgroundColor: '#f0f0f0',
+        marginVertical: 6,
+
     },
     dateText: {
         fontSize: 16,
@@ -165,7 +179,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFD700',
         padding: 5,
         borderRadius: 15,
+        lineHeight: 24,
         textAlign: 'center',
+        marginTop: 10,
     },
     noRes: {
         fontSize: 18,
@@ -189,5 +205,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'grey',
 
+    },
+    bodySection: {
     },
 });
