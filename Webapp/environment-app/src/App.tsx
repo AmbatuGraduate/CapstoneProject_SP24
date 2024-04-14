@@ -169,7 +169,7 @@ function App() {
           element: <DetailGroup />,
         },
         {
-          path: "/myprofile",
+          path: "/myprofile/:email",
           element: <Profile />,
         },
       ],
