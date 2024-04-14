@@ -26,5 +26,8 @@ namespace Domain.Entities.Report
 
         [DataMember]
         public string? ResponseId { get; set; }
+        [DataMember]
+        public string IssueLocation { get; set; }
+
     }
 }
