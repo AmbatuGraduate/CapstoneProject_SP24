@@ -151,7 +151,9 @@ export const DetailReport = () => {
 
         <div className="detail-cover-report">
           <div className="image-container">
-            <ImageGallery items={images} showThumbnails={false} showFullscreenButton={false} showPlayButton={false} />
+            <ImageGallery items={images} showThumbnails={false} showFullscreenButton={false} showPlayButton={false}
+
+            />
           </div>
         </div>
 

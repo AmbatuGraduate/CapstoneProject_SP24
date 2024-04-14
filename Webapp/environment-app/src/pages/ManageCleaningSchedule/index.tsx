@@ -268,11 +268,6 @@ export const ManageCleaningSchedule = () => {
           <>
             <Button
               variant="success"
-              style={{
-                backgroundColor: "hsl(94, 59%, 35%)",
-                border: "none",
-                padding: "0.5rem 1rem",
-              }}
               onClick={() => navigate("/manage-cleaning-schedule/create")}
             >
               <MdAddCircleOutline className="iconAdd" />

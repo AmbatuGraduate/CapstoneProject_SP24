@@ -9,6 +9,7 @@
         string email,
         string token,
         string role,
-        string department
+        string department,
+        string departmentEmail
     );
 }

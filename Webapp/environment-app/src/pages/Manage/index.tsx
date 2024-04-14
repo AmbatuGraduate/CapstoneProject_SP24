@@ -70,7 +70,7 @@ export const Manage = () => {
     createHubConnection();
 
     axios.get(`https://vesinhdanang.xyz:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
-    // axios.get(`https://localhost:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
+      // axios.get(`https://localhost:7024/api/Notification/GetByUsername/${username}?page=${page}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -166,7 +166,7 @@ export const Manage = () => {
                 <p>{notification.message}</p>
               </div>
               <div className="notificationDateTime">
-                <p style={{ color: 'grey' }}>{notification.notificationDateTime}</p>
+                <p style={{ color: 'grey', margin: 'auto' }}>{notification.notificationDateTime}</p>
               </div>
             </div>
           );

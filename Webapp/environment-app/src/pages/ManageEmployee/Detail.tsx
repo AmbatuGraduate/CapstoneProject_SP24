@@ -5,7 +5,7 @@ import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { taskStatus, timeFormat, dayFormat } from "../../utils";
+import { taskStatus, timeFormat, dayFormat, roleFormat } from "../../utils";
 import { ListView } from "../../Components/ListView";
 
 export const DetailEmployee = () => {
@@ -180,7 +180,7 @@ export const DetailEmployee = () => {
             <div className="detail-content-parent">
               <div className="detail-content-child-label">Chức Vụ: </div>
               <div className="detail-content-child-value">
-                {data?.role}
+                {roleFormat(data?.role).text}
               </div>
             </div>
           </div>

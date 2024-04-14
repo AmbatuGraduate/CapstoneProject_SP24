@@ -352,8 +352,6 @@ namespace API.Controllers
 
         // user is employee in db
         [HttpGet]
-        [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> IsEmployee(string email)
         {
             ErrorOr<bool> isEmployee = await mediator.Send(new ExistEmployeeQuery(email));

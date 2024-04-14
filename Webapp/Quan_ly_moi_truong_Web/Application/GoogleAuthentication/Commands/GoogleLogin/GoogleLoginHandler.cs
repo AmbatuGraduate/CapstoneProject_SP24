@@ -61,7 +61,9 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                     if (date.CompareTo(DateTime.Now) == 1 && payload.Issuer.Contains("accounts.google.com"))
                     {
                         var userRole = roleRepository.GetRole(user.RoleId).RoleName;
-                        var userDepartment = (userRole != "Admin") ? groupRepository.GetGroupDbById(user.DepartmentId).DepartmentName : "Admin";
+                        var getDepartment = groupRepository.GetGroupDbById(user.DepartmentId);
+                        var userDepartment = (userRole != "Admin") ? getDepartment.DepartmentName : "Admin";
+                        var userDepartmentEmail = (userRole != "Admin") ? getDepartment.DepartmentEmail : "Admin@vesinhdanang.xyz";
 
                         var token = jwtTokenGenerator.GenerateToken(payload.Subject, userRole, userDepartment ,tokenData.access_token, date);
 
@@ -79,7 +81,7 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                         //Save refresh token to DB
                         userRefreshTokenRepository.AddRefreshRoken(refreshToken);
 
-                        return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, payload.Email, token, userRole, userDepartment);
+                        return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, payload.Email, token, userRole, userDepartment, userDepartmentEmail);
                     }
                 }
             }

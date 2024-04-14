@@ -19,6 +19,8 @@ export const ManageReport = () => {
   const email = isUser.email;
   const navigate = useNavigate();
   const ref = useRef<any>();
+
+  const [token] = useCookies(["accessToken"]);
   // TODO get list
 
   // const handleDelete = async (id: string) => {

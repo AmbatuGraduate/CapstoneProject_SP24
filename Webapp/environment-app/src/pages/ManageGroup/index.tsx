@@ -5,12 +5,14 @@ import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { useRef } from "react";
 import { MdAddCircleOutline } from "react-icons/md";
+import { useCookies } from "react-cookie";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageGroup = () => {
   const { email = "" } = useParams();
   const navigate = useNavigate();
   const ref = useRef<any>();
+  const [token] = useCookies(["accessToken"]);
   // TODO get list
 
   const handleDelete = async (id: string) => {
@@ -88,18 +90,15 @@ export const ManageGroup = () => {
         listURL={DEPARTMENT_LIST}
         columns={columns}
         bottom={
-          <Button
-            variant="success"
-            style={{
-              backgroundColor: "hsl(94, 59%, 35%)",
-              border: "none",
-              padding: "0.5rem 1rem",
-            }}
-            onClick={() => navigate("/manage-group/create")}
-          >
-            <MdAddCircleOutline className="iconAdd" />
-            Thêm Bộ Phận
-          </Button>
+          (JSON.parse(token.accessToken).role == "Admin") && (
+            <Button
+              variant="success"
+              onClick={() => navigate("/manage-group/create")}
+            >
+              <MdAddCircleOutline className="iconAdd" />
+              Thêm Bộ Phận
+            </Button>
+          )
         }
       />
     </div>

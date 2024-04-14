@@ -11,7 +11,6 @@ export const CreateTree = () => {
   const [, setIsLoading] = useState(false);
   const [plantTime, setPlantTime] = useState<Date | null>(null);
   const [intervalCutTime, setIntervalCutTime] = useState<number>(0);
-  const [token] = useCookies(["accessToken"]);
   const [address, setAddress] = useState<string | null>("");
   useEffect(() => {
     console.log("rerender");

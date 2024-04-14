@@ -9,6 +9,7 @@ namespace Contract.Authentication
         string Email,
         string Role,
         string Department,
+        string departmentEmail,
         DateTime Expire_in
     );
 }

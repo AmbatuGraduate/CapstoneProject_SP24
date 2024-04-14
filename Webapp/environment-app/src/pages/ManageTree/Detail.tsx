@@ -9,7 +9,6 @@ import SimpleMap from "./MapIntergration";
 export const DetailTree = () => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
-  const { email = " " } = useParams();
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
   const handleNavigate = () => {
