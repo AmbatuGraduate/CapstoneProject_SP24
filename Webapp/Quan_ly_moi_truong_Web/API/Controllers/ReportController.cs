@@ -77,6 +77,7 @@ namespace API.Controllers
                 request.IssuerEmail,
                 request.ReportSubject,
                 request.ReportBody,
+                request.IssueLocation,
                 request.ReportImages,
                 request.ExpectedResolutionDate,
                 request.ReportImpact

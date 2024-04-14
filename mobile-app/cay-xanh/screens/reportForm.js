@@ -9,12 +9,14 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { api } from "../shared/api";
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Camera } from 'expo-camera';
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 
 
 const ReportSchema = yup.object({
     reportSubject: yup.string().required('Tiêu đề không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
     reportBody: yup.string().required('Nội dung báo cáo không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
+    issueLocation: yup.string().required('Địa điểm không được bỏ trống'),
     reportImpact: yup.string().required('Mức độ ảnh hưởng là bắt buộc').test('is-impact', 'Chọn mức độ ảnh hưởng', (value) => {
         const parsedValue = parseInt(value, 10);
         return parsedValue >= 0 && parsedValue <= 2;
@@ -91,6 +93,7 @@ export default function ReportForm({ onFormSuccess }) {
                 initialValues={{
                     reportSubject: '',
                     reportBody: '',
+                    issueLocation: '',
                     reportImages: [],
                     reportImpact: 'Thấp',
                     reportBodyHeight: 100,
@@ -106,11 +109,12 @@ export default function ReportForm({ onFormSuccess }) {
 
                     // local test: http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=
                     // server:     https://vesinhdanang.xyz:7024/api/Report/CreateReport
-                    api.post('https://vesinhdanang.xyz:7024/api/Report/CreateReport', {
+                    api.post('http://172.21.0.195:45455/api/Report/CreateReport', {
                         accessToken: accessToken,
                         issuerEmail: issuerEmail,
                         reportSubject: values.reportSubject,
                         reportBody: values.reportBody,
+                        issueLocation: values.issueLocation,
                         reportImages: values.reportImages,
                         expectedResolutionDate: values.expectedResolutionDate,
                         reportImpact: parseInt(values.reportImpact, 10),
@@ -148,6 +152,17 @@ export default function ReportForm({ onFormSuccess }) {
                                 onChangeText={props.handleChange('reportSubject')}
                                 value={props.values.reportSubject}
                                 onBlur={props.handleBlur('reportSubject')}
+                            />
+                            <Text style={styles.errorText}>
+                                {props.touched.reportSubject && props.errors.reportSubject}
+                            </Text>
+
+                            <TextInput
+                                style={styles.input}
+                                placeholder='Địa điểm'
+                                onChangeText={props.handleChange('issueLocation')}
+                                value={props.values.issueLocation}
+                                onBlur={props.handleBlur('issueLocation')}
                             />
                             <Text style={styles.errorText}>
                                 {props.touched.reportSubject && props.errors.reportSubject}
@@ -274,13 +289,13 @@ export default function ReportForm({ onFormSuccess }) {
                                 <View style={{ flex: 1, backgroundColor: 'transparent', justifyContent: 'flex-end', alignItems: 'center' }}>
                                     <TouchableOpacity
                                         style={{
-                                            marginBottom: 20, // Adjust as needed
-                                            width: 70, // Adjust as needed
-                                            height: 70, // Adjust as needed
-                                            borderRadius: 35, // Half of width and height to make it circular
-                                            backgroundColor: 'rgba(255,255,255, 0.1)', // Change this to the color you want
-                                            justifyContent: 'center', // Center the icon vertically
-                                            alignItems: 'center', // Center the icon horizontally
+                                            marginBottom: 20,
+                                            width: 70,
+                                            height: 70,
+                                            borderRadius: 35,
+                                            backgroundColor: 'rgba(255,255,255, 0.1)',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
                                         }}
                                         onPress={() => takePhoto(props)}
                                     >

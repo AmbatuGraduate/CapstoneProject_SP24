@@ -11,6 +11,7 @@ namespace Application.Report.Commands.Create
             RuleFor(x => x.ReportBody).NotEmpty();
             RuleFor(x => x.ExpectedResolutionDate).NotEmpty();
             RuleFor(x => x.ReportSubject).NotEmpty();
+            RuleFor(x => x.IssueLocation).NotEmpty();
         }
     }
 }
