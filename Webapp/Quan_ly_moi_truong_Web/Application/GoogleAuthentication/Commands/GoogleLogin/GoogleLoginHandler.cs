@@ -63,7 +63,7 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                         var userRole = roleRepository.GetRole(user.RoleId).RoleName;
                         var getDepartment = groupRepository.GetGroupDbById(user.DepartmentId);
                         var userDepartment = (userRole != "Admin") ? getDepartment.DepartmentName : "Admin";
-                        var userDepartmentEmail = (userRole != "Admin") ? getDepartment.DepartmentName : "Admin@vesinhdanang.xyz";
+                        var userDepartmentEmail = (userRole != "Admin") ? getDepartment.DepartmentEmail : "Admin@vesinhdanang.xyz";
 
                         var token = jwtTokenGenerator.GenerateToken(payload.Subject, userRole, userDepartment ,tokenData.access_token, date);
 
