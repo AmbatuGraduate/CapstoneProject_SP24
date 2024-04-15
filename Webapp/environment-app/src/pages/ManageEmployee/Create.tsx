@@ -81,6 +81,7 @@ export const CreateEmployee = () => {
     try {
       await useApi.post(EMPLOYEE_ADD, {
         ...data,
+        userRole: Number(data?.userRole)
       });
       Swal.fire(
         'Success!',

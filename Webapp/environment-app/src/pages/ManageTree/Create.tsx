@@ -10,11 +10,8 @@ export const CreateTree = () => {
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
   const [plantTime, setPlantTime] = useState<Date | null>(null);
-  const [intervalCutTime, setIntervalCutTime] = useState<number>(0);
+  const [intervalCutTime, setIntervalCutTime] = useState<number>(1);
   const [address, setAddress] = useState<string | null>("");
-  useEffect(() => {
-    console.log("rerender");
-  }, []);
 
   const cutTime = () => {
     const newCutTime = new Date(plantTime || new Date());
@@ -59,7 +56,7 @@ export const CreateTree = () => {
       label: "Thời Điểm Trồng",
       formType: "date",
       keyName: "plantTime",
-      selected: plantTime || new Date(),
+      defaultValue: new Date(),
       googleAddress: false,
       onChange: (date) => {
         setPlantTime(date);
@@ -69,16 +66,14 @@ export const CreateTree = () => {
       label: "Thời Điểm Cắt",
       formType: "date",
       keyName: "cutTime",
-      selected: cutTime(),
-      affectValue: intervalCutTime * 3,
-      // affectDate: plantTime || new Date(),
+      value: cutTime(),
       googleAddress: false,
     },
     {
-      label: "Khoảng Thời Gian Cắt (Tháng)",
+      label: "Khoảng Thời Gian Cắt (Quý)",
       formType: "number",
       keyName: "intervalCutTime",
-      value: intervalCutTime,
+      defaultValue: intervalCutTime,
       googleAddress: false,
       onChange: (value) => setIntervalCutTime(Number(value || 0)),
     },
@@ -115,7 +110,6 @@ export const CreateTree = () => {
 
   const handleSubmit = async (data: Record<string, any>) => {
     setIsLoading(true);
-
     try {
       await useApi.post(TREE_ADD, {
         ...data,

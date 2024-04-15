@@ -22,7 +22,8 @@ export type Field = {
     | "number"
     | "date"
     | "jsx"
-    | "datetime";
+    | "datetime"
+    | "multi-select";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
@@ -65,35 +66,20 @@ const FormType = (props: Field) => {
     formData,
     setFormData,
     onChange,
+    defaultValue = "",
     ...rest
   } = props;
 
   const _disabled = mode == "view" ? true : disabled;
   const [_options, setOptions] = useState<Option[]>();
-  const [startDate, setStartDate] = useState<Date | null>(
-    props.selected || new Date()
-  );
-  const [value, setValue] = useState();
-  const [places, setPlaces] = useState([]);
+
+  const [places] = useState([]);
 
   useEffect(() => {
     if (optionExtra) {
       fetchDataForFormSelect(optionExtra);
     }
-  }, []);
-
-  useEffect(() => {
-    if (formType === "date" || formType === "datetime")
-      setFormData((prev) => ({ ...prev, [keyName]: startDate }));
-  }, [startDate, props.selected]);
-
-  useEffect(() => {
-    const currentTime = props.affectDate || new Date();
-    currentTime.setMonth(
-      currentTime.getMonth() + (Number(props.affectValue) || 0)
-    );
-    setStartDate(currentTime);
-  }, [props.affectValue]);
+  }, [JSON.stringify(optionExtra)]);
 
   useEffect(() => {
     if (props.googleAddress) {
@@ -197,9 +183,30 @@ const FormType = (props: Field) => {
           name={keyName}
           {...rest}
           disabled={_disabled}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }))
-          }
+          onChange={(e) => {
+            onChange && onChange(e.target.value);
+            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }));
+          }}
+        >
+          {(optionExtra ? _options : options)?.map((option, idx) => (
+            <option key={idx} value={option.value}>
+              {option.key}
+            </option>
+          ))}
+        </Form.Select>
+      );
+
+    case "multi-select":
+      return (
+        <Form.Select
+          name={keyName}
+          {...rest}
+          disabled={_disabled}
+          multiple
+          onChange={(e) => {
+            onChange && onChange(e.target.value);
+            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }));
+          }}
         >
           {(optionExtra ? _options : options)?.map((option, idx) => (
             <option key={idx} value={option.value}>
@@ -212,10 +219,11 @@ const FormType = (props: Field) => {
     case "date":
       return (
         <DatePicker
-          selected={startDate}
+          selected={formData[keyName] ? new Date(formData[keyName]) : null}
           onChange={(date) => {
-            onChange && onChange(date);
-            setStartDate(date);
+            console.log("date", date);
+            // onChange && onChange(date);
+            // setStartDate(date);
             setFormData((prev) => ({ ...prev, [keyName]: date }));
           }}
           className="datepicker"
@@ -229,9 +237,10 @@ const FormType = (props: Field) => {
     case "datetime":
       return (
         <DatePicker
-          selected={startDate}
+          selected={formData[keyName] ? new Date(formData[keyName]) : null}
           onChange={(date) => {
-            setStartDate(date);
+            onChange && onChange(date);
+            // setStartDate(date);
             setFormData((prev) => ({ ...prev, [keyName]: date }));
           }}
           showTimeSelect
@@ -270,6 +279,19 @@ export const FormBase = (props: Props) => {
     navigateUpdate,
   } = props;
   const [formData, setFormData] = useState<Record<string, any>>({});
+
+  useEffect(() => {
+    const _data = { ...formData };
+    fields.forEach(
+      (f) =>
+        (_data[f.keyName] = f.value
+          ? f.value
+          : _data[f.keyName]
+          ? _data[f.keyName]
+          : f.defaultValue)
+    );
+    setFormData(_data);
+  }, [JSON.stringify(fields)]);
 
   const handleSubmit = () => {
     console.log(formData);

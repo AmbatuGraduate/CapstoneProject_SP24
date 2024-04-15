@@ -1,11 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import {
-  DEPARTMENT_EMPLOYEE,
-  DEPARTMENT_LIST,
-  EMPLOYEE_LIST,
-  GARBAGE_COLLECTION_ADD,
-  useApi,
-} from "../../Api";
+import { DEPARTMENT_EMPLOYEE, DEPARTMENT_LIST, EMPLOYEE_LIST, GARBAGE_COLLECTION_ADD, useApi,} from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
 
@@ -14,7 +8,7 @@ export const CreateGarbageCollectionSchedule = () => {
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
   const [departmentEmail, setDepartmentEmail] = useState<any>();
-
+  
   const fields: Field[] = [
     {
       label: "Bộ Phận",
@@ -25,7 +19,7 @@ export const CreateGarbageCollectionSchedule = () => {
         _key: "name",
         _value: "email",
       },
-      onChange: (e) => setDepartmentEmail(e.target.value),
+      onChange: (value) => setDepartmentEmail(value),
     },
     {
       label: "Nhân Viên Thực Hiện",
@@ -33,8 +27,8 @@ export const CreateGarbageCollectionSchedule = () => {
       keyName: "attendees.email",
       optionExtra: {
         url: DEPARTMENT_EMPLOYEE.replace(":groupEmail", departmentEmail),
-        _key: "value.name",
-        _value: "value.email",
+        _key: "name",
+        _value: "email",
       },
     },
     {
@@ -52,11 +46,13 @@ export const CreateGarbageCollectionSchedule = () => {
       label: "Bắt Đầu Từ",
       formType: "datetime",
       keyName: "start.dateTime",
+      defaultValue: new Date(),
     },
     {
       label: "Kết Thúc Trước",
       formType: "datetime",
       keyName: "end.dateTime",
+      defaultValue: new Date(),
     },
     {
       label: "Ghi Chú",
@@ -70,15 +66,9 @@ export const CreateGarbageCollectionSchedule = () => {
     setIsLoading(true);
 
     // Process start dateTime
-    const startDateTimeParts = data["start.dateTime"].split(" "); // Split date and time
-    const startDateParts = startDateTimeParts[1].split("/"); // Split day, month, and year
-    const formattedStartDateTime = `${startDateParts[2]}-${startDateParts[1]}-${startDateParts[0]}T${startDateTimeParts[0]}:00+07:00`;
-
+    const formattedStartDateTime = data["start.dateTime"];
     // Process end dateTime
-    const endDateTimeParts = data["end.dateTime"].split(" "); // Split date and time
-    const endDateParts = endDateTimeParts[1].split("/"); // Split day, month, and year
-    const formattedEndDateTime = `${endDateParts[2]}-${endDateParts[1]}-${endDateParts[0]}T${endDateTimeParts[0]}:00+07:00`;
-
+    const formattedEndDateTime = data["end.dateTime"];
     try {
       // Lấy danh sách nhân viên từ API
       const employeeListResponse = await useApi.get(EMPLOYEE_LIST);

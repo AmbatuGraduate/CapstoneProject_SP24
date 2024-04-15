@@ -49,7 +49,7 @@ export const RESPONSE_REPORT = "/Report/ResponseReport"
 export const DELETE_REPORT = "/Report/DeleteReport?id=:id"
 
 // export const GROUP_LIST = "/Group/GetAllGroups"
-export const GROUP_EMPLOYEE = "/Group/GetAllMembersOfGroup/?groupEmail=:email"
+// export const GROUP_EMPLOYEE = "/Group/GetAllMembersOfGroup/?groupEmail=:email"
 export const GROUP_DELETE = "/Group/DeleteGroup?groupEmail=:email"
 export const GROUP_ADD = "/Group/AddGroup"
 export const GROUP_DETAIL = "/Group/GetGroupByGroupEmail?groupEmail=:email"

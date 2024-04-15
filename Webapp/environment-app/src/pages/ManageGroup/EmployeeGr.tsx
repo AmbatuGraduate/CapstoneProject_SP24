@@ -1,19 +1,20 @@
 import { Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { DEPARTMENT_EMPLOYEE, EMPLOYEE_DELETE, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { useRef } from "react";
+import {  useRef } from "react";
 
 import { MdAddCircleOutline } from "react-icons/md";
 
 export const EmployeeGroup = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
+  const { email = "" } = useParams();
 
   const handleDelete = async (id: string) => {
-    await useApi.delete(EMPLOYEE_DELETE.replace(":id", id));
+    await useApi.delete(EMPLOYEE_DELETE.replace(":id", email));
     ref.current?.reload();
   };
 
@@ -24,7 +25,7 @@ export const EmployeeGroup = () => {
         return (
           <div>
             <button type="button" className="btn btn-click" onClick={() => {}}>
-              <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
+              <ModalDelete handleDelete={() => handleDelete(row.email)} />
             </button>
           </div>
         );
@@ -94,7 +95,7 @@ export const EmployeeGroup = () => {
     <div>
       <ListView
         ref={ref}
-        listURL={DEPARTMENT_EMPLOYEE}
+        listURL={DEPARTMENT_EMPLOYEE.replace(':groupEmail',email)}
         columns={columns}
         bottom={
           <Button

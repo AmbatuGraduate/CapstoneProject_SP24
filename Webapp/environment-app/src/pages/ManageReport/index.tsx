@@ -25,11 +25,6 @@ export const ManageReport = () => {
   const ref = useRef<any>();
   // TODO get list
 
-  // const handleDelete = async (id: string) => {
-  //   await useApi.delete(TREE_DELETE.replace(":id", id));
-  //   ref.current?.reload();
-  // };
-
   const columns: Column[] = [
     {
       header: "",
