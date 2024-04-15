@@ -64,7 +64,7 @@ export default function ReportDetails({ route }) {
 
                 <View style={styles.overview}>
                     {reportImages && (
-                        <View style={{ height: 300 }}>
+                        <View style={{ height: 250 }}>
 
                             <Swiper
                                 showsButtons={false}

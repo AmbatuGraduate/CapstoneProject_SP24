@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import "./style.scss";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
+import Swal from "sweetalert2";
 import { FcGoogle } from "react-icons/fc";
 
 export const Login = () => {
@@ -43,7 +43,11 @@ export const Login = () => {
       })
       .catch((error) => {
         console.log(error);
-        // Handle errors here
+        Swal.fire(
+          'Lỗi!',
+          'Tài khoản không được phép truy cập vào hệ thống!',
+          'error'
+        );
       });
   };
 
