@@ -432,7 +432,8 @@ namespace Infrastructure.Persistence.Repositories
             {
                 UserRole.Employee => "8977EF77-E554-4EF3-8353-3E01161F84D0",
                 UserRole.Manager => "ABCCDE85-C7DC-4F78-9E4E-B1B3E7ABEE84",
-                UserRole.Admin => "CACD4B3A-8AFE-43E9-B757-F57F5C61F8D8"
+                UserRole.Admin => "CACD4B3A-8AFE-43E9-B757-F57F5C61F8D8",
+                UserRole.HR => "C0F1F5CD-7BF0-4BFE-8A26-AEAC1A7CB06B"
             };
         }
 
@@ -643,7 +644,8 @@ namespace Infrastructure.Persistence.Repositories
             {
                 UserRole.Employee => "Employee",
                 UserRole.Manager => "Manager",
-                UserRole.Admin => "Admin"
+                UserRole.Admin => "Admin",
+                UserRole.HR => "HR"
             };
         }
     }
