@@ -37,6 +37,7 @@ jobs:
           npm install react-image-gallery
           npm install --save @types/react-image-gallery
           npm i react-router-dom
+          npm install sweetalert2
           npm run build
           
       - name: Copy files to Azure VM

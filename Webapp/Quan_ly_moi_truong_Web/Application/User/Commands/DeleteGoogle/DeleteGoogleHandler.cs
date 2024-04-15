@@ -2,6 +2,7 @@
 using Application.User.Common.Delele;
 using ErrorOr;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application.User.Commands.DeleteGoogle
 {
@@ -16,13 +17,18 @@ namespace Application.User.Commands.DeleteGoogle
 
         public async Task<ErrorOr<DeleteGoogleUserRecord>> Handle(DeleteGoogleCommand request, CancellationToken cancellationToken)
         {
-            await Task.CompletedTask;
+            await Task.CompletedTask; 
+            var currentUserGroupEmail = userRepository.GetCurrentDepartmentOfUser(request.userEmail);
 
             var userResult = await userRepository.DeleteGoogleUser(request.accessToken, request.userEmail);
 
+            if (userResult && !currentUserGroupEmail.IsNullOrEmpty())
+            {
+                await userRepository.RemoveUserFromGoogleGroup(request.accessToken, request.userEmail, currentUserGroupEmail);
+                await userRepository.RemoveUserFromDBGroup(currentUserGroupEmail);
+            }
+
             return new DeleteGoogleUserRecord(userResult);
-            // add to db
-            // ...
         }
     }
 }

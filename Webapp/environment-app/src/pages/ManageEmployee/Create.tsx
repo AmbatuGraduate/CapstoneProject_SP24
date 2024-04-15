@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { DEPARTMENT_LIST, EMPLOYEE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 export const CreateEmployee = () => {
   const navigate = useNavigate();
@@ -81,10 +82,20 @@ export const CreateEmployee = () => {
       await useApi.post(EMPLOYEE_ADD, {
         ...data,
       });
+      Swal.fire(
+        'Success!',
+        'Thêm nhân viên mới thành công!',
+        'error'
+      );
       ref.current?.reload();
       navigate("/manage-employee");
     } catch (error) {
       console.error("Error creating employee:", error);
+      Swal.fire(
+        'Lỗi!',
+        'Lỗi khi thêm nhân viên! Vui lòng thử lại sau.',
+        'error'
+      );
     } finally {
       setIsLoading(false);
     }

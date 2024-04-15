@@ -44,7 +44,7 @@ export default function ReportForm({ onFormSuccess }) {
             },
             mediaType: 'photo',
             includeBase64: true,
-            selectionLimit: 0, // set to 0 for unlimited selection
+            selectionLimit: 0,
         };
 
         launchImageLibrary(options, (response) => {

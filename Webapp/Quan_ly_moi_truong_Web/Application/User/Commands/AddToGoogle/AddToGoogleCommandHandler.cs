@@ -2,6 +2,7 @@
 using Application.User.Common.Add;
 using ErrorOr;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application.User.Commands.AddToGoogle
 {
@@ -32,9 +33,16 @@ namespace Application.User.Commands.AddToGoogle
             };
 
             var userResult = await userRepository.AddGoogleUser(AddGoogleUser);
+            int directMembersCount = 0;
+            if (userResult != null && !request.departmentEmail.IsNullOrEmpty())
+            {
+                directMembersCount = await userRepository.AddUserToGoogleGroup(AddGoogleUser);
+            }
+            if(directMembersCount > 0 && !request.departmentEmail.IsNullOrEmpty())
+            {
+                await userRepository.AddUserToDBGroup(request.departmentEmail, directMembersCount);
+            }
             return new AddGoogleUserRecord(userResult);
-            // add to db
-            // ...
         }
     }
 }
