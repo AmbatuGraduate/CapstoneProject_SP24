@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { REPORT_BY_USER, REPORT_LIST } from "../../Api";
+import { DELETE_REPORT, REPORT_BY_USER, REPORT_LIST, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { ReportImpact, ReportStatus, dayFormat } from "../../utils";
@@ -8,19 +8,21 @@ import { useRef } from "react";
 
 import { MdAddCircleOutline } from "react-icons/md";
 import { useCookies } from "react-cookie";
+import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageReport = () => {
   const [token] = useCookies(["accessToken"]);
   const isAdmin = JSON.parse(token.accessToken).role === "Admin";
   const isUser = JSON.parse(token.accessToken);
+  const handleDelete = async (id: string) => {
+    await useApi.delete(DELETE_REPORT.replace(":id", id));
+    ref.current?.reload();
+  };
 
 
-  console.log(isUser);
   const email = isUser.email;
   const navigate = useNavigate();
   const ref = useRef<any>();
-
-  const [token] = useCookies(["accessToken"]);
   // TODO get list
 
   // const handleDelete = async (id: string) => {
@@ -29,6 +31,19 @@ export const ManageReport = () => {
   // };
 
   const columns: Column[] = [
+    {
+      header: "",
+      accessorFn(row) {
+        return (
+          <div>
+            <button type="button" className="btn btn-click" onClick={() => { }}>
+              <ModalDelete handleDelete={() => handleDelete(row.id)} />
+            </button>
+          </div>
+        );
+      },
+      width: "2%",
+    },
     {
       header: "Người Gửi",
       accessorFn(longRow) {
