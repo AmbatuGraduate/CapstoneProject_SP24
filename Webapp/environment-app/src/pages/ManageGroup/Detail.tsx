@@ -190,12 +190,7 @@ export const DetailGroup = () => {
               onClick={handleNavigate}
             >
               Trở Về
-            </Button>
-            <Link to={`/manage-employee/${data?.email}/update`}>
-              <Button className="btnLink" variant="success">
-                Bảo Mật
-              </Button>
-            </Link>
+            </Button>         
             <Link to={`/manage-employee/${data?.email}/update`}>
               <Button className="btnLink" variant="success">
                 Cập Nhật

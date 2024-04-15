@@ -41,6 +41,11 @@ export const CreateGroup = () => {
         _value: "email",
       },
     },
+    {
+      label: "Quản lý",
+      formType: "input",
+      keyName: "owners",
+    },
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
@@ -50,7 +55,6 @@ export const CreateGroup = () => {
       await useApi.post(TREE_ADD, {
         ...data,
         adminCreated: true,
-        owners: JSON.parse(token.accessToken).role === "Admin" && JSON.parse(token.accessToken).email
       });
       ref.current?.reload();
       navigate("/manage-tree");
