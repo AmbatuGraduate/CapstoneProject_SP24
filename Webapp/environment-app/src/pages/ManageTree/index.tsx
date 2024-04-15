@@ -11,48 +11,13 @@ import { MdAddCircleOutline } from "react-icons/md";
 
 export const ManageTree = () => {
   const navigate = useNavigate();
-  // const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const ref = useRef<any>();
-
-  // const handleCheckboxChange = (e, id) => {
-  //   const { checked } = e.target;
-  //   // Thêm hoặc xóa id của dòng khỏi danh sách được chọn tùy thuộc vào trạng thái của checkbox
-  //   setSelectedRows((prevSelectedRows) => {
-  //     if (checked) {
-  //       return [...prevSelectedRows, id];
-  //     } else {
-  //       return prevSelectedRows.filter((rowId) => rowId !== id);
-  //     }
-  //   });
-  // };
-  // const handleDeleteSelected = async () => {
-  //   // Thực hiện xóa các dòng được chọn
-  //   for (const id of selectedRows) {
-  //     await useApi.delete(TREE_DELETE.replace(":id", id));
-  //   }
-  //   // Sau khi xóa, làm mới dữ liệu
-  //   ref.current?.reload();
-  //   // Đặt lại danh sách dòng được chọn về trạng thái ban đầu
-  //   setSelectedRows([]);
-  // };
   const handleDelete = async (id: string) => {
     await useApi.delete(TREE_DELETE.replace(":id", id));
     ref.current?.reload();
   };
 
   const columns: Column[] = [
-    // {
-    //   header: "",
-    //   accessorFn(row) {
-    //     return (
-    //       <input
-    //         type="checkbox"
-    //         onChange={(e) => handleCheckboxChange(e, row.id)}
-    //         checked={selectedRows.includes(row.id)}
-    //       />
-    //     );
-    //   },
-    // },
     {
       header: "",
       accessorFn(row) {

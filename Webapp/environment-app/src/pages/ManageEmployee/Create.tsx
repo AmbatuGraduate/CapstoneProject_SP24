@@ -13,41 +13,41 @@ export const CreateEmployee = () => {
     {
       label: "Họ",
       formType: "input",
-      key: "name",
+      keyName: "name",
       placeholder: "Ví dụ: Nguyễn",
     },
     {
       label: "Tên",
       formType: "input",
-      key: "familyName",
+      keyName: "familyName",
       placeholder: "Ví dụ: Văn A",
     },
     {
       label: "Email",
       formType: "input",
-      key: "email",
+      keyName: "email",
       placeholder: "Ví dụ: ANV@cayxanh.vn",
     },
     {
       label: "Mật Khẩu",
       formType: "input",
-      key: "password",
+      keyName: "password",
     },
     {
       label: "Số Điện Thoại",
       formType: "input",
-      key: "phone",
+      keyName: "phone",
       placeholder: "Ví dụ: 0123456789",
     },
     {
       label: "Địa Chỉ",
       formType: "input",
-      key: "address",
+      keyName: "address",
     },
     {
       label: "Bộ Phận",
       formType: "select",
-      key: "departmentEmail",
+      keyName: "departmentEmail",
       optionExtra: {
         url: DEPARTMENT_LIST,
         _key: "name",
@@ -57,7 +57,7 @@ export const CreateEmployee = () => {
     {
       label: "Chức Vụ",
       formType: "select",
-      key: "userRole",
+      keyName: "userRole",
       options: [
         {
           key: "Nhân Viên",
@@ -81,6 +81,7 @@ export const CreateEmployee = () => {
     try {
       await useApi.post(EMPLOYEE_ADD, {
         ...data,
+        userRole: Number(data?.userRole)
       });
       Swal.fire(
         'Success!',

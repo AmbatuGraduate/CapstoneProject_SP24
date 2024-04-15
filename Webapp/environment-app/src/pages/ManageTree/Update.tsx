@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  EMPLOYEE_LIST,
   TREE_DETAIL,
   TREE_TYPE_LIST,
   TREE_UPDATE,
   useApi,
 } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor, dayFormat } from "../../utils";
 import { useCookies } from "react-cookie";
 
 export const UpdateTree = () => {
@@ -16,7 +14,6 @@ export const UpdateTree = () => {
   const { id = "" } = useParams();
   const [data, setData] = useState<any>();
   const [token] = useCookies(["accessToken"]);
-  const [address, setAddress] = useState<string | null>("");
 
   const fetch = async () => {
     try {
@@ -35,14 +32,14 @@ export const UpdateTree = () => {
     {
       label: "Mã Cây",
       formType: "input",
-      key: "treeCode",
+      keyName: "treeCode",
       defaultValue: data?.treeCode,
       disabled: true,
     },
     {
       label: "Tuyến Đường",
       formType: "input",
-      key: "treeLocation",
+      keyName: "treeLocation",
       defaultValue: data?.streetName,
       // googleAddress: true,
       // value: address,
@@ -53,7 +50,7 @@ export const UpdateTree = () => {
     {
       label: "Loại Cây",
       formType: "select",
-      key: "treeTypeId",
+      keyName: "treeTypeId",
       optionExtra: {
         url: TREE_TYPE_LIST,
         _key: "treeTypeName",
@@ -63,52 +60,58 @@ export const UpdateTree = () => {
     {
       label: "Đường Kính Thân",
       formType: "number",
-      key: "bodyDiameter",
+      keyName: "bodyDiameter",
       defaultValue: data?.bodyDiameter,
     },
     {
       label: "Tán Lá",
       formType: "number",
-      key: "leafLength",
+      keyName: "leafLength",
       defaultValue: data?.leafLength,
     },
     {
       label: "Thời Điểm Trồng",
       formType: "date",
-      key: "plantTime",
-      defaultValue: dayFormat(data?.plantTime),
+      keyName: "plantTime",
+      defaultValue: data?.plantTime,
     },
     {
       label: "Khoảng Thời Gian Cắt",
       formType: "number",
-      key: "intervalCutTime",
-      defaultValue: dayFormat(data?.intervalCutTime),
+      keyName: "intervalCutTime",
+      defaultValue: data?.intervalCutTime,
+    },
+    {
+      label: "Người Phụ Trách",
+      formType: "input",
+      keyName: "email",
+      defaultValue: data?.user,
+      disabled: true,
     },
     {
       label: "Ghi Chú",
       formType: "textarea",
-      key: "note",
+      keyName: "note",
       defaultValue: data?.note,
-    },
-    {
-      label: "Người Phụ Trách",
-      formType: "select",
-      key: "email",
-      optionExtra: {
-        url: EMPLOYEE_LIST,
-        _key: "email",
-        _value: "email",
-      },
     },
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
+    const cutTime = () => {
+      const newCutTime = new Date(data.plantTime || new Date());
+      newCutTime.setMonth(
+        newCutTime.getMonth() + Number(data.intervalCutTime || 0) * 3
+      );
+      return newCutTime;
+    };
+
     await useApi.put(TREE_UPDATE.replace(":id", id), {
       ...data,
-      plantTime: dateConstructor(data.plantTime),
+      plantTime: data.plantTime,
+      // cutTime: cutTime(),
     });
     console.log("UpdateTree", data);
-    navigate(-1)
+    navigate(-1);
   };
 
   return (

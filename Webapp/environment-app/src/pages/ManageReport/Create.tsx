@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { CREATE_REPORT, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor } from "../../utils";
+import { ReportImpact, dateConstructor } from "../../utils";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -15,22 +15,22 @@ export const CreateReport = () => {
     {
       label: "Tiêu Đề",
       formType: "input",
-      key: "reportSubject",
+      keyName: "reportSubject",
     },
     {
       label: "Nội Dung",
       formType: "input",
-      key: "reportBody",
+      keyName: "reportBody",
     },
     {
       label: "Cần Giải Quyết Trước",
       formType: "date",
-      key: "expectedResolutionDate",
+      keyName: "expectedResolutionDate",
     },
     {
       label: "Mức Độ Ảnh Hưởng",
       formType: "select",
-      key: "reportImpact",
+      keyName: "reportImpact",
       options: [
         {
           key: "Thấp",
@@ -46,6 +46,11 @@ export const CreateReport = () => {
         },
       ],
     },
+    {
+      label: "Hình ảnh",
+      formType: "input",
+      keyName: "reportImages",
+    },
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
@@ -54,6 +59,7 @@ export const CreateReport = () => {
       ...data,
       issuerEmail: JSON.parse(token.accessToken).email,
       expectedResolutionDate: dateConstructor(data.expectedResolutionDate),
+      reportImpact: Number(data?.reportImpact)
     });
     ref.current?.reload();
     navigate("/manage-report");

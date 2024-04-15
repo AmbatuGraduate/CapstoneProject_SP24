@@ -1,21 +1,33 @@
+ import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  TREE_TRIM_SCHEDULE_DELETE,
+  EMPLOYEE_DETAIL,
+  useApi,
+  EMPLOYEE_SCHEDULE,
+  GROUP_DETAIL,
+} from "../../Api";
+import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { EMPLOYEE_LIST, EMPLOYEE_DELETE, useApi } from "../../Api";
-import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import React, { useRef } from "react";
-
-import { MdAddCircleOutline } from "react-icons/md";
-
+import { taskStatus, timeFormat, dayFormat } from "../../utils";
+import { ListView } from "../../Components/ListView";
 
 export const DetailGroup = () => {
   const navigate = useNavigate();
+  const { email = "" } = useParams();
+
+  const [data, setData] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const handleNavigate = () => {
+    navigate(-1);
+  };
+
   const ref = useRef<any>();
 
-
   const handleDelete = async (id: string) => {
-    await useApi.delete(EMPLOYEE_DELETE.replace(":id", id));
+    await useApi.delete(TREE_TRIM_SCHEDULE_DELETE.replace(":id", id));
     ref.current?.reload();
   };
 
@@ -25,8 +37,8 @@ export const DetailGroup = () => {
       accessorFn(row) {
         return (
           <div>
-            <button type="button" className="btn btn-click" onClick={() => { }}>
-              <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
+            <button type="button" className="btn btn-click" onClick={() => {}}>
+              <ModalDelete handleDelete={() => handleDelete(row.myEvent.id)} />
             </button>
           </div>
         );
@@ -34,78 +46,172 @@ export const DetailGroup = () => {
       width: "2%",
     },
     {
-      header: "Tên Nhân Viên",
+      header: "Thời Gian",
       accessorFn(row) {
         return (
           <h6 className="shortText">
-            <Link
-              className="linkCode"
-              style={{ fontWeight: "bold" }}
-              to={`/manage-employee/email=${row.email}`}
-            >
-              {row.name}
-            </Link>
+            {timeFormat(row.myEvent.start) + "-" + timeFormat(row.myEvent.end)}
           </h6>
         );
       },
       width: "10%",
     },
     {
-      header: "Số Điện Thoại",
+      header: "Ngày Làm",
       accessorFn(row) {
-        return <h6 className="shortText">{row.phoneNumber}</h6>;
+        return <h6 className="shortText">{dayFormat(row.myEvent.end)}</h6>;
       },
       width: "10%",
     },
     {
-      header: "Bộ Phận",
+      header: "Tiêu Đề",
       accessorFn(row) {
-        return <h6 className="shortText">{row.department}</h6>;
+        return (
+          <h6 className="shortText">
+            <Link
+              className="linkCode"
+              style={{ fontWeight: "bold", textAlign: "center" }}
+              to={`/manage-treetrim-schedule/${row.myEvent.id}`}
+            >
+              {row.myEvent.summary}
+            </Link>
+          </h6>
+        );
       },
-      width: "10%",
+      width: "20%",
     },
     {
-      header: "Chức Vụ",
+      header: "Địa Chỉ Cụ Thể",
       accessorFn(row) {
-        return <h6 className="shortText">{row.role}</h6>;
+        return <h6>{row.myEvent.location}</h6>;
       },
-      width: "10%",
+      width: "40%",
     },
     {
-      header: "Ảnh",
+      header: "Trạng Thái",
       accessorFn(row) {
-        if (row.picture == null) {
-          return <h6 className="shortText"><img src="../assets/imgs/avatar.jpg" /></h6>;
-        } else {
-          return <h6 className="shortText"><img src={row.picture} /></h6>;
-        }
+        return (
+          <h6
+            className="shortText"
+            style={{
+              color: taskStatus(
+                row.myEvent.extendedProperties.privateProperties
+                  .JobWorkingStatus
+              ).color,
+              fontWeight: "bold",
+            }}
+          >
+            {
+              taskStatus(
+                row.myEvent.extendedProperties.privateProperties
+                  .JobWorkingStatus
+              ).text
+            }
+          </h6>
+        );
       },
-      width: "10%",
     },
-
   ];
 
-  return (
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await useApi.get(
+          GROUP_DETAIL.replace(":email", email)
+        );
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching employee detail:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [email]);
+
+  return loading ? (
+    <ClipLoader
+      className="spinner"
+      color={"hsl(94, 59%, 35%)"}
+      loading={loading}
+      size={60}
+    />
+  ) : (
     <div>
-      <ListView
-        ref={ref}
-        listURL={EMPLOYEE_LIST}
-        columns={columns}
-        bottom={
-          <Button
-            variant="success"
-            style={{
-              backgroundColor: "hsl(94, 59%, 35%)",
-              border: "none",
-              padding: "0.5rem 1rem",
-            }}
-            onClick={() => navigate("/manage-employee/create")}
-          >
-            <MdAddCircleOutline className="iconAdd" />
-            Thêm Nhân Viên
-          </Button>
-        }
-      />
+      <div className="main-layout row ">
+        <h4 className="title">Xem Thông Tin Chi Tiết Bộ Phận</h4>
+        <hr className="line" />
+        <div className="image col-md-2 ">
+          <div>
+            <img
+              src={data?.picture || "../assets/imgs/avatar.jpg"}
+              alt="userAvatar"
+            />
+          </div>
+        </div>
+        <div className="detail-content col-md-10">
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">Tên Bộ Phận: </div>
+              <div className="detail-content-child-value">{data?.value?.name}</div>
+            </div>
+          </div>
+
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">Email: </div>
+              <div className="detail-content-child-value">{data?.value?.email}</div>
+            </div>
+          </div>
+
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">Mô Tả: </div>
+              <div className="detail-content-child-value">
+                {data?.value?.description}
+              </div>
+            </div>
+          </div>
+
+          <div className="detail-cover">
+            <div className="detail-content-parent">
+              <div className="detail-content-child-label">Nhân viên: </div>
+              <div className="detail-content-child-value">
+                {data?.value?.directMembersCount}
+              </div>
+            </div>
+          </div>
+
+          <div className="button-cover grid">
+            <Button
+              className="btnCancel"
+              variant="danger"
+              onClick={handleNavigate}
+            >
+              Trở Về
+            </Button>
+            <Link to={`/manage-employee/${data?.email}/update`}>
+              <Button className="btnLink" variant="success">
+                Bảo Mật
+              </Button>
+            </Link>
+            <Link to={`/manage-employee/${data?.email}/update`}>
+              <Button className="btnLink" variant="success">
+                Cập Nhật
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <ListView
+          ref={ref}
+          listURL={EMPLOYEE_SCHEDULE.replace(":email", data?.email)}
+          columns={columns}
+        />
+      </div>
     </div>
   );
 };

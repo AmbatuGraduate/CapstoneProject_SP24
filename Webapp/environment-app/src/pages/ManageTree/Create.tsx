@@ -2,22 +2,28 @@ import { useNavigate } from "react-router-dom";
 import { EMPLOYEE_LIST, TREE_ADD, TREE_TYPE_LIST, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useCookies } from "react-cookie";
 
 export const CreateTree = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
-  const [cutTime, setCutTime] = useState<Date | null>(null);
   const [plantTime, setPlantTime] = useState<Date | null>(null);
-  const [intervalCutTime, setIntervalCutTime] = useState<number>(0);
+  const [intervalCutTime, setIntervalCutTime] = useState<number>(1);
   const [address, setAddress] = useState<string | null>("");
+
+  const cutTime = () => {
+    const newCutTime = new Date(plantTime || new Date());
+    newCutTime.setMonth(newCutTime.getMonth() + intervalCutTime * 3);
+    return newCutTime;
+  };
 
   const fields: Field[] = [
     {
       label: "Mã Cây",
       formType: "input",
-      key: "treeCode",
+      keyName: "treeCode",
       googleAddress: false,
       required: true,
       placeholder: "Ví dụ: 15_CD5_HX_CL",
@@ -25,7 +31,7 @@ export const CreateTree = () => {
     {
       label: "Tuyến Đường",
       formType: "input",
-      key: "treeLocation",
+      keyName: "treeLocation",
       googleAddress: true,
       value: address,
       onChange: (e) => {
@@ -35,56 +41,46 @@ export const CreateTree = () => {
     {
       label: "Đường Kính Thân (cm)",
       formType: "number",
-      key: "bodyDiameter",
+      keyName: "bodyDiameter",
       googleAddress: false,
       placeholder: "Ví dụ: 50",
     },
     {
       label: "Tán Lá (cm)",
       formType: "number",
-      key: "leafLength",
+      keyName: "leafLength",
       googleAddress: false,
       placeholder: "Ví dụ: 150",
     },
     {
       label: "Thời Điểm Trồng",
       formType: "date",
-      key: "plantTime",
-      selected: plantTime || new Date(),
+      keyName: "plantTime",
+      defaultValue: new Date(),
       googleAddress: false,
-      onChange: (e) => {
-        setPlantTime(e.target.value);
+      onChange: (date) => {
+        setPlantTime(date);
       },
     },
     {
       label: "Thời Điểm Cắt",
       formType: "date",
-      key: "cutTime",
-      selected: cutTime || new Date(),
-      affectValue: intervalCutTime,
-      affectDate: plantTime || new Date(),
+      keyName: "cutTime",
+      value: cutTime(),
       googleAddress: false,
     },
     {
-      label: "Khoảng Thời Gian Cắt (Tháng)",
-      formType: "input",
-      key: "intervalCutTime",
-      value: intervalCutTime,
+      label: "Khoảng Thời Gian Cắt (Quý)",
+      formType: "number",
+      keyName: "intervalCutTime",
+      defaultValue: intervalCutTime,
       googleAddress: false,
-      onChange: (e) => {
-        setIntervalCutTime(e.target.value);
-        // const plantTimeValue = data["plantTime"];
-        // const plantTime = dateConstructor(plantTimeValue);
-        const newCutTime = new Date();
-        newCutTime.setMonth(newCutTime.getMonth() + 3);
-        // newCutTime.setMonth(newCutTime.getMonth() + intervalCutTime);
-        setCutTime(newCutTime);
-      },
+      onChange: (value) => setIntervalCutTime(Number(value || 0)),
     },
     {
       label: "Loại Cây",
       formType: "select",
-      key: "treeTypeId",
+      keyName: "treeTypeId",
       optionExtra: {
         url: TREE_TYPE_LIST,
         _key: "treeTypeName",
@@ -95,14 +91,14 @@ export const CreateTree = () => {
     {
       label: "Ghi Chú",
       formType: "textarea",
-      key: "note",
+      keyName: "note",
       googleAddress: false,
       placeholder: "Ví dụ: Cần lưu ý...",
     },
     {
       label: "Người Phụ Trách",
       formType: "select",
-      key: "email",
+      keyName: "email",
       optionExtra: {
         url: EMPLOYEE_LIST,
         _key: "email",
@@ -114,12 +110,12 @@ export const CreateTree = () => {
 
   const handleSubmit = async (data: Record<string, any>) => {
     setIsLoading(true);
-
     try {
       await useApi.post(TREE_ADD, {
         ...data,
-        cutTime: dateConstructor(data.cutTime),
-        plantTime: dateConstructor(data.plantTime),
+        cutTime: data.cutTime,
+        plantTime: data.plantTime,
+        isExist: true,
       });
       ref.current?.reload();
       navigate("/manage-tree");

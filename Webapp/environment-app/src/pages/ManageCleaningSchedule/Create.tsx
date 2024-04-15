@@ -13,49 +13,51 @@ export const CreateCleaningSchedule = () => {
         {
             label: "Bộ Phận",
             formType: "select",
-            key: "departmentEmail",
+            keyName: "departmentEmail",
             optionExtra: {
                 url: DEPARTMENT_LIST,
                 _key: "name",
                 _value: "email",
             },
-            onChange: (e) => setDepartmentEmail(e.target.value),
+            onChange: (value) => setDepartmentEmail(value),
         },
         {
             label: "Nhân Viên Thực Hiện",
             formType: "select",
-            key: "attendees.email",
+            keyName: "attendees.email",
             optionExtra: {
                 url: DEPARTMENT_EMPLOYEE.replace(':groupEmail', departmentEmail),
-                _key: "value.name",
-                _value: "value.email",
+                _key: "name",
+                _value: "email",
             },
         },
         {
             label: "Tiêu Đề",
             formType: "input",
-            key: "summary",
+            keyName: "summary",
         },
         {
             label: "Địa Chỉ",
             formType: "input",
-            key: "location",
+            keyName: "location",
             placeholder: "Ví dụ: 29 Sơn Thủy Đông 2, Hòa Hải, Ngũ Hành Sơn",
         },
         {
             label: "Bắt Đầu Từ",
             formType: "datetime",
-            key: "start.dateTime",
+            keyName: "start.dateTime",
+            defaultValue: new Date(),
         },
         {
             label: "Kết Thúc Trước",
             formType: "datetime",
-            key: "end.dateTime",
+            keyName: "end.dateTime",
+            defaultValue: new Date(),
         },
         {
             label: "Ghi Chú",
             formType: "textarea",
-            key: "description",
+            keyName: "description",
             placeholder: "Ví dụ: Cần lưu ý...",
         },
     ];
@@ -64,14 +66,10 @@ export const CreateCleaningSchedule = () => {
         setIsLoading(true);
 
         // Process start dateTime
-        const startDateTimeParts = data["start.dateTime"].split(" "); // Split date and time
-        const startDateParts = startDateTimeParts[1].split("/"); // Split day, month, and year
-        const formattedStartDateTime = `${startDateParts[2]}-${startDateParts[1]}-${startDateParts[0]}T${startDateTimeParts[0]}:00+07:00`;
+        const formattedStartDateTime = data["start.dateTime"];
 
         // Process end dateTime
-        const endDateTimeParts = data["end.dateTime"].split(" "); // Split date and time
-        const endDateParts = endDateTimeParts[1].split("/"); // Split day, month, and year
-        const formattedEndDateTime = `${endDateParts[2]}-${endDateParts[1]}-${endDateParts[0]}T${endDateTimeParts[0]}:00+07:00`;
+        const formattedEndDateTime = data["end.dateTime"];
 
         try {
             // Lấy danh sách nhân viên từ API

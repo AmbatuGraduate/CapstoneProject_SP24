@@ -7,7 +7,7 @@ import "./style.scss";
 
 export type Field = {
   label: string;
-  key: string;
+  keyName: string;
   defaultValue?: any;
   affectValue?: any;
   affectDate?: Date;
@@ -15,14 +15,24 @@ export type Field = {
   selected?: Date;
   value?: any;
   placeholder?: string;
-  formType: "input" | "select" | "textarea" | "number" | "date" | "jsx" | "datetime";
+  formType:
+    | "input"
+    | "select"
+    | "textarea"
+    | "number"
+    | "date"
+    | "jsx"
+    | "datetime"
+    | "multi-select";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
   optionExtra?: OptionExtra;
-  onChange?: (event: React.ChangeEvent<any>) => void;
+  onChange?: (value: any) => void;
   onRender?: React.ReactNode;
-};
+  setFormData?: any;
+  formData?: any;
+} & Partial<Props>;
 
 export type OptionExtra = {
   url: string;
@@ -44,6 +54,221 @@ type Props = {
   mode?: "view" | "create&update";
 };
 
+const FormType = (props: Field) => {
+  const {
+    formType,
+    options,
+    keyName,
+    disabled,
+    optionExtra,
+    onRender,
+    mode,
+    formData,
+    setFormData,
+    onChange,
+    defaultValue = "",
+    ...rest
+  } = props;
+
+  const _disabled = mode == "view" ? true : disabled;
+  const [_options, setOptions] = useState<Option[]>();
+
+  const [places] = useState([]);
+
+  useEffect(() => {
+    if (optionExtra) {
+      fetchDataForFormSelect(optionExtra);
+    }
+  }, [JSON.stringify(optionExtra)]);
+
+  useEffect(() => {
+    if (props.googleAddress) {
+      const input = document.getElementById("pac-input");
+      if (input instanceof HTMLInputElement) {
+        const center = { lat: 16.047079, lng: 108.20623 };
+        // Create a bounding box with sides ~10km away from the center point
+        const defaultBounds = {
+          north: center.lat + 0.1,
+          south: center.lat - 0.1,
+          east: center.lng + 0.1,
+          west: center.lng - 0.1,
+        };
+        const options = {
+          bounds: defaultBounds,
+          componentRestrictions: { country: "VN" },
+          fields: ["address_components", "geometry", "icon", "name"],
+          strictBounds: false,
+        };
+        const autocomplete = new window.google.maps.places.Autocomplete(
+          input,
+          options
+        );
+
+        // Add event listener to handle place selection
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          console.log(place); // Handle the selected place here
+          if (place.geometry && place.geometry.location) {
+            const latitude = place.geometry.location.lat();
+            const longitude = place.geometry.location.lng();
+            console.log("Latitude:", latitude);
+            console.log("Longitude:", longitude);
+            // Xử lý tọa độ latitude và longitude ở đây
+          }
+        });
+        console.log(places);
+      }
+    }
+  }, [props.value]);
+
+  const fetchDataForFormSelect = async (option: OptionExtra) => {
+    const res = await useApi.get(option.url);
+    const _options = res.data?.map((obj: any) => ({
+      key: obj[option._key],
+      value: obj[option._value],
+    }));
+    setOptions(_options);
+    setFormData((prev) => ({ ...prev, [keyName]: _options[0]?.value }));
+  };
+
+  switch (formType) {
+    case "input":
+      return (
+        <Form.Control
+          id={props.googleAddress == true ? "pac-input" : ""}
+          type="text"
+          {...rest}
+          name={keyName}
+          value={formData[keyName]}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }))
+          }
+          disabled={_disabled}
+        />
+      );
+    case "number":
+      return (
+        <Form.Control
+          type="number"
+          {...rest}
+          name={keyName}
+          disabled={_disabled}
+          value={formData[keyName]}
+          onChange={(e) => {
+            setFormData((prev) => ({
+              ...prev,
+              [keyName]: Number(e.target.value || 0),
+            }));
+            onChange && onChange(e.target.value || 0);
+          }}
+        />
+      );
+    case "textarea":
+      return (
+        <Form.Control
+          {...rest}
+          as="textarea"
+          rows={4}
+          name={keyName}
+          disabled={_disabled}
+          value={formData[keyName]}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }))
+          }
+        />
+      );
+    case "select":
+      return (
+        <Form.Select
+          name={keyName}
+          {...rest}
+          disabled={_disabled}
+          onChange={(e) => {
+            onChange && onChange(e.target.value);
+            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }));
+          }}
+        >
+          {(optionExtra ? _options : options)?.map((option, idx) => (
+            <option key={idx} value={option.value}>
+              {option.key}
+            </option>
+          ))}
+        </Form.Select>
+      );
+
+    case "multi-select":
+      return (
+        <Form.Select
+          name={keyName}
+          {...rest}
+          disabled={_disabled}
+          multiple
+          onChange={(e) => {
+            onChange && onChange(e.target.value);
+            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }));
+          }}
+        >
+          {(optionExtra ? _options : options)?.map((option, idx) => (
+            <option key={idx} value={option.value}>
+              {option.key}
+            </option>
+          ))}
+        </Form.Select>
+      );
+
+    case "date":
+      return (
+        <DatePicker
+          selected={formData[keyName] ? new Date(formData[keyName]) : null}
+          onChange={(date) => {
+            console.log("date", date);
+            // onChange && onChange(date);
+            // setStartDate(date);
+            setFormData((prev) => ({ ...prev, [keyName]: date }));
+          }}
+          className="datepicker"
+          name={keyName}
+          disabled={_disabled}
+          dateFormat="dd/MM/yyyy"
+        />
+      );
+    case "jsx":
+      return onRender;
+    case "datetime":
+      return (
+        <DatePicker
+          selected={formData[keyName] ? new Date(formData[keyName]) : null}
+          onChange={(date) => {
+            onChange && onChange(date);
+            // setStartDate(date);
+            setFormData((prev) => ({ ...prev, [keyName]: date }));
+          }}
+          showTimeSelect
+          timeFormat="HH:mm"
+          timeIntervals={15}
+          timeCaption="Time"
+          dateFormat="HH:mm dd/MM/yyyy "
+          className="datepicker"
+          name={keyName}
+          disabled={_disabled}
+        />
+      );
+    default:
+      return (
+        <Form.Control
+          type="text"
+          {...rest}
+          name={keyName}
+          disabled={_disabled}
+          value={formData[keyName]}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }))
+          }
+        />
+      );
+  }
+};
+
 export const FormBase = (props: Props) => {
   const {
     fields,
@@ -53,146 +278,45 @@ export const FormBase = (props: Props) => {
     backPage,
     navigateUpdate,
   } = props;
+  const [formData, setFormData] = useState<Record<string, any>>({});
 
-  const FormType = ({ props }: { props: Field }) => {
-    const { formType, options, key, disabled, optionExtra, onRender, ...rest } = props;
-    const _disabled = mode == "view" ? true : disabled;
-    const [_options, setOptions] = useState<Option[]>();
-    const [startDate, setStartDate] = useState<Date | null>(
-      props.selected || new Date()
+  useEffect(() => {
+    const _data = { ...formData };
+    fields.forEach(
+      (f) =>
+        (_data[f.keyName] = f.value
+          ? f.value
+          : _data[f.keyName]
+          ? _data[f.keyName]
+          : f.defaultValue)
     );
+    setFormData(_data);
+  }, [JSON.stringify(fields)]);
 
-    useEffect(() => {
-      if (optionExtra) {
-        fetchDataForFormSelect(optionExtra);
-      }
-    }, []);
-
-    useEffect(() => {
-      const currentTime = props.affectDate || new Date();
-      currentTime.setMonth(
-        currentTime.getMonth() + (Number(props.affectValue) || 0)
-      );
-      setStartDate(currentTime);
-    }, [props.affectValue]);
-
-    const fetchDataForFormSelect = async (option: OptionExtra) => {
-      const res = await useApi.get(option.url);
-      const _options = res.data?.map((obj: any) => ({
-        key: obj[option._key],
-        value: obj[option._value],
-      }));
-      setOptions(_options);
-    };
-
-    switch (formType) {
-      case "input":
-        return (
-          <Form.Control
-            id={props.googleAddress == true ? "pac-input" : ""}
-            type="text"
-            {...rest}
-            name={key}
-            disabled={_disabled}
-          />
-        );
-      case "number":
-        return (
-          <Form.Control
-            type="number"
-            {...rest}
-            name={key}
-            disabled={_disabled}
-          />
-        );
-      case "textarea":
-        return (
-          <Form.Control
-            {...rest}
-            as="textarea"
-            rows={4}
-            name={key}
-            disabled={_disabled}
-          />
-        );
-      case "select":
-        return (
-          <Form.Select name={key} {...rest} disabled={_disabled}>
-            {(optionExtra ? _options : options)?.map((option, idx) => (
-              <option key={idx} value={option.value}>
-                {option.key}
-              </option>
-            ))}
-          </Form.Select>
-        );
-
-      case "date":
-        return (
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            className="datepicker"
-            name={key}
-            disabled={_disabled}
-            dateFormat="dd/MM/yyyy"
-          />
-        );
-      case "jsx":
-        return onRender;
-      case "datetime":
-        return (
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={15}
-            timeCaption="Time"
-            dateFormat="HH:mm dd/MM/yyyy "
-            className="datepicker"
-            name={key}
-            disabled={_disabled}
-          />
-        );
-      default:
-        return (
-          <Form.Control type="text" {...rest} name={key} disabled={_disabled} />
-        );
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data: Record<string, unknown> = {};
-    fields.forEach((f) => {
-      data[f.key] = (e.target as any)?.[f.key].value;
-      if (f.key === "reportImpact") {
-        data[f.key] = Number((e.target as any)?.[f.key].value);
-      }
-      if (f.key === "status") {
-        data[f.key] = Number((e.target as any)?.[f.key].value);
-      }
-      if (f.key === "userRole") {
-        data[f.key] = Number((e.target as any)?.[f.key].value);
-      }
-    });
-    console.log(data);
-    onSave && onSave(data);
+  const handleSubmit = () => {
+    console.log(formData);
+    onSave && onSave(formData);
   };
 
   return (
-    <Form onSubmit={handleSubmit} className="form-base">
+    <Form className="form-base">
       {fields.map((f, idx) => {
+        // console.log("rerender FormType", f.label);
         return (
-          <Form.Group className="mb-3" controlId={f.key} key={idx}>
+          <Form.Group className="mb-3" key={idx}>
             <Form.Label>{f.label}</Form.Label>
-            <FormType props={f} />
+            <FormType
+              setFormData={setFormData}
+              formData={formData}
+              {...f}
+              keyName={f.keyName}
+            />
           </Form.Group>
         );
       })}
       {mode == "create&update" ? (
         <div className="btnPosi">
-          <Button className="btnSave" type="submit">
+          <Button className="btnSave" type="button" onClick={handleSubmit}>
             Lưu
           </Button>
           <Button className="btnCancel" variant="danger" onClick={onCancel}>

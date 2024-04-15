@@ -9,6 +9,7 @@ import { dayFormat } from "../../utils";
 import "react-image-gallery/styles/scss/image-gallery.scss";
 import ImageGallery, { ReactImageGalleryItem } from "react-image-gallery";
 import Swal from "sweetalert2";
+import SimpleMap from "../ManageTree/MapIntergration";
 
 export enum EReportImpact {
   LOW = 0,
@@ -148,7 +149,7 @@ export const DetailReport = () => {
         <div style={{ display: 'flex', justifyContent: "space-between" }}>
           <h4 className="title">
             {data.reportFormat?.reportSubject.replace("[Report]", "")}
-          </h4>
+          </h4>      
           <div className="detail-content-right impact" style={{ margin: 'auto 1rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <b>Trạng Thái:</b>
@@ -254,6 +255,16 @@ export const DetailReport = () => {
             />
           </div>
         </div>
+
+        <hr className="line" style={{ opacity: '.1' }} />
+                     
+          <h4 className="detail-content-right body">
+            Địa Điểm: 
+            {data.reportFormat?.issueLocation}
+          </h4>
+          <div className="map" style={{height: "350px" }}>
+              <SimpleMap location={data.reportFormat?.issueLocation} />
+          </div>
 
         <hr className="line" style={{ opacity: '.1' }} />
 

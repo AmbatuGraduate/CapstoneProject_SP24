@@ -1,41 +1,55 @@
 import { Button } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
-import { GROUP_LIST } from "../../Api";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { DEPARTMENT_LIST, GROUP_DELETE, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { useRef } from "react";
-
 import { MdAddCircleOutline } from "react-icons/md";
 import { useCookies } from "react-cookie";
+import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageGroup = () => {
+  const { email = "" } = useParams();
   const navigate = useNavigate();
   const ref = useRef<any>();
   const [token] = useCookies(["accessToken"]);
   // TODO get list
 
-  // const handleDelete = async (id: string) => {
-  //   await useApi.delete(TREE_DELETE.replace(":id", id));
-  //   ref.current?.reload();
-  // };
+  const handleDelete = async (id: string) => {
+    await useApi.delete(GROUP_DELETE.replace(":email", email));
+    ref.current?.reload();
+  };
 
   const columns: Column[] = [
+    {
+      header: "",
+      accessorFn(row) {
+        return (
+          <div>
+            <button type="button" className="btn btn-click" onClick={() => {}}>
+              <ModalDelete handleDelete={() => handleDelete(row.email)} />
+            </button>
+          </div>
+        );
+      },
+      width: "8%",
+    },
     {
       header: "Email",
       accessorFn(longRow) {
         return (
-          <h6 className="shortText">
+          <h6>
             <Link
               className="linkCode"
               style={{ fontWeight: "bold" }}
-              to={`/manage-group/${longRow.id}`}
+              to={`/manage-group/detail/${longRow.email}`}
             >
               {longRow.email}
             </Link>
           </h6>
         );
       },
-      width: "30%",
+      width: "8%",
     },
     {
       header: "Tên bộ phận",
@@ -49,7 +63,23 @@ export const ManageGroup = () => {
       accessorFn(row) {
         return <h6 className="shortText">{row.description}</h6>;
       },
-      width: "40%",
+      width: "20%",
+    },
+    {
+      header: "Số nhân viên",
+      accessorFn(row) {
+        return (
+          <h6 className="shortText">
+            <Link
+              className="linkCode"
+              style={{ fontWeight: "bold" }}
+              to={`/manage-group/employee/${row.email}`}
+            >
+              {row.directMembersCount}
+            </Link>
+          </h6>
+        );
+      },
     },
   ];
 
@@ -57,13 +87,13 @@ export const ManageGroup = () => {
     <div>
       <ListView
         ref={ref}
-        listURL={GROUP_LIST}
+        listURL={DEPARTMENT_LIST}
         columns={columns}
         bottom={
-          (JSON.parse(token.accessToken).role == "Admin") && (
+          JSON.parse(token.accessToken).role == "Admin" && (
             <Button
               variant="success"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/manage-group/create")}
             >
               <MdAddCircleOutline className="iconAdd" />
               Thêm Bộ Phận
