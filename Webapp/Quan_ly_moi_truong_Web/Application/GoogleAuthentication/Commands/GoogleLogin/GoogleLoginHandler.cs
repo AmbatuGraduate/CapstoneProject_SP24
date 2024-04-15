@@ -62,8 +62,34 @@ namespace Application.GoogleAuthentication.Commands.GoogleLogin
                     {
                         var userRole = roleRepository.GetRole(user.RoleId).RoleName;
                         var getDepartment = groupRepository.GetGroupDbById(user.DepartmentId);
-                        var userDepartment = (userRole != "Admin") ? getDepartment.DepartmentName : "Admin";
-                        var userDepartmentEmail = (userRole != "Admin") ? getDepartment.DepartmentEmail : "Admin@vesinhdanang.xyz";
+                        string userDepartment = string.Empty;
+                        if(userRole == "Admin")
+                        {
+                            userDepartment = "Admin";
+                        }
+                        else if (userRole == "Hr")
+                        {
+                            userDepartment = "Hr";
+                        }
+                        else
+                        {
+                            userDepartment = getDepartment.DepartmentName;
+                        }
+
+                        var userDepartmentEmail = string.Empty;
+                        if (userRole == "Admin")
+                        {
+                            userDepartmentEmail = "Admin@vesinhdanang.xyz";
+                        }
+                        else if (userRole == "Hr")
+                        {
+                            userDepartmentEmail = "Hr@vesinhdanang.xyz";
+                        }
+                        else
+                        {
+                            userDepartmentEmail = getDepartment.DepartmentEmail;
+                        }
+
 
                         var token = jwtTokenGenerator.GenerateToken(payload.Subject, userRole, userDepartment ,tokenData.access_token, date);
 

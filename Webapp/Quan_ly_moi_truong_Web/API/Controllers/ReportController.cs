@@ -271,8 +271,8 @@ namespace API.Controllers
 
         // response report
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [HasPermission(Permission.ADMIN)]
+        [Authorize(Roles = "Admin, Hr")]
+        [HasPermission(Permission.ADMIN + "," + Permission.HR)]
         public async Task<IActionResult> ResponseReport([FromBody] ReponseReportRequest request)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -315,8 +315,8 @@ namespace API.Controllers
 
         // delete report
         [HttpDelete]
-        [Authorize(Roles = "Admin")]
-        [HasPermission(Permission.ADMIN)]
+        [Authorize(Roles = "Admin, Hr")]
+        [HasPermission(Permission.ADMIN + "," + Permission.HR)]
         public async Task<IActionResult> DeleteReport(string id)
         {
 
