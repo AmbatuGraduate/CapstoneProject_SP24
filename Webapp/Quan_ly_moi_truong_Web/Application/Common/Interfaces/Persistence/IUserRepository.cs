@@ -33,5 +33,15 @@ namespace Application.Common.Interfaces.Persistence
         Task<bool> DeleteGoogleUser(string accessToken, string userEmail);
 
         string ConvertToUserRoleId(UserRole role);
+        Task<int> AddUserToGoogleGroup(AddGoogleUser user);
+        Task<bool> AddUserToDBGroup(string groupEmail, int directMembersCount);
+
+        string GetCurrentDepartmentOfUser(string userEmail);
+
+        Task<bool> UpdateUserToGoogleGroup(UpdateGoogleUser user, string oldGroupEmail);
+        Task<bool> UpdateUserToDBGroup(string newGroupEmail, string oldGroupEmail);
+        Task<bool> RemoveUserFromGoogleGroup(string accessToken, string userEmail, string userDepartment);
+        Task<bool> RemoveUserFromDBGroup(string groupEmail);
+
     }
 }
