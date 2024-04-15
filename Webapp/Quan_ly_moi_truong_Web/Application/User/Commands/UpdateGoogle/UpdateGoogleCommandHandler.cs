@@ -2,6 +2,7 @@
 using Application.User.Common.UpdateUser;
 using ErrorOr;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application.User.Commands.UpdateGoogle
 {
@@ -17,7 +18,7 @@ namespace Application.User.Commands.UpdateGoogle
         public async Task<ErrorOr<UpdateGoogleUserRecord>> Handle(UpdateGoogleCommand request, CancellationToken cancellationToken)
         {
             await Task.CompletedTask;
-
+            var currentUserGroupEmail = userRepository.GetCurrentDepartmentOfUser(request.Email);
             UpdateGoogleUser updateGoogleUser = new UpdateGoogleUser
             {
                 AccessToken = request.accessToken,
@@ -33,8 +34,11 @@ namespace Application.User.Commands.UpdateGoogle
 
             var userResult = await userRepository.UpdateGoogleUser(updateGoogleUser);
 
-            // add to db
-            // ...
+            if(userResult != null && !request.departmentEmail.IsNullOrEmpty() && !currentUserGroupEmail.IsNullOrEmpty() && !currentUserGroupEmail.Equals(request.departmentEmail) ) 
+            {
+                await userRepository.UpdateUserToGoogleGroup(updateGoogleUser, currentUserGroupEmail);
+                await userRepository.UpdateUserToDBGroup(request.departmentEmail, currentUserGroupEmail);
+            }
 
             return new UpdateGoogleUserRecord(userResult);
         }
