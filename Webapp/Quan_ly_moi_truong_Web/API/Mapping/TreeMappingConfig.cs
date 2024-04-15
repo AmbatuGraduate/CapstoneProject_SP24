@@ -44,8 +44,6 @@ namespace API.Mapping
                 .MapWith(dest => new GetByTreeCodeQuery(dest));
 
 
-            config.NewConfig<string, ListTreeCutQuery>()
-                .MapWith(dest => new ListTreeCutQuery(dest));
 
             config.NewConfig<Guid, GetByIdQuery>()
                 .Map(dest => dest.TreeId, src => src);

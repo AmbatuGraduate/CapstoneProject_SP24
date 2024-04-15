@@ -98,9 +98,13 @@ namespace API.Controllers
         [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> GetCut(string Address)
         {
-            var query = mapper.Map<ListTreeCutQuery>(Address);
+            if (!_httpContextAccessor.HttpContext.Request.Cookies.TryGetValue("u_tkn", out var token))
+            {
+                return Problem(statusCode: StatusCodes.Status204NoContent, title: "Cookie is null");
+            }
 
-            ErrorOr<List<TreeResult>> list = await mediator.Send(query);
+
+            ErrorOr<List<TreeResult>> list = await mediator.Send(new ListTreeCutQuery(token, Address));
 
             if (list.IsError)
             {
