@@ -1,14 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { DEPARTMENT_EMPLOYEE, DEPARTMENT_LIST, EMPLOYEE_LIST, GARBAGE_COLLECTION_ADD, useApi,} from "../../Api";
+import { DEPARTMENT_EMPLOYEE, DEPARTMENT_LIST, EMPLOYEE_LIST, GARBAGE_COLLECTION_ADD, useApi, } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 export const CreateGarbageCollectionSchedule = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
   const [departmentEmail, setDepartmentEmail] = useState<any>();
-  
+
   const fields: Field[] = [
     {
       label: "Bộ Phận",
@@ -105,10 +106,20 @@ export const CreateGarbageCollectionSchedule = () => {
       delete requestData["end.dateTime"];
 
       await useApi.post(GARBAGE_COLLECTION_ADD, requestData);
+      Swal.fire(
+        'Thành công!',
+        'Thêm lịch thu gom mới thành công!',
+        'success'
+      );
       ref.current?.reload();
       navigate("/manage-garbagecollection-schedule");
     } catch (error) {
       console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
+      Swal.fire(
+        'Lỗi!',
+        'Lỗi khi thêm lịch thu gom! Vui lòng thử lại sau.',
+        'error'
+      );
       setIsLoading(false);
       // Xử lý lỗi tại đây (ví dụ: hiển thị thông báo lỗi cho người dùng)
     }

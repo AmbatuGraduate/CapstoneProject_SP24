@@ -145,7 +145,6 @@ export const DetailReport = () => {
 
   return data ? (
     <div className="main-layout row">
-
       <div className="detail-cover-report" style={{ display: 'flex', justifyContent: "space-between", paddingTop: 20 }}>
         <div className="detail-content-right">
           <div style={{ display: 'flex' }}>
@@ -160,36 +159,24 @@ export const DetailReport = () => {
             />
             <div>
               <h5>{data.reportFormat?.issuerEmail}</h5>
-              <h6 style={{ fontWeight: 'bold', fontSize: '1.25rem' }}>{employeeDetail?.name}</h6>
-
+              <h5 style={{ fontWeight: 'bold' }}>{employeeDetail?.name}</h5>
             </div>
-
           </div>
 
         </div>
         <div className="detail-content-right impact" style={{ marginRight: '1rem' }}>
-          <div style={{ backgroundColor: '#F0CD07', fontWeight: 'bold', padding: 6, borderRadius: 8, color: '#090088' }}>
+          <div style={{ backgroundColor: '#F0CD07', fontWeight: 'bold', padding: '.4rem', borderRadius: '1rem', color: "black" }}>
             Cần Giải Quyết Trước: {dayFormat(data.reportFormat?.expectedResolutionDate)}
           </div>
 
         </div>
 
       </div>
-      <hr className="line" style={{ marginTop: '1rem', opacity: '.1', width: '90%', marginLeft: 'auto', marginRight: 'auto' }} />
-
-
-
-
-
-
-
+      <hr className="line" style={{ marginTop: '1rem', width: '90%', marginLeft: 'auto', marginRight: 'auto' }} />
       <div className="report-form">
-        <h4 className="title">
+        <h5 className="title">
           {data.reportFormat?.reportSubject.replace("[Report]", "")}
-          {" "}
-        </h4>
-
-
+        </h5>
         <div className="detail-cover-report">
           <div className="image-container">
             <ImageGallery
@@ -224,13 +211,10 @@ export const DetailReport = () => {
 
             <h5 style={{
               textAlign: 'left',
-              paddingBottom: 20,
               paddingTop: 20,
-              textDecoration: 'underline',
               fontWeight: 'bold',
-              textDecorationColor: "lightgrey",
-              color: '#090088'
-
+              textDecoration: 'underline',
+              textDecorationColor: "lightgrey"
             }}>Trạng thái</h5>
             <span
               className={
@@ -242,7 +226,7 @@ export const DetailReport = () => {
               <div style={{
                 backgroundColor: ReportStatus[data.reportFormat?.reportStatus] == ReportStatus.Resolved ? '#CAF7B8' : 'pink',
                 color: ReportStatus[data.reportFormat?.reportStatus] == ReportStatus.Resolved ? 'darkgreen' : 'red',
-                borderRadius: 8,
+                borderRadius: '1rem',
                 display: 'inline-block',
               }} className="detail-cover-report" >
                 <div className="detail-content-right">
@@ -253,15 +237,13 @@ export const DetailReport = () => {
             </span>
             <h5 style={{
               textAlign: 'left',
-              paddingBottom: 20,
               paddingTop: 20,
-              textDecoration: 'underline',
+              paddingBottom: 10,
               fontWeight: 'bold',
-              textDecorationColor: "lightgrey",
-              color: '#090088'
-
+              textDecoration: 'underline',
+              textDecorationColor: "lightgrey"
             }}>Mức độ ảnh hưởng</h5>
-            <span
+            <b
               className={
                 data.reportFormat?.reportImpact === EReportImpact.LOW
                   ? "low"
@@ -271,29 +253,27 @@ export const DetailReport = () => {
               }
             >
               {ReportImpact[data.reportFormat?.reportImpact]}
-            </span>
+            </b>
 
             <h5 style={{
               textAlign: 'left',
-              paddingBottom: 20,
+              paddingBottom: 10,
               paddingTop: 20,
-              textDecoration: 'underline',
               fontWeight: 'bold',
-              textDecorationColor: "lightgrey",
-              color: '#090088'
+              textDecoration: 'underline',
+              textDecorationColor: "lightgrey"
             }}>Chi tiết báo cáo</h5>
-            <p>{data.reportFormat.reportBody?.split("\r\n")[1]}</p>
+            <b>{data.reportFormat.reportBody?.split("\r\n")[1]}</b>
 
           </div>
 
         </div>
-
         <hr className="line" style={{ opacity: '.1' }} />
         <h5 style={{
           textAlign: 'left',
-          paddingBottom: 20,
+          paddingBottom: 10,
           paddingTop: 20,
-          paddingLeft: 20,
+          paddingLeft: 30,
           textDecoration: 'underline',
           fontWeight: 'bold',
           textDecorationColor: "lightgrey"
@@ -308,7 +288,7 @@ export const DetailReport = () => {
 
         <div className="detail-cover-report" >
           <div className="detail-content-right impact" style={{ display: 'grid', marginTop: '1rem', marginRight: '1rem', marginBottom: '1rem', width: '100%' }}>
-            <h4 style={{ fontWeight: "bold", textDecoration: "underline", color: '#090088', textDecorationColor: 'lightgrey' }}>Phản Hồi:</h4>
+            <h5 style={{ fontWeight: "bold", textDecoration: "underline", textDecorationColor: 'lightgrey' }}>Phản Hồi:</h5>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div style={{ padding: '1rem' }}>{data.reportFormat?.reportResponse}</div>
             </div>

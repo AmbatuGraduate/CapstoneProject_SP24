@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { DEPARTMENT_EMPLOYEE, EMPLOYEE_LIST, TREE_TRIM_SCHEDULE_DETAIL, TREE_TRIM_SCHEDULE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useEffect, useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 export const UpdateTreeTrimSchedule = () => {
     const navigate = useNavigate();
@@ -57,7 +58,7 @@ export const UpdateTreeTrimSchedule = () => {
         },
         {
             label: "Bộ Phận",
-            formType: "input",
+            formType: "shortInput",
             keyName: "departmentEmail",
             defaultValue: data?.myEvent.extendedProperties.privateProperties.DepartmentEmail,
             disabled: true,
@@ -125,10 +126,21 @@ export const UpdateTreeTrimSchedule = () => {
             delete requestData["departmentEmail"]
 
             await useApi.post(TREE_TRIM_SCHEDULE_UPDATE.replace(":id", id), requestData);
+
+            Swal.fire(
+                'Thành công!',
+                'Cập nhật lịch cắt tỉa thành công!',
+                'success'
+            );
             ref.current?.reload();
             navigate(-1)
         } catch (error) {
-            console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
+            console.error("Lỗi khi xử lý dữ liệu lịch:", error);
+            Swal.fire(
+                'Lỗi!',
+                'Lỗi khi cập nhật lịch cắt tỉa! Vui lòng thử lại sau.',
+                'error'
+            );
             setIsLoading(false);
             // Xử lý lỗi tại đây (ví dụ: hiển thị thông báo lỗi cho người dùng)
         }

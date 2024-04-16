@@ -31,10 +31,20 @@ export const UpdateTree = () => {
   const fields: Field[] = [
     {
       label: "Mã Cây",
-      formType: "input",
+      formType: "shortInput",
       keyName: "treeCode",
       defaultValue: data?.treeCode,
       disabled: true,
+    },
+    {
+      label: "Loại Cây",
+      formType: "select",
+      keyName: "treeTypeId",
+      optionExtra: {
+        url: TREE_TYPE_LIST,
+        _key: "treeTypeName",
+        _value: "treeTypeId",
+      },
     },
     {
       label: "Tuyến Đường",
@@ -46,16 +56,6 @@ export const UpdateTree = () => {
       // onChange: (e) => {
       //   setAddress(e.target.value);
       // },
-    },
-    {
-      label: "Loại Cây",
-      formType: "select",
-      keyName: "treeTypeId",
-      optionExtra: {
-        url: TREE_TYPE_LIST,
-        _key: "treeTypeName",
-        _value: "treeTypeId",
-      },
     },
     {
       label: "Đường Kính Thân",
@@ -83,7 +83,7 @@ export const UpdateTree = () => {
     },
     {
       label: "Người Phụ Trách",
-      formType: "input",
+      formType: "shortInput",
       keyName: "email",
       defaultValue: data?.user,
       disabled: true,

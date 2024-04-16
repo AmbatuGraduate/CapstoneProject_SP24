@@ -56,11 +56,11 @@ const Top = () => {
             </button>
             {isOpen && (
               <div className="dropdown-menu">
-                <Link to={`/myprofile/${email}`}>
-                  <button className="flex">
+                <Link to={`/myprofile/${email}`} style={{ textDecoration: 'none' }}>
+                  <button className="flex" style={{ width: '100%' }}>
                     <ImProfile className="dropIcon" /> <h6>Hồ sơ</h6>
                   </button>
-                </Link>             
+                </Link>
                 <hr className="menuLine" />
                 <button className="flex" onClick={LogOut}>
                   <MdLogout className="dropIcon" /> <h6>Đăng xuất</h6>

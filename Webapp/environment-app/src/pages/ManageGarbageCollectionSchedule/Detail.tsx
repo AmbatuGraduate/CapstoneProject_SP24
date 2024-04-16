@@ -4,6 +4,7 @@ import { GARBAGE_COLLECTION_DETAIL, useApi } from "../../Api";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import { dayFormat, taskStatus, timeFormat } from "../../utils";
+import SimpleMap from "../ManageTree/MapIntergration";
 
 export const DetailGarbageCollectionSchedule = () => {
     const navigate = useNavigate();
@@ -40,7 +41,10 @@ export const DetailGarbageCollectionSchedule = () => {
         <div className="main-layout row">
             <h4 className="title">Xem Thông Tin Chi Tiết Lịch Thu Gom Rác</h4>
             <hr className="line" />
-            <div className="detail-content col-md-4">
+            <div className="map col-md-6">
+                <SimpleMap location={data.myEvent.location} />
+            </div>
+            <div className="detail-content col-md-8">
                 <div className="detail-cover">
                     <div className="detail-content-parent">
                         <div className="detail-content-child-label">Bộ Phận Quản Lý: </div>
@@ -64,9 +68,6 @@ export const DetailGarbageCollectionSchedule = () => {
 
                     </div>
                 </div>
-            </div>
-
-            <div className="detail-content col-md-8">
                 <div className="detail-cover">
                     <div className="detail-content-parent">
                         <div className="detail-content-child-label">Tiêu Đề: </div>

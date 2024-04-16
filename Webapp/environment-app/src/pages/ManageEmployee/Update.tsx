@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DEPARTMENT_LIST, EMPLOYEE_DETAIL, EMPLOYEE_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
+import Swal from "sweetalert2";
 
 export const UpdateEmployee = () => {
   const navigate = useNavigate();
@@ -35,13 +36,13 @@ export const UpdateEmployee = () => {
   const fields: Field[] = [
     {
       label: "Họ",
-      formType: "input",
+      formType: "shortInput",
       keyName: "name",
       defaultValue: lastName,
     },
     {
       label: "Tên",
-      formType: "input",
+      formType: "shortInput",
       keyName: "familyName",
       defaultValue: firstName,
     },
@@ -53,7 +54,7 @@ export const UpdateEmployee = () => {
     },
     {
       label: "Số Điện Thoại",
-      formType: "input",
+      formType: "shortInput",
       keyName: "phone",
       defaultValue: data?.phoneNumber,
     },
@@ -110,10 +111,20 @@ export const UpdateEmployee = () => {
         ...data,
         password: ""
       });
+      Swal.fire(
+        'Thành công!',
+        'Cập nhật nhân viên thành công!',
+        'success'
+      );
       ref.current?.reload();
       navigate(-1)
     } catch (error) {
       console.error("Error update employee:", error);
+      Swal.fire(
+        'Lỗi!',
+        'Lỗi khi cập nhật nhân viên! Vui lòng thử lại sau.',
+        'error'
+      )
     } finally {
       setIsLoading(false);
     }

@@ -5,6 +5,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./style.scss";
 
+import { FaRegCalendarAlt } from "react-icons/fa";
+
 export type Field = {
   label: string;
   keyName: string;
@@ -16,14 +18,15 @@ export type Field = {
   value?: any;
   placeholder?: string;
   formType:
-    | "input"
-    | "select"
-    | "textarea"
-    | "number"
-    | "date"
-    | "jsx"
-    | "datetime"
-    | "multi-select";
+  | "input"
+  | "shortInput"
+  | "select"
+  | "textarea"
+  | "number"
+  | "date"
+  | "jsx"
+  | "datetime"
+  | "multi-select";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
@@ -146,6 +149,21 @@ const FormType = (props: Field) => {
           disabled={_disabled}
         />
       );
+    case "shortInput":
+      return (
+        <Form.Control
+          id={props.googleAddress == true ? "pac-input" : ""}
+          as="input"
+          type="text"
+          {...rest}
+          name={keyName}
+          value={formData[keyName]}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }))
+          }
+          disabled={_disabled}
+        />
+      );
     case "number":
       return (
         <Form.Control
@@ -218,40 +236,46 @@ const FormType = (props: Field) => {
 
     case "date":
       return (
-        <DatePicker
-          selected={formData[keyName] ? new Date(formData[keyName]) : null}
-          onChange={(date) => {
-            console.log("date", date);
-            // onChange && onChange(date);
-            // setStartDate(date);
-            setFormData((prev) => ({ ...prev, [keyName]: date }));
-          }}
-          className="datepicker"
-          name={keyName}
-          disabled={_disabled}
-          dateFormat="dd/MM/yyyy"
-        />
+        <div className="date-picker-container">
+          <DatePicker
+            selected={formData[keyName] ? new Date(formData[keyName]) : null}
+            onChange={(date) => {
+              console.log("date", date);
+              setFormData((prev) => ({ ...prev, [keyName]: date }));
+            }}
+            className="datepicker"
+            name={keyName}
+            disabled={_disabled}
+            dateFormat="dd/MM/yyyy"
+          />
+          <FaRegCalendarAlt className="calendar-icon" />
+        </div>
+
+
       );
     case "jsx":
       return onRender;
     case "datetime":
       return (
-        <DatePicker
-          selected={formData[keyName] ? new Date(formData[keyName]) : null}
-          onChange={(date) => {
-            onChange && onChange(date);
-            // setStartDate(date);
-            setFormData((prev) => ({ ...prev, [keyName]: date }));
-          }}
-          showTimeSelect
-          timeFormat="HH:mm"
-          timeIntervals={15}
-          timeCaption="Time"
-          dateFormat="HH:mm dd/MM/yyyy "
-          className="datepicker"
-          name={keyName}
-          disabled={_disabled}
-        />
+        <div className="date-picker-container">
+          <DatePicker
+            selected={formData[keyName] ? new Date(formData[keyName]) : null}
+            onChange={(date) => {
+              onChange && onChange(date);
+              setFormData((prev) => ({ ...prev, [keyName]: date }));
+            }}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            timeCaption="Time"
+            dateFormat="HH:mm dd/MM/yyyy "
+            className="datepicker"
+            name={keyName}
+            disabled={_disabled}
+          />
+          <FaRegCalendarAlt className="calendar-icon" />
+        </div>
+
       );
     default:
       return (
@@ -284,9 +308,9 @@ export const FormBase = (props: Props) => {
     const _data = { ...formData };
     fields.forEach(
       (f) =>
-        (_data[f.keyName] = f.value
-          ? f.value
-          : _data[f.keyName]
+      (_data[f.keyName] = f.value
+        ? f.value
+        : _data[f.keyName]
           ? _data[f.keyName]
           : f.defaultValue)
     );
@@ -302,8 +326,9 @@ export const FormBase = (props: Props) => {
     <Form className="form-base">
       {fields.map((f, idx) => {
         // console.log("rerender FormType", f.label);
+        const groupClassName = `custom-group-${f.formType}`;
         return (
-          <Form.Group className="mb-3" key={idx}>
+          <Form.Group className={`mb-3 ${groupClassName}`} key={idx}>
             <Form.Label>{f.label}</Form.Label>
             <FormType
               setFormData={setFormData}

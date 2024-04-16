@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ClEANING_SCHEDULE_ADD, DEPARTMENT_LIST, EMPLOYEE_LIST, useApi, DEPARTMENT_EMPLOYEE } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 export const CreateCleaningSchedule = () => {
     const navigate = useNavigate();
@@ -106,10 +107,20 @@ export const CreateCleaningSchedule = () => {
             delete requestData["end.dateTime"];
 
             await useApi.post(ClEANING_SCHEDULE_ADD, requestData);
+            Swal.fire(
+                'Thành công!',
+                'Thêm lịch quét dọn mới thành công!',
+                'success'
+            );
             ref.current?.reload();
             navigate("/manage-cleaning-schedule");
         } catch (error) {
-            console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
+            console.error("Lỗi khi xử lý dữ liệu:", error);
+            Swal.fire(
+                'Lỗi!',
+                'Lỗi khi thêm lịch quét dọn! Vui lòng thử lại sau.',
+                'error'
+            );
             setIsLoading(false);
             // Xử lý lỗi tại đây (ví dụ: hiển thị thông báo lỗi cho người dùng)
         }
