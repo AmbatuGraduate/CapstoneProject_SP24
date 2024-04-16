@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { ScrollView, View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ActivityIndicator, Button, Image } from "react-native";
+import { FlatList, View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ActivityIndicator, Button, Image } from "react-native";
 import { Formik } from "formik";
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,17 +9,19 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { api } from "../shared/api";
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Camera } from 'expo-camera';
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 
 
 const ReportSchema = yup.object({
-    reportSubject: yup.string().required('Tiêu đề không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
-    reportBody: yup.string().required('Nội dung báo cáo không được bỏ trống').min(4, 'Ít nhất 4 ký tự'),
+    reportSubject: yup.string().required('Nhập tiêu đề báo cáo').min(4, 'Ít nhất 4 ký tự'),
+    reportBody: yup.string().required('Nhập nội dung chi tiết báo cáo').min(4, 'Ít nhất 4 ký tự'),
+    issueLocation: yup.string().required('Nhập địa chỉ cụ thể'),
     reportImpact: yup.string().required('Mức độ ảnh hưởng là bắt buộc').test('is-impact', 'Chọn mức độ ảnh hưởng', (value) => {
         const parsedValue = parseInt(value, 10);
         return parsedValue >= 0 && parsedValue <= 2;
     }),
-    expectedResolutionDate: yup.date().required('Ngày dự kiến giải quyết là bắt buộc').test('is-future', 'Ngày dự kiến giải quyết phải trong tương lai', (value) => {
+    expectedResolutionDate: yup.date().required('Hãy nhập ngày cần giải quyết').test('is-future', 'Ngày cần giải quyết phải trong tương lai', (value) => {
         return value >= new Date();
     }),
 });
@@ -42,7 +44,7 @@ export default function ReportForm({ onFormSuccess }) {
             },
             mediaType: 'photo',
             includeBase64: true,
-            selectionLimit: 0, // set to 0 for unlimited selection
+            selectionLimit: 0,
         };
 
         launchImageLibrary(options, (response) => {
@@ -91,6 +93,7 @@ export default function ReportForm({ onFormSuccess }) {
                 initialValues={{
                     reportSubject: '',
                     reportBody: '',
+                    issueLocation: '',
                     reportImages: [],
                     reportImpact: 'Thấp',
                     reportBodyHeight: 100,
@@ -111,6 +114,7 @@ export default function ReportForm({ onFormSuccess }) {
                         issuerEmail: issuerEmail,
                         reportSubject: values.reportSubject,
                         reportBody: values.reportBody,
+                        issueLocation: values.issueLocation,
                         reportImages: values.reportImages,
                         expectedResolutionDate: values.expectedResolutionDate,
                         reportImpact: parseInt(values.reportImpact, 10),
@@ -135,137 +139,167 @@ export default function ReportForm({ onFormSuccess }) {
                     <>
 
 
-                        <ScrollView
+                        <FlatList
                             showsVerticalScrollIndicator={false}
                             showsHorizontalScrollIndicator={false}
                             overScrollMode='never'
+                            data={[{ key: 'form' }]}
                             padding={7}
-                        >
 
-                            <TextInput
-                                style={styles.input}
-                                placeholder='Tiêu đề'
-                                onChangeText={props.handleChange('reportSubject')}
-                                value={props.values.reportSubject}
-                                onBlur={props.handleBlur('reportSubject')}
-                            />
-                            <Text style={styles.errorText}>
-                                {props.touched.reportSubject && props.errors.reportSubject}
-                            </Text>
+                            renderItem={() => (
+                                <>
 
+                                    <TextInput
+                                        style={styles.input}
+                                        placeholder='Tiêu đề'
+                                        onChangeText={props.handleChange('reportSubject')}
+                                        value={props.values.reportSubject}
+                                        onBlur={props.handleBlur('reportSubject')}
+                                    />
+                                    <Text style={styles.errorText}>
+                                        {props.touched.reportSubject && props.errors.reportSubject}
+                                    </Text>
 
-                            <View style={styles.impact}>
-                                <Text style={styles.label}>Mức độ ảnh hưởng</Text>
-                                <RadioButton.Group
-                                    onValueChange={props.handleChange('reportImpact')}
-                                    value={props.values.reportImpact}
-                                    onBlur={props.handleBlur('reportImpact')}
-                                >
-                                    <View style={styles.radioButton}>
-                                        <Text style={styles.radioButtonTextLow}>THẤP</Text>
-                                        <RadioButton value="0" color='green' uncheckedColor='grey' />
-                                    </View>
-                                    <View style={styles.radioButton}>
-                                        <Text style={styles.radioButtonTextMedium}>VỪA</Text>
-                                        <RadioButton value="1" color='orange' uncheckedColor='grey' />
-
-                                    </View>
-                                    <View style={styles.radioButton}>
-                                        <Text style={styles.radioButtonTextHigh}>CAO</Text>
-                                        <RadioButton value="2" color='red' uncheckedColor='grey' />
-
-                                    </View>
-                                </RadioButton.Group>
-                            </View>
-                            <Text style={styles.errorText}>{props.touched.reportImpact && props.errors.reportImpact}</Text>
-                            <Text style={styles.label}>Cần giải quyết trước</Text>
-                            <View style={styles.dateContainer}>
-                                <Text style={styles.dateValue}>
-                                    {props.values.expectedResolutionDate.toLocaleDateString()}
-                                </Text>
-                                {Platform.OS === 'android' && (
-                                    <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                                        <Icon name="calendar" type='font-awesome' size={24} color="#2282F3" />
-                                    </TouchableOpacity>
-                                )}
-                            </View>
-
-                            {showDatePicker && (
-                                <DateTimePicker
-                                    value={props.values.expectedResolutionDate}
-                                    mode="date"
-                                    onBlur={props.handleBlur('expectedResolutionDate')}
-                                    display="default"
-                                    onChange={(event, selectedDate) => {
-                                        setShowDatePicker(Platform.OS === 'ios');
-                                        props.setFieldValue('expectedResolutionDate', selectedDate || props.values.expectedResolutionDate);
-                                    }}
-                                />
-                            )}
-                            <Text style={styles.errorText}>{props.touched.expectedResolutionDate && props.errors.expectedResolutionDate}</Text>
-
-                            {/* body */}
-                            <TextInput
-                                multiline
-                                style={[styles.bodyInput, { height: Math.max(100, props.values.reportBodyHeight) }]}
-                                placeholder='Chi tiết báo cáo'
-                                onChangeText={props.handleChange('reportBody')}
-                                onContentSizeChange={(event) => {
-                                    props.setFieldValue('reportBodyHeight', event.nativeEvent.contentSize.height)
-                                }}
-                                value={props.values.reportBody}
-                                onBlur={props.handleBlur('reportBody')}
-                            />
-                            <Text style={styles.errorText}>{props.touched.reportBody && props.errors.reportBody}</Text>
-
-                            {/* image */}
-
-                            <View style={styles.fileStyle}>
-                                <TouchableOpacity
-                                    style={styles.imageButton}
-                                    onPress={() => selectImage(props)}
-                                >
-                                    <Icon name="photograph" type="fontisto" size={24} color="green" />
-                                </TouchableOpacity>
-
-                                <TouchableOpacity
-                                    style={styles.imageButton}
-                                    onPress={() => takePhoto(props)} // take photo with camera
-                                >
-                                    <Icon name="camera" type="font-awesome" size={24} color="green" />
-                                </TouchableOpacity>
-                                <Text style={styles.fileText}>Thêm ảnh vào báo cáo</Text>
-                            </View>
+                                    <GooglePlacesAutocomplete
+                                        placeholder='Địa điểm'
+                                        keepResultsAfterBlur={true}
+                                        onFail={error => console.error(error)}
+                                        onPress={(data, details = null) => {
+                                            console.log('Pressed!');
+                                            props.setFieldValue('issueLocation', data.description);
+                                        }}
+                                        query={{
+                                            key: 'AIzaSyB-cCdqszm1HAByMs9q_JqKK246Wnh8ocE',
+                                            language: 'vi',
+                                            components: 'country:vn',
+                                            location: '16.0544,108.2022', // danang
+                                            radius: '50000',
+                                        }}
+                                        fetchDetails={true}
+                                        styles={{
+                                            textInputContainer: styles.input,
+                                        }}
+                                    />
 
 
-                            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                                {props.values.reportImages && props.values.reportImages.map((image, index) => (
-                                    <View key={index} style={styles.imageContainer}>
-                                        <Image
-                                            source={{ uri: image }}
-                                            style={styles.image}
-                                        />
-                                        <TouchableOpacity
-                                            style={styles.removeImageButton}
-                                            onPress={() => {
-                                                const newImages = [...props.values.reportImages];
-                                                newImages.splice(index, 1);
-                                                props.setFieldValue('reportImages', newImages);
-                                            }}
+                                    <Text style={styles.errorText}>
+                                        {props.touched.issueLocation && props.errors.issueLocation}
+                                    </Text>
+
+
+                                    <View style={styles.impact}>
+                                        <Text style={styles.label}>Mức độ ảnh hưởng</Text>
+                                        <RadioButton.Group
+                                            onValueChange={props.handleChange('reportImpact')}
+                                            value={props.values.reportImpact}
+                                            onBlur={props.handleBlur('reportImpact')}
                                         >
-                                            <Icon name="remove" size={20} type="Ionicons" style={styles.rmvImg} color="#fff" />
-                                        </TouchableOpacity>
+                                            <View style={styles.radioButton}>
+                                                <Text style={styles.radioButtonTextLow}>THẤP</Text>
+                                                <RadioButton value="0" color='green' uncheckedColor='grey' />
+                                            </View>
+                                            <View style={styles.radioButton}>
+                                                <Text style={styles.radioButtonTextMedium}>VỪA</Text>
+                                                <RadioButton value="1" color='orange' uncheckedColor='grey' />
+
+                                            </View>
+                                            <View style={styles.radioButton}>
+                                                <Text style={styles.radioButtonTextHigh}>CAO</Text>
+                                                <RadioButton value="2" color='red' uncheckedColor='grey' />
+
+                                            </View>
+                                        </RadioButton.Group>
                                     </View>
-                                ))}
-                            </View>
+                                    <Text style={styles.errorText}>{props.touched.reportImpact && props.errors.reportImpact}</Text>
+                                    <Text style={styles.label}>Cần giải quyết trước ngày</Text>
+                                    <View style={styles.dateContainer}>
+                                        <Text style={styles.dateValue}>
+                                            {props.values.expectedResolutionDate.toLocaleDateString()}
+                                        </Text>
+                                        {Platform.OS === 'android' && (
+                                            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                                                <Icon name="calendar" type='font-awesome' size={24} color="#2282F3" />
+                                            </TouchableOpacity>
+                                        )}
+                                    </View>
+
+                                    {showDatePicker && (
+                                        <DateTimePicker
+                                            value={props.values.expectedResolutionDate}
+                                            mode="date"
+                                            onBlur={props.handleBlur('expectedResolutionDate')}
+                                            display="default"
+                                            onChange={(event, selectedDate) => {
+                                                setShowDatePicker(Platform.OS === 'ios');
+                                                props.setFieldValue('expectedResolutionDate', selectedDate || props.values.expectedResolutionDate);
+                                            }}
+                                        />
+                                    )}
+                                    <Text style={styles.errorText}>{props.touched.expectedResolutionDate && props.errors.expectedResolutionDate}</Text>
+
+                                    {/* body */}
+                                    <TextInput
+                                        multiline
+                                        style={[styles.bodyInput, { height: Math.max(100, props.values.reportBodyHeight) }]}
+                                        placeholder='Chi tiết báo cáo'
+                                        onChangeText={props.handleChange('reportBody')}
+                                        onContentSizeChange={(event) => {
+                                            props.setFieldValue('reportBodyHeight', event.nativeEvent.contentSize.height)
+                                        }}
+                                        value={props.values.reportBody}
+                                        onBlur={props.handleBlur('reportBody')}
+                                    />
+                                    <Text style={styles.errorText}>{props.touched.reportBody && props.errors.reportBody}</Text>
+
+                                    {/* image */}
+
+                                    <View style={styles.fileStyle}>
+                                        <TouchableOpacity
+                                            style={styles.imageButton}
+                                            onPress={() => selectImage(props)}
+                                        >
+                                            <Icon name="photograph" type="fontisto" size={24} color="green" />
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity
+                                            style={styles.imageButton}
+                                            onPress={() => takePhoto(props)} // take photo with camera
+                                        >
+                                            <Icon name="camera" type="font-awesome" size={24} color="green" />
+                                        </TouchableOpacity>
+                                        <Text style={styles.fileText}>Thêm ảnh vào báo cáo</Text>
+                                    </View>
 
 
-                            <TouchableOpacity style={styles.submitButton} onPress={props.handleSubmit}>
-                                <Icon name="check" size={20} color="#fff" />
-                                <Text style={styles.submitButtonText}>Gửi</Text>
-                            </TouchableOpacity>
+                                    <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                                        {props.values.reportImages && props.values.reportImages.map((image, index) => (
+                                            <View key={index} style={styles.imageContainer}>
+                                                <Image
+                                                    source={{ uri: image }}
+                                                    style={styles.image}
+                                                />
+                                                <TouchableOpacity
+                                                    style={styles.removeImageButton}
+                                                    onPress={() => {
+                                                        const newImages = [...props.values.reportImages];
+                                                        newImages.splice(index, 1);
+                                                        props.setFieldValue('reportImages', newImages);
+                                                    }}
+                                                >
+                                                    <Icon name="remove" size={20} type="Ionicons" style={styles.rmvImg} color="#fff" />
+                                                </TouchableOpacity>
+                                            </View>
+                                        ))}
+                                    </View>
 
-                        </ScrollView>
+
+                                    <TouchableOpacity style={styles.submitButton} onPress={props.handleSubmit}>
+                                        <Icon name="check" size={20} color="#fff" />
+                                        <Text style={styles.submitButtonText}>Gửi</Text>
+                                    </TouchableOpacity>
+                                </>
+                            )}
+                        />
                         {isCameraVisible && (
                             <Camera
                                 ref={cameraRef}
@@ -274,13 +308,13 @@ export default function ReportForm({ onFormSuccess }) {
                                 <View style={{ flex: 1, backgroundColor: 'transparent', justifyContent: 'flex-end', alignItems: 'center' }}>
                                     <TouchableOpacity
                                         style={{
-                                            marginBottom: 20, // Adjust as needed
-                                            width: 70, // Adjust as needed
-                                            height: 70, // Adjust as needed
-                                            borderRadius: 35, // Half of width and height to make it circular
-                                            backgroundColor: 'rgba(255,255,255, 0.1)', // Change this to the color you want
-                                            justifyContent: 'center', // Center the icon vertically
-                                            alignItems: 'center', // Center the icon horizontally
+                                            marginBottom: 20,
+                                            width: 70,
+                                            height: 70,
+                                            borderRadius: 35,
+                                            backgroundColor: 'rgba(255,255,255, 0.1)',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
                                         }}
                                         onPress={() => takePhoto(props)}
                                     >
@@ -312,7 +346,7 @@ export default function ReportForm({ onFormSuccess }) {
             </Modal>
 
 
-        </View>
+        </View >
     );
 }
 

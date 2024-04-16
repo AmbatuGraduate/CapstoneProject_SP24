@@ -15,5 +15,6 @@ namespace Application.Report.Common
         public DateTime ExpectedResolutionDate { get; set; }
         public DateTime? ActualResolutionDate { get; set; }
         public string ReportResponse { get; set; }
+        public string IssueLocation { get; set; }
     }
 }

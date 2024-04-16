@@ -13,13 +13,13 @@ export const ResponseReport = () => {
     {
       label: "Phản Hồi ",
       formType: "input",
-      key: "response",
+      keyName: "response",
       placeholder: "Nhập nội dung phản hồi",
     },
     {
       label: "Trạng Thái",
       formType: "select",
-      key: "status",
+      keyName: "status",
       options: [
         {
           key: "Chưa được xử lý",

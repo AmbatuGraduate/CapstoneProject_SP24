@@ -30,13 +30,14 @@ namespace Application.Report.Commands.Create
             await Task.CompletedTask;
 
             var reportDbId = Guid.NewGuid().ToString();
-            ReportFormat createReport = new ReportFormat
+            ReportFormat createReport = new()
             {
                 Id = reportDbId,
                 AccessToken = request.AccessToken,
                 IssuerEmail = request.IssuerEmail,
                 ReportSubject = request.ReportSubject,
                 ReportBody = request.ReportBody,
+                IssueLocation = request.IssueLocation,
                 ReportImages = request.ReportImages,
                 ExpectedResolutionDate = request.ExpectedResolutionDate,
                 ReportImpact = request.ReportImpact
@@ -51,6 +52,7 @@ namespace Application.Report.Commands.Create
             {
                 ReportId = reportDbId,
                 IssuerGmail = request.IssuerEmail,
+                IssueLocation = request.IssueLocation,
                 ReportImpact = request.ReportImpact,
                 ExpectedResolutionDate = request.ExpectedResolutionDate,
                 ResponseId = "",

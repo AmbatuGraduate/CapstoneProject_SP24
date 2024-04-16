@@ -4,6 +4,7 @@ import Header from '../shared/header';
 import TasksList from '../screens/tasks';
 import TaskDetails from '../screens/taskDetails';
 import { Image, View } from 'react-native';
+import SharedMap from '../shared/map';
 
 /*************************************************************
 **________________ TASK NAVIGATION OF APP __________________**
@@ -44,6 +45,12 @@ function TaskStackRouting() {
 
                     }
                 }></Stack.Screen>
+            <Stack.Screen name="MapsView" component={SharedMap}
+                options={{
+                    title: 'Vị trí trên bản đồ',
+                    headerTintColor: 'skyblue',
+                }}>
+            </Stack.Screen>
         </Stack.Navigator>
     )
 }

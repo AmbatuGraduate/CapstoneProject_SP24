@@ -28,7 +28,7 @@ namespace Infrastructure.Authentication.AuthenticationAttribute
             {
                 var permission = permissionClaim.Value;
                 var listPermission = requirement.Permission.Split(',');
-                if (listPermission.Contains(permission))
+                if (listPermission.Contains(permission.ToLower()))
                 {
                     context.Succeed(requirement);
                 }

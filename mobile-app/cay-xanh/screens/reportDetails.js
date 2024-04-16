@@ -1,16 +1,18 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from "react-native";
 import { Icon } from '@rneui/themed';
 import Swiper from 'react-native-swiper';
 
 
-export default function ReportDetails({ route }) {
 
-    const { reportId, reportBody, reportImages, reportSubject, reportImpact, reportStatus, reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
+export default function ReportDetails({ route, navigation }) {
+
+    const { reportId, reportBody, issueLocation,
+        reportImages, reportSubject, reportImpact, reportStatus,
+        reportResponse, expectedResolutionDate, actualResolutionDate } = route.params;
 
     let cleanedReportSubject = reportSubject.replace(/\[Report\]/g, '').trim();
-    let cleanedReportBody = reportBody.replace(/Report ID: .*|Expected Resolution Date: .*|Report Impact: .*/g, '');
-
+    let cleanedReportBody = reportBody.replace(/Report ID: .*|Expected Resolution Date: .*|Report Impact: .*|Issue Location: .*/g, '').trim();
     const impactLevels = {
         0: 'Thấp',
         1: 'Vừa',
@@ -63,7 +65,7 @@ export default function ReportDetails({ route }) {
 
                 <View style={styles.overview}>
                     {reportImages && (
-                        <View style={{ height: 300 }}>
+                        <View style={{ height: 250 }}>
 
                             <Swiper
                                 showsButtons={false}
@@ -82,8 +84,26 @@ export default function ReportDetails({ route }) {
 
                         </View>
                     )}
-                    <Text style={[styles.label, { color: '#2282F3' }]}>Nội dung</Text>
-                    <Text style={styles.bodyText}>{cleanedReportBody}</Text>
+                    <View style={styles.bodySection}>
+                        <Text style={[styles.label, { color: '#2282F3' }]}>Địa điểm</Text>
+                        <Text style={styles.bodyText}>{issueLocation}</Text>
+                        {issueLocation ? (
+                            <TouchableOpacity
+                                style={styles.mapButton}
+                                onPress={() => navigation.navigate('MapsView', { issueLocation })}>
+                                <Icon name="map-o" type="font-awesome" size={20} color="green" />
+                                <Text style={styles.submitButtonText}>Xem vị trí trên bản đồ</Text>
+                            </TouchableOpacity>
+                        ) : null}
+                    </View>
+                    <View style={styles.bodySection}>
+                        {/* <Text style={[styles.label, { color: '#2282F3' }]}>Địa điểm</Text>
+                        <Text style={styles.bodyText}>{issueLocation}</Text> */}
+                        <Text style={[styles.label, { color: '#2282F3' }]}>Nội dung</Text>
+                        <Text style={styles.bodyText}>{cleanedReportBody}</Text>
+                    </View>
+
+
                     {reportStatus !== 'Resolved' && (
                         <Text style={styles.dateText}>Cần giải quyết trước - {expectedResolutionDate}</Text>
                     )}
@@ -108,7 +128,8 @@ export default function ReportDetails({ route }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20,
+        paddingHorizontal: 20,
+        paddingBottom: 20,
     },
     overview: {
         backgroundColor: '#F5F5F5',
@@ -153,10 +174,16 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     bodyText: {
-        fontSize: 16,
+        fontSize: 20,
         lineHeight: 24,
         color: '#333',
         letterSpacing: 0.5,
+        fontFamily: 'quolibet',
+        padding: 10,
+        borderRadius: 15,
+        backgroundColor: '#f0f0f0',
+        marginVertical: 6,
+
     },
     dateText: {
         fontSize: 16,
@@ -165,7 +192,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFD700',
         padding: 5,
         borderRadius: 15,
+        lineHeight: 24,
         textAlign: 'center',
+        marginTop: 10,
     },
     noRes: {
         fontSize: 18,
@@ -179,6 +208,10 @@ const styles = StyleSheet.create({
         color: '#838383',
         fontWeight: 'bold',
         marginTop: 10,
+        textAlign: 'center',
+        backgroundColor: '#FFD700',
+        padding: 5,
+        borderRadius: 15,
     },
     image: {
         width: '100%',
@@ -189,5 +222,23 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'grey',
 
+    },
+    bodySection: {
+        flex: 1,
+        marginTop: 20,
+    },
+    mapButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        backgroundColor: '#DDDDDD',
+        borderRadius: 5,
+        margin: 10,
+    },
+    submitButtonText: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#333',
     },
 });

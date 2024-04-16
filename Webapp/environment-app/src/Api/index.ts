@@ -42,10 +42,14 @@ export const STREET_LIST = "Street/Get"
 export const LOGIN = "/auth/google"
 
 export const REPORT_LIST = "/Report/GetReportFormats"
+export const REPORT_BY_USER = "Report/GetReportsByUser?email=:email"
 export const CREATE_REPORT = "/Report/CreateReport"
 export const DETAIL_REPORT = "/Report/GetReportById/?id=:id"
 export const RESPONSE_REPORT = "/Report/ResponseReport"
+export const DELETE_REPORT = "/Report/DeleteReport?id=:id"
 
-export const GROUP_LIST = "/Group/GetAllGroups"
-export const GROUP_EMPLOYEE = "/Group/GetAllMembersOfGroup/?groupEmail=email"
-
+// export const GROUP_LIST = "/Group/GetAllGroups"
+// export const GROUP_EMPLOYEE = "/Group/GetAllMembersOfGroup/?groupEmail=:email"
+export const GROUP_DELETE = "/Group/DeleteGroup?groupEmail=:email"
+export const GROUP_ADD = "/Group/AddGroup"
+export const GROUP_DETAIL = "/Group/GetGroupByGroupEmail?groupEmail=:email"

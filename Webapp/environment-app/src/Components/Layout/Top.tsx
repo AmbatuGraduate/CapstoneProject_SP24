@@ -6,11 +6,13 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { useCookies } from "react-cookie";
 import { ImProfile } from "react-icons/im";
 import { MdLogout } from "react-icons/md";
+import { Link, useParams } from "react-router-dom";
 
 const Top = () => {
   const [token] = useCookies(["accessToken"]);
   const [isOpen, setIsOpen] = useState(false);
   const [, , removeCookie] = useCookies(["accessToken"]);
+  const { email = " " } = useParams();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -54,9 +56,11 @@ const Top = () => {
             </button>
             {isOpen && (
               <div className="dropdown-menu">
-                <button className="flex">
-                  <ImProfile className="dropIcon" /> <h6>Hồ sơ</h6>
-                </button>
+                <Link to={`/myprofile/${email}`}>
+                  <button className="flex">
+                    <ImProfile className="dropIcon" /> <h6>Hồ sơ</h6>
+                  </button>
+                </Link>             
                 <hr className="menuLine" />
                 <button className="flex" onClick={LogOut}>
                   <MdLogout className="dropIcon" /> <h6>Đăng xuất</h6>

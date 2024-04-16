@@ -9,6 +9,7 @@ using Google.Apis.Admin.Directory.directory_v1;
 using Google.Apis.Admin.Directory.directory_v1.Data;
 using Google.Apis.Auth.OAuth2;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.Metrics;
 using System.Globalization;
 
 namespace Infrastructure.Persistence.Repositories
@@ -194,7 +195,7 @@ namespace Infrastructure.Persistence.Repositories
                     {
                         new UserAddress { Locality = user.Address}
                     }
-            };
+                };
 
                 var request = service.Users.Insert(googleUser);
                 var newUser = await request.ExecuteAsync();
@@ -237,6 +238,186 @@ namespace Infrastructure.Persistence.Repositories
             }
         }
 
+        public async Task<int> AddUserToGoogleGroup(AddGoogleUser user)
+        {
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(user.AccessToken);
+                var service = _directoryServiceFactory(credential);
+
+                var request = service.Groups.Get(user.DepartmentEmail);
+                var group = await request.ExecuteAsync();
+
+                if (group != null && !IsMemberExistingInGroup(user.AccessToken, user.Email, user.DepartmentEmail))
+                {
+                    Member member = new Member();
+                    member.Email = user.Email;
+                    member.Role = "MEMBER";
+
+                    MembersResource membersResource = new MembersResource(service);
+                    member = membersResource.Insert(member, user.DepartmentEmail).Execute();
+                }
+                return (int)group.DirectMembersCount + 1;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message} - {ex.ToString()}");
+                return 0;
+            }
+        }
+
+        public async Task<bool> UpdateUserToGoogleGroup(UpdateGoogleUser user, string oldGroupEmail)
+        {
+            var addGroupSuccess = false;
+            var removeGroupSuccess = false;
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(user.AccessToken);
+                var service = _directoryServiceFactory(credential);
+
+
+                var requestNewGroup = service.Groups.Get(user.DepartmentEmail); // add user to new group
+                var newGroup = await requestNewGroup.ExecuteAsync();
+                if (newGroup != null && !IsMemberExistingInGroup(user.AccessToken, user.Email, user.DepartmentEmail))  
+                {
+                    Member member = new Member();
+                    member.Email = user.Email;
+                    member.Role = "MEMBER";
+
+                    MembersResource membersResource = new MembersResource(service);
+                    member = membersResource.Insert(member, user.DepartmentEmail).Execute();
+                    addGroupSuccess = true;
+                }
+
+                var requestOldGroup = service.Groups.Get(oldGroupEmail); // remove user from new group
+                var oldGroup = await requestOldGroup.ExecuteAsync();
+                if (oldGroup != null && IsMemberExistingInGroup(user.AccessToken, user.Email, oldGroupEmail))
+                {
+                    MembersResource membersResource = new MembersResource(service);
+                    membersResource.Delete(oldGroupEmail, user.Email).Execute();
+                    removeGroupSuccess = true;
+                }
+
+                return addGroupSuccess && removeGroupSuccess;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message} - {ex.ToString()}");
+                return addGroupSuccess && removeGroupSuccess;
+            }
+        }
+
+        public async Task<bool> RemoveUserFromGoogleGroup(string accessToken, string userEmail, string userDepartment )
+        {
+            var removeGroupSuccess = false;
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+
+
+                var requestOldGroup = service.Groups.Get(userDepartment); // remove user from new group
+                var group = await requestOldGroup.ExecuteAsync();
+                if (group != null && IsMemberExistingInGroup(accessToken, userEmail, userDepartment))
+                {
+                    MembersResource membersResource = new MembersResource(service);
+                    membersResource.Delete(userDepartment, userEmail).Execute();
+                    removeGroupSuccess = true;
+                }
+
+                return removeGroupSuccess;
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message} - {ex.ToString()}");
+                return removeGroupSuccess;
+            }
+        }
+
+        public bool IsMemberExistingInGroup(string accessToken, string userEmail, string userDepartment)
+        {
+            var isMemberExistingInGroup = false;
+            try
+            {
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+
+                MembersResource membersResource = new MembersResource(service);
+                Members members = membersResource.List(userDepartment).Execute();
+
+                isMemberExistingInGroup = members.MembersValue.Any(member => member.Email.Equals(userEmail, StringComparison.OrdinalIgnoreCase));
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message} - {ex.ToString()}");
+            }
+            return isMemberExistingInGroup;
+        }
+
+        public async Task<bool> AddUserToDBGroup(string groupEmail, int directMembersCount)
+        {
+
+            var groupDB = webDbContext.Departments.SingleOrDefault(d => d.DepartmentEmail == groupEmail);
+            if (groupDB != null)
+            {
+                groupDB.DirectMembersCount = directMembersCount;
+                webDbContext.Departments.Attach(groupDB);
+                webDbContext.Entry<Departments>(groupDB).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                webDbContext.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateUserToDBGroup(string newGroupEmail, string oldGroupEmail)
+        {
+            var addGroupSuccess = false;
+            var removeGroupSuccess = false;
+            var newGroupDB = webDbContext.Departments.SingleOrDefault(d => d.DepartmentEmail == newGroupEmail);
+            if (newGroupDB != null)
+            {
+                newGroupDB.DirectMembersCount = newGroupDB.DirectMembersCount + 1;
+                webDbContext.Departments.Attach(newGroupDB);
+                webDbContext.Entry<Departments>(newGroupDB).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                webDbContext.SaveChanges();
+                addGroupSuccess = true;
+            }
+
+            var oldGroupDB = webDbContext.Departments.SingleOrDefault(d => d.DepartmentEmail == oldGroupEmail);
+            if (oldGroupDB != null)
+            {
+                oldGroupDB.DirectMembersCount = oldGroupDB.DirectMembersCount - 1;
+                webDbContext.Departments.Attach(oldGroupDB);
+                webDbContext.Entry<Departments>(oldGroupDB).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                webDbContext.SaveChanges();
+                removeGroupSuccess = true;
+            }
+
+            return addGroupSuccess && removeGroupSuccess;
+        }
+
+        public async Task<bool> RemoveUserFromDBGroup(string groupEmail)
+        {
+            var removeGroupSuccess = false;
+            var oldGroupDB = webDbContext.Departments.SingleOrDefault(d => d.DepartmentEmail == groupEmail);
+            if (oldGroupDB != null)
+            {
+                oldGroupDB.DirectMembersCount = oldGroupDB.DirectMembersCount - 1;
+                webDbContext.Departments.Attach(oldGroupDB);
+                webDbContext.Entry<Departments>(oldGroupDB).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                webDbContext.SaveChanges();
+                removeGroupSuccess = true;
+            }
+            return removeGroupSuccess;
+        }
+
         public string ConvertToUserCodeString(UserCode userCode)
         {
             return userCode switch
@@ -251,7 +432,8 @@ namespace Infrastructure.Persistence.Repositories
             {
                 UserRole.Employee => "8977EF77-E554-4EF3-8353-3E01161F84D0",
                 UserRole.Manager => "ABCCDE85-C7DC-4F78-9E4E-B1B3E7ABEE84",
-                UserRole.Admin => "CACD4B3A-8AFE-43E9-B757-F57F5C61F8D8"
+                UserRole.Admin => "CACD4B3A-8AFE-43E9-B757-F57F5C61F8D8",
+                UserRole.HR => "C0F1F5CD-7BF0-4BFE-8A26-AEAC1A7CB06B"
             };
         }
 
@@ -448,13 +630,22 @@ namespace Infrastructure.Persistence.Repositories
             return webDbContext.Roles.SingleOrDefault(r => r.RoleId == Guid.Parse(roleId)).RoleName;
         }
 
+        public string GetCurrentDepartmentOfUser(string userEmail)
+        {
+            var department = webDbContext.Users.FirstOrDefault(user => user.Email == userEmail);
+            if (department != null)
+            return GetDepartmentEmailById(department.DepartmentId);
+            else return string.Empty;
+        }
+
         public string GetRoleNameByRoleEnum(UserRole userRole)
         {
             return userRole switch
             {
                 UserRole.Employee => "Employee",
                 UserRole.Manager => "Manager",
-                UserRole.Admin => "Admin"
+                UserRole.Admin => "Admin",
+                UserRole.HR => "HR"
             };
         }
     }

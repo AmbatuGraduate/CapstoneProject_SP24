@@ -162,6 +162,7 @@ export default function Report({ navigation }) {
                                 navigation.navigate('ReportDetails', {
                                     reportId: item.id,
                                     reportBody: item.reportBody,
+                                    issueLocation: item.issueLocation.replace("Đà Nẵng, Việt Nam", "").trim(),
                                     reportImages: item.reportImages,
                                     reportSubject: item.reportSubject.replace('[Report]', '').trim(),
                                     reportImpact: item.reportImpact,

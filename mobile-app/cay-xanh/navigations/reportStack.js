@@ -3,6 +3,7 @@ import React from 'react';
 import Header from '../shared/header';
 import ReportDetails from '../screens/reportDetails';
 import Report from '../screens/report';
+import SharedMap from '../shared/map';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,12 @@ function ReportStackRouting() {
             <Stack.Screen name="ReportDetails" component={ReportDetails}
                 options={{
                     title: 'Chi tiết báo cáo',
+                    headerTintColor: 'skyblue',
+                }}>
+            </Stack.Screen>
+            <Stack.Screen name="MapsView" component={SharedMap}
+                options={{
+                    title: 'Vị trí trên bản đồ',
                     headerTintColor: 'skyblue',
                 }}>
             </Stack.Screen>
