@@ -1,10 +1,11 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, Image } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity } from "react-native";
 import { Icon } from '@rneui/themed';
 import Swiper from 'react-native-swiper';
 
 
-export default function ReportDetails({ route }) {
+
+export default function ReportDetails({ route, navigation }) {
 
     const { reportId, reportBody, issueLocation,
         reportImages, reportSubject, reportImpact, reportStatus,
@@ -86,6 +87,18 @@ export default function ReportDetails({ route }) {
                     <View style={styles.bodySection}>
                         <Text style={[styles.label, { color: '#2282F3' }]}>Địa điểm</Text>
                         <Text style={styles.bodyText}>{issueLocation}</Text>
+                        {issueLocation ? (
+                            <TouchableOpacity
+                                style={styles.mapButton}
+                                onPress={() => navigation.navigate('MapsView', { issueLocation })}>
+                                <Icon name="map-o" type="font-awesome" size={20} color="green" />
+                                <Text style={styles.submitButtonText}>Xem vị trí trên bản đồ</Text>
+                            </TouchableOpacity>
+                        ) : null}
+                    </View>
+                    <View style={styles.bodySection}>
+                        {/* <Text style={[styles.label, { color: '#2282F3' }]}>Địa điểm</Text>
+                        <Text style={styles.bodyText}>{issueLocation}</Text> */}
                         <Text style={[styles.label, { color: '#2282F3' }]}>Nội dung</Text>
                         <Text style={styles.bodyText}>{cleanedReportBody}</Text>
                     </View>
@@ -195,6 +208,10 @@ const styles = StyleSheet.create({
         color: '#838383',
         fontWeight: 'bold',
         marginTop: 10,
+        textAlign: 'center',
+        backgroundColor: '#FFD700',
+        padding: 5,
+        borderRadius: 15,
     },
     image: {
         width: '100%',
@@ -207,5 +224,21 @@ const styles = StyleSheet.create({
 
     },
     bodySection: {
+        flex: 1,
+        marginTop: 20,
+    },
+    mapButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        backgroundColor: '#DDDDDD',
+        borderRadius: 5,
+        margin: 10,
+    },
+    submitButtonText: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#333',
     },
 });

@@ -13,7 +13,7 @@ import { api } from "../shared/api";
 
 *************************************************************/
 
-export default function TaskDetails({ route }) {
+export default function TaskDetails({ navigation, route }) {
 
     const [updatedStatus, setUpdatedStatus] = useState(route.params.status); // Create a state variable for the status
 
@@ -170,9 +170,13 @@ export default function TaskDetails({ route }) {
                             <Icon name="map-marker" type="font-awesome" size={20} color="green" />
                             <Text style={styles.nameText}>Địa chỉ</Text>
                         </View>
-
-
                         <Text style={styles.infoText}>{address}</Text>
+                        <TouchableOpacity
+                            style={styles.mapButton}
+                            onPress={() => navigation.navigate('MapsView', { issueLocation })}>
+                            <Icon name="map-o" type="font-awesome" size={20} color="green" />
+                            <Text style={styles.mapText}>Xem vị trí trên bản đồ</Text>
+                        </TouchableOpacity>
                     </View>
 
                     {/* Ghi chu */}
@@ -310,5 +314,19 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
 
+    },
+    mapButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        backgroundColor: '#DDDDDD',
+        borderRadius: 5,
+        margin: 10,
+    },
+    mapText: {
+        marginLeft: 10,
+        fontSize: 16,
+        color: '#333',
     },
 });
