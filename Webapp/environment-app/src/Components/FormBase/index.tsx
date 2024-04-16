@@ -236,17 +236,21 @@ const FormType = (props: Field) => {
 
     case "date":
       return (
-        <DatePicker
-          selected={formData[keyName] ? new Date(formData[keyName]) : null}
-          onChange={(date) => {
-            console.log("date", date);
-            setFormData((prev) => ({ ...prev, [keyName]: date }));
-          }}
-          className="datepicker"
-          name={keyName}
-          disabled={_disabled}
-          dateFormat="dd/MM/yyyy"
-        />
+        <div className="date-picker-container">
+          <DatePicker
+            selected={formData[keyName] ? new Date(formData[keyName]) : null}
+            onChange={(date) => {
+              console.log("date", date);
+              setFormData((prev) => ({ ...prev, [keyName]: date }));
+            }}
+            className="datepicker"
+            name={keyName}
+            disabled={_disabled}
+            dateFormat="dd/MM/yyyy"
+          />
+          <FaRegCalendarAlt className="calendar-icon" />
+        </div>
+
 
       );
     case "jsx":
