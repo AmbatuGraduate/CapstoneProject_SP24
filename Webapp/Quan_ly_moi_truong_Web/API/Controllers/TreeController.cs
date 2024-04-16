@@ -116,8 +116,8 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
+        //[Authorize(Roles = "Admin, Manager")]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> Add(AddTreeRequest request)
         {
             var command = mapper.Map<AddTreeCommand>(request);
