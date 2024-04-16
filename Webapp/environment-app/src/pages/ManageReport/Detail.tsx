@@ -145,49 +145,13 @@ export const DetailReport = () => {
 
   return data ? (
     <div className="main-layout row">
-      <div className="detail-cover">
-        <div style={{ display: 'flex', justifyContent: "space-between" }}>
-          <h4 className="title">
-            {data.reportFormat?.reportSubject.replace("[Report]", "")}
-          </h4>      
-          <div className="detail-content-right impact" style={{ margin: 'auto 1rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <b>Trạng Thái:</b>
-              <span
-                className={
-                  data.reportFormat?.reportStatus == "Resolved"
-                    ? "resolved"
-                    : "unresolved"
-                }
-              >
-                {ReportStatus[data.reportFormat?.reportStatus]}
-              </span>
-            </div>
-            <div>
-              <b>Mức Độ Ảnh Hưởng:</b>{" "}
-              <span
-                className={
-                  data.reportFormat?.reportImpact === EReportImpact.LOW
-                    ? "low"
-                    : data.reportFormat?.reportImpact === EReportImpact.MEDIUM
-                      ? "medium"
-                      : "HIGH"
-                }
-              >
-                {ReportImpact[data.reportFormat?.reportImpact]}
-              </span>
-            </div>
-          </div>
-        </div>
-        <hr className="line" style={{ margin: '0' }} />
-      </div>
 
-      <div className="detail-cover-report" style={{ display: 'flex', justifyContent: "space-between" }}>
+      <div className="detail-cover-report" style={{ display: 'flex', justifyContent: "space-between", paddingTop: 20 }}>
         <div className="detail-content-right">
           <div style={{ display: 'flex' }}>
             <img
               style={{
-                width: "50px",
+                width: "64px",
                 borderRadius: "50%",
                 margin: '0 1rem'
               }}
@@ -197,30 +161,34 @@ export const DetailReport = () => {
             <div>
               <h5>{data.reportFormat?.issuerEmail}</h5>
               <h6 style={{ fontWeight: 'bold', fontSize: '1.25rem' }}>{employeeDetail?.name}</h6>
+
             </div>
+
           </div>
+
         </div>
         <div className="detail-content-right impact" style={{ marginRight: '1rem' }}>
-          <div style={{ backgroundColor: '#F0CD07', fontWeight: 'bold', padding: 6, borderRadius: 8 }}>
+          <div style={{ backgroundColor: '#F0CD07', fontWeight: 'bold', padding: 6, borderRadius: 8, color: '#090088' }}>
             Cần Giải Quyết Trước: {dayFormat(data.reportFormat?.expectedResolutionDate)}
           </div>
 
         </div>
+
       </div>
+      <hr className="line" style={{ marginTop: '1rem', opacity: '.1', width: '90%', marginLeft: 'auto', marginRight: 'auto' }} />
+
+
+
+
+
+
 
       <div className="report-form">
-        <h2 style={{ padding: '1rem', fontWeight: 'bold', textDecoration: 'underline', color: '#2282F3' }}>Nội dung</h2>
-        <div className="detail-cover-report">
+        <h4 className="title">
+          {data.reportFormat?.reportSubject.replace("[Report]", "")}
+          {" "}
+        </h4>
 
-          <div className="detail-content-right body">
-            <div>
-              <p>{data.reportFormat.reportBody?.split("\r\n")[1]}</p>
-            </div>
-
-          </div>
-        </div>
-
-        <hr className="line" style={{ marginTop: '3rem', opacity: '.1' }} />
 
         <div className="detail-cover-report">
           <div className="image-container">
@@ -239,9 +207,7 @@ export const DetailReport = () => {
                     sizes={item.sizes}
                     title={item.originalTitle}
                     style={{
-                      width: '70%',
-                      height: '70%',
-                      objectFit: 'contain',
+                      objectFit: 'contain'
                     }}
                   />
                   {
@@ -254,38 +220,97 @@ export const DetailReport = () => {
               )}
             />
           </div>
+          <div className="address-container">
+
+            <h5 style={{
+              textAlign: 'left',
+              paddingBottom: 20,
+              paddingTop: 20,
+              textDecoration: 'underline',
+              fontWeight: 'bold',
+              textDecorationColor: "lightgrey",
+              color: '#090088'
+
+            }}>Trạng thái</h5>
+            <span
+              className={
+                data.reportFormat?.reportStatus == "Resolved"
+                  ? "resolved"
+                  : "unresolved"
+              }
+            >
+              <div style={{
+                backgroundColor: ReportStatus[data.reportFormat?.reportStatus] == ReportStatus.Resolved ? '#CAF7B8' : 'pink',
+                color: ReportStatus[data.reportFormat?.reportStatus] == ReportStatus.Resolved ? 'darkgreen' : 'red',
+                borderRadius: 8,
+                display: 'inline-block',
+              }} className="detail-cover-report" >
+                <div className="detail-content-right">
+                  <b>{ReportStatus[data.reportFormat?.reportStatus] == ReportStatus.Resolved ? 'Đã Giải Quyết:' : 'Chưa Xử Lí'}</b>{" "}
+                  {ReportStatus[data.reportFormat?.reportStatus] == ReportStatus.Resolved && dayFormat(data.reportFormat?.actualResolutionDate)}
+                </div>
+              </div>
+            </span>
+            <h5 style={{
+              textAlign: 'left',
+              paddingBottom: 20,
+              paddingTop: 20,
+              textDecoration: 'underline',
+              fontWeight: 'bold',
+              textDecorationColor: "lightgrey",
+              color: '#090088'
+
+            }}>Mức độ ảnh hưởng</h5>
+            <span
+              className={
+                data.reportFormat?.reportImpact === EReportImpact.LOW
+                  ? "low"
+                  : data.reportFormat?.reportImpact === EReportImpact.MEDIUM
+                    ? "medium"
+                    : "HIGH"
+              }
+            >
+              {ReportImpact[data.reportFormat?.reportImpact]}
+            </span>
+
+            <h5 style={{
+              textAlign: 'left',
+              paddingBottom: 20,
+              paddingTop: 20,
+              textDecoration: 'underline',
+              fontWeight: 'bold',
+              textDecorationColor: "lightgrey",
+              color: '#090088'
+            }}>Chi tiết báo cáo</h5>
+            <p>{data.reportFormat.reportBody?.split("\r\n")[1]}</p>
+
+          </div>
+
         </div>
 
         <hr className="line" style={{ opacity: '.1' }} />
-                     
-          <h4 className="detail-content-right body">
-            Địa Điểm: 
-            {data.reportFormat?.issueLocation}
-          </h4>
-          <div className="map" style={{height: "350px" }}>
-              <SimpleMap location={data.reportFormat?.issueLocation} />
-          </div>
+        <h5 style={{
+          textAlign: 'left',
+          paddingBottom: 20,
+          paddingTop: 20,
+          paddingLeft: 20,
+          textDecoration: 'underline',
+          fontWeight: 'bold',
+          textDecorationColor: "lightgrey"
+        }}>Địa Điểm</h5>
+
+        <div className="map" style={{ height: "500px" }}>
+          <p style={{ paddingLeft: 30 }}>{data.reportFormat?.issueLocation}</p>
+          <SimpleMap location={data.reportFormat?.issueLocation} />
+        </div>
 
         <hr className="line" style={{ opacity: '.1' }} />
 
         <div className="detail-cover-report" >
           <div className="detail-content-right impact" style={{ display: 'grid', marginTop: '1rem', marginRight: '1rem', marginBottom: '1rem', width: '100%' }}>
-            <h4 style={{ fontWeight: "bold", textDecoration: "underline", color: '#2282F3' }}>Phản Hồi:</h4>
+            <h4 style={{ fontWeight: "bold", textDecoration: "underline", color: '#090088', textDecorationColor: 'lightgrey' }}>Phản Hồi:</h4>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
               <div style={{ padding: '1rem' }}>{data.reportFormat?.reportResponse}</div>
-              <div>
-                {ReportStatus[data.reportFormat?.reportStatus] ==
-                  ReportStatus.Resolved && (
-                    <>
-                      <div style={{ backgroundColor: '#CAF7B8' }} className="detail-cover-report" >
-                        <div className="detail-content-right">
-                          <b>Đã Giải Quyết:</b>{" "}
-                          {dayFormat(data.reportFormat?.actualResolutionDate)}
-                        </div>
-                      </div>
-                    </>
-                  )}
-              </div>
             </div>
           </div>
         </div>
@@ -305,7 +330,7 @@ export const DetailReport = () => {
           )}
         </div>
       </div>
-    </div>
+    </div >
   ) : (
     <ClipLoader
       className="spinner"
