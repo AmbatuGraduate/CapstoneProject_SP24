@@ -8,6 +8,7 @@ export const CreateEmployee = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
+  const [address, setAddress] = useState<string | null>("");
 
   const fields: Field[] = [
     {
@@ -26,12 +27,13 @@ export const CreateEmployee = () => {
       label: "Email",
       formType: "input",
       keyName: "email",
-      placeholder: "Ví dụ: ANV@vesinhdanang.xyz",
+      defaultValue: "@vesinhdanang.xyz"
     },
     {
       label: "Mật Khẩu",
       formType: "shortInput",
       keyName: "password",
+      hiddenInput: "true",
     },
     {
       label: "Số Điện Thoại",
@@ -43,6 +45,12 @@ export const CreateEmployee = () => {
       label: "Địa Chỉ",
       formType: "input",
       keyName: "address",
+      googleAddress: true,
+      value: address,
+      onChange: (e) => {
+        setAddress(e.target.value);
+      },
+      placeholder: "Nhập địa chỉ"
     },
     {
       label: "Bộ Phận",
