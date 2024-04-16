@@ -42,6 +42,7 @@ namespace API
 
             services.AddMappings();
             services.AddControllers();
+            //services.AddProblemDetails();
             return services;
         }
     }

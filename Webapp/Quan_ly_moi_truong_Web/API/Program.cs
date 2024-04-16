@@ -1,8 +1,11 @@
 using API;
+using API.Common.Errors;
 using API.Middleware;
 using Application;
 using Infrastructure;
 using Infrastructure.Persistence.Repositories.Notification.Hubs;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,8 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true; // Make the session cookie essential
 });
 
+builder.Services.AddSingleton<ProblemDetailsFactory, WebProblemDetailFactory>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -34,6 +39,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseExceptionHandler("/error");
+app.Map("/error", (HttpContext HttpContext) =>
+{
+    Exception? exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;
+    return Results.Problem();
+});
+
 app.UseRouting();
 app.UseHttpsRedirection();
 
