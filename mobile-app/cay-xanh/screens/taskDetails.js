@@ -173,7 +173,7 @@ export default function TaskDetails({ navigation, route }) {
                         <Text style={styles.infoText}>{address}</Text>
                         <TouchableOpacity
                             style={styles.mapButton}
-                            onPress={() => navigation.navigate('MapsView', { issueLocation })}>
+                            onPress={() => navigation.navigate('MapsView', { address })}>
                             <Icon name="map-o" type="font-awesome" size={20} color="green" />
                             <Text style={styles.mapText}>Xem vị trí trên bản đồ</Text>
                         </TouchableOpacity>
