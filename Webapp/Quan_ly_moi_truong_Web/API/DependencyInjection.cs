@@ -32,7 +32,9 @@ namespace API
                     builder =>
                     {
                         builder
-                        .WithOrigins("http://localhost:3000", "http://localhost:5500", "https://vesinhdanang.xyz", "http://vesinhdanang.xyz", "https://localhost:7024")
+                        .WithOrigins("http://localhost:3000", "http://localhost:5500", 
+                                     "https://vesinhdanang.xyz", "http://vesinhdanang.xyz", 
+                                     "https://localhost:7024", "https://organic-space-lamp-5jvpr577qxjf77w4-3000.app.github.dev")
                         //.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
