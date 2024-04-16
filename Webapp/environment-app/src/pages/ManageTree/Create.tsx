@@ -41,7 +41,7 @@ export const CreateTree = () => {
       googleAddress: false,
     },
     {
-      label: "Tuyến Đường",
+      label: "Địa Chỉ Cụ Thể",
       formType: "input",
       keyName: "treeLocation",
       googleAddress: true,
@@ -49,6 +49,7 @@ export const CreateTree = () => {
       onChange: (e) => {
         setAddress(e.target.value);
       },
+      placeholder: "Nhập địa chỉ",
     },
     {
       label: "Đường Kính Thân (cm)",

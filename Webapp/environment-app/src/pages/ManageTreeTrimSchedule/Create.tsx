@@ -16,6 +16,7 @@ export const CreateTreeTrimSchedule = () => {
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
   const [departmentEmail, setDepartmentEmail] = useState<any>();
+  const [address, setAddress] = useState<string | null>("");
 
   const fields: Field[] = [
     {
@@ -43,12 +44,18 @@ export const CreateTreeTrimSchedule = () => {
       label: "Tiêu Đề",
       formType: "input",
       keyName: "summary",
+      placeholder: "Nhập tiêu đề"
     },
     {
       label: "Địa Chỉ",
       formType: "input",
       keyName: "location",
-      placeholder: "Ví dụ: 29 Sơn Thủy Đông 2, Hòa Hải, Ngũ Hành Sơn",
+      googleAddress: true,
+      value: address,
+      onChange: (e) => {
+        setAddress(e.target.value);
+      },
+      placeholder: "Nhập địa chỉ",
     },
     {
       label: "Bắt Đầu Từ",
@@ -127,7 +134,7 @@ export const CreateTreeTrimSchedule = () => {
       Swal.fire(
         'Thành công!',
         'Thêm lịch cắt tỉa mới thành công!',
-        'error'
+        'success'
       );
       ref.current?.reload();
       navigate("/manage-treetrim-schedule");

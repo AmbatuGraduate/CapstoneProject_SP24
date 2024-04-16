@@ -35,6 +35,7 @@ export type Field = {
   onRender?: React.ReactNode;
   setFormData?: any;
   formData?: any;
+  hiddenInput?: any;
 } & Partial<Props>;
 
 export type OptionExtra = {
@@ -154,7 +155,7 @@ const FormType = (props: Field) => {
         <Form.Control
           id={props.googleAddress == true ? "pac-input" : ""}
           as="input"
-          type="text"
+          type={props.hiddenInput ? "password" : "text"}
           {...rest}
           name={keyName}
           value={formData[keyName]}
