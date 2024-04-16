@@ -141,6 +141,65 @@
   justify-content: space-between;
   box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
 
+  .profileContainer {
+    display: flex;
+  }
+
+  .profileImage {
+    padding: 5%;
+    width: 25%;
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      background-color: white;
+      border: 3px solid lightgrey;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      margin-bottom: 15%;
+    }
+  }
+
+  .profileInfo {
+    padding: 5%;
+    padding-left: 0;
+    padding-bottom: 0;
+    margin-left: 1rem;
+
+    .employeeName {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #2A2E45;
+    }
+
+    .employeeRole {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      color: #51587E;
+    }
+
+    .employeeCode {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.25rem;
+
+
+      .infoTextLabel {
+        text-align: right;
+        color: #51587E;
+        margin-right: 200px;
+      }
+
+      .infoText {
+        text-align: left;
+      }
+    }
+
+  }
+
   .title {
     font-weight: 900;
     height: fit-content;
@@ -171,12 +230,11 @@
     font-size: var(--h2FontSize);
     display: flex;
     flex-direction: column;
-    padding: 3rem;
+    padding: 1rem;
     margin: 0 auto;
 
     .detail-content-parent {
       display: flex;
-      justify-content: space-between;
 
       .detail-content-child-label {
         width: 50%;
@@ -186,10 +244,11 @@
 
       .detail-content-child-value {
         font-size: var(--h2FontSize);
-        font-weight: bold;
-        text-align: right;
+        text-align: left;
       }
     }
+
+
   }
 
   .btnLink {

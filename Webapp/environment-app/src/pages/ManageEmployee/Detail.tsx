@@ -131,89 +131,47 @@ export const DetailEmployee = () => {
       size={60}
     />
   ) : (
-    <div >
-      <div className="main-layout row ">
-        <h4 className="title">Xem Thông Tin Chi Tiết Nhân Viên</h4>
+    <div>
+      {/* ----------------------------------------------------------------------------------------------- */}
+      <div className="main-layout row">
+        <h4 className="title">Thông Tin Chi Tiết Nhân Viên</h4>
         <hr className="line" />
-        <div className="image col-md-2 ">
-          <div><img src={data?.picture || '../assets/imgs/avatar.jpg'} alt="userAvatar" /></div>
-        </div>
-        <div className="detail-content col-md-10">
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">Tên Nhân Viên: </div>
-              <div className="detail-content-child-value">
-                {data?.name}
-              </div>
-            </div>
-          </div>
 
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">Email: </div>
-              <div className="detail-content-child-value">
-                {data?.email}
-              </div>
-            </div>
-          </div>
 
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">Số Điện Thoại: </div>
-              <div className="detail-content-child-value">
-                {data?.phoneNumber}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">
-                Bộ Phận:{" "}
-              </div>
-              <div className="detail-content-child-value">
-                {data?.department}
-              </div>
-            </div>
-          </div>
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">Chức Vụ: </div>
-              <div className="detail-content-child-value">
-                {roleFormat(data?.role).text}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">
-                Địa Chỉ Thường Trú:{" "}
-              </div>
-              <div className="detail-content-child-value">
-                {data?.address}
-              </div>
-            </div>
-          </div>
-
-          <div className="button-cover grid">
-            <Button
-              className="btnCancel"
-              variant="danger"
-              onClick={handleNavigate}
-            >
-              Trở Về
-            </Button>        
+        <div className="profileContainer">
+          <div className="profileImage">
+            <img src={data?.picture || '../assets/imgs/avatar.jpg'} alt="userAvatar" />
             <Link to={`/manage-employee/${data?.email}/update`}>
-              <Button className="btnLink" variant="success">
-                Cập Nhật
+              <Button className="btnLink" variant="success" style={{ width: '100%', fontWeight: 'bold' }}>
+                Cập Nhật Thông Tin
               </Button>
             </Link>
+          </div>
+          <div className="profileInfo">
+            <p className="employeeName">{data?.name}</p>
+            <p className="employeeRole">{roleFormat(data?.role).text}</p>
+
+            <p className="employeeCode"><span className="infoTextLabel">Địa chỉ email</span> <span className="infoText">{data?.email}</span></p>
+            <p className="employeeCode"><span className="infoTextLabel">Số điện thoại</span> <span className="infoText">{data?.phoneNumber}</span></p>
+            <p className="employeeCode"><span className="infoTextLabel">Bộ phận</span> <span className="infoText">{data?.department}</span></p>
+            <p className="employeeCode"><span className="infoTextLabel">Địa chỉ thường trú</span> <span className="infoText">{data?.address}</span></p>
+
+          </div>
+
+        </div>
+
+
+        <div className="detail-content-parent">
+
+          <div className="button-cover grid">
+
+
           </div>
         </div>
       </div>
 
-
+      {/* ----------------------------------------------------------------------------------------------- */}
+      {/* schedule */}
       <div>
         <ListView
           ref={ref}
