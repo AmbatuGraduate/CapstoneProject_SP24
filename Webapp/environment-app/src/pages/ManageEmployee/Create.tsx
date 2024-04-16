@@ -84,9 +84,9 @@ export const CreateEmployee = () => {
         userRole: Number(data?.userRole)
       });
       Swal.fire(
-        'Success!',
+        'Thành công!',
         'Thêm nhân viên mới thành công!',
-        'error'
+        'success'
       );
       ref.current?.reload();
       navigate("/manage-employee");

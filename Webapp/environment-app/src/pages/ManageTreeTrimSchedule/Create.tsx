@@ -9,6 +9,7 @@ import {
 } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 export const CreateTreeTrimSchedule = () => {
   const navigate = useNavigate();
@@ -122,10 +123,21 @@ export const CreateTreeTrimSchedule = () => {
       delete requestData["end.dateTime"];
 
       await useApi.post(TREE_TRIM_SCHEDULE_ADD, requestData);
+
+      Swal.fire(
+        'Thành công!',
+        'Thêm lịch cắt tỉa mới thành công!',
+        'error'
+      );
       ref.current?.reload();
       navigate("/manage-treetrim-schedule");
     } catch (error) {
-      console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
+      console.error("Lỗi khi thêm lịch:", error);
+      Swal.fire(
+        'Lỗi!',
+        'Lỗi khi thêm lịch cắt tỉa! Vui lòng thử lại sau.',
+        'error'
+      );
       setIsLoading(false);
       // Xử lý lỗi tại đây (ví dụ: hiển thị thông báo lỗi cho người dùng)
     }

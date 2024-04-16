@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ClEANING_SCHEDULE_DETAIL, ClEANING_SCHEDULE_UPDATE, DEPARTMENT_EMPLOYEE, EMPLOYEE_LIST, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useEffect, useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 export const UpdateCleaningSchedule = () => {
     const navigate = useNavigate();
@@ -120,10 +121,20 @@ export const UpdateCleaningSchedule = () => {
             delete requestData["departmentEmail"]
 
             await useApi.post(ClEANING_SCHEDULE_UPDATE.replace(":id", id), requestData);
+            Swal.fire(
+                'Thành công!',
+                'Cập nhật lịch quét dọn thành công!',
+                'success'
+            );
             ref.current?.reload();
             navigate(-1)
         } catch (error) {
-            console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
+            console.error("Lỗi khi xử lý dữ liệu :", error);
+            Swal.fire(
+                'Lỗi!',
+                'Lỗi khi thêm lịch cắt tỉa! Vui lòng thử lại sau.',
+                'error'
+            );
             setIsLoading(false);
             // Xử lý lỗi tại đây (ví dụ: hiển thị thông báo lỗi cho người dùng)
         }
