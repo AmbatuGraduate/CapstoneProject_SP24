@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 export const dayFormat = (day: string | Date) => {
-  return dayjs(day).format("DD-MM-YYYY");
+  return dayjs(day).format("DD/MM/YYYY");
 };
 
 export const dateConstructor = (day: string) => {
@@ -11,7 +11,7 @@ export const dateConstructor = (day: string) => {
 
 export const convertDateFormat = (dateString) => {
   const [day, month, year] = dateString.split('/'); // Tách ngày, tháng và năm từ chuỗi
-  const formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`; // Chuẩn hóa định dạng ngày
+  const formattedDate = `${year}/${month.padStart(2, '0')}/${day.padStart(2, '0')}`; // Chuẩn hóa định dạng ngày
   return formattedDate;
 };
 
@@ -59,11 +59,11 @@ const ReportImpactType = {
 export const ReportImpact = (reportImpact) => {
   switch (reportImpact) {
     case ReportImpactType.LOW:
-      return { text: "Thấp", color: "grey" };
+      return { text: "Thấp", color: "lightgreen", backgroundColor: "darkgreen" };
     case ReportImpactType.MEDIUM:
-      return { text: "Trung bình", color: "orange" };
+      return { text: "Trung Bình", color: "orange", backgroundColor: "lightyellow" };
     case ReportImpactType.HIGH:
-      return { text: "Cao", color: "red" };
+      return { text: "Cao", color: "darkred", backgroundColor: 'lightlink' };
     default:
       return { text: reportImpact, color: "" };
   }
