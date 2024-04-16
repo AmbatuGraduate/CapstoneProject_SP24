@@ -104,7 +104,7 @@ function Routes() {
                         drawerLabel: 'Trang chủ',
                         drawerItemStyle: { justifyContent: 'flex-end' },
                         drawerIcon: ({ color, size }) => (
-                            <Icon name="home" type='font-awesome' color="#ff6b9b" size={size} />
+                            <Icon name="home" type='font-awesome' color="#01796E" size={size} />
                         ),
                     }} />
 
@@ -116,7 +116,7 @@ function Routes() {
                         drawerItemStyle: { justifyContent: 'flex-end' },
 
                         drawerIcon: ({ color, size }) => (
-                            <Icon name="user-circle-o" type='font-awesome' color="#ff6b9b" size={size} />
+                            <Icon name="user-circle-o" type='font-awesome' color="#01796E" size={size} />
                         ),
                     }} />
 
@@ -127,7 +127,7 @@ function Routes() {
                         drawerLabel: 'Lịch trình',
                         drawerItemStyle: { justifyContent: 'flex-end' },
                         drawerIcon: ({ color, size }) => (
-                            <Icon name="calendar" type='font-awesome' color="#ff6b9b" size={size} />
+                            <Icon name="calendar" type='font-awesome' color="#01796E" size={size} />
                         ),
                     }} />
 
@@ -139,7 +139,7 @@ function Routes() {
                         drawerItemStyle: { justifyContent: 'flex-end' },
 
                         drawerIcon: ({ color, size }) => (
-                            <Icon name="file-text-o" type='font-awesome' color="#ff6b9b" size={size} />
+                            <Icon name="file-text-o" type='font-awesome' color="#01796E" size={size} />
                         ),
                     }}>
                     {props => <ReportStackRouting {...props} />}
@@ -152,7 +152,7 @@ function Routes() {
                         drawerLabel: 'Đăng xuất',
                         drawerItemStyle: { justifyContent: 'flex-end' },
                         drawerIcon: ({ color, size }) => (
-                            <Icon name="sign-out" type='font-awesome' color="#ff6b9b" size={size} />
+                            <Icon name="sign-out" type='font-awesome' color="#01796E" size={size} />
                         ),
                     }}>
                     {props => <LogoutScreen {...props} setUser={setUser} />}

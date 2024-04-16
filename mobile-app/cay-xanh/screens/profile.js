@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Dimensions, TouchableHighlight, TouchableOpacity, Animated, Easing } from 'react-native';
+import { View, Text, Image, StyleSheet, Dimensions, TouchableHighlight } from 'react-native';
 import { Icon } from '@rneui/themed';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -25,7 +25,7 @@ export default function Profile({ navigation }) {
 
     return (
         <LinearGradient
-            colors={['rgba(255, 255, 255, 0.6)', 'rgba(197, 252, 234, 0.5)']}
+            colors={['rgba(255, 255, 255, 0.6)', 'rgba(254, 252, 234, 0.5)']}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
             style={styles.container}
@@ -57,20 +57,36 @@ export default function Profile({ navigation }) {
             {/* Details info Container*/}
             <View style={styles.infoContainer}>
                 <View style={styles.infoSection}>
-                    <Text style={styles.Label}>Email</Text>
-                    <Text style={styles.info} numberOfLines={1}>{user?.email}</Text>
+                    <Icon name="email" size={20} style={styles.icon} color={'#31A8E7'} />
+                    <View>
+                        <Text style={styles.Label}>Email</Text>
+                        <Text style={styles.info} numberOfLines={1}>{user?.email}</Text>
+                    </View>
+
                 </View>
                 <View style={styles.infoSection}>
-                    <Text style={styles.Label}>Bộ phận</Text>
-                    <Text style={styles.info}>{user?.department}</Text>
+                    <Icon name="group" size={20} style={styles.icon} color={'#FEEEB7'} />
+                    <View>
+                        <Text style={styles.Label}>Bộ phận</Text>
+                        <Text style={styles.info}>{user?.department}</Text>
+                    </View>
+
                 </View>
                 <View style={styles.infoSection}>
-                    <Text style={styles.Label}>Chức vụ</Text>
-                    <Text style={styles.info}>{user?.role}</Text>
+                    <Icon name="user-circle-o" type="font-awesome" size={20} color={'#FCCCE0'} style={styles.icon} />
+                    <View>
+                        <Text style={styles.Label}>Chức vụ</Text>
+                        <Text style={styles.info}>Nhân viên</Text>
+                    </View>
+
                 </View>
                 <View style={styles.infoSection}>
-                    <Text style={styles.Label}>Số điện thoại</Text>
-                    <Text style={styles.info}>{user?.phoneNumber}</Text>
+                    <Icon name="phone" size={20} style={styles.icon} color={'#ABF0D7'} />
+                    <View>
+                        <Text style={styles.Label}>Số điện thoại</Text>
+                        <Text style={styles.info}>{user?.phoneNumber}</Text>
+                    </View>
+
                 </View>
             </View>
 
@@ -116,16 +132,19 @@ const styles = StyleSheet.create({
         borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2, // Add border radius
     },
     icon: {
-        color: 'blue',
+        padding: 15,
+        borderRadius: 50,
+        borderWidth: 5,
+        borderColor: 'rgba(246,246,246,0.4)',
         marginRight: 20,
-        marginLeft: 10
+
     },
     infoContainer: {
-        padding: 30,
+        padding: 20,
     },
     infoSection: {
         paddingVertical: 15,
-
+        flexDirection: 'row',
     },
     info: {
         fontSize: 20,
@@ -133,10 +152,10 @@ const styles = StyleSheet.create({
         fontFamily: 'quolibet',
         flexWrap: 'nowrap',
         overflow: 'hidden',
-        borderBottomWidth: 1,
         borderColor: 'lightgray',
         borderRadius: 10,
-        padding: 10,
+        paddingVertical: 10,
+        letterSpacing: 0.75,
     },
     submitButton: {
         width: '50%',
@@ -164,10 +183,10 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     Label: {
-        fontSize: 18,
-        color: '#2282F3',
+        fontSize: 16,
+        color: '#CDD3D6',
         fontFamily: 'quolibet',
         marginBottom: 5,
-        fontWeight: 'bold',
+        letterSpacing: 1,
     },
 });

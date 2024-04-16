@@ -211,12 +211,9 @@ export default function Home() {
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
-            // The screen is focused
-            // Call any action
             getEventsCount();
         });
 
-        // Return the function to unsubscribe from the event so it gets removed on unmount
         return unsubscribe;
     }, [navigation]);
 
@@ -242,7 +239,8 @@ export default function Home() {
                         <TouchableOpacity style={styles.taskButton} onPress={handlePress}>
                             <Icon style={styles.notifIcon} name="calendar" type="font-awesome" size={20} color="green" />
                             <Text style={styles.taskText}>
-                                Bạn có {eventsCount} công việc {eventsCount > 1 ? '' : ''}hôm nay. Nhấn để xem.
+                                Bạn có {eventsCount} công việc {eventsCount > 1 ? '' : ''}hôm nay.
+                                Nhấn để xem.
                             </Text>
                         </TouchableOpacity>
                     ) : (
@@ -367,6 +365,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'black',
         fontFamily: 'quolibet',
+        flexWrap: 'wrap',
+        width: '90%',
+        lineHeight: 25,
     },
     noTasksText: {
         fontSize: 18,

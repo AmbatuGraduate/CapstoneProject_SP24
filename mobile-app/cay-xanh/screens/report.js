@@ -215,7 +215,7 @@ export default function Report({ navigation }) {
     return (
         <View style={{ flex: 1, }}>
             <LinearGradient
-                colors={['rgba(197, 252, 234, 0.5)', 'rgba(255, 255, 255, 0.6)']}
+                colors={['rgba(216,216,216, 0.3)', 'rgba(255, 255, 255, 0.6)']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
                 style={StyleSheet.absoluteFill}

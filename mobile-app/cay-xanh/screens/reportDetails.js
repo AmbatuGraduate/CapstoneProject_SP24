@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         fontFamily: 'quolibet',
         fontWeight: 'bold',
         marginBottom: 10,
-        color: '#2282F3',
+        color: '#333',
         textAlign: 'center',
         paddingBottom: 20,
     },
@@ -158,7 +158,6 @@ const styles = StyleSheet.create({
         fontFamily: 'quolibet',
         fontWeight: '600',
         fontWeight: 'bold',
-        textDecorationLine: 'underline',
     },
     impactText: {
         fontSize: 18,
