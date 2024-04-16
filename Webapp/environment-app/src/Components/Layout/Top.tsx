@@ -21,7 +21,7 @@ const Top = () => {
   const LogOut = async () => {
     try {
       await fetch("https://vesinhdanang.xyz:7024/api/auth/googlelogout", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
