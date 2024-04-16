@@ -49,7 +49,7 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
                 if (refresh_tkn != null)
                 {
                     var now = (int)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local)).TotalSeconds;
-                    var expireDate = (int)(DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwt_expire)).LocalDateTime - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local)).TotalSeconds;
+                    var expireDate = (int)(DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwt_expire)).LocalDateTime.AddHours(-1) - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local)).TotalSeconds;
 
                     Console.WriteLine(now + " - " + expireDate + " - " + expire_refresh);
 
