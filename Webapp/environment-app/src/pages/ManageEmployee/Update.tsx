@@ -36,13 +36,13 @@ export const UpdateEmployee = () => {
   const fields: Field[] = [
     {
       label: "Họ",
-      formType: "input",
+      formType: "shortInput",
       keyName: "name",
       defaultValue: lastName,
     },
     {
       label: "Tên",
-      formType: "input",
+      formType: "shortInput",
       keyName: "familyName",
       defaultValue: firstName,
     },
@@ -54,7 +54,7 @@ export const UpdateEmployee = () => {
     },
     {
       label: "Số Điện Thoại",
-      formType: "input",
+      formType: "shortInput",
       keyName: "phone",
       defaultValue: data?.phoneNumber,
     },

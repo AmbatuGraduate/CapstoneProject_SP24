@@ -17,27 +17,32 @@
     width: 100%;
 }
 .form-base {
-    font-size: 16px;
-    width: 100%;
-    font-weight: 600;
     display: flex;
     flex-wrap: wrap;
+    font-size: 16px;
+    width: 70%;
+    margin: auto;
+    font-weight: 600;
     gap: 30px;
     margin-top: 40px;
     justify-content: space-between;
     > div {
-        width: calc(50% - 15px);
+        width: 48%;
     }
     > div:last-child {
         width: 100%;
     }
     button {
         min-width: 100px;
-        margin-right: 50px;
         float: right;
         --bs-btn-border-radius: none;
         border: none;
     }
+    .custom-group-input,
+    .custom-group-textarea {
+        width: 100%;
+    }
+
     input,
     number,
     select,
@@ -45,6 +50,9 @@
     datetime {
         height: 3.5rem;
         border-radius: 0;
+    }
+    input {
+        width: 100%;
     }
     textarea {
         border-radius: 0;
@@ -57,14 +65,20 @@
         font-style: italic;
         font-size: 1rem;
     }
-    .btnPosi {
+    .date-picker-container {
+        position: relative;
+    }
+
+    .date-picker-container .calendar-icon {
         position: absolute;
-        bottom: 0;
-        right: 0;
-        margin-right: 3rem;
-        margin-bottom: 4rem;
+        top: 50%;
+        right: 10px; /* Adjust the right position as needed */
+        transform: translateY(-50%);
+        color: #888; /* Adjust the color as needed */
+        z-index: 1; /* Ensure the icon is above the date picker */
     }
     .btnSave {
+        margin-right: 0;
         padding: 0.5rem;
         background-color: white;
         --bs-btn-border-radius: none;
@@ -78,6 +92,7 @@
         }
     }
     .btnCancel {
+        margin-right: 2rem;
         padding: 0.5rem;
         background-color: white;
         --bs-btn-border-radius: none;

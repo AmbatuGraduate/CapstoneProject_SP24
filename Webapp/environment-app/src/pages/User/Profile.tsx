@@ -100,19 +100,6 @@ export const Profile = () => {
               </div>
             </div>
           </div>
-
-          <div className="button-cover grid">
-            <Link to={`/manage-employee/${data?.email}/update`}>
-              <Button className="btnLink" variant="success">
-                Bảo Mật
-              </Button>
-            </Link>
-            <Link to={`/manage-employee/${data?.email}/update`}>
-              <Button className="btnLink" variant="success">
-                Cập Nhật
-              </Button>
-            </Link>
-          </div>
         </div>
       </div>
     </div>

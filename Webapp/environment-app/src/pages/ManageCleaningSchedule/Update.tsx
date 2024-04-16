@@ -52,7 +52,7 @@ export const UpdateCleaningSchedule = () => {
         },
         {
             label: "Bộ Phận",
-            formType: "input",
+            formType: "shortInput",
             keyName: "departmentEmail",
             defaultValue: data?.myEvent.extendedProperties.privateProperties.DepartmentEmail,
             disabled: true,
@@ -132,7 +132,7 @@ export const UpdateCleaningSchedule = () => {
             console.error("Lỗi khi xử lý dữ liệu :", error);
             Swal.fire(
                 'Lỗi!',
-                'Lỗi khi thêm lịch cắt tỉa! Vui lòng thử lại sau.',
+                'Lỗi khi cập nhật lịch quét dọn! Vui lòng thử lại sau.',
                 'error'
             );
             setIsLoading(false);

@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { DEPARTMENT_EMPLOYEE, EMPLOYEE_LIST, GARBAGE_COLLECTION_DETAIL, GARBAGE_COLLECTION_UPDATE, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useEffect, useRef, useState } from "react";
+import Swal from "sweetalert2";
 
 export const UpdateGarbageCollectionSchedule = () => {
     const navigate = useNavigate();
@@ -50,7 +51,7 @@ export const UpdateGarbageCollectionSchedule = () => {
         },
         {
             label: "Bộ Phận",
-            formType: "input",
+            formType: "shortInput",
             keyName: "departmentEmail",
             defaultValue: data?.myEvent.extendedProperties.privateProperties.DepartmentEmail,
             disabled: true,
@@ -118,10 +119,21 @@ export const UpdateGarbageCollectionSchedule = () => {
             delete requestData["departmentEmail"]
 
             await useApi.post(GARBAGE_COLLECTION_UPDATE.replace(":id", id), requestData);
+
+            Swal.fire(
+                'Thành công!',
+                'cập nhật lịch thu gom thành công!',
+                'success'
+            );
             ref.current?.reload();
             navigate(-1)
         } catch (error) {
-            console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
+            console.error("Lỗi khi xử lý dữ liệu:", error);
+            Swal.fire(
+                'Lỗi!',
+                'Lỗi khi cập nhật lịch thu gom! Vui lòng thử lại sau.',
+                'error'
+            );
             setIsLoading(false);
             // Xử lý lỗi tại đây (ví dụ: hiển thị thông báo lỗi cho người dùng)
         }

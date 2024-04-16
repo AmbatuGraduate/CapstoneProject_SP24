@@ -12,13 +12,13 @@ export const CreateEmployee = () => {
   const fields: Field[] = [
     {
       label: "Họ",
-      formType: "input",
+      formType: "shortInput",
       keyName: "name",
       placeholder: "Ví dụ: Nguyễn",
     },
     {
       label: "Tên",
-      formType: "input",
+      formType: "shortInput",
       keyName: "familyName",
       placeholder: "Ví dụ: Văn A",
     },
@@ -26,16 +26,16 @@ export const CreateEmployee = () => {
       label: "Email",
       formType: "input",
       keyName: "email",
-      placeholder: "Ví dụ: ANV@cayxanh.vn",
+      placeholder: "Ví dụ: ANV@vesinhdanang.xyz",
     },
     {
       label: "Mật Khẩu",
-      formType: "input",
+      formType: "shortInput",
       keyName: "password",
     },
     {
       label: "Số Điện Thoại",
-      formType: "input",
+      formType: "shortInput",
       keyName: "phone",
       placeholder: "Ví dụ: 0123456789",
     },

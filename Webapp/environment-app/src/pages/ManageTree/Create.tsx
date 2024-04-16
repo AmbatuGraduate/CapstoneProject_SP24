@@ -4,6 +4,7 @@ import { Field, FormBase } from "../../Components/FormBase";
 import { dateConstructor } from "../../utils";
 import { useEffect, useRef, useState } from "react";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 export const CreateTree = () => {
   const navigate = useNavigate();
@@ -22,11 +23,22 @@ export const CreateTree = () => {
   const fields: Field[] = [
     {
       label: "Mã Cây",
-      formType: "input",
+      formType: "shortInput",
       keyName: "treeCode",
       googleAddress: false,
       required: true,
       placeholder: "Ví dụ: 15_CD5_HX_CL",
+    },
+    {
+      label: "Loại Cây",
+      formType: "select",
+      keyName: "treeTypeId",
+      optionExtra: {
+        url: TREE_TYPE_LIST,
+        _key: "treeTypeName",
+        _value: "treeTypeId",
+      },
+      googleAddress: false,
     },
     {
       label: "Tuyến Đường",
@@ -78,24 +90,6 @@ export const CreateTree = () => {
       onChange: (value) => setIntervalCutTime(Number(value || 0)),
     },
     {
-      label: "Loại Cây",
-      formType: "select",
-      keyName: "treeTypeId",
-      optionExtra: {
-        url: TREE_TYPE_LIST,
-        _key: "treeTypeName",
-        _value: "treeTypeId",
-      },
-      googleAddress: false,
-    },
-    {
-      label: "Ghi Chú",
-      formType: "textarea",
-      keyName: "note",
-      googleAddress: false,
-      placeholder: "Ví dụ: Cần lưu ý...",
-    },
-    {
       label: "Người Phụ Trách",
       formType: "select",
       keyName: "email",
@@ -106,6 +100,15 @@ export const CreateTree = () => {
       },
       googleAddress: false,
     },
+
+    {
+      label: "Ghi Chú",
+      formType: "textarea",
+      keyName: "note",
+      googleAddress: false,
+      placeholder: "Ví dụ: Cần lưu ý...",
+    },
+
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
@@ -117,9 +120,19 @@ export const CreateTree = () => {
         plantTime: data.plantTime,
         isExist: true,
       });
+      Swal.fire(
+        'Thành công!',
+        'Thêm cây mới thành công!',
+        'success'
+      );
       ref.current?.reload();
       navigate("/manage-tree");
     } catch (error) {
+      Swal.fire(
+        'Lỗi!',
+        'Lỗi khi thêm cây! Vui lòng thử lại sau.',
+        'error'
+      );
       console.error("Error creating tree:", error);
     } finally {
       setIsLoading(false);

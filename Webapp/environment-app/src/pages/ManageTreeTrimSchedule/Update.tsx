@@ -58,7 +58,7 @@ export const UpdateTreeTrimSchedule = () => {
         },
         {
             label: "Bộ Phận",
-            formType: "input",
+            formType: "shortInput",
             keyName: "departmentEmail",
             defaultValue: data?.myEvent.extendedProperties.privateProperties.DepartmentEmail,
             disabled: true,

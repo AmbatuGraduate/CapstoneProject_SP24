@@ -3,6 +3,7 @@ import { EMPLOYEE_LIST, TREE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 export const CreateGroup = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export const CreateGroup = () => {
     },
     {
       label: "Quản lý",
-      formType: "input",
+      formType: "shortInput",
       keyName: "owners",
     },
   ];
@@ -56,10 +57,20 @@ export const CreateGroup = () => {
         ...data,
         adminCreated: true,
       });
+      Swal.fire(
+        'Thành công!',
+        'Thêm bộ phận mới thành công!',
+        'success'
+      );
       ref.current?.reload();
       navigate("/manage-tree");
     } catch (error) {
       console.error("Error creating tree:", error);
+      Swal.fire(
+        'Lỗi!',
+        'Lỗi khi thêm bộ phận! Vui lòng thử lại sau.',
+        'error'
+      );
     } finally {
       setIsLoading(false);
     }

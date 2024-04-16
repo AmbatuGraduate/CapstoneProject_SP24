@@ -43,13 +43,13 @@
   border-radius: 4px;
   border: 1px solid #ced4da;
   resize: vertical;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .swal2-input:focus {
   outline: none;
   border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .swal2-radio {
@@ -68,9 +68,7 @@
 }
 
 .detail {
-
   &-content {
-
     &-left {
       min-width: 3rem;
       margin-right: 20px;
@@ -146,9 +144,7 @@
   .title {
     font-weight: 900;
     height: fit-content;
-    padding-left: 2rem;
-    text-decoration: underline;
-    text-decoration-color: lightgrey;
+    margin: 2rem;
   }
 
   &.line {
@@ -246,7 +242,7 @@
   }
 
   .button-cover {
-    margin-top: 1rem;
+    margin-top: 3rem;
     display: flex;
     justify-content: flex-end;
     margin-right: 1rem;

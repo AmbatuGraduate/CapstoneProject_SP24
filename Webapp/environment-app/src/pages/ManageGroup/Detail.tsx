@@ -1,4 +1,4 @@
- import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   TREE_TRIM_SCHEDULE_DELETE,
@@ -37,7 +37,7 @@ export const DetailGroup = () => {
       accessorFn(row) {
         return (
           <div>
-            <button type="button" className="btn btn-click" onClick={() => {}}>
+            <button type="button" className="btn btn-click" onClick={() => { }}>
               <ModalDelete handleDelete={() => handleDelete(row.myEvent.id)} />
             </button>
           </div>
@@ -142,14 +142,6 @@ export const DetailGroup = () => {
       <div className="main-layout row ">
         <h4 className="title">Xem Thông Tin Chi Tiết Bộ Phận</h4>
         <hr className="line" />
-        <div className="image col-md-2 ">
-          <div>
-            <img
-              src={data?.picture || "../assets/imgs/avatar.jpg"}
-              alt="userAvatar"
-            />
-          </div>
-        </div>
         <div className="detail-content col-md-10">
           <div className="detail-cover">
             <div className="detail-content-parent">
@@ -190,7 +182,7 @@ export const DetailGroup = () => {
               onClick={handleNavigate}
             >
               Trở Về
-            </Button>         
+            </Button>
             <Link to={`/manage-employee/${data?.email}/update`}>
               <Button className="btnLink" variant="success">
                 Cập Nhật

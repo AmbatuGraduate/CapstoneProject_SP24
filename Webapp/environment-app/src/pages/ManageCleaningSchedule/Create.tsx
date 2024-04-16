@@ -115,10 +115,10 @@ export const CreateCleaningSchedule = () => {
             ref.current?.reload();
             navigate("/manage-cleaning-schedule");
         } catch (error) {
-            console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
+            console.error("Lỗi khi xử lý dữ liệu:", error);
             Swal.fire(
                 'Lỗi!',
-                'Lỗi khi thêm lịch cắt tỉa! Vui lòng thử lại sau.',
+                'Lỗi khi thêm lịch quét dọn! Vui lòng thử lại sau.',
                 'error'
             );
             setIsLoading(false);
