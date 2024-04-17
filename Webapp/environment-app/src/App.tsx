@@ -31,6 +31,7 @@ import { CreateGroup } from "./pages/ManageGroup/Create";
 import { Profile } from "./pages/User/Profile";
 import { DetailGroup } from "./pages/ManageGroup/Detail";
 import { EmployeeGroup } from "./pages/ManageGroup/EmployeeGr";
+import { Schedule } from "./pages/User/Schedule";
 
 
 function App() {
@@ -171,6 +172,10 @@ function App() {
         {
           path: "/myprofile/:email",
           element: <Profile />,
+        },
+        {
+          path: "/schedule",
+          element: <Schedule />,
         },
       ],
     },

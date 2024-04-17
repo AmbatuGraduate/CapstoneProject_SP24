@@ -12,7 +12,7 @@ import { PiTrashSimpleBold } from "react-icons/pi";
 import { TbLayoutDashboard } from "react-icons/tb";
 import { IoHomeOutline } from "react-icons/io5";
 import { GrGroup } from "react-icons/gr";
-
+import { GrSchedules } from "react-icons/gr";
 // import router
 import { NavLink } from "react-router-dom";
 
@@ -43,17 +43,18 @@ const Sidebar = () => {
               <span className="smallText d-none d-md-inline ">Trang Chủ</span>
             </NavLink>
           </li>
+          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR") && (
+            <li className="listItem">
+              <NavLink to="/manage-report" className="menuLink flex">
+                <TbLayoutDashboard className="icon" />
+                <span className="smallText d-none d-md-inline ">
+                  Quản Lý Báo Cáo
+                </span>
+              </NavLink>
+            </li>
+          )}
 
-          <li className="listItem">
-            <NavLink to="/manage-report" className="menuLink flex">
-              <TbLayoutDashboard className="icon" />
-              <span className="smallText d-none d-md-inline ">
-                Quản Lý Báo Cáo
-              </span>
-            </NavLink>
-          </li>
-
-          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "Manager") && (
+          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR" || JSON.parse(token.accessToken).role == "Manager") && (
             <li className="listItem">
               <NavLink to="/manage-group" className="menuLink flex">
                 <GrGroup className="icon" />
@@ -73,7 +74,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
-          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).department == "Quan ly cay xanh")) && (
+          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).department == "Quan ly cay xanh")) && (
             <li className="listItem">
               <NavLink to="/manage-tree" className="menuLink flex ">
                 <LuTrees className="icon" />
@@ -119,6 +120,19 @@ const Sidebar = () => {
               </NavLink>
             </li>
           )}
+          {JSON.parse(token.accessToken).role == "Employee" && (
+            <li className="listItem">
+              <NavLink
+                to="/schedule"
+                className="menuLink flex"
+              >
+                <GrSchedules className="icon" />
+                <span className="smallText d-none d-md-inline">
+                  Lịch Cá Nhân
+                </span>
+              </NavLink>
+            </li>
+          )}
         </ul>
       </div>
 
@@ -137,7 +151,7 @@ const Sidebar = () => {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 

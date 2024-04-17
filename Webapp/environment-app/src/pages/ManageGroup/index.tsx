@@ -91,7 +91,7 @@ export const ManageGroup = () => {
         listURL={DEPARTMENT_LIST}
         columns={columns}
         bottom={
-          JSON.parse(token.accessToken).role == "Admin" && (
+          (JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR") && (
             <Button
               variant="success"
               onClick={() => navigate("/manage-group/create")}

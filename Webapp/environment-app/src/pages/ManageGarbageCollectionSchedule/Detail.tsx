@@ -42,7 +42,7 @@ export const DetailGarbageCollectionSchedule = () => {
             <h4 className="title">Xem Thông Tin Chi Tiết Lịch Thu Gom Rác</h4>
             <hr className="line" />
             <div className="map col-md-6">
-                <SimpleMap location={data.myEvent.location} />
+                <SimpleMap location={data?.myEvent.location} />
             </div>
             <div className="detail-content col-md-8">
                 <div className="detail-cover">
