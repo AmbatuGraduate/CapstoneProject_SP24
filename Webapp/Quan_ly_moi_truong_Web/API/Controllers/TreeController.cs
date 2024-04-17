@@ -38,8 +38,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT+ ","+Permission.ADMIN)]
+        [Authorize(Roles = "Admin, Manager, Hr")]
+        [HasPermission(Permission.TREE_DEPARTMENT+ ","+Permission.ADMIN + ","+Permission.HR)]
         public async Task<IActionResult> Get()
         {
             var token = _httpContextAccessor.HttpContext.Request.Cookies["u_tkn"];
@@ -120,8 +120,8 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin, Manager")]
-        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
+        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
         public async Task<IActionResult> Add(AddTreeRequest request)
         {
             var command = mapper.Map<AddTreeCommand>(request);

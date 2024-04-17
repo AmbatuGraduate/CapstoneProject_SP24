@@ -176,6 +176,50 @@ namespace Infrastructure.Persistence.Repositories.Calendar
             }
         }
 
+        // auto update job status
+        public async Task<string> AutoUpdateJobStatus(CalendarService service, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId)
+        {
+            await Task.CompletedTask;
+            try
+            {
+                var listTreesNeedUpdated = string.Empty;
+                Event retrievedEvent = service.Events.Get(calendarId, eventId)
+                    .Execute();
+
+                if (retrievedEvent != null)
+                {
+                    string newJobStatus = ConvertToJobWorkingStatusString(jobWorkingStatus);
+                    if (retrievedEvent.ExtendedProperties != null && retrievedEvent.ExtendedProperties.Private__ != null
+                        && retrievedEvent.ExtendedProperties.Private__.ContainsKey(EventExtendedProperties.JobWorkingStatus))
+                    {
+                        retrievedEvent.ExtendedProperties.Private__[EventExtendedProperties.JobWorkingStatus] = newJobStatus;
+                        listTreesNeedUpdated = retrievedEvent.ExtendedProperties.Private__.ContainsKey(EventExtendedProperties.Tree) ?
+                            retrievedEvent.ExtendedProperties.Private__[EventExtendedProperties.Tree] : "";
+                    }
+                    else
+                    {
+                        retrievedEvent.ExtendedProperties = new Event.ExtendedPropertiesData
+                        {
+                            Private__ = new Dictionary<string, string>
+                            {
+                                {EventExtendedProperties.JobWorkingStatus, ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart)},
+                                {EventExtendedProperties.Tree, ""},
+                                {EventExtendedProperties.DepartmentEmail, "" }
+                            }
+                        };
+                    }
+                    service.Events.Update(retrievedEvent, calendarId, eventId)
+                        .Execute();
+                }
+                return listTreesNeedUpdated;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                return string.Empty;
+            }
+        }
+
         // update event
         public async Task<MyUpdatedEvent> UpdateEvent(string accessToken, string calendarId, MyUpdatedEvent myEvent, string eventId)
         {
@@ -431,6 +475,50 @@ namespace Infrastructure.Persistence.Repositories.Calendar
                                 }, FullName: _userRepository.GetGoogleUserByEmail(accessToken, attendee.Email).Result.Name
                             ))
                             .ToList() : new List<UserEventResult>(),
+                        ExtendedProperties = new EventExtendedProperties
+                        {
+                            PrivateProperties = (Dictionary<string, string>)(eventItem.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())
+                        }
+                    });
+                }
+
+                return myEvents;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+
+        // get all events with account service
+        public async Task<List<MyEvent>?> GetEventsWithServiceAccount(CalendarService service, string calendarId)
+        {
+            List<MyEvent> myEvents = new();
+            try
+            {
+                var listRequest = service.Events.List(calendarId);
+                /*                listRequest.TimeMaxDateTimeOffset = DateTime.Now;
+                */
+                listRequest.ShowDeleted = false;
+                listRequest.SingleEvents = true;
+                listRequest.MaxResults = 250;
+                listRequest.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
+
+                var events = await listRequest.ExecuteAsync();
+
+                foreach (var eventItem in events.Items)
+                {
+                    //System.Diagnostics.Debug.WriteLine("date: " + eventItem.Start.DateTime);
+                    myEvents.Add(new MyEvent
+                    {
+                        Id = eventItem.Id,
+                        Summary = eventItem.Summary,
+                        Description = eventItem.Description,
+                        Location = eventItem.Location,
+                        Start = eventItem.Start.DateTime ?? DateTime.MinValue,
+                        End = eventItem.End.DateTime ?? DateTime.MinValue,
+                        Attendees = new List<UserEventResult>(),
                         ExtendedProperties = new EventExtendedProperties
                         {
                             PrivateProperties = (Dictionary<string, string>)(eventItem.ExtendedProperties?.Private__ ?? new Dictionary<string, string>())

@@ -42,24 +42,21 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
             if (request.jwt != null)
             {
                 var userId = jwtTokenGenerator.DecodeTokenToGetUserId(request.jwt);
-                var jwt_expire = jwtTokenGenerator.DecodeToken(request.jwt).Claims.First(claim => claim.Type == "exp").Value;
+                //var jwt_expire = jwtTokenGenerator.DecodeToken(request.jwt).Claims.First(claim => claim.Type == "exp").Value;
                 var refresh_tkn = userRefreshTokenRepository.GetRefreshRokenByUserId(userId);
-                var expire_refresh = refresh_tkn.Expire / TimeSpan.TicksPerSecond;
+                //var expire_refresh = refresh_tkn.Expire / TimeSpan.TicksPerSecond;
                 //Check refresh token is exist or not
                 if (refresh_tkn != null)
                 {
-                    var now = (int)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local)).TotalSeconds;
-                    var expireDate = (int)(DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwt_expire)).LocalDateTime.AddHours(-1) - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local)).TotalSeconds;
+                    //var now = (int)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local)).TotalSeconds;
+                    //var expireDate = (int)(DateTimeOffset.FromUnixTimeSeconds((long)Convert.ToDouble(jwt_expire)).LocalDateTime.AddHours(-1) - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local)).TotalSeconds;
 
-                    Console.WriteLine(now + " - " + expireDate + " - " + expire_refresh);
-
-                    // Check refresh token is exist or not
-                    if(now < refresh_tkn.Expire)
-                    {
-                        // Check if jwt is expire
-                        if (now > (long)Convert.ToDouble(jwt_expire))
-                        {
-
+                    //// Check refresh token is exist or not
+                    //if (now < refresh_tkn.Expire)
+                    //{
+                    //    // Check if jwt is expire
+                    //    if (now > (long)Convert.ToDouble(jwt_expire))
+                    //    {
                             var tokenData = await authenticationService.RefreshTokenWithGoogle(refresh_tkn.RefreshToken);
 
                             // get new payload
@@ -77,13 +74,12 @@ namespace Application.GoogleAuthentication.Queries.GoogleRefresh
                             var token = jwtTokenGenerator.GenerateToken(payload.Subject, userRole, userDepartment, tokenData.access_token, date);
 
                             return new GoogleAuthenticationResult(payload.Subject, payload.Name, payload.Picture, date, payload.Email, token, userRole, userDepartment, userDepartmentEmail);
-
-                        }
-                    }
+                    //    }
+                    //}
                 }
             }
 
             return new[] { Errors.Authentication.ExpireRefreshToken };
+            }
         }
     }
-}

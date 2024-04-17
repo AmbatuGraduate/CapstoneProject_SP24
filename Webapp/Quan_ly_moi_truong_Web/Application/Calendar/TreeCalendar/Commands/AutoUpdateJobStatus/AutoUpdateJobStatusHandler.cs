@@ -21,9 +21,7 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus
 
         public async Task<ErrorOr<List<MyUpdatedJobStatusResult>>> Handle(AutoUpdateJobStatusCommand request, CancellationToken cancellationToken)
         {
-            var accessToken = _jwtTokenGenerator.DecodeTokenToGetAccessToken(request.accessToken);
-
-            var listCalendar = await _treeCalendarService.GetEvents(accessToken, request.calendarId);
+            var listCalendar = await _treeCalendarService.GetEventsWithServiceAccount(request.Service, request.CalendarId);
 
             for (int i = 0; i < listCalendar.Count; i++)
             {
@@ -31,7 +29,7 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus
                 if (listCalendar[i].End.CompareTo(DateTime.Now) <= 0
                     && listCalendar[i].ExtendedProperties.PrivateProperties["JobWorkingStatus"] != _treeCalendarService.ConvertToJobWorkingStatusString(JobWorkingStatus.Late))
                 {
-                    var result = await _treeCalendarService.UpdateJobStatus(accessToken, request.calendarId, JobWorkingStatus.Late, listCalendar[i].Id);
+                    var result = await _treeCalendarService.AutoUpdateJobStatus(request.Service, request.CalendarId, JobWorkingStatus.Late, listCalendar[i].Id);
                     if (result.IsNullOrEmpty())
                     {
                         return Errors.UpdateGoogle.UpdateGoogleCalendarFail;

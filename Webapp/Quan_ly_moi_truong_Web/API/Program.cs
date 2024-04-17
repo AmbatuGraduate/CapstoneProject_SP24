@@ -54,7 +54,7 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseMiddleware<RefreshTokenMiddleware>();
+//app.UseMiddleware<RefreshTokenMiddleware>();
 
 app.MapHub<NotifyHub>("/chatHub");
 

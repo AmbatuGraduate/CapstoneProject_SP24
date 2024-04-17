@@ -76,7 +76,7 @@ export const CreateEmployee = () => {
           value: 2,
         },
         {
-          key: "Quản Trị Viên",
+          key: "Quản lý Nhân Sự",
           value: 3,
         },
       ],

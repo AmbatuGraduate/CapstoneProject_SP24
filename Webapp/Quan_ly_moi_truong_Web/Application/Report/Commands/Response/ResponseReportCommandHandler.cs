@@ -36,7 +36,7 @@ namespace Application.Report.Commands.Response
             var notification = new Domain.Entities.Notification.Notifications
             {
                 Id = Guid.NewGuid(),
-                Sender = "ambatuadmin@vesinhdanang.xyz",
+                Sender = "hr@vesinhdanang.xyz",
                 Username = usserEmail,
                 Message = msg,
                 MessageType = "Single",
