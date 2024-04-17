@@ -99,8 +99,6 @@ namespace API.Controllers
 
         // get all google users
         [HttpGet("GetGoogleUsers")]
-        [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetGoogleUsers()
         {
             var clientType = Request.Headers["Client-Type"];
@@ -248,8 +246,6 @@ namespace API.Controllers
         }
 
         [HttpDelete]
-        [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> DeleteGoogleUser(string userEmail)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -293,8 +289,6 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        [HasPermission(Permission.ADMIN)]
         public async Task<IActionResult> AddGoogleUser(AddGoogleUserRequest request)
         {
             var clientType = Request.Headers["Client-Type"];

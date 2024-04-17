@@ -76,7 +76,6 @@ namespace Application.Tree.Queries.ListCut
                         results.Add(result);
                     }
                 }
-
             }
             return results;
         }
