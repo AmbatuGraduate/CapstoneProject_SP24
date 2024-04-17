@@ -79,10 +79,8 @@ export const UpdateCleaningSchedule = () => {
     const handleSubmit = async (data: Record<string, any>) => {
         setIsLoading(true);
 
-        // Process start dateTime
         const formattedStartDateTime = data["start.dateTime"];
 
-        // Process end dateTime
         const formattedEndDateTime = data["end.dateTime"];
 
         try {

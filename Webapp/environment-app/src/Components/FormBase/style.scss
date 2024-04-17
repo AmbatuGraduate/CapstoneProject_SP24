@@ -84,12 +84,9 @@
         position: absolute;
         top: 50%;
         right: 10px;
-        /* Adjust the right position as needed */
         transform: translateY(-50%);
         color: #888;
-        /* Adjust the color as needed */
         z-index: 1;
-        /* Ensure the icon is above the date picker */
     }
 
     .btnSave {

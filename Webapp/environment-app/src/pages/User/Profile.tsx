@@ -40,67 +40,26 @@ export const Profile = () => {
       <div className="main-layout row ">
         <h4 className="title">Hồ sơ cá nhân</h4>
         <hr className="line" />
-        <div className="image col-md-2 ">
-          <div><img src={JSON.parse(token.accessToken).image || '../assets/imgs/avatar.jpg'} alt="userAvatar" /></div>
+
+        {/* ===================================================================== */}
+        <div className="profileContainer">
+          <div className="profileImage">
+            <img src={JSON.parse(token.accessToken).image || '../assets/imgs/avatar.jpg'} alt="userAvatar" />
+          </div>
+          <div className="profileInfo">
+            <p className="employeeName">{JSON.parse(token.accessToken).name}</p>
+            <p className="employeeRole">{JSON.parse(token.accessToken).role}</p>
+
+            <p className="employeeCode"><span className="infoTextLabel">Địa chỉ email</span> <span className="infoText">{JSON.parse(token.accessToken).email}</span></p>
+            <p className="employeeCode"><span className="infoTextLabel">Số điện thoại</span> <span className="infoText">{data?.phoneNumber}</span></p>
+            <p className="employeeCode"><span className="infoTextLabel">Bộ phận</span> <span className="infoText">{JSON.parse(token.accessToken).department}</span></p>
+            <p className="employeeCode"><span className="infoTextLabel">Địa chỉ thường trú</span> <span className="infoText">{data?.address}</span></p>
+
+          </div>
+
         </div>
-        <div className="detail-content col-md-10">
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">Tên Nhân Viên: </div>
-              <div className="detail-content-child-value">
-                {JSON.parse(token.accessToken).name}
-              </div>
-            </div>
-          </div>
 
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">Email: </div>
-              <div className="detail-content-child-value">
-                {JSON.parse(token.accessToken).email}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">Số Điện Thoại: </div>
-              <div className="detail-content-child-value">
-                {data?.phoneNumber}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">
-                Bộ Phận:{" "}
-              </div>
-              <div className="detail-content-child-value">
-                {JSON.parse(token.accessToken).department}
-              </div>
-            </div>
-          </div>
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">Chức Vụ: </div>
-              <div className="detail-content-child-value">
-                {JSON.parse(token.accessToken).role}
-              </div>
-            </div>
-          </div>
-
-          <div className="detail-cover">
-            <div className="detail-content-parent">
-              <div className="detail-content-child-label">
-                Địa Chỉ Thường Trú:{" "}
-              </div>
-              <div className="detail-content-child-value">
-                {data?.address}
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* ===================================================================== */}
       </div>
     </div>
   );

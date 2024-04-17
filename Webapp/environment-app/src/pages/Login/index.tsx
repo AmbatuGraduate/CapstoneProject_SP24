@@ -30,15 +30,14 @@ export const Login = () => {
     })
       .then((res) => {
         if (res.ok) {
-          return res.text(); // This returns a Promise
+          return res.text();
         } else {
           throw new Error(res.statusText);
         }
       })
       .then((accessToken) => {
-        // This block will be executed after the Promise resolves
         console.log("Authentication successful, access token: " + accessToken);
-        setToken("accessToken", JSON.stringify(accessToken)); // Save the access token
+        setToken("accessToken", JSON.stringify(accessToken));
         navigate("/");
       })
       .catch((error) => {

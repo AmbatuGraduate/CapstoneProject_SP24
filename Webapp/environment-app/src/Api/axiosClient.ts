@@ -22,20 +22,16 @@ const getTokenFromCookie = (): string | undefined => {
   return undefined;
 };
 
-// Add a request interceptor
 axiosClient.interceptors.request.use(
   async function (config) {
-    // Do something before request is sent
     const cookie: string = getTokenFromCookie()!;
-    var expire = new Date(JSON.parse(JSON.parse(cookie)).expire_in).getTime(); // Convert expire date to miliseconds
+    var expire = new Date(JSON.parse(JSON.parse(cookie)).expire_in).getTime();
 
-    // Check if expire_in is less than now -> refresh token
     console.log('compare - expire > now', expire > Date.now());
 
-    if(expire < Date.now())
-    {
+    if (expire < Date.now()) {
       const response = await axios.get('https://vesinhdanang.xyz:7024/api/auth/refresh',
-      // const response = await axios.get('https://localhost:7024/api/auth/refresh',
+        // const response = await axios.get('https://localhost:7024/api/auth/refresh',
         {
           withCredentials: true,
           headers: {
@@ -54,21 +50,15 @@ axiosClient.interceptors.request.use(
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
 
-// Add a response interceptor
 axiosClient.interceptors.response.use(
   function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
     return response;
   },
   function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
     return Promise.reject(error);
   }
 );

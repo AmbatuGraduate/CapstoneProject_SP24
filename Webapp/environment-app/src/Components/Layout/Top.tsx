@@ -31,10 +31,9 @@ const Top = () => {
         credentials: "include",
       });
 
-      removeCookie("accessToken"); // Xóa cookie khi đăng xuất thành công
+      removeCookie("accessToken");
     } catch (error) {
       console.log(error);
-      // Xử lý lỗi
     }
   };
 

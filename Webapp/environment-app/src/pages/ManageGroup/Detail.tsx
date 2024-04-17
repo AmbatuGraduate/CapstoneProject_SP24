@@ -176,13 +176,6 @@ export const DetailGroup = () => {
           </div>
 
           <div className="button-cover grid">
-            <Button
-              className="btnCancel"
-              variant="danger"
-              onClick={handleNavigate}
-            >
-              Trở Về
-            </Button>
             <Link to={`/manage-employee/${data?.email}/update`}>
               <Button className="btnLink" variant="success">
                 Cập Nhật
@@ -191,7 +184,6 @@ export const DetailGroup = () => {
           </div>
         </div>
       </div>
-
       <div>
         <ListView
           ref={ref}

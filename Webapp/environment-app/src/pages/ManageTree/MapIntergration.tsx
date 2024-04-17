@@ -4,7 +4,7 @@ import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-cCdqszm1HAByMs9q_JqKK246Wnh8ocE&callback=initMap&v=weekly"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6azBbhclWDNTysvGxe9fk6A0s97mFOq8&callback=initMap&v=weekly"
   defer
 ></script>;
 const AnyReactComponent = (props: any) => (
@@ -29,7 +29,7 @@ export default function SimpleMap(props: SimpleMapProps) {
   const fetch = async () => {
     const addressURI = encodeURI(props?.location || "Da nang");
     const res = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyB-cCdqszm1HAByMs9q_JqKK246Wnh8ocE`
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyD6azBbhclWDNTysvGxe9fk6A0s97mFOq8`
     );
     const data = res.data;
     console.log(data);
@@ -52,7 +52,7 @@ export default function SimpleMap(props: SimpleMapProps) {
       }}
     >
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyB-cCdqszm1HAByMs9q_JqKK246Wnh8ocE" }}
+        bootstrapURLKeys={{ key: "AIzaSyD6azBbhclWDNTysvGxe9fk6A0s97mFOq8" }}
         defaultZoom={15}
         center={treeLocation}
       >
@@ -120,7 +120,6 @@ export function GoogleMap(props: GoogleMapProps) {
     //   setLocation(data.result[0].geometry.location);
     // }
     const center = { lat: 16.047079, lng: 108.20623 };
-    // Create a bounding box with sides ~10km away from the center point
     const defaultBounds = {
       north: center.lat + 0.1,
       south: center.lat - 0.1,
@@ -130,7 +129,7 @@ export function GoogleMap(props: GoogleMapProps) {
     const input = e.target as HTMLInputElement;
     const options = {
       bounds: defaultBounds,
-      componentRestrictions: { country: "VN" }, // Specify the country code (e.g., VN for Vietnam)
+      componentRestrictions: { country: "VN" },
       fields: ["address_components", "geometry", "icon", "name"],
       strictBounds: false,
     };
@@ -139,10 +138,9 @@ export function GoogleMap(props: GoogleMapProps) {
       options
     );
 
-    // Add event listener to handle place selection
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
-      console.log(place); // Handle the selected place here
+      console.log(place);
       if (place.geometry && place.geometry.location) {
         const latitude = place.geometry.location.lat();
         const longitude = place.geometry.location.lng();
@@ -150,7 +148,6 @@ export function GoogleMap(props: GoogleMapProps) {
         setLocation({ lat: latitude, lng: longitude });
         console.log("Latitude:", latitude);
         console.log("Longitude:", longitude);
-        // Xử lý tọa độ latitude và longitude ở đây
       }
     });
   };
@@ -174,7 +171,7 @@ export function GoogleMap(props: GoogleMapProps) {
         </small> */}
       </div>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyB-cCdqszm1HAByMs9q_JqKK246Wnh8ocE" }}
+        bootstrapURLKeys={{ key: "AIzaSyD6azBbhclWDNTysvGxe9fk6A0s97mFOq8" }}
         defaultCenter={defaultProps.center}
         center={location}
         defaultZoom={defaultProps.zoom}
