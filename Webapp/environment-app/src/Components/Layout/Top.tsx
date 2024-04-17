@@ -13,6 +13,10 @@ const Top = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [, , removeCookie] = useCookies(["accessToken"]);
   const { email = " " } = useParams();
+  const tokenImage = JSON.parse(token.accessToken).image; // Lấy hình ảnh từ token
+
+  // Kiểm tra xem hình ảnh trong token có giá trị null hay không
+  const imageSrc = tokenImage !== null ? tokenImage : "https://i.imgur.com/CfPvx7O.jpg";
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -49,7 +53,7 @@ const Top = () => {
           <div className="adminImage">
             <button onClick={toggleDropdown} className="dropbtn">
               <img
-                src={JSON.parse(token.accessToken).image}
+                src={imageSrc}
                 alt="Admin Image"
               />
             </button>

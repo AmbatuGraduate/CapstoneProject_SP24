@@ -14,7 +14,6 @@ export const ManageEmployee = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
   const [token] = useCookies(["accessToken"]);
-
   const handleDelete = async (email: string) => {
     await useApi.delete(EMPLOYEE_DELETE.replace(":email", email));
     ref.current?.reload();
@@ -75,7 +74,7 @@ export const ManageEmployee = () => {
     {
       header: "Ảnh",
       accessorFn(row) {
-        if (row.picture == null) {
+        if (row.picture == null || row.picture == "") {
           return <h6 className="shortText"><img src="https://i.imgur.com/CfPvx7O.jpg" /></h6>;
         } else {
           return <h6 className="shortText"><img src={row.picture} /></h6>;
@@ -86,7 +85,7 @@ export const ManageEmployee = () => {
 
   ];
 
-  const listURL = JSON.parse(token.accessToken).role === "Admin" ? EMPLOYEE_LIST : DEPARTMENT_EMPLOYEE.replace(':groupEmail', JSON.parse(token.accessToken).departmentEmail);
+  const listURL = (JSON.parse(token.accessToken).role === "Admin" || JSON.parse(token.accessToken).role === "HR") ? EMPLOYEE_LIST : DEPARTMENT_EMPLOYEE.replace(':groupEmail', JSON.parse(token.accessToken).departmentEmail);
 
   return (
     <div>
@@ -95,16 +94,18 @@ export const ManageEmployee = () => {
         listURL={listURL}
         columns={columns}
         bottom={
-          <Button
-            variant="success"
-            onClick={() => navigate("/manage-employee/create")}
-          >
-            <MdAddCircleOutline className="iconAdd" />
-            Thêm Nhân Viên
-          </Button>
+          (JSON.parse(token.accessToken).role === "Admin" || JSON.parse(token.accessToken).role === "HR") && (
+            <Button
+              variant="success"
+              onClick={() => navigate("/manage-employee/create")}
+            >
+              <MdAddCircleOutline className="iconAdd" />
+              Thêm Nhân Viên
+            </Button>
+          )
         }
         filter={(row) => {
-          return row.role != "Admin";
+          return row.role != "Admin" && row.role != "HR";
         }}
       />
     </div>

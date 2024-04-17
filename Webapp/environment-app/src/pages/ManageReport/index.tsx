@@ -12,7 +12,7 @@ import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageReport = () => {
   const [token] = useCookies(["accessToken"]);
-  const isAdmin = JSON.parse(token.accessToken).role === "Admin";
+  const isAdmin = JSON.parse(token.accessToken).role === "Admin" || "HR";
   const isUser = JSON.parse(token.accessToken);
   const handleDelete = async (id: string) => {
     await useApi.delete(DELETE_REPORT.replace(":id", id));
@@ -116,22 +116,6 @@ export const ManageReport = () => {
         ref={ref}
         listURL={isAdmin ? REPORT_LIST : REPORT_BY_USER.replace(":email", email)}
         columns={columns}
-        bottom={
-          isAdmin ? null : (
-            <Button
-              variant="success"
-              style={{
-                backgroundColor: "hsl(94, 59%, 35%)",
-                border: "none",
-                padding: "0.5rem 1rem",
-              }}
-              onClick={() => navigate("/manage-report/create")}
-            >
-              <MdAddCircleOutline className="iconAdd" />
-              Thêm báo cáo
-            </Button>
-          )
-        }
         transform={(data: any) => data?.value?.map((i) => i.reportFormat) || []}
       />
     </div>
