@@ -82,10 +82,6 @@ export const UpdateEmployee = () => {
           key: "Quản Lý",
           value: 2,
         },
-        {
-          key: "Quản Lý Nhân Sự",
-          value: 3,
-        },
       ],
       defaultValue: data?.role,
     },
