@@ -2,16 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   TREE_TRIM_SCHEDULE_DELETE,
-  EMPLOYEE_DETAIL,
   useApi,
-  EMPLOYEE_SCHEDULE,
   GROUP_DETAIL,
+  DEPARTMENT_EMPLOYEE,
+  EMPLOYEE_DELETE,
 } from "../../Api";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { taskStatus, timeFormat, dayFormat } from "../../utils";
+import { roleFormat } from "../../utils";
 import { ListView } from "../../Components/ListView";
 
 export const DetailGroup = () => {
@@ -23,11 +23,10 @@ export const DetailGroup = () => {
   const handleNavigate = () => {
     navigate(-1);
   };
-
   const ref = useRef<any>();
 
-  const handleDelete = async (id: string) => {
-    await useApi.delete(TREE_TRIM_SCHEDULE_DELETE.replace(":id", id));
+  const handleDelete = async (email: string) => {
+    await useApi.delete(EMPLOYEE_DELETE.replace(":email", email));
     ref.current?.reload();
   };
 
@@ -38,78 +37,61 @@ export const DetailGroup = () => {
         return (
           <div>
             <button type="button" className="btn btn-click" onClick={() => { }}>
-              <ModalDelete handleDelete={() => handleDelete(row.myEvent.id)} />
+              <ModalDelete handleDelete={() => handleDelete(row.email)} />
             </button>
           </div>
         );
       },
-      width: "2%",
+      width: "1%",
     },
     {
-      header: "Thời Gian",
+      header: "Tên Nhân Viên",
       accessorFn(row) {
         return (
-          <h6 className="shortText">
-            {timeFormat(row.myEvent.start) + "-" + timeFormat(row.myEvent.end)}
-          </h6>
-        );
-      },
-      width: "10%",
-    },
-    {
-      header: "Ngày Làm",
-      accessorFn(row) {
-        return <h6 className="shortText">{dayFormat(row.myEvent.end)}</h6>;
-      },
-      width: "10%",
-    },
-    {
-      header: "Tiêu Đề",
-      accessorFn(row) {
-        return (
-          <h6 className="shortText">
+          <h6 className="shortText linkDiv" style={{ margin: 'auto' }}>
             <Link
               className="linkCode"
-              style={{ fontWeight: "bold", textAlign: "center" }}
-              to={`/manage-treetrim-schedule/${row.myEvent.id}`}
+              style={{ fontWeight: "bold" }}
+              to={`/manage-employee/email=${row.email}`}
             >
-              {row.myEvent.summary}
+              {row.name}
             </Link>
           </h6>
         );
       },
-      width: "20%",
+      width: "10%",
     },
     {
-      header: "Địa Chỉ Cụ Thể",
+      header: "Email",
       accessorFn(row) {
-        return <h6>{row.myEvent.location}</h6>;
+        return <h6 className="shortText">{row.email}</h6>;
       },
-      width: "40%",
+      width: "15%",
     },
     {
-      header: "Trạng Thái",
+      header: "Số Điện Thoại",
       accessorFn(row) {
-        return (
-          <h6
-            className="shortText"
-            style={{
-              color: taskStatus(
-                row.myEvent.extendedProperties.privateProperties
-                  .JobWorkingStatus
-              ).color,
-              fontWeight: "bold",
-            }}
-          >
-            {
-              taskStatus(
-                row.myEvent.extendedProperties.privateProperties
-                  .JobWorkingStatus
-              ).text
-            }
-          </h6>
-        );
+        return <h6 className="shortText">{row.phoneNumber}</h6>;
       },
+      width: "10%",
+    },
+    {
+      header: "Chức Vụ",
+      accessorFn(row) {
+        return <h6 className="shortText">{roleFormat(row.role).text}</h6>;
+      },
+      width: "10%",
+    },
+    {
+      header: "Ảnh",
+      accessorFn(row) {
+        if (row.picture == "") {
+          return <h6 className="shortText"><img src="https://i.imgur.com/CfPvx7O.jpg" /></h6>;
+        } else {
+          return <h6 className="shortText"><img src={row.picture} /></h6>;
+        }
+      },
+      width: "10%",
     },
   ];
 
@@ -176,7 +158,7 @@ export const DetailGroup = () => {
           </div>
 
           <div className="button-cover grid">
-            <Link to={`/manage-employee/${data?.email}/update`}>
+            <Link to={`/manage-group/${data?.value?.email}/update`}>
               <Button className="btnLink" variant="success">
                 Cập Nhật
               </Button>
@@ -184,12 +166,15 @@ export const DetailGroup = () => {
           </div>
         </div>
       </div>
+
+      {/* ----------------------------------------------------------------------------------------------- */}
+      {/* employee of group */}
       <div>
-        <ListView
-          ref={ref}
-          listURL={EMPLOYEE_SCHEDULE.replace(":email", data?.email)}
-          columns={columns}
-        />
+          <ListView
+            ref={ref}
+            listURL={DEPARTMENT_EMPLOYEE.replace(":groupEmail", data?.value?.email)}
+            columns={columns}
+          />
       </div>
     </div>
   );

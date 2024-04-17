@@ -141,9 +141,11 @@ const FormType = (props: Field) => {
           {...rest}
           name={keyName}
           value={formData[keyName]}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }))
-          }
+          onChange={(e) => {
+            console.log(formData[keyName], e.target.value);
+            onChange && onChange(e);
+            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }));
+          }}
           disabled={_disabled}
         />
       );
@@ -316,7 +318,6 @@ export const FormBase = (props: Props) => {
   }, [JSON.stringify(fields)]);
 
   const handleSubmit = () => {
-    console.log(formData);
     onSave && onSave(formData);
   };
 
