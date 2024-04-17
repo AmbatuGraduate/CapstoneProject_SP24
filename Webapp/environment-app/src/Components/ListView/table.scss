@@ -9,13 +9,17 @@
   position: relative;
   margin-top: 25px;
   min-width: 60rem;
+
   .table {
-    background-color: var(--whiteColor);
+    background-color: rgba(255, 255, 255, 0.5);
     box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
+    border-collapse: separate;
+
     thead {
       &.thread-primary {
         border-collapse: collapse;
         caption-side: bottom;
+
         tr {
           th {
             border-bottom: 2px solid darken(#f2f3f8, 6%);
@@ -28,32 +32,40 @@
         }
       }
     }
+
     tbody {
       tr {
         vertical-align: middle;
         height: 4.5rem;
       }
+
       background-color: var(--whiteColor);
+
       td {
         border: none;
         padding: 0.5rem;
         font-size: var(--normalFontSize);
       }
+
       .shortText {
         text-align: center;
         margin: 0;
+
         img {
           height: 10rem;
           width: auto;
         }
       }
+
       h6 {
         margin: 0;
       }
+
       .linkCode {
         color: var(--PrimaryColor);
         text-decoration: none;
       }
+
       .linkDiv:hover {
         background-color: var(--paleGreen);
         padding: 0.5rem;
@@ -66,6 +78,7 @@
         box-shadow: none;
         font-size: var(--h3FontSize);
       }
+
       .btn:hover {
         color: var(--PrimaryColor);
       }
@@ -77,6 +90,7 @@
   text-align: left;
   transform: translateX(-38px);
 }
+
 .left-th-1 {
   text-align: left;
   transform: translateX(-20px);
@@ -109,6 +123,7 @@
       }
     }
   }
+
   .page-item.active {
     .page-link {
       color: var(--whiteColor) !important;
@@ -116,6 +131,7 @@
     }
   }
 }
+
 .success-button-container {
   position: fixed;
   bottom: 20px;
@@ -129,6 +145,7 @@
     color: var(--whiteColor);
     border: none;
     background-color: var(--PrimaryColor);
+
     &:hover {
       background-color: rgb(0, 138, 0);
     }

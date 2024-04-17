@@ -13,9 +13,11 @@
     background-clip: padding-box;
     border: var(--bs-border-width) solid var(--bs-border-color);
 }
+
 .react-datepicker-wrapper {
     width: 100%;
 }
+
 .form-base {
     display: flex;
     flex-wrap: wrap;
@@ -26,18 +28,22 @@
     gap: 30px;
     margin-top: 40px;
     justify-content: space-between;
-    > div {
+
+    >div {
         width: 48%;
     }
-    > div:last-child {
+
+    >div:last-child {
         width: 100%;
     }
+
     button {
         min-width: 100px;
         float: right;
         --bs-btn-border-radius: none;
         border: none;
     }
+
     .custom-group-input,
     .custom-group-textarea {
         width: 100%;
@@ -51,20 +57,25 @@
         height: 3.5rem;
         border-radius: 0;
     }
+
     input {
         width: 100%;
     }
+
     textarea {
         border-radius: 0;
     }
+
     input:hover {
         box-shadow: 0 0 5px rgba(0, 128, 0, 0.5);
     }
+
     input::placeholder {
         color: grey;
         font-style: italic;
         font-size: 1rem;
     }
+
     .date-picker-container {
         position: relative;
     }
@@ -72,11 +83,15 @@
     .date-picker-container .calendar-icon {
         position: absolute;
         top: 50%;
-        right: 10px; /* Adjust the right position as needed */
+        right: 10px;
+        /* Adjust the right position as needed */
         transform: translateY(-50%);
-        color: #888; /* Adjust the color as needed */
-        z-index: 1; /* Ensure the icon is above the date picker */
+        color: #888;
+        /* Adjust the color as needed */
+        z-index: 1;
+        /* Ensure the icon is above the date picker */
     }
+
     .btnSave {
         margin-right: 0;
         padding: 0.5rem;
@@ -86,11 +101,13 @@
         border-radius: 1.5rem;
         border: 2px solid var(--PrimaryColor);
         font-weight: bold;
+
         &:hover {
             background-color: var(--PrimaryColor);
             border: 2px solid var(--PrimaryColor);
         }
     }
+
     .btnCancel {
         margin-right: 2rem;
         padding: 0.5rem;
@@ -100,6 +117,7 @@
         border-radius: 1.5rem;
         border: 2px solid #c82333;
         font-weight: bold;
+
         &:hover {
             background-color: #c82333;
             border: 2px solid #c82333;
@@ -109,17 +127,19 @@
 
 .form-cover {
     position: relative;
-    background: white;
+    background: rgba(255, 255, 255, 0.5);
     padding: 24px;
     min-height: calc(100vh - 150px);
     box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
     display: flex;
     flex-direction: column;
+
     h4 {
         border-bottom: 1px solid rgb(212, 212, 212);
         padding-bottom: 12px;
     }
-    > form {
+
+    >form {
         padding-top: 10px;
     }
 }

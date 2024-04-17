@@ -35,21 +35,23 @@
 /* Detail Report Page */
 .swal2-input {
   font-size: 16px;
-  padding: 10px;
-  width: 80%;
-  height: 200px;
+  padding: 20px;
+  width: 90%;
+  min-height: 100px; // Changed from height to min-height
   background-color: #f8f9fa;
   color: #495057;
   border-radius: 4px;
   border: 1px solid #ced4da;
   resize: vertical;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  box-sizing: content-box;
 }
 
 .swal2-input:focus {
   outline: none;
   border-color: #80bdff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  min-height: 100px; // Changed from height to min-height
 }
 
 .swal2-radio {
@@ -125,7 +127,7 @@
 
 .report-form {
   position: relative;
-  background: white;
+  background: rgba(255, 255, 255, 0.5);
   padding: 24px;
   min-height: calc(70vh - 60px);
   box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
@@ -135,7 +137,7 @@
 
 //Tree style
 .main-layout {
-  background-color: var(--whiteColor);
+  background-color: rgba(255, 255, 255, 0.5);
   margin-bottom: 2rem;
   width: 100%;
   justify-content: space-between;
@@ -285,6 +287,7 @@
 
   .detail-cover {
     margin-top: 1rem;
+
   }
 
   .detail-cover-report {
@@ -293,6 +296,7 @@
 
     .image-container {
       width: 40%;
+
     }
 
     .address-container {
