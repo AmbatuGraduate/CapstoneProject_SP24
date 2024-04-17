@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { TREE_TRIM_SCHEDULE, useApi, TREE_TRIM_SCHEDULE_DELETE, EMPLOYEE_LIST, TREE_TRIM_SCHEDULE_UPDATE, TREE_TRIM_SCHEDULE_DETAIL } from "../../Api";
+import { TREE_TRIM_SCHEDULE, useApi, TREE_TRIM_SCHEDULE_DELETE, TREE_TRIM_SCHEDULE_UPDATE, TREE_TRIM_SCHEDULE_DETAIL, DEPARTMENT_EMPLOYEE } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { dayFormat, taskStatus, timeFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
@@ -26,7 +26,7 @@ export const ManageTreeTrimSchedule = () => {
   useEffect(() => {
     async function fetchEmployees() {
       try {
-        const response = await useApi.get(EMPLOYEE_LIST);
+        const response = await useApi.get(DEPARTMENT_EMPLOYEE.replace(":groupEmail", "cayxanh@vesinhdanang.xyz"));
         setEmployees(response.data);
       } catch (error) {
         console.error("Error fetching employees: ", error);
