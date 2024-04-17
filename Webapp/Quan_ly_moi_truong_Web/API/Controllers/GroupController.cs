@@ -6,6 +6,8 @@ using Application.Group.Commands.Delete;
 using Application.Group.Commands.Update;
 using Application.Group.Common;
 using Application.Group.Common.Add_Update;
+using Application.Group.Common.Add_Update_Request;
+using Application.Group.Common.Add_Update_Response;
 using Application.Group.Queries.GetAllGroups;
 using Application.Group.Queries.GetAllGroupsByUserEmail;
 using Application.Group.Queries.GetAllMembersOfGroup;
@@ -19,6 +21,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers
 {
@@ -144,7 +147,7 @@ namespace API.Controllers
         [HttpPost()]
         [Authorize(Roles = "Admin, Hr")]
         [HasPermission(Permission.ADMIN + "," + Permission.HR)]
-        public async Task<IActionResult> AddGroup(AddGoogleGroup group)
+        public async Task<IActionResult> AddGroup(AddGoogleGroupRequest group)
         {
             string accessToken;
             var jwt = Request.Cookies["u_tkn"];
@@ -158,8 +161,20 @@ namespace API.Controllers
             {
                 return BadRequest("Invalid token");
             }
+            var listOwners = !group.Owners.IsNullOrEmpty() ? group.Owners.Split(",").ToList() : new List<string>(); 
+            var listMembers = !group.Members.IsNullOrEmpty() ? group.Owners.Split(",").ToList() : new List<string>();
+
             accessToken = token.Value.accessToken;
-            ErrorOr<GroupResult> groupResult = await mediator.Send(new AddGroupCommand(accessToken, group));
+            ErrorOr<GroupResult> groupResult = await mediator.Send(new AddGroupCommand(accessToken, 
+                new AddGoogleGroup
+                {
+                    Email = group.Email,
+                    Name = group.Name,
+                    Description = group.Description,
+                    Owners = listOwners,
+                    Members = listMembers,
+                    AdminCreated = group.AdminCreated
+                }));
 
             if (groupResult.IsError)
             {
@@ -172,7 +187,7 @@ namespace API.Controllers
         [HttpPost()]
         [Authorize(Roles = "Admin, Hr")]
         [HasPermission(Permission.ADMIN + "," + Permission.HR)]
-        public async Task<IActionResult> UpdateGroup(UpdateGoogleGroup group)
+        public async Task<IActionResult> UpdateGroup(UpdateGoogleGroupRequest group)
         {
             string accessToken;
             var jwt = Request.Cookies["u_tkn"];
@@ -182,12 +197,25 @@ namespace API.Controllers
             }
             System.Diagnostics.Debug.WriteLine("token: " + jwt);
             ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+
+            var listOwners = !group.Owners.IsNullOrEmpty() ? group.Owners.Split(",").ToList() : new List<string>();
+            var listMembers = !group.Members.IsNullOrEmpty() ? group.Owners.Split(",").ToList() : new List<string>();
+
             if (token.IsError)
             {
                 return BadRequest("Invalid token");
             }
             accessToken = token.Value.accessToken;
-            ErrorOr<GroupResult> groupResult = await mediator.Send(new UpdateGroupCommand(accessToken, group));
+            ErrorOr<GroupResult> groupResult = await mediator.Send(new UpdateGroupCommand(accessToken,
+                new UpdateGoogleGroup
+                {
+                    Email = group.Email,
+                    Name = group.Name,
+                    Description = group.Description,
+                    Owners = listOwners,
+                    Members = listMembers,
+                    AdminCreated = group.AdminCreated
+                }));
 
             if (groupResult.IsError)
             {

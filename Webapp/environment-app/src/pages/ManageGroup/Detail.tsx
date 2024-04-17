@@ -13,16 +13,15 @@ import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { roleFormat } from "../../utils";
 import { ListView } from "../../Components/ListView";
+import { useCookies } from "react-cookie";
+
 
 export const DetailGroup = () => {
-  const navigate = useNavigate();
   const { email = "" } = useParams();
-
+  const [token] = useCookies(["accessToken"]);
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
-  const handleNavigate = () => {
-    navigate(-1);
-  };
+
   const ref = useRef<any>();
 
   const handleDelete = async (email: string) => {
@@ -158,11 +157,13 @@ export const DetailGroup = () => {
           </div>
 
           <div className="button-cover grid">
-            <Link to={`/manage-group/${data?.value?.email}/update`}>
-              <Button className="btnLink" variant="success">
-                Cập Nhật
-              </Button>
-            </Link>
+            {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR") && (
+              <Link to={`/manage-group/${data?.value?.email}/update`}>
+                <Button className="btnLink" variant="success">
+                  Cập Nhật
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -170,11 +171,11 @@ export const DetailGroup = () => {
       {/* ----------------------------------------------------------------------------------------------- */}
       {/* employee of group */}
       <div>
-          <ListView
-            ref={ref}
-            listURL={DEPARTMENT_EMPLOYEE.replace(":groupEmail", data?.value?.email)}
-            columns={columns}
-          />
+        <ListView
+          ref={ref}
+          listURL={DEPARTMENT_EMPLOYEE.replace(":groupEmail", data?.value?.email)}
+          columns={columns}
+        />
       </div>
     </div>
   );

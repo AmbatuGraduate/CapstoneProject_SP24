@@ -7,16 +7,13 @@ import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { taskStatus, timeFormat, dayFormat, roleFormat } from "../../utils";
 import { ListView } from "../../Components/ListView";
+import { useCookies } from "react-cookie";
 
 export const DetailEmployee = () => {
-  const navigate = useNavigate();
   const { email = " " } = useParams();
   const [data, setData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
-  const handleNavigate = () => {
-    navigate("/manage-employee");
-  };
-
+  const [token] = useCookies(["accessToken"]);
   const ref = useRef<any>();
 
   const handleDelete = async (id: string) => {
@@ -136,16 +133,17 @@ export const DetailEmployee = () => {
       <div className="main-layout row">
         <h4 className="title">Thông Tin Chi Tiết Nhân Viên</h4>
         <hr className="line" />
-
-
         <div className="profileContainer">
           <div className="profileImage">
             <img src={data?.picture || '../assets/imgs/avatar.jpg'} alt="userAvatar" />
-            <Link to={`/manage-employee/${data?.email}/update`}>
-              <Button className="btnLink" variant="success" style={{ width: '100%', fontWeight: 'bold' }}>
-                Cập Nhật Thông Tin
-              </Button>
-            </Link>
+            {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR") && (
+              <Link to={`/manage-employee/${data?.email}/update`}>
+                <Button className="btnLink" variant="success" style={{ width: '100%', fontWeight: 'bold' }}>
+                  Cập Nhật Thông Tin
+                </Button>
+              </Link>
+            )}
+
           </div>
           <div className="profileInfo">
             <p className="employeeName">{data?.name}</p>

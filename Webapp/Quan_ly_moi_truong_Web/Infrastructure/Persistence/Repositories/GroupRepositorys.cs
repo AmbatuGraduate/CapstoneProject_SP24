@@ -149,6 +149,28 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _directoryServiceFactory(credential);
+                if(group != null && (group.Members.Count() > 0 || group.Owners.Count() > 0))
+                {
+                    foreach(var member in group.Members)
+                    {
+                        await _userRepository.AddUserToGoogleGroup(new Application.User.Common.Add.AddGoogleUser
+                        {
+                            AccessToken = accessToken,
+                            DepartmentEmail = group.Email,
+                            Email = member
+                        });
+                    }
+
+                    foreach (var owner in group.Owners)
+                    {
+                        await _userRepository.AddUserToGoogleGroup(new Application.User.Common.Add.AddGoogleUser
+                        {
+                            AccessToken = accessToken,
+                            DepartmentEmail = group.Email,
+                            Email = owner
+                        });
+                    }
+                }
                 var newGroup = new Group()
                 {
                     Email = group.Email,

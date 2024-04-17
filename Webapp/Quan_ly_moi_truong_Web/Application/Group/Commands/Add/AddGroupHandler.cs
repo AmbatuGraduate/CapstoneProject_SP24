@@ -29,7 +29,7 @@ namespace Application.Group.Commands.Add
                     DepartmentEmail = addedGroup.Email,
                     Description = addedGroup.Description,
                     AdminCreated = addedGroup.AdminCreated,
-                    DirectMembersCount = addedGroup.DirectMembersCount
+                    DirectMembersCount = groupRepository.GetGoogleGroupByEmail(request.accessToken, request.group.Email).Result.DirectMembersCount
                 };
                 result = groupRepository.AddGroupDB(addedGroupDB);
             }

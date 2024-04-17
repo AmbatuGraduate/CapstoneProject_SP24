@@ -170,7 +170,7 @@ export const ManageGarbageCollectionSchedule = () => {
             <Link
               className="linkCode"
               style={{ fontWeight: "bold", textAlign: "center" }}
-              to={`/manage-treetrim-schedule/${row.id}`}
+              to={`/manage-garbagecollection-schedule/${row.id}`}
             >
               {row.summary}
             </Link>
