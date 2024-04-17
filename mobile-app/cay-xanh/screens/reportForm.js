@@ -16,7 +16,6 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 const ReportSchema = yup.object({
     reportSubject: yup.string().required('Nhập tiêu đề báo cáo').min(4, 'Ít nhất 4 ký tự'),
     reportBody: yup.string().required('Nhập nội dung chi tiết báo cáo').min(4, 'Ít nhất 4 ký tự'),
-    issueLocation: yup.string().required('Nhập địa chỉ cụ thể'),
     reportImpact: yup.string().required('Mức độ ảnh hưởng là bắt buộc').test('is-impact', 'Chọn mức độ ảnh hưởng', (value) => {
         const parsedValue = parseInt(value, 10);
         return parsedValue >= 0 && parsedValue <= 2;
