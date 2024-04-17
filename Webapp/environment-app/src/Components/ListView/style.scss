@@ -155,7 +155,9 @@
       width: 100%;
       height: auto;
       object-fit: cover;
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      box-shadow:
+        0 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
       background-color: white;
       border: 3px solid lightgrey;
       border-top-left-radius: 10px;
@@ -173,14 +175,14 @@
     .employeeName {
       font-size: 2rem;
       font-weight: 900;
-      color: #2A2E45;
+      color: #2a2e45;
     }
 
     .employeeRole {
       font-size: 1.5rem;
       font-weight: 500;
       margin-bottom: 2rem;
-      color: #51587E;
+      color: #51587e;
     }
 
     .employeeCode {
@@ -188,10 +190,9 @@
       justify-content: space-between;
       font-size: 1.25rem;
 
-
       .infoTextLabel {
         text-align: right;
-        color: #51587E;
+        color: #51587e;
         margin-right: 200px;
       }
 
@@ -199,7 +200,6 @@
         text-align: left;
       }
     }
-
   }
 
   .title {
@@ -249,8 +249,6 @@
         text-align: left;
       }
     }
-
-
   }
 
   .btnLink {
@@ -286,8 +284,7 @@
   }
 
   .detail-cover {
-    margin-top: 1rem;
-
+    margin-top: 1.5rem;
   }
 
   .detail-cover-report {
@@ -296,7 +293,6 @@
 
     .image-container {
       width: 40%;
-
     }
 
     .address-container {

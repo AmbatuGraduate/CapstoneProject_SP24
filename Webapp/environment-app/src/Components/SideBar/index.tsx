@@ -30,7 +30,7 @@ const Sidebar = () => {
     <div className="sideBar ">
       <div className="logoDiv flex ">
         <NavLink className="d-none d-md-inline" to="/" style={{ width: '100%' }}>
-          <img src="assets/imgs/logoEcoo.png" alt="Image_name" />
+          <img src="https://i.imgur.com/kEOuIXx.png" alt="Image_name" />
         </NavLink>
       </div>
       <hr className="line d-none d-md-block" />

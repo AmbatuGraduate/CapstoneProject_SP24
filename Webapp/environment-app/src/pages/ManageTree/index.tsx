@@ -29,13 +29,13 @@ export const ManageTree = () => {
           </div>
         );
       },
-      width: "2%",
+      width: "1%",
     },
     {
       header: "Mã Số Cây",
       accessorFn(row) {
         return (
-          <h6 className="shortText linkDiv" >
+          <h6 className="shortText linkDiv" style={{ margin: 'auto' }}>
             <Link
               className="linkCode"
               style={{ fontWeight: "bold" }}
@@ -51,7 +51,7 @@ export const ManageTree = () => {
     {
       header: "Địa Chỉ Cụ Thể",
       accessorFn(longRow) {
-        return <h6>{longRow.streetName}</h6>;
+        return <h6 style={{ padding: '0 1rem' }}>{longRow.streetName}</h6>;
       },
       width: "35%",
     },

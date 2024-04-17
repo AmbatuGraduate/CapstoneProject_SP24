@@ -32,13 +32,13 @@ export const ManageEmployee = () => {
           </div>
         );
       },
-      width: "2%",
+      width: "1%",
     },
     {
       header: "Tên Nhân Viên",
       accessorFn(row) {
         return (
-          <h6 className="shortText linkDiv">
+          <h6 className="shortText linkDiv" style={{ margin: 'auto' }}>
             <Link
               className="linkCode"
               style={{ fontWeight: "bold" }}
@@ -49,7 +49,7 @@ export const ManageEmployee = () => {
           </h6>
         );
       },
-      width: "10%",
+      width: "15%",
     },
     {
       header: "Số Điện Thoại",
@@ -63,7 +63,7 @@ export const ManageEmployee = () => {
       accessorFn(row) {
         return <h6 className="shortText">{row.department}</h6>;
       },
-      width: "10%",
+      width: "15%",
     },
     {
       header: "Chức Vụ",
@@ -76,7 +76,7 @@ export const ManageEmployee = () => {
       header: "Ảnh",
       accessorFn(row) {
         if (row.picture == null) {
-          return <h6 className="shortText"><img src="../assets/imgs/avatar.jpg" /></h6>;
+          return <h6 className="shortText"><img src="https://i.imgur.com/CfPvx7O.jpg" /></h6>;
         } else {
           return <h6 className="shortText"><img src={row.picture} /></h6>;
         }
