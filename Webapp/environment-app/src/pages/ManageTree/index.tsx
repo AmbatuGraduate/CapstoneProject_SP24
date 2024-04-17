@@ -5,13 +5,16 @@ import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { dayFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import { useCookies } from "react-cookie";
 
 import { MdAddCircleOutline } from "react-icons/md";
+
 
 export const ManageTree = () => {
   const navigate = useNavigate();
   const ref = useRef<any>();
+  const [token] = useCookies(["accessToken"]);
   const handleDelete = async (id: string) => {
     await useApi.delete(TREE_DELETE.replace(":id", id));
     ref.current?.reload();
@@ -62,18 +65,6 @@ export const ManageTree = () => {
       },
       width: "15%",
     },
-    // {
-    //   header: "Đường kính thân",
-    //   accessorFn(row) {
-    //     return <h6 className="shortText">{row.bodyDiameter}</h6>
-    //   },
-    // },
-    // {
-    //   header: "Tán lá",
-    //   accessorFn(row) {
-    //     return <h6 className="shortText">{row.leafLength}</h6>
-    //   },
-    // },
     {
       header: "Thời Điểm Cắt Tiếp Theo",
       accessorFn(row) {
@@ -103,13 +94,17 @@ export const ManageTree = () => {
         listURL={TREE_LIST}
         columns={columns}
         bottom={
-          <Button
-            variant="success"
-            onClick={() => navigate("/manage-tree/create")}
-          >
-            <MdAddCircleOutline className="iconAdd" />
-            Thêm Cây
-          </Button>
+          ((JSON.parse(token.accessToken).role == "Manager" || JSON.parse(token.accessToken).role == "Admin") && (
+            <Button
+              variant="success"
+              onClick={() => navigate("/manage-tree/create")}
+            >
+              <MdAddCircleOutline className="iconAdd" />
+              Thêm Cây
+            </Button>
+          )
+          )
+
         }
       />
     </div>
