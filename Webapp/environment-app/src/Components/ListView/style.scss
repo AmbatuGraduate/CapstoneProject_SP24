@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'poppinglight';
+  src: url('../../../assets/fonts/Poppins-Light.ttf'); // update the path according to your directory structure
+}
+
+@font-face {
+  font-family: 'poppingbold';
+  src: url('../../../assets/fonts/Poppins-SemiBold.ttf'); // update the path according to your directory structure
+}
+
 .listView {
   width: 100%;
 
@@ -149,7 +159,8 @@
 
   .profileImage {
     padding: 5%;
-    width: 25%;
+    padding-top: 2%;
+    width: 30%;
 
     img {
       width: 100%;
@@ -160,22 +171,23 @@
         0 6px 20px 0 rgba(0, 0, 0, 0.19);
       background-color: white;
       border: 3px solid lightgrey;
-      border-top-left-radius: 10px;
-      border-bottom-left-radius: 10px;
+      border-radius: 5px;
       margin-bottom: 15%;
     }
   }
 
   .profileInfo {
     padding: 5%;
+    padding-top: 1%;
     padding-left: 0;
     padding-bottom: 0;
     margin-left: 1rem;
 
     .employeeName {
       font-size: 2rem;
-      font-weight: 900;
+      border-bottom: 1px solid #ddd;
       color: #2a2e45;
+      font-family: poppingbold;
     }
 
     .employeeRole {
@@ -183,21 +195,25 @@
       font-weight: 500;
       margin-bottom: 2rem;
       color: #51587e;
+      font-family: poppinglight;
     }
 
     .employeeCode {
       display: flex;
       justify-content: space-between;
       font-size: 1.25rem;
+      border-bottom: 1px solid #ddd;
 
       .infoTextLabel {
         text-align: right;
         color: #51587e;
         margin-right: 200px;
+        font-weight: 600;
       }
 
       .infoText {
         text-align: left;
+        font-family: poppinglight;
       }
     }
   }
@@ -228,7 +244,7 @@
   }
 
   .detail-content {
-    width: 40%;
+    width: 60%;
     font-size: var(--h2FontSize);
     display: flex;
     flex-direction: column;
@@ -237,27 +253,33 @@
 
     .detail-content-parent {
       display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #ddd;
+
 
       .detail-content-child-label {
-        width: 50%;
-        font-weight: 500;
-        color: var(--PrimaryColor);
+        width: 100%;
+        color: #51587e;
+        margin-right: 200px;
+        font-weight: 600;
+
       }
 
       .detail-content-child-value {
         font-size: var(--h2FontSize);
-        text-align: left;
+        text-align: right;
+        white-space: nowrap;
       }
     }
   }
 
   .btnLink {
     width: 6rem;
-    padding: 0.5rem;
+    padding: 0.25rem;
     background-color: var(--whiteColor);
     --bs-btn-border-radius: none;
     color: var(--PrimaryColor);
-    border-radius: 1.5rem;
+    border-radius: 0.5rem;
     border: 2px solid var(--PrimaryColor);
     font-weight: bold;
 
@@ -268,7 +290,7 @@
   }
 
   .btnCancel {
-    padding: 0.5rem;
+    padding: 0.25rem;
     width: 6rem;
     background-color: var(--whiteColor);
     --bs-btn-border-radius: none;
