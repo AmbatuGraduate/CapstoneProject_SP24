@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         borderColor: '#333',
-        color: '#f1356d',
+        color: '#01796E',
     },
 
 });

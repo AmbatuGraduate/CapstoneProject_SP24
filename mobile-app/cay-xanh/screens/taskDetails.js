@@ -201,16 +201,16 @@ export default function TaskDetails({ navigation, route }) {
                     </View>
                 </View>
                 <Toast />
+                {
+                    updatedStatus !== 'Done' &&
 
+                    <TouchableOpacity style={styles.submitButton} onPress={() => updateStatus()}>
+                        <Icon name="check" size={20} color="darkgreen" />
+                        <Text style={styles.submitButtonText}>Hoàn thành</Text>
+                    </TouchableOpacity>
+                }
             </ScrollView>
-            {
-                updatedStatus !== 'Done' &&
 
-                <TouchableOpacity style={styles.submitButton} onPress={() => updateStatus()}>
-                    <Icon name="check" size={20} color="#fff" />
-                    <Text style={styles.submitButtonText}>Hoàn thành</Text>
-                </TouchableOpacity>
-            }
 
             <Modal
                 transparent={true}
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     submitButtonText: {
-        color: 'whitesmoke',
+        color: 'darkgreen',
         marginLeft: 10,
         fontSize: 18,
         fontWeight: 'bold',

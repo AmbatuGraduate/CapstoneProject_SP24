@@ -17,13 +17,13 @@ function ReportStackRouting() {
             <Stack.Screen name="ReportDetails" component={ReportDetails}
                 options={{
                     title: 'Chi tiết báo cáo',
-                    headerTintColor: 'skyblue',
+                    headerTintColor: '#2282F3',
                 }}>
             </Stack.Screen>
             <Stack.Screen name="MapsView" component={SharedMap}
                 options={{
                     title: 'Vị trí trên bản đồ',
-                    headerTintColor: 'skyblue',
+                    headerTintColor: '#2282F3',
                 }}>
             </Stack.Screen>
         </Stack.Navigator>

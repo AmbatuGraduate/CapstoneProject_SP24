@@ -32,8 +32,14 @@ export default function ReportForm({ onFormSuccess }) {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isCameraVisible, setCameraVisible] = useState(false);
+    const [isCameraReady, setIsCameraReady] = useState(false);
+
 
     let cameraRef = useRef();
+
+    const handleCameraReady = () => {
+        setIsCameraReady(true);
+    };
 
     const selectImage = (props) => {
         let options = {
@@ -59,29 +65,32 @@ export default function ReportForm({ onFormSuccess }) {
         });
     };
 
-    const takePhoto = async (props) => {
+    const requestCameraPermissions = async () => {
         const { status } = await Camera.requestCameraPermissionsAsync();
         if (status === 'granted') {
-            setCameraVisible(true)
-            if (cameraRef.current) {
-                try {
-                    let photo = await cameraRef.current.takePictureAsync({
-                        quality: 0.1,
-                        base64: true,
-                        exif: false
-                    });
-                    setCameraVisible(false);
-                    const source = `data:image/jpeg;base64,${photo.base64}`;
-                    props.setFieldValue('reportImages', [...props.values.reportImages, source]);
-
-                } catch (error) {
-                    console.log('Error taking picture: ', error);
-                }
-            } else {
-                console.log('Camera ref is undefined or camera not ready');
-            }
+            setCameraVisible(true);
         } else {
             console.log('Camera permission not granted');
+        }
+    };
+
+    const takePhoto = async (props) => {
+        if (cameraRef.current && isCameraReady) {
+            try {
+                let photo = await cameraRef.current.takePictureAsync({
+                    quality: 0.1,
+                    base64: true,
+                    exif: false
+                });
+                setCameraVisible(false);
+                const source = `data:image/jpeg;base64,${photo.base64}`;
+                props.setFieldValue('reportImages', [...props.values.reportImages, source]);
+
+            } catch (error) {
+                console.log('Error taking picture: ', error);
+            }
+        } else {
+            console.log('Camera ref is undefined or camera not ready');
         }
     };
 
@@ -148,10 +157,12 @@ export default function ReportForm({ onFormSuccess }) {
 
                             renderItem={() => (
                                 <>
-
+                                    <Text style={styles.inputLabel}>
+                                        Tiêu đề báo cáo
+                                    </Text>
                                     <TextInput
                                         style={styles.input}
-                                        placeholder='Tiêu đề'
+                                        placeholder="Ví dụ: Rác thải không được xử lý"
                                         onChangeText={props.handleChange('reportSubject')}
                                         value={props.values.reportSubject}
                                         onBlur={props.handleBlur('reportSubject')}
@@ -160,8 +171,11 @@ export default function ReportForm({ onFormSuccess }) {
                                         {props.touched.reportSubject && props.errors.reportSubject}
                                     </Text>
 
+                                    <Text style={styles.inputLabel}>
+                                        Vị trí cụ thể
+                                    </Text>
                                     <GooglePlacesAutocomplete
-                                        placeholder='Địa điểm'
+                                        placeholder='Ví dụ: 123 Nguyễn Văn Linh, Đà Nẵng'
                                         keepResultsAfterBlur={true}
                                         onFail={error => console.error(error)}
                                         onPress={(data, details = null) => {
@@ -177,7 +191,7 @@ export default function ReportForm({ onFormSuccess }) {
                                         }}
                                         fetchDetails={true}
                                         styles={{
-                                            textInputContainer: styles.input,
+                                            textInputContainer: styles.inputAddress,
                                         }}
                                     />
 
@@ -188,7 +202,7 @@ export default function ReportForm({ onFormSuccess }) {
 
 
                                     <View style={styles.impact}>
-                                        <Text style={styles.label}>Mức độ ảnh hưởng</Text>
+                                        <Text style={styles.inputLabel}>Mức độ ảnh hưởng</Text>
                                         <RadioButton.Group
                                             onValueChange={props.handleChange('reportImpact')}
                                             value={props.values.reportImpact}
@@ -209,9 +223,14 @@ export default function ReportForm({ onFormSuccess }) {
 
                                             </View>
                                         </RadioButton.Group>
+                                        <View style={{
+                                            height: 3,
+                                            width: props.values.reportImpact === '0' ? '33%' : props.values.reportImpact === '1' ? '66%' : '100%',
+                                            backgroundColor: props.values.reportImpact === '0' ? 'green' : props.values.reportImpact === '1' ? 'orange' : props.values.reportImpact === '2' ? 'red' : 'white',
+                                        }} />
                                     </View>
                                     <Text style={styles.errorText}>{props.touched.reportImpact && props.errors.reportImpact}</Text>
-                                    <Text style={styles.label}>Cần giải quyết trước ngày</Text>
+                                    <Text style={styles.inputLabel}>Cần giải quyết trước ngày</Text>
                                     <View style={styles.dateContainer}>
                                         <Text style={styles.dateValue}>
                                             {props.values.expectedResolutionDate.toLocaleDateString()}
@@ -238,10 +257,13 @@ export default function ReportForm({ onFormSuccess }) {
                                     <Text style={styles.errorText}>{props.touched.expectedResolutionDate && props.errors.expectedResolutionDate}</Text>
 
                                     {/* body */}
+                                    <Text style={styles.inputLabel}>
+                                        Nội dung báo cáo
+                                    </Text>
                                     <TextInput
                                         multiline
                                         style={[styles.bodyInput, { height: Math.max(100, props.values.reportBodyHeight) }]}
-                                        placeholder='Chi tiết báo cáo'
+                                        placeholder='Ví dụ: Rác thải không được xử lý ở khu vực công viên 29/3, Đà Nẵng'
                                         onChangeText={props.handleChange('reportBody')}
                                         onContentSizeChange={(event) => {
                                             props.setFieldValue('reportBodyHeight', event.nativeEvent.contentSize.height)
@@ -263,7 +285,7 @@ export default function ReportForm({ onFormSuccess }) {
 
                                         <TouchableOpacity
                                             style={styles.imageButton}
-                                            onPress={() => takePhoto(props)} // take photo with camera
+                                            onPress={requestCameraPermissions}
                                         >
                                             <Icon name="camera" type="font-awesome" size={24} color="green" />
                                         </TouchableOpacity>
@@ -295,7 +317,7 @@ export default function ReportForm({ onFormSuccess }) {
 
                                     <TouchableOpacity style={styles.submitButton} onPress={props.handleSubmit}>
                                         <Icon name="check" size={20} color="#fff" />
-                                        <Text style={styles.submitButtonText}>Gửi</Text>
+                                        <Text style={styles.submitButtonText}>Gửi Báo Cáo</Text>
                                     </TouchableOpacity>
                                 </>
                             )}
@@ -304,21 +326,43 @@ export default function ReportForm({ onFormSuccess }) {
                             <Camera
                                 ref={cameraRef}
                                 style={StyleSheet.absoluteFillObject}
+                                onCameraReady={handleCameraReady}
+
                             >
-                                <View style={{ flex: 1, backgroundColor: 'transparent', justifyContent: 'flex-end', alignItems: 'center' }}>
+                                <View style={{
+                                    flex: 1,
+                                    flexDirection: 'column',
+                                    justifyContent: 'flex-end',
+                                    alignItems: 'center',
+                                    marginBottom: 20,
+                                }}>
                                     <TouchableOpacity
                                         style={{
-                                            marginBottom: 20,
+                                            position: 'absolute',
+                                            left: 0,
+                                            bottom: 0,
                                             width: 70,
                                             height: 70,
                                             borderRadius: 35,
-                                            backgroundColor: 'rgba(255,255,255, 0.1)',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                        }}
+                                        onPress={() => setCameraVisible(false)}
+                                    >
+                                        <Icon name="remove" type="font-awesome" size={48} color='rgba(255,255,255,0.4)' />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={{
+                                            width: 70,
+                                            height: 70,
+                                            borderRadius: 35,
+                                            backgroundColor: 'rgba(216,216,216, 0.1)',
                                             justifyContent: 'center',
                                             alignItems: 'center',
                                         }}
                                         onPress={() => takePhoto(props)}
                                     >
-                                        <Icon name="circle-o" type="font-awesome" size={64} color='white' />
+                                        <Icon name="circle-o" type="font-awesome" size={64} color='rgba(255,255,255,0.4)' />
                                     </TouchableOpacity>
                                 </View>
                             </Camera>
@@ -382,8 +426,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#ddd',
         padding: 10,
-        fontSize: 18,
-        borderRadius: 6,
+        fontSize: 14,
         marginBottom: 10,
         backgroundColor: 'white',
         shadowColor: '#000',
@@ -391,13 +434,32 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 2,
         elevation: 5,
+        borderRadius: 10,
+        borderWidth: 1.5,
+        borderColor: 'grey',
+        paddingLeft: 20,
+    },
+    inputAddress: {
+        borderColor: '#ddd',
+        padding: 2,
+        fontSize: 14,
+        marginBottom: 10,
+        backgroundColor: 'white',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 5,
+        borderRadius: 10,
+        borderWidth: 1.5,
+        borderColor: 'grey',
+        paddingLeft: 8,
     },
     bodyInput: {
         borderWidth: 1,
         borderColor: '#ddd',
         padding: 10,
-        fontSize: 18,
-        borderRadius: 6,
+        fontSize: 14,
         marginBottom: 10,
         backgroundColor: 'white',
         shadowColor: '#000',
@@ -405,10 +467,12 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 2,
         elevation: 5,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: '#333',
     },
     impact: {
         justifyContent: 'space-between',
-        marginBottom: 10,
         padding: 8,
         borderRadius: 6,
 
@@ -445,14 +509,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#2282F3',
-        padding: 10,
+        padding: 12,
         borderRadius: 15,
         marginVertical: 20,
+        width: '70%',
+        alignSelf: 'center',
     },
     submitButtonText: {
         color: '#fff',
         marginLeft: 10,
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: 'bold',
 
     },
@@ -507,5 +573,11 @@ const styles = StyleSheet.create({
         padding: 10,
         fontWeight: 'bold',
         color: 'grey',
+    },
+    inputLabel: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginBottom: 5,
+
     },
 });

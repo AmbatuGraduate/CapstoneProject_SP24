@@ -62,7 +62,7 @@ export const DetailReport = () => {
       </div>
     `,
       focusConfirm: false,
-      confirmButtonText: 'Gửi',
+      confirmButtonText: 'Gửi Phản Hồi',
       preConfirm: () => {
         const response = (document.getElementById('swal-input1') as HTMLInputElement).value;
         const status = (document.querySelector('input[name="status"]:checked') as HTMLInputElement)?.value;
