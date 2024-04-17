@@ -60,7 +60,9 @@ namespace Infrastructure.Persistence.Repositories
                     Subject = $"[Report] {reportFormat.ReportSubject}",
                     Body = emailBody.ToString(),
                 };
-                email.To.Add("ambatuadmin@vesinhdanang.xyz");
+                email.CC.Add("ambatuadmin@vesinhdanang.xyz");
+                email.To.Add("hr@vesinhdanang.xyz");
+
                 // add images
                 if (reportFormat.ReportImages != null)
                 {

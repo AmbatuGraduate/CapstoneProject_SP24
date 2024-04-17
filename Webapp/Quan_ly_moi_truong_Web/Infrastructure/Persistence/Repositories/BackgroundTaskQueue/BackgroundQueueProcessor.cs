@@ -1,4 +1,5 @@
 ﻿using Application.Calendar.TreeCalendar.Commands.AutoAdd;
+using Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus;
 using Application.Calendar.TreeCalendar.Queries.GetCalendarByDepartmentEmail;
 using Application.Calendar.TreeCalendar.Queries.GetCalendarIdByCalendarType;
 using Domain.Enums;
@@ -32,24 +33,37 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             // Making a run at the midnight
-            // var now = DateTime.Now;
-            // var hours = 23 - now.Hour;
-            // var minutes = 59 - now.Minute;
-            // var seconds = 59 - now.Second;
-            // var secondTillMidnight = hours * 3600 + minutes * 60 + seconds;
-            // await Task.Delay(TimeSpan.FromSeconds(secondTillMidnight), stoppingToken);
+            var now = DateTime.Now;
+            var hours = 23 - now.Hour;
+            var minutes = 59 - now.Minute;
+            var seconds = 59 - now.Second;
+            var secondTillMidnight = hours * 3600 + minutes * 60 + seconds;
+            await Task.Delay(TimeSpan.FromSeconds(secondTillMidnight), stoppingToken);
 
-            await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
-
+            //await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
 
+                    var currDirectory = Environment.CurrentDirectory;
+                    string filePath = Directory.GetParent(currDirectory).FullName;
+                    var certificate = new X509Certificate2(filePath + "\\Certification\\cayxanh-412707-2feafeea429d.p12", "notasecret", X509KeyStorageFlags.Exportable); // Create a cert for key of Account service
+
+                    // Create credential to get token
+                    ServiceAccountCredential credential = new ServiceAccountCredential(
+                           new ServiceAccountCredential.Initializer(serviceAccount)
+                           {
+                               //KeyId = "2feafeea429d58b66b7733282bd19af6899bdada",
+                               User = "ambatuadmin@vesinhdanang.xyz",
+                               Scopes = scopes
+                           }.FromCertificate(certificate));
+
+
                     // Run auto update status cut of the trees
                     // Prepare the HTTP request
-                    var request = new HttpRequestMessage(HttpMethod.Put, "https://localhost:7024/api/tree/AutoUpdate");
+                    var request = new HttpRequestMessage(HttpMethod.Put, "https://vesinhdanang.xyz:7024/api/tree/AutoUpdate");
 
                     // Send the request and get the response
                     var response = await _httpClient.SendAsync(request);
@@ -68,22 +82,6 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
                         System.Diagnostics.Debug.WriteLine("API call unsuccessful: " + reason);
                     }
 
-                    // Run auto create calendar(s) for every tree have cut status is true
-                    var currDirectory = Environment.CurrentDirectory;
-                    string filePath = Directory.GetParent(currDirectory).FullName;
-                    var certificate = new X509Certificate2(filePath + "\\Certification\\cayxanh-412707-2feafeea429d.p12", "notasecret", X509KeyStorageFlags.Exportable); // Create a cert for key of Account service
-
-                    // Create credential to get token
-                    ServiceAccountCredential credential = new ServiceAccountCredential(
-                           new ServiceAccountCredential.Initializer(serviceAccount)
-                           {
-                               //KeyId = "2feafeea429d58b66b7733282bd19af6899bdada",
-                               User = "ambatuadmin@vesinhdanang.xyz",
-                               Scopes = scopes
-                           }.FromCertificate(certificate));
-
-                    
-
                     if (credential != null)
                     {
 
@@ -94,15 +92,22 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
                             ApplicationName = "Calendar Account Service",
                         });
 
-
+                        // Run auto create calendar(s) for every tree have cut status is true
                         using (var scope = _serviceProvider.CreateScope())
                         {
                             var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+                            var calendarIdTree = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(CalendarTypeEnum.CayXanh));
+                            //var calendarIdGarbage = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(CalendarTypeEnum.ThuGom));
+                            var calendarIdClean = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(CalendarTypeEnum.QuetDon));
+
+                            var updateEventTree = await mediator.Send(new AutoUpdateJobStatusCommand(service, calendarIdTree.Value));
+                            //var updateEventGarbage = await mediator.Send(new AutoUpdateJobStatusCommand(service, calendarIdGarbage.Value));
+                            var updateEventClean = await mediator.Send(new AutoUpdateJobStatusCommand(service, calendarIdClean.Value));
 
                             // Get calendar Id by calendar type
-                            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(CalendarTypeEnum.CayXanh));
-                            var addEvents = await mediator.Send(new AutoAddTreeCalendarCommand(service, calendarId.Value));
+                            var addEvents = await mediator.Send(new AutoAddTreeCalendarCommand(service, calendarIdTree.Value));
                             var listEvents = addEvents.Value;
+
 
                             Console.WriteLine("CREATE CALENDAR SUCCESSFUL:" + listEvents.Count);
                         }
@@ -110,7 +115,7 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
 
                     }
 
-
+                    await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
                 }
                 catch (Exception ex)
                 {

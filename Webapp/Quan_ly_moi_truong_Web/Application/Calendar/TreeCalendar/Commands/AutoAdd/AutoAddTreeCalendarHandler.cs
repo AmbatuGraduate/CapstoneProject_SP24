@@ -37,7 +37,6 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
         {
             List<MyAddedEventResult> eventResults = new List<MyAddedEventResult>();
 
-
             var getAllTree = _treeRepository.GetAllTrees().Where(tree => !tree.isCut);
 
             var treeByAddress = getAllTree

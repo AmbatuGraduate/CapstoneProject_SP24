@@ -83,7 +83,7 @@ export const UpdateEmployee = () => {
           value: 2,
         },
         {
-          key: "Quản Trị Viên",
+          key: "Quản Lý Nhân Sự",
           value: 3,
         },
       ],

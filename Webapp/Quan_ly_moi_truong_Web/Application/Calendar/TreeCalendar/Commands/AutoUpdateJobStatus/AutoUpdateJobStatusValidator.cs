@@ -6,8 +6,8 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoUpdateJobStatus
     {
         public AutoUpdateJobStatusValidator()
         {
-            RuleFor(x => x.accessToken).NotEmpty();
-            RuleFor(x => x.calendarId).NotEmpty();
+            RuleFor(x => x.Service).NotEmpty();
+            RuleFor(x => x.CalendarId).NotEmpty();
         }
     }
 }
