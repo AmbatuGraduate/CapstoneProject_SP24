@@ -13,8 +13,8 @@ export const EmployeeGroup = () => {
   const ref = useRef<any>();
   const { email = "" } = useParams();
 
-  const handleDelete = async (id: string) => {
-    await useApi.delete(EMPLOYEE_DELETE.replace(":id", email));
+  const handleDelete = async (email: string) => {
+    await useApi.delete(EMPLOYEE_DELETE.replace(":email", email));
     ref.current?.reload();
   };
 
@@ -53,13 +53,6 @@ export const EmployeeGroup = () => {
       header: "Số Điện Thoại",
       accessorFn(row) {
         return <h6 className="shortText">{row.phoneNumber}</h6>;
-      },
-      width: "10%",
-    },
-    {
-      header: "Bộ Phận",
-      accessorFn(row) {
-        return <h6 className="shortText">{row.department}</h6>;
       },
       width: "10%",
     },

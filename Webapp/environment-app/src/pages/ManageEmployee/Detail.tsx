@@ -77,7 +77,7 @@ export const DetailEmployee = () => {
     {
       header: "Địa Chỉ Cụ Thể",
       accessorFn(row) {
-        return <h6>{row.myEvent.location}</h6>;
+        return <h6 style={{ padding: '0 1rem' }}>{row.myEvent.location}</h6>;
       },
       width: "40%",
     },
