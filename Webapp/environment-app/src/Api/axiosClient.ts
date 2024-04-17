@@ -30,8 +30,8 @@ axiosClient.interceptors.request.use(
     console.log('compare - expire > now', expire > Date.now());
 
     // if (expire < Date.now()) {
-      // const response = await axios.get('https://vesinhdanang.xyz:7024/api/auth/refresh',
-        const response = await axios.get('https://localhost:7024/api/auth/refresh',
+      const response = await axios.get('https://vesinhdanang.xyz:7024/api/auth/refresh',
+        // const response = await axios.get('https://localhost:7024/api/auth/refresh',
         {
           withCredentials: true,
           headers: {
