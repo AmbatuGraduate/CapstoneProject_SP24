@@ -11,18 +11,15 @@
   min-width: 60rem;
 
   .table {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgb(230, 230, 230);
     box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
     border-collapse: separate;
-
+    border-spacing: 1px;
     thead {
       &.thread-primary {
-        border-collapse: collapse;
-        caption-side: bottom;
-
         tr {
           th {
-            border-bottom: 2px solid darken(#f2f3f8, 6%);
+            border-bottom: 1px solid darken(#f2f3f8, 6%);
             padding: 2rem;
             padding-top: 1rem;
             padding-bottom: 1rem;
@@ -65,11 +62,14 @@
         color: var(--PrimaryColor);
         text-decoration: none;
       }
+      .linkDiv {
+        width: fit-content;
+        padding: 0.5rem 1rem;
+        border-radius: 1rem;
+      }
 
       .linkDiv:hover {
         background-color: var(--paleGreen);
-        padding: 0.5rem;
-        border-radius: 1rem;
       }
 
       .btn {

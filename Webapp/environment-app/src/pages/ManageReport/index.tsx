@@ -37,14 +37,14 @@ export const ManageReport = () => {
           </div>
         );
       },
-      width: "2%",
+      width: "1%",
     },
     {
       header: "Người Gửi",
       accessorFn(longRow) {
         console.log(longRow)
         return (
-          <h6 className="shortText linkDiv">
+          <h6 className="shortText linkDiv" style={{ margin: 'auto' }}>
             <Link
               className="linkCode"
               style={{ fontWeight: "bold" }}
@@ -55,15 +55,15 @@ export const ManageReport = () => {
           </h6>
         );
       },
-      width: "19%",
+      width: "15%",
     },
     {
       header: "Tiêu Đề",
       accessorFn(row) {
         const modifiedSubject = row.reportSubject.replace("[Report]", "");
-        return <h6>{modifiedSubject}</h6>;
+        return <h6 style={{ padding: '0 1rem' }}>{modifiedSubject}</h6>;
       },
-      width: "8%",
+      width: "20%",
     },
     {
       header: "Cần Giải Quyết Trước",
@@ -72,7 +72,7 @@ export const ManageReport = () => {
           <h6 className="shortText">{dayFormat(row.expectedResolutionDate)}</h6>
         );
       },
-      width: "19%",
+      width: "10%",
     },
     {
       header: "Trạng Thái",
@@ -89,7 +89,7 @@ export const ManageReport = () => {
           </h6>
         );
       },
-      width: "15%",
+      width: "10%",
     },
     {
       header: "Mức Độ Ảnh Hưởng",
@@ -106,7 +106,7 @@ export const ManageReport = () => {
           </h6>
         );
       },
-      width: "20%",
+      width: "10%",
     },
   ];
 
@@ -119,18 +119,18 @@ export const ManageReport = () => {
         bottom={
           isAdmin ? null : (
             <Button
-            variant="success"
-            style={{
-              backgroundColor: "hsl(94, 59%, 35%)",
-              border: "none",
-              padding: "0.5rem 1rem",
-            }}
-            onClick={() => navigate("/manage-report/create")}
-          >
-            <MdAddCircleOutline className="iconAdd" />
-            Thêm báo cáo
-          </Button>  
-          ) 
+              variant="success"
+              style={{
+                backgroundColor: "hsl(94, 59%, 35%)",
+                border: "none",
+                padding: "0.5rem 1rem",
+              }}
+              onClick={() => navigate("/manage-report/create")}
+            >
+              <MdAddCircleOutline className="iconAdd" />
+              Thêm báo cáo
+            </Button>
+          )
         }
         transform={(data: any) => data?.value?.map((i) => i.reportFormat) || []}
       />

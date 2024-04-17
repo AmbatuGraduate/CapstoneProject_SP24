@@ -26,19 +26,19 @@ export const ManageGroup = () => {
       accessorFn(row) {
         return (
           <div>
-            <button type="button" className="btn btn-click" onClick={() => {}}>
+            <button type="button" className="btn btn-click" onClick={() => { }}>
               <ModalDelete handleDelete={() => handleDelete(row.email)} />
             </button>
           </div>
         );
       },
-      width: "8%",
+      width: "1%",
     },
     {
       header: "Email",
       accessorFn(longRow) {
         return (
-          <h6>
+          <h6 className="shortText linkDiv" style={{ margin: 'auto' }}>
             <Link
               className="linkCode"
               style={{ fontWeight: "bold" }}
@@ -49,14 +49,14 @@ export const ManageGroup = () => {
           </h6>
         );
       },
-      width: "8%",
+      width: "15%",
     },
     {
       header: "Tên bộ phận",
       accessorFn(row) {
         return <h6 className="shortText">{row.name}</h6>;
       },
-      width: "30%",
+      width: "15%",
     },
     {
       header: "Mô tả",
@@ -80,6 +80,7 @@ export const ManageGroup = () => {
           </h6>
         );
       },
+      width: "8%",
     },
   ];
 

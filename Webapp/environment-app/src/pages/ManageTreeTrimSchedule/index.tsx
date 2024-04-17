@@ -137,7 +137,7 @@ export const ManageTreeTrimSchedule = () => {
           </div>
         );
       },
-      width: "2%",
+      width: "1%",
     },
     {
       header: "Thời Gian",
@@ -186,7 +186,7 @@ export const ManageTreeTrimSchedule = () => {
         if (isRowHovering) {
           return (
             <h6
-              style={{ fontWeight: "bold", cursor: "pointer", color: "#FB6D48" }}
+              style={{ fontWeight: "bold", cursor: "pointer", color: "#FB6D48", padding: '0 1rem' }}
               onMouseLeave={() => handleMouseLeave(row.id)}
               onClick={(event) => {
                 setSelectedRowId(row.id); // Lưu id của hàng được chọn
@@ -204,23 +204,23 @@ export const ManageTreeTrimSchedule = () => {
             row.attendees[0].user &&
             row.attendees[0].user.email
           ) {
-            return <h6 >{row.attendees[0].fullName}</h6>;
+            return <h6 style={{ padding: '0 1rem' }}>{row.attendees[0].fullName}</h6>;
           } else if (
             row.attendees &&
             row.attendees.length == 2 &&
             row.attendees[0].user &&
             row.attendees[0].user.email
           ) {
-            return <h6 >{row.attendees[0].fullName},{row.attendees[1].fullName}</h6>;
+            return <h6 style={{ padding: '0 1rem' }}>{row.attendees[0].fullName},{row.attendees[1].fullName}</h6>;
           } else if (
             row.attendees &&
             row.attendees.length > 2 &&
             row.attendees[0].user &&
             row.attendees[0].user.email
           ) {
-            return <h6 >{row.attendees[0].fullName},{row.attendees[1].fullName},...</h6>;
+            return <h6 style={{ padding: '0 1rem' }}>{row.attendees[0].fullName},{row.attendees[1].fullName},...</h6>;
           } else {
-            return <h6 onMouseEnter={() => handleMouseEnter(row.id)} style={{ color: "orange" }}>Cần thêm nhân viên thực hiện</h6>;
+            return <h6 onMouseEnter={() => handleMouseEnter(row.id)} style={{ color: "orange", padding: '0 1rem' }}>Cần thêm nhân viên thực hiện</h6>;
           }
         }
       },
@@ -229,9 +229,9 @@ export const ManageTreeTrimSchedule = () => {
     {
       header: "Địa Chỉ Cụ Thể",
       accessorFn(row) {
-        return <h6>{row.location}</h6>;
+        return <h6 style={{ padding: '0 1rem' }}>{row.location}</h6>;
       },
-      width: "25%",
+      width: "30%",
     },
     {
       header: "Trạng Thái",
@@ -254,6 +254,7 @@ export const ManageTreeTrimSchedule = () => {
           </h6>
         );
       },
+      width: "10%",
     },
   ];
 
