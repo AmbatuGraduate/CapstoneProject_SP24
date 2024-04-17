@@ -76,7 +76,7 @@ export const ManageEmployee = () => {
       header: "Ảnh",
       accessorFn(row) {
         if (row.picture == null) {
-          return <h6 className="shortText"><img src="../assets/imgs/avatar.jpg" /></h6>;
+          return <h6 className="shortText"><img src="https://i.imgur.com/CfPvx7O.jpg" /></h6>;
         } else {
           return <h6 className="shortText"><img src={row.picture} /></h6>;
         }

@@ -4,7 +4,7 @@ import { DEPARTMENT_EMPLOYEE, EMPLOYEE_DELETE, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import ModalDelete from "../../Components/Modals/ModalDelete";
-import {  useRef } from "react";
+import { useRef } from "react";
 
 import { MdAddCircleOutline } from "react-icons/md";
 
@@ -24,7 +24,7 @@ export const EmployeeGroup = () => {
       accessorFn(row) {
         return (
           <div>
-            <button type="button" className="btn btn-click" onClick={() => {}}>
+            <button type="button" className="btn btn-click" onClick={() => { }}>
               <ModalDelete handleDelete={() => handleDelete(row.email)} />
             </button>
           </div>
@@ -76,7 +76,7 @@ export const EmployeeGroup = () => {
         if (row.picture == null) {
           return (
             <h6 className="shortText">
-              <img src="../assets/imgs/avatar.jpg" />
+              <img src="https://i.imgur.com/CfPvx7O.jpg" />
             </h6>
           );
         } else {
@@ -95,7 +95,7 @@ export const EmployeeGroup = () => {
     <div>
       <ListView
         ref={ref}
-        listURL={DEPARTMENT_EMPLOYEE.replace(':groupEmail',email)}
+        listURL={DEPARTMENT_EMPLOYEE.replace(':groupEmail', email)}
         columns={columns}
         bottom={
           <Button

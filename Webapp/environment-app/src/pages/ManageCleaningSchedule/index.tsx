@@ -156,7 +156,7 @@ export const ManageCleaningSchedule = () => {
       accessorFn(row) {
         return (
           <h6 className="shortText">
-            {dayFormat(row.end)}
+            {dayFormat(row.start)}
           </h6>
         );
       },
