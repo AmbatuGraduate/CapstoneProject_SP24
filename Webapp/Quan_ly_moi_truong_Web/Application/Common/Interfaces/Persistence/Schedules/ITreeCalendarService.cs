@@ -9,6 +9,8 @@ namespace Application.Common.Interfaces.Persistence.Schedules
         // get all events
         Task<List<MyEvent>> GetEvents(string token, string calendarId);                                                 // get all events
 
+        Task<List<MyEvent>?> GetEventsWithServiceAccount(CalendarService service, string calendarId);                   // get all by using account servie     
+
         Task<List<MyEvent>> GetEventsByAttendeeEmail(string token, string calendarId, string attendeeEmail);            // get all events by attendee email
 
         Task<List<MyEvent>> GetEventsByDepartmentEmail(string accessToken, string calendarId, string departmentEmail);  // get all events by department email
@@ -22,6 +24,8 @@ namespace Application.Common.Interfaces.Persistence.Schedules
         Task<MyAddedEvent> AutoAddEvent(CalendarService service, string calendarId, MyAddedEvent myEvent);              // auto add event
 
         Task<MyUpdatedEvent> UpdateEvent(string token, string calendarId, MyUpdatedEvent myEvent, string eventId);      // update event
+
+        Task<string> AutoUpdateJobStatus(CalendarService service, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId); // auto update event
 
         Task<string> UpdateJobStatus(string token, string calendarId, JobWorkingStatus jobWorkingStatus, string eventId); // update job status
 

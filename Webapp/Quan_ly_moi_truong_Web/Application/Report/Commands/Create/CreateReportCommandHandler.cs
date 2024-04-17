@@ -59,19 +59,19 @@ namespace Application.Report.Commands.Create
             });
 
             //Notification report
-            var msg = "Bạn vừa nhận được báo cáo";
+            var msg = "Bạn vừa nhận được báo cáo cần được xử lý";
 
             var notification = new Domain.Entities.Notification.Notifications
             {
                 Id = Guid.NewGuid(),
                 Sender = reportResult.IssuerEmail,
-                Username = "ambatuadmin@vesinhdanang.xyz",
+                Username = "hr@vesinhdanang.xyz",
                 Message = msg,
                 MessageType = "Single",
                 NotificationDateTime = DateTime.Now,
             };
             await notificationRepository.CreateNotification(notification);
-            await notifyService.SendToUser("ambatuadmin@vesinhdanang.xyz", msg);
+            await notifyService.SendToUser("hr@vesinhdanang.xyz", msg);
             return new ReportFormatRecord(reportResult);
         }
     }
