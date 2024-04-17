@@ -90,7 +90,6 @@ const FormType = (props: Field) => {
       const input = document.getElementById("pac-input");
       if (input instanceof HTMLInputElement) {
         const center = { lat: 16.047079, lng: 108.20623 };
-        // Create a bounding box with sides ~10km away from the center point
         const defaultBounds = {
           north: center.lat + 0.1,
           south: center.lat - 0.1,
@@ -108,16 +107,14 @@ const FormType = (props: Field) => {
           options
         );
 
-        // Add event listener to handle place selection
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
-          console.log(place); // Handle the selected place here
+          console.log(place);
           if (place.geometry && place.geometry.location) {
             const latitude = place.geometry.location.lat();
             const longitude = place.geometry.location.lng();
             console.log("Latitude:", latitude);
             console.log("Longitude:", longitude);
-            // Xử lý tọa độ latitude và longitude ở đây
           }
         });
         console.log(places);

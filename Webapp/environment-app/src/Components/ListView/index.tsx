@@ -55,7 +55,7 @@ export const ListView = forwardRef((props: Props, ref) => {
       const _data = await res.data;
       const data = transform ? transform(_data) : _data;
       setData({
-        data: filter ? data.filter(filter) : data, // Reverse the order of data here
+        data: filter ? data.filter(filter) : data,
         page: 1,
         size: 10,
       });

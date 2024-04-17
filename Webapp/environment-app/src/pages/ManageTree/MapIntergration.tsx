@@ -120,7 +120,6 @@ export function GoogleMap(props: GoogleMapProps) {
     //   setLocation(data.result[0].geometry.location);
     // }
     const center = { lat: 16.047079, lng: 108.20623 };
-    // Create a bounding box with sides ~10km away from the center point
     const defaultBounds = {
       north: center.lat + 0.1,
       south: center.lat - 0.1,
@@ -130,7 +129,7 @@ export function GoogleMap(props: GoogleMapProps) {
     const input = e.target as HTMLInputElement;
     const options = {
       bounds: defaultBounds,
-      componentRestrictions: { country: "VN" }, // Specify the country code (e.g., VN for Vietnam)
+      componentRestrictions: { country: "VN" },
       fields: ["address_components", "geometry", "icon", "name"],
       strictBounds: false,
     };
@@ -139,10 +138,9 @@ export function GoogleMap(props: GoogleMapProps) {
       options
     );
 
-    // Add event listener to handle place selection
     autocomplete.addListener("place_changed", () => {
       const place = autocomplete.getPlace();
-      console.log(place); // Handle the selected place here
+      console.log(place);
       if (place.geometry && place.geometry.location) {
         const latitude = place.geometry.location.lat();
         const longitude = place.geometry.location.lng();
@@ -150,7 +148,6 @@ export function GoogleMap(props: GoogleMapProps) {
         setLocation({ lat: latitude, lng: longitude });
         console.log("Latitude:", latitude);
         console.log("Longitude:", longitude);
-        // Xử lý tọa độ latitude và longitude ở đây
       }
     });
   };

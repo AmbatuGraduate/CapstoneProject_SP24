@@ -47,7 +47,7 @@
   font-size: 16px;
   padding: 20px;
   width: 90%;
-  min-height: 100px; // Changed from height to min-height
+  min-height: 100px;
   background-color: #f8f9fa;
   color: #495057;
   border-radius: 4px;
@@ -61,7 +61,7 @@
   outline: none;
   border-color: #80bdff;
   box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  min-height: 100px; // Changed from height to min-height
+  min-height: 100px;
 }
 
 .swal2-radio {
