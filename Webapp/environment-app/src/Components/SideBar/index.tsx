@@ -74,7 +74,7 @@ const Sidebar = () => {
             </NavLink>
           </li>
 
-          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).department == "Quan ly cay xanh")) && (
+          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).departmentEmail.includes("cayxanh"))) && (
             <li className="listItem">
               <NavLink to="/manage-tree" className="menuLink flex ">
                 <LuTrees className="icon" />
@@ -85,7 +85,7 @@ const Sidebar = () => {
             </li>
           )}
 
-          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && (token.accessToken).departmentEmail.includes("cayxanh"))) && (
+          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).departmentEmail.includes("cayxanh"))) && (
             <li className="listItem">
               <NavLink to="/manage-treetrim-schedule" className="menuLink flex">
                 <GiTreeBranch className="icon" />
@@ -96,7 +96,7 @@ const Sidebar = () => {
             </li>
           )}
 
-          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && (token.accessToken).departmentEmail.includes("quetdon"))) && (
+          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).departmentEmail.includes("quetdon"))) && (
             <li className="listItem">
               <NavLink to="/manage-cleaning-schedule" className="menuLink flex">
                 <FaTreeCity className="icon" />
@@ -107,7 +107,7 @@ const Sidebar = () => {
             </li>
           )}
 
-          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && (token.accessToken).departmentEmail.includes("thugom"))) && (
+          {(JSON.parse(token.accessToken).role == "Admin" || (JSON.parse(token.accessToken).role == "Manager" && JSON.parse(token.accessToken).departmentEmail.includes("thugom"))) && (
             <li className="listItem">
               <NavLink
                 to="/manage-garbagecollection-schedule"
