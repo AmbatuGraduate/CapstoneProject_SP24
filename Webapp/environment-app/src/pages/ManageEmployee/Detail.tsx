@@ -80,7 +80,7 @@ export const DetailEmployee = () => {
     {
       header: "Địa Chỉ Cụ Thể",
       accessorFn(row) {
-        return <h6>{row.myEvent.location}</h6>;
+        return <h6 style={{ padding: '0 1rem' }}>{row.myEvent.location}</h6>;
       },
       width: "40%",
     },
@@ -155,16 +155,6 @@ export const DetailEmployee = () => {
             <p className="employeeCode"><span className="infoTextLabel">Số điện thoại</span> <span className="infoText">{data?.phoneNumber}</span></p>
             <p className="employeeCode"><span className="infoTextLabel">Bộ phận</span> <span className="infoText">{data?.department}</span></p>
             <p className="employeeCode"><span className="infoTextLabel">Địa chỉ thường trú</span> <span className="infoText">{data?.address}</span></p>
-
-          </div>
-
-        </div>
-
-
-        <div className="detail-content-parent">
-
-          <div className="button-cover grid">
-
 
           </div>
         </div>

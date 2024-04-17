@@ -13,8 +13,8 @@ export const EmployeeGroup = () => {
   const ref = useRef<any>();
   const { email = "" } = useParams();
 
-  const handleDelete = async (id: string) => {
-    await useApi.delete(EMPLOYEE_DELETE.replace(":id", email));
+  const handleDelete = async (email: string) => {
+    await useApi.delete(EMPLOYEE_DELETE.replace(":email", email));
     ref.current?.reload();
   };
 
@@ -57,13 +57,6 @@ export const EmployeeGroup = () => {
       width: "10%",
     },
     {
-      header: "Bộ Phận",
-      accessorFn(row) {
-        return <h6 className="shortText">{row.department}</h6>;
-      },
-      width: "10%",
-    },
-    {
       header: "Chức Vụ",
       accessorFn(row) {
         return <h6 className="shortText">{row.role}</h6>;
@@ -73,18 +66,14 @@ export const EmployeeGroup = () => {
     {
       header: "Ảnh",
       accessorFn(row) {
-        if (row.picture == null) {
+        if (row.picture == "") {
           return (
             <h6 className="shortText">
               <img src="https://i.imgur.com/CfPvx7O.jpg" />
             </h6>
           );
         } else {
-          return (
-            <h6 className="shortText">
-              <img src={row.picture} />
-            </h6>
-          );
+          return <h6 className="shortText"><img src={row.picture} /></h6>;
         }
       },
       width: "10%",

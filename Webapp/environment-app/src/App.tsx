@@ -31,6 +31,7 @@ import { CreateGroup } from "./pages/ManageGroup/Create";
 import { Profile } from "./pages/User/Profile";
 import { DetailGroup } from "./pages/ManageGroup/Detail";
 import { EmployeeGroup } from "./pages/ManageGroup/EmployeeGr";
+import { UpdateGroup } from "./pages/ManageGroup/Update";
 
 
 function App() {
@@ -167,6 +168,10 @@ function App() {
         {
           path: "/manage-group/detail/:email",
           element: <DetailGroup />,
+        },
+        {
+          path: "/manage-group/:email/update",
+          element: <UpdateGroup />,
         },
         {
           path: "/myprofile/:email",
