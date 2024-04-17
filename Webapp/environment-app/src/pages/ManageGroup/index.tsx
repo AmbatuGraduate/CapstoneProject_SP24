@@ -9,13 +9,12 @@ import { useCookies } from "react-cookie";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageGroup = () => {
-  const { email = "" } = useParams();
   const navigate = useNavigate();
   const ref = useRef<any>();
   const [token] = useCookies(["accessToken"]);
   // TODO get list
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (email: string) => {
     await useApi.delete(GROUP_DELETE.replace(":email", email));
     ref.current?.reload();
   };
@@ -69,14 +68,8 @@ export const ManageGroup = () => {
       header: "Số nhân viên",
       accessorFn(row) {
         return (
-          <h6 className="shortText">
-            <Link
-              className="linkCode"
-              style={{ fontWeight: "bold" }}
-              to={`/manage-group/employee/${row.email}`}
-            >
+          <h6 className="shortText">        
               {row.directMembersCount}
-            </Link>
           </h6>
         );
       },
