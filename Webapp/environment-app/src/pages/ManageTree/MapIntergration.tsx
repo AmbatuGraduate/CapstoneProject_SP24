@@ -47,9 +47,8 @@ export default function SimpleMap(props: SimpleMapProps) {
     // Important! Always set the container height explicitly
     <div
       style={{
-        height: "100%",
+        height: "50vh",
         width: "100%",
-        padding: "3rem",
       }}
     >
       <GoogleMapReact

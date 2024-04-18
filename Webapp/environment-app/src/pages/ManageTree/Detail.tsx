@@ -38,11 +38,12 @@ export const DetailTree = () => {
       size={60}
     />
   ) : (
-    <div className="main-layout row">
+    <div style={{ display: 'flex' }} className="main-layout row">
       <h4 className="title">Xem Thông Tin Chi Tiết Cây</h4>
       <hr className="line" />
 
       <div className="detail-content col-md-6">
+
         <div className="detail-cover">
           <div className="detail-content-parent">
             <div className="detail-content-child-label">Mã Số Cây: </div>
@@ -52,8 +53,18 @@ export const DetailTree = () => {
 
         <div className="detail-cover">
           <div className="detail-content-parent">
-            <div className="detail-content-child-label">Tên Đường: </div>
+            <div className="detail-content-child-label">Vị Trí Địa Lý: </div>
             <div className="detail-content-child-value">{data?.streetName}</div>
+
+          </div>
+          <div style={{
+            alignSelf: 'center',
+            justifyContent: 'center',
+            margin: '4rem',
+            boxShadow: '0px 6px 12px rgba(0, 0, 0, 0.5)',
+
+          }}>
+            <SimpleMap location={data.streetName} />
           </div>
         </div>
 
@@ -120,10 +131,9 @@ export const DetailTree = () => {
           </Link>
         </div>
 
-        <div className="map col-md-6">
-          <SimpleMap location={data.streetName} />
-        </div>
+
       </div>
+
     </div>
   );
 };
