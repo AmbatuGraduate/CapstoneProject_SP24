@@ -4,9 +4,10 @@ import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6azBbhclWDNTysvGxe9fk6A0s97mFOq8&callback=initMap&v=weekly"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBz_TEfwMOJ-vvMd4Z8r0F365Z9YdUMQiw&v=weekly"
   defer
 ></script>;
+
 const AnyReactComponent = (props: any) => (
   <div>
     <img src={Marker} style={{ width: "30px" }} alt="" />
@@ -29,7 +30,7 @@ export default function SimpleMap(props: SimpleMapProps) {
   const fetch = async () => {
     const addressURI = encodeURI(props?.location || "Da nang");
     const res = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyD6azBbhclWDNTysvGxe9fk6A0s97mFOq8`
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyBz_TEfwMOJ-vvMd4Z8r0F365Z9YdUMQiw`
     );
     const data = res.data;
     console.log(data);
@@ -171,7 +172,7 @@ export function GoogleMap(props: GoogleMapProps) {
         </small> */}
       </div>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyD6azBbhclWDNTysvGxe9fk6A0s97mFOq8" }}
+        bootstrapURLKeys={{ key: "AIzaSyBz_TEfwMOJ-vvMd4Z8r0F365Z9YdUMQiw" }}
         defaultCenter={defaultProps.center}
         center={location}
         defaultZoom={defaultProps.zoom}
