@@ -87,7 +87,7 @@ export const DetailTreeTrimSchedule = () => {
                             alignSelf: 'center',
                             justifyContent: 'center',
                             margin: '4rem',
-                            boxShadow: '0px 6px 12px rgba(0, 0, 0, 0.5)',
+                            boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.3)',
 
                         }}>
                         <SimpleMap location={data.myEvent.location} />
