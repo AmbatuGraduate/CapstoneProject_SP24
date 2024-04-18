@@ -62,7 +62,7 @@ namespace Infrastructure.Persistence.Repositories
 
                 var request = service.Users.Get(userEmail);
                 var user = await request.ExecuteAsync();
-                var userDb = GetByEmail(user.PrimaryEmail);
+                var userDb = GetByEmail(user.PrimaryEmail );
 
                 string? photoUrl = null;
                 try
