@@ -11,16 +11,19 @@ namespace Application.Report.Commands.Create
     public class CreateReportCommandHandler : IRequestHandler<CreateReportCommand, ErrorOr<ReportFormatRecord>>
     {
         private readonly IReportService reportRepository;
+        private readonly IUserRepository userRepository;
 
         //For notification
         private readonly INotifyService notifyService;
         private readonly INotificationRepository notificationRepository;
 
-        public CreateReportCommandHandler(IReportService reportRepository, INotifyService notifyService, INotificationRepository notificationRepository)
+        public CreateReportCommandHandler(IReportService reportRepository, INotifyService notifyService,
+                INotificationRepository notificationRepository,
+                IUserRepository userRepository)
         {
             this.reportRepository = reportRepository;
 
-
+            this.userRepository = userRepository;
             this.notifyService = notifyService;
             this.notificationRepository = notificationRepository;
         }
@@ -46,8 +49,6 @@ namespace Application.Report.Commands.Create
             // add to google
             var reportResult = await reportRepository.CreateReport(createReport);
 
-            // add to db
-
             await reportRepository.AddReport(new Reports
             {
                 ReportId = reportDbId,
@@ -58,20 +59,25 @@ namespace Application.Report.Commands.Create
                 ResponseId = "",
             });
 
-            //Notification report
+            var managers = userRepository.GetAll().Where(x => x.RoleId == Guid.Parse("abccde85-c7dc-4f78-9e4e-b1b3e7abee84")).ToList();
+            //Notification report 
             var msg = "Bạn vừa nhận được báo cáo cần được xử lý";
 
-            var notification = new Domain.Entities.Notification.Notifications
+            foreach(var user in managers)
             {
-                Id = Guid.NewGuid(),
-                Sender = reportResult.IssuerEmail,
-                Username = "hr@vesinhdanang.xyz",
-                Message = msg,
-                MessageType = "Single",
-                NotificationDateTime = DateTime.Now,
-            };
-            await notificationRepository.CreateNotification(notification);
-            await notifyService.SendToUser("hr@vesinhdanang.xyz", msg);
+                var notification = new Domain.Entities.Notification.Notifications
+                {
+                    Id = Guid.NewGuid(),
+                    Sender = reportResult.IssuerEmail,
+                    Username = user.Email,
+                    Message = msg,
+                    MessageType = "Single",
+                    NotificationDateTime = DateTime.Now,
+                };
+                await notificationRepository.CreateNotification(notification);
+                await notifyService.SendToUser(user.Email, msg);
+            }
+
             return new ReportFormatRecord(reportResult);
         }
     }
