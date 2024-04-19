@@ -145,7 +145,7 @@ export const DetailReport = () => {
 
   return data ? (
     <div className="main-layout row">
-      <div className="detail-cover-report" style={{ display: 'flex', justifyContent: "space-between", paddingTop: 20 }}>
+      <div className="detail-cover-report" style={{ display: 'flex', justifyContent: "space-between", paddingTop: 20, backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
         <div className="detail-content-right">
           <div style={{ display: 'flex' }}>
             <img
@@ -173,11 +173,11 @@ export const DetailReport = () => {
 
       </div>
       <hr className="line" style={{ marginTop: '1rem', width: '90%', marginLeft: 'auto', marginRight: 'auto' }} />
-      <div className="report-form">
+      <div style={{ backgroundColor: 'rgba(216, 216, 216, 0.1)' }} className="report-form">
         <h5 className="title">
           {data.reportFormat?.reportSubject.replace("[Report]", "")}
         </h5>
-        <div className="detail-cover-report">
+        <div style={{ backgroundColor: 'rgba(216, 216, 216, 0.1)' }} className="detail-cover-report">
           <div className="image-container">
             <ImageGallery
               items={images}
@@ -279,14 +279,25 @@ export const DetailReport = () => {
           textDecorationColor: "lightgrey"
         }}>Địa Điểm</h5>
 
-        <div className="map" style={{ height: "500px" }}>
-          <p style={{ paddingLeft: 30 }}>{data.reportFormat?.issueLocation}</p>
-          <SimpleMap location={data.reportFormat?.issueLocation} />
+        <div style={{ height: "50vh", width: '100%' }}>
+          <p style={{ paddingLeft: '2rem' }}>{data.reportFormat?.issueLocation}</p>
+          <div style={{
+            alignSelf: 'center',
+            justifyContent: 'center',
+            marginRight: '10%',
+            marginLeft: '10%',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.3)',
+          }}>
+            <SimpleMap location={data.reportFormat?.issueLocation} />
+
+          </div>
         </div>
+        <br></br>
+        <br></br>
+        <br></br>
 
-        <hr className="line" style={{ opacity: '.1' }} />
 
-        <div className="detail-cover-report" >
+        <div style={{ marginTop: '5rem' }} className="detail-cover-report" >
           <div className="detail-content-right impact" style={{ display: 'grid', marginTop: '1rem', marginRight: '1rem', marginBottom: '1rem', width: '100%' }}>
             <h5 style={{ fontWeight: "bold", textDecoration: "underline", textDecorationColor: 'lightgrey' }}>Phản Hồi:</h5>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -295,7 +306,7 @@ export const DetailReport = () => {
           </div>
         </div>
 
-        <div className="button-cover grid">
+        <div style={{ marginTop: 20, padding: 20 }} className="button-cover grid">
           <Button
             className="btnCancel"
             variant="danger"
@@ -303,7 +314,7 @@ export const DetailReport = () => {
           >
             Trở Về
           </Button>
-          {(JSON.parse(token.accessToken).role == "Admin" && data.reportFormat?.reportStatus == "UnResolved") && (
+          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role.toLowerCase() == "HR".toLowerCase() && data.reportFormat?.reportStatus == "UnResolved") && (
             <Button onClick={handleResponseClick} className="btnLink" variant="success">
               Phản Hồi
             </Button>

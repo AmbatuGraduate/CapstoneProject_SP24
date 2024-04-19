@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { EMPLOYEE_LIST, TREE_ADD, useApi } from "../../Api";
+import { EMPLOYEE_LIST, GROUP_ADD, TREE_ADD, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
@@ -44,8 +44,13 @@ export const CreateGroup = () => {
     },
     {
       label: "Quản lý",
-      formType: "shortInput",
+      formType: "select",
       keyName: "owners",
+      optionExtra: {
+        url: EMPLOYEE_LIST,
+        _key: "email",
+        _value: "email",
+      },
     },
   ];
 
@@ -53,7 +58,7 @@ export const CreateGroup = () => {
     setIsLoading(true);
 
     try {
-      await useApi.post(TREE_ADD, {
+      await useApi.post(GROUP_ADD, {
         ...data,
         adminCreated: true,
       });
@@ -63,7 +68,7 @@ export const CreateGroup = () => {
         'success'
       );
       ref.current?.reload();
-      navigate("/manage-tree");
+      navigate("/manage-group");
     } catch (error) {
       console.error("Error creating tree:", error);
       Swal.fire(

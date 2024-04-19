@@ -68,7 +68,7 @@ export default function TasksList({ navigation }) {
             var calendarId;
             if (department.toString().toLowerCase().includes('cay xanh')) {
                 calendarId = 1;
-            } else if (department.toString().toLowerCase().includes('ve sinh')) {
+            } else if (department.toString().toLowerCase().includes('thu gom')) {
                 calendarId = 2;
             } else if (department.toString().toLowerCase().includes('quet don')) {
                 calendarId = 3;

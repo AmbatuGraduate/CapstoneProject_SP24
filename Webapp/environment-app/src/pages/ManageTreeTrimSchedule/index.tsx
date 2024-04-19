@@ -6,6 +6,7 @@ import { ListView } from "../../Components/ListView";
 import { dayFormat, taskStatus, timeFormat } from "../../utils";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 import { MdAddCircleOutline } from "react-icons/md";
+import Swal from "sweetalert2";
 
 export const ManageTreeTrimSchedule = () => {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
@@ -16,6 +17,9 @@ export const ManageTreeTrimSchedule = () => {
   const [selectedRowId, setSelectedRowId] = useState(null); // Thêm state mới để lưu trữ id của hàng được chọn
   const navigate = useNavigate();
   const ref = useRef<any>();
+
+  const [selectedEmployeeIds, setSelectedEmployeeIds] = useState<string[]>([]);
+
 
   type employee = {
     id: string;
@@ -40,31 +44,33 @@ export const ManageTreeTrimSchedule = () => {
 
     try {
       // Kiểm tra xem đã chọn nhân viên chưa
-      if (!selectedEmployeeId) {
+      if (selectedEmployeeIds.length === 0) {
         throw new Error("Vui lòng chọn nhân viên");
       }
 
       // Lấy thông tin nhân viên được chọn từ danh sách nhân viên
-      const selectedEmployee = employees.find((employee) => employee.email === selectedEmployeeId);
+      const selectedEmployees = employees.filter((employee) => selectedEmployeeIds.includes(employee.email));
 
-      if (!selectedEmployee) {
+
+
+      if (selectedEmployees.length === 0) {
         throw new Error("Không tìm thấy thông tin của nhân viên được chọn.");
       }
 
-      // Tạo đối tượng attendee từ thông tin nhân viên
-      const attendee = {
-        name: selectedEmployee.name,
-        email: selectedEmployee.email
-      };
+      // Tạo mảng attendee từ thông tin nhân viên
+      const attendees = selectedEmployees.map(employee => ({
+        name: employee.name,
+        email: employee.email
+      }));
+
 
       // Lấy dữ liệu hiện tại của hàng được chọn
       // @ts-ignore or @ts-expect-error
       const response = await useApi.get(TREE_TRIM_SCHEDULE_DETAIL.replace(":id", selectedRowId));
       const selectedRowData = response.data.myEvent;
-
       const updatedRowData = {
         summary: selectedRowData.summary,
-        description: selectedRowData.description,
+        description: selectedRowData.description ? selectedRowData.description : "",
         location: selectedRowData.location,
         start: {
           dateTime: new Date(selectedRowData.start).toISOString()
@@ -72,25 +78,38 @@ export const ManageTreeTrimSchedule = () => {
         end: {
           dateTime: new Date(selectedRowData.end).toISOString()
         },
-        attendees: [
-          {
-            name: attendee.name,
-            email: attendee.email
-          }
-        ]
+        attendees: attendees
       };
+
+      console.log("data: " + JSON.stringify(updatedRowData));
+
+      Swal.fire({
+        title: 'Đang cập nhật...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
 
 
       // Gửi yêu cầu cập nhật lịch cắt tỉa
       // @ts-ignore or @ts-expect-error
+
       await useApi.post(TREE_TRIM_SCHEDULE_UPDATE.replace(":id", selectedRowId), updatedRowData);
+      Swal.close();
+      Swal.fire('Thành công', 'Đã thêm nhân viên vào lịch.', 'success');
 
       // Reload danh sách sau khi cập nhật thành công
       ref.current.reload();
       setShowModal(false); // Đóng modal sau khi gửi yêu cầu thành công
     } catch (error) {
       console.error("Lỗi khi xử lý dữ liệu nhân viên:", error);
-      // Xử lý lỗi tại đây (ví dụ: hiển thị thông báo lỗi cho người dùng)
+      Swal.fire({
+        icon: 'error',
+        title: 'Không Thành Công',
+        text: "Lỗi khi cập nhật nhân viên cho lịch",
+      });
     }
   };
 
@@ -273,12 +292,14 @@ export const ManageTreeTrimSchedule = () => {
               <MdAddCircleOutline className="iconAdd" />
               Thêm Lịch
             </Button>
-
             <Modal show={showModal} onHide={() => setShowModal(false)} backdrop={false}
               style={{
                 top: modalPosition.top,
                 left: modalPosition.left,
                 width: "350px",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between"
               }}>
               <Modal.Header closeButton>
                 <Modal.Title>Thêm Nhân Viên Thực Hiện</Modal.Title>
@@ -287,22 +308,39 @@ export const ManageTreeTrimSchedule = () => {
                 <form onSubmit={handleSubmit}>
                   <label>
                     Chọn nhân viên:
-                    <select
-                      style={{ width: "300px" }}
-                      value={selectedEmployeeId}
-                      onChange={(e) => setSelectedEmployeeId(e.target.value)}
-                    >
-                      <option value="">Chọn nhân viên</option>
-                      {employees.map((employee) => (
-                        <option key={employee.id} value={employee.email}>
-                          {employee.name}
-                        </option>
-                      ))}
-                    </select>
+                    {employees.map((employee) => (
+                      <div key={employee.id} style={{ margin: "10px 0" }}>
+                        <input
+                          type="checkbox"
+                          id={employee.email}
+                          value={employee.email}
+                          checked={selectedEmployeeIds.includes(employee.email)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectedEmployeeIds([...selectedEmployeeIds, e.target.value]);
+                            } else {
+                              setSelectedEmployeeIds(selectedEmployeeIds.filter(id => id !== e.target.value));
+                            }
+                          }}
+                          style={{ marginRight: "10px" }}
+                        />
+                        <label htmlFor={employee.email}>{employee.name}</label>
+                      </div>
+                    ))}
                   </label>
-                  <button type="submit">Xác nhận</button>
+                  <div style={{ display: "flex", justifyContent: "center", paddingBottom: "20px" }}>
+                    <button className="addEmployeeBtn" type="submit" style={{
+                      padding: "10px 20px",
+                      borderRadius: "5px",
+                      backgroundColor: "#007bff",
+                      color: "white",
+                      border: "none"
+                    }}>
+                      Xác nhận</button>
+                  </div>
                 </form>
               </Modal.Body>
+
             </Modal>
           </>
         }

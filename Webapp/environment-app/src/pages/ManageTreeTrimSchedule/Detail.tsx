@@ -41,9 +41,7 @@ export const DetailTreeTrimSchedule = () => {
         <div className="main-layout row">
             <h4 className="title">Xem Thông Tin Chi Tiết Lịch Cắt Tỉa</h4>
             <hr className="line" />
-            <div className="map col-md-6">
-                <SimpleMap location={data.myEvent.location} />
-            </div>
+
             <div className="detail-content col-md-8">
                 <div className="detail-cover">
                     <div className="detail-content-parent">
@@ -83,6 +81,16 @@ export const DetailTreeTrimSchedule = () => {
                         <div className="detail-content-child-value">
                             {data?.myEvent.location}
                         </div>
+                    </div>
+                    <div
+                        style={{
+                            alignSelf: 'center',
+                            justifyContent: 'center',
+                            margin: '4rem',
+                            boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.3)',
+
+                        }}>
+                        <SimpleMap location={data.myEvent.location} />
                     </div>
                 </div>
                 <div className="detail-cover">

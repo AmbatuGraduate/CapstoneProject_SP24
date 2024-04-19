@@ -259,11 +259,13 @@
         width: 100%;
         color: #51587e;
         margin-right: 200px;
+        padding-top: 1rem;
         font-weight: 600;
       }
 
       .detail-content-child-value {
         font-size: var(--h2FontSize);
+        padding-top: 1rem;
         text-align: right;
         white-space: nowrap;
       }
@@ -309,6 +311,8 @@
   .detail-cover-report {
     display: flex;
     justify-content: space-between;
+
+
 
     .image-container {
       width: 40%;
@@ -370,4 +374,17 @@
     top: 50%;
     transform: translateY(-50%);
   }
+}
+
+.addEmployeeBtn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.addEmployeeBtn:hover {
+  background-color: #156e1a;
 }

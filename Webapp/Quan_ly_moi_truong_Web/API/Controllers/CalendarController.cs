@@ -346,14 +346,27 @@ namespace API.Controllers
                 }
                 accessToken = token.Value.accessToken;
             }
-            var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
-            ErrorOr<MyUpdatedEventResult> list = await mediator.Send(new UpdateCalendarCommand(accessToken, calendarId.Value, myEvent, eventId));
-            if (list.IsError)
-            {
-                return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description);
-            }
+            // ... other code ...
 
-            return Ok(list);
+            try
+            {
+                var calendarId = await mediator.Send(new GetCalendarIdByCalendarTypeQuery(calendarTypeEnum));
+                ErrorOr<MyUpdatedEventResult> list = await mediator.Send(new UpdateCalendarCommand(accessToken, calendarId.Value, myEvent, eventId));
+                if (list.IsError)
+                {
+                    return Problem(statusCode: StatusCodes.Status400BadRequest, title: list.FirstError.Description, detail: list.FirstError.ToString());
+                }
+
+                return Ok(list);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details
+                System.Diagnostics.Debug.WriteLine(ex.ToString());
+
+                // Return a response with the exception details
+                return Problem(statusCode: StatusCodes.Status500InternalServerError, title: "An error occurred while processing your request", detail: ex.ToString());
+            }
         }
 
         // update job status
