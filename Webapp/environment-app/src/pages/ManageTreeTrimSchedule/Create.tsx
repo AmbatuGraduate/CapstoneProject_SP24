@@ -51,10 +51,10 @@ export const CreateTreeTrimSchedule = () => {
       formType: "input",
       keyName: "location",
       googleAddress: true,
-      value: address,
-      onChange: (e) => {
-        setAddress(e.target.value);
-      },
+      // value: address,
+      // onChange: (e) => {
+      //   setAddress(e.target.value);
+      // },
       placeholder: "Nhập địa chỉ",
     },
     {
