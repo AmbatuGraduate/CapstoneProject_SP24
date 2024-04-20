@@ -30,7 +30,7 @@ const Top = () => {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Credentials": "true",
-          Authorization: `Bearer ${token.accessToken}`,
+          // Authorization: `Bearer ${token.accessToken}`,
         },
         credentials: "include",
       });

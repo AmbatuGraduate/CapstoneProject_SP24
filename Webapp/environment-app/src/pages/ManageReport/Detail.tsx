@@ -314,7 +314,7 @@ export const DetailReport = () => {
           >
             Trở Về
           </Button>
-          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role.toLowerCase() == "HR".toLowerCase() && data.reportFormat?.reportStatus == "UnResolved") && (
+          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role.toLowerCase() == "HR".toLowerCase() || JSON.parse(token.accessToken).role.toLowerCase() == "Manager".toLowerCase() && data.reportFormat?.reportStatus == "UnResolved") && (
             <Button onClick={handleResponseClick} className="btnLink" variant="success">
               Phản Hồi
             </Button>

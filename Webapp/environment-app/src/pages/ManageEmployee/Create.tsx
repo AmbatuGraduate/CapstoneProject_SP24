@@ -83,10 +83,19 @@ export const CreateEmployee = () => {
     setIsLoading(true);
 
     try {
+      Swal.fire({
+        title: 'Đang thêm tài khoản nhân viên...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       await useApi.post(EMPLOYEE_ADD, {
         ...data,
         userRole: Number(data?.userRole)
       });
+      Swal.close();
       Swal.fire(
         'Thành công!',
         'Thêm nhân viên mới thành công!',

@@ -27,8 +27,8 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]
+/*        [Authorize(Roles = "Admin, Manager")]
+        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN)]*/
         public async Task<IActionResult> Get()
         {
             ErrorOr<List<TreeTypeResult>> list = await mediator.Send(new ListTreeTypeQuery());
