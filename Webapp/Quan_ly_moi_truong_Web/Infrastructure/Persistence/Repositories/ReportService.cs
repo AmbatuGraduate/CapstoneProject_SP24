@@ -61,7 +61,12 @@ namespace Infrastructure.Persistence.Repositories
                     Body = emailBody.ToString(),
                 };
                 email.CC.Add("ambatuadmin@vesinhdanang.xyz");
-                email.To.Add("hr@vesinhdanang.xyz");
+
+                var manager = context.Users.Where(x => x.RoleId == Guid.Parse("abccde85-c7dc-4f78-9e4e-b1b3e7abee84") && x.DepartmentId == "01egqt2p26jkcil").ToList();
+                foreach (var user in manager)
+                {
+                    email.To.Add(user.Email);
+                }
 
                 // add images
                 if (reportFormat.ReportImages != null)
@@ -82,7 +87,6 @@ namespace Infrastructure.Persistence.Repositories
                 ReportFormat r = await SendEmail(email, reportFormat.AccessToken);
 
                 // add to db
-
                 r.IssuerEmail = reportFormat.IssuerEmail;
                 return r;
             }
