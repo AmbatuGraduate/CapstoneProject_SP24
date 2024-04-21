@@ -4,7 +4,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import Geocoder from "react-native-geocoding";
 
 
-Geocoder.init('AIzaSyDpDsjnmVkeWs0myDwrK0dHgj_fFMXYAIo');
+Geocoder.init('AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU');
 
 export default function SharedMap({ route }) {
     const locationParam = route.params.issueLocation || route.params.address;

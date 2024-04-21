@@ -4,7 +4,7 @@ import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 <script
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpDsjnmVkeWs0myDwrK0dHgj_fFMXYAIo&v=weekly"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU&v=weekly"
   defer
 ></script>;
 
@@ -30,7 +30,7 @@ export default function SimpleMap(props: SimpleMapProps) {
   const fetch = async () => {
     const addressURI = encodeURI(props?.location || "Da nang");
     const res = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyDpDsjnmVkeWs0myDwrK0dHgj_fFMXYAIo`
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU`
     );
     const data = res.data;
     console.log(data);
@@ -52,7 +52,7 @@ export default function SimpleMap(props: SimpleMapProps) {
       }}
     >
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyDpDsjnmVkeWs0myDwrK0dHgj_fFMXYAIo" }}
+        bootstrapURLKeys={{ key: "AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU" }}
         defaultZoom={15}
         center={treeLocation}
       >
@@ -171,7 +171,7 @@ export function GoogleMap(props: GoogleMapProps) {
         </small> */}
       </div>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: "AIzaSyDpDsjnmVkeWs0myDwrK0dHgj_fFMXYAIo" }}
+        bootstrapURLKeys={{ key: "AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU" }}
         defaultCenter={defaultProps.center}
         center={location}
         defaultZoom={defaultProps.zoom}
