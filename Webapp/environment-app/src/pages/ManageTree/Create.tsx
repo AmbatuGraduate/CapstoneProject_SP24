@@ -161,12 +161,21 @@ export const CreateTree = () => {
   const handleSubmit = async (data: Record<string, any>) => {
     setIsLoading(true);
     try {
+      Swal.fire({
+        title: 'Đang thêm cây...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       await useApi.post(TREE_ADD, {
         ...data,
         cutTime: data.cutTime,
         plantTime: data.plantTime,
         isExist: true,
       });
+      Swal.close();
       Swal.fire("Thành công!", "Thêm cây mới thành công!", "success");
       ref.current?.reload();
       navigate("/manage-tree");
