@@ -174,8 +174,7 @@ dependencies {
     } else {
         implementation jscFlavor
     }
-
-    implementation('com.google.android.gms:play-services-location:21.0.1')
+    implementation("com.google.android.gms:play-services-location:${PLAY_SERVICES_LOCATION_VERSION}")
 }
 
 apply from: new File(["node", "--print", "require.resolve('@react-native-community/cli-platform-android/package.json')"].execute(null, rootDir).text.trim(), "../native_modules.gradle");
