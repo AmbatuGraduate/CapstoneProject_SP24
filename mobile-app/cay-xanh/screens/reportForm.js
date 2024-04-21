@@ -12,6 +12,9 @@ import { Camera } from 'expo-camera';
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import * as Location from 'expo-location';
 import Geocoder from "react-native-geocoding";
+import IntentLauncher from 'expo';
+import { IntentLauncherAndroid } from 'expo';
+
 
 
 
@@ -51,11 +54,13 @@ export default function ReportForm({ onFormSuccess }) {
         let providerStatus = await Location.getProviderStatusAsync();
         if (!providerStatus.locationServicesEnabled || !providerStatus.gpsAvailable) {
             alert('Please enable location services!');
-            IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS);
+            IntentLauncherAndroid.startActivityAsync(
+                IntentLauncherAndroid.ACTION_LOCATION_SOURCE_SETTINGS
+            );
             return;
         }
 
-        let location = await Location.getCurrentPositionAsync({});
+        let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
         const { latitude, longitude } = location.coords;
 
         // Reverse geocoding
