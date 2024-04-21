@@ -51,10 +51,10 @@ export const CreateTreeTrimSchedule = () => {
       formType: "input",
       keyName: "location",
       googleAddress: true,
-      value: address,
-      onChange: (e) => {
-        setAddress(e.target.value);
-      },
+      // value: address,
+      // onChange: (e) => {
+      //   setAddress(e.target.value);
+      // },
       placeholder: "Nhập địa chỉ",
     },
     {
@@ -126,9 +126,16 @@ export const CreateTreeTrimSchedule = () => {
 
       delete requestData["start.dateTime"];
       delete requestData["end.dateTime"];
-
+      Swal.fire({
+        title: 'Đang thêm lịch...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       await useApi.post(TREE_TRIM_SCHEDULE_ADD, requestData);
-
+      Swal.close();
       Swal.fire(
         'Thành công!',
         'Thêm lịch cắt tỉa mới thành công!',

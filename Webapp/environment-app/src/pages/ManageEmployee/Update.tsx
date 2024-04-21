@@ -103,10 +103,19 @@ export const UpdateEmployee = () => {
     setIsLoading(true);
 
     try {
+      Swal.fire({
+        title: 'Đang cập nhật nhân viên...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       await useApi.put(EMPLOYEE_UPDATE, {
         ...data,
         password: ""
       });
+      Swal.close();
       Swal.fire(
         'Thành công!',
         'Cập nhật nhân viên thành công!',

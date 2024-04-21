@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
     EMPLOYEE_LIST,
@@ -7,11 +7,14 @@ import {
   useApi,
 } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
+import Swal from "sweetalert2";
 
 export const UpdateGroup = () => {
   const navigate = useNavigate();
   const { email = "" } = useParams();
+  const ref = useRef<any>();
   const [data, setData] = useState<any>();
+  const [, setIsLoading] = useState(false);
 
   const fetch = async () => {
     try {
@@ -71,18 +74,37 @@ export const UpdateGroup = () => {
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
-    const cutTime = () => {
-      const newCutTime = new Date(data.plantTime || new Date());
-      newCutTime.setMonth(
-        newCutTime.getMonth() + Number(data.intervalCutTime || 0) * 3
+    
+    try{
+      Swal.fire({
+        title: 'Đang cập nhật bộ phận...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      await useApi.post(GROUP_UPDATE.replace(":email", email), {
+        ...data,
+      });
+      Swal.close();
+      Swal.fire(
+        'Thành công!',
+        'Cập nhật bộ phận thành công!',
+        'success'
       );
-      return newCutTime;
-    };
-
-    await useApi.post(GROUP_UPDATE.replace(":email", email), {
-      ...data,
-    });
-    console.log("UpdateTree", data);
+      ref.current?.reload();
+      navigate(-1)
+    } catch (error) {
+      console.error("Error update group:", error);
+      Swal.fire(
+        'Lỗi!',
+        'Lỗi khi cập nhật bộ phận! Vui lòng thử lại sau.',
+        'error'
+      )
+    } finally {
+      setIsLoading(false);
+    }
     navigate(-1);
   };
 

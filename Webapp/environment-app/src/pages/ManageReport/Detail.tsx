@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DETAIL_REPORT, EMPLOYEE_DETAIL, RESPONSE_REPORT, useApi } from "../../Api";
 import { ClipLoader } from "react-spinners";
 import { Button } from "react-bootstrap";
@@ -314,7 +314,7 @@ export const DetailReport = () => {
           >
             Trở Về
           </Button>
-          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role.toLowerCase() == "HR".toLowerCase() && data.reportFormat?.reportStatus == "UnResolved") && (
+          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role.toLowerCase() == "HR".toLowerCase() || JSON.parse(token.accessToken).role.toLowerCase() == "Manager".toLowerCase() && data.reportFormat?.reportStatus == "UnResolved") && (
             <Button onClick={handleResponseClick} className="btnLink" variant="success">
               Phản Hồi
             </Button>

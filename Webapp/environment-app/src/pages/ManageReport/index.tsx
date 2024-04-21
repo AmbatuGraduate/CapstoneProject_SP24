@@ -12,7 +12,7 @@ import ModalDelete from "../../Components/Modals/ModalDelete";
 
 export const ManageReport = () => {
   const [token] = useCookies(["accessToken"]);
-  const isAdmin = JSON.parse(token.accessToken).role === "Admin" || "HR";
+  const isAdmin = JSON.parse(token.accessToken).role === "Admin" || "HR" || "Manager";
   const isUser = JSON.parse(token.accessToken);
   const handleDelete = async (id: string) => {
     await useApi.delete(DELETE_REPORT.replace(":id", id));

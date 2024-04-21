@@ -125,8 +125,16 @@ export const UpdateTreeTrimSchedule = () => {
             delete requestData["attendees.email"]
             delete requestData["departmentEmail"]
 
+            Swal.fire({
+                title: 'Đang cập nhật bộ phận...',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                }
+              });
             await useApi.post(TREE_TRIM_SCHEDULE_UPDATE.replace(":id", id), requestData);
-
+            Swal.close();
             Swal.fire(
                 'Thành công!',
                 'Cập nhật lịch cắt tỉa thành công!',

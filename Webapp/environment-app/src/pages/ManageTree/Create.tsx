@@ -20,6 +20,53 @@ export const CreateTree = () => {
     return newCutTime;
   };
 
+  // --------------------------------------
+  const handleTreeTypeClick = async () => {
+    const { value } = await Swal.fire({
+      title: 'Thêm giống cây',
+      html: `
+      <textarea id="swal-input1" name"treeTypeName" class="swal2-input" placeholder="Nhập giống cây"></textarea>
+    `,
+    showCancelButton: true,
+      focusConfirm: false,
+      confirmButtonText: 'Thêm giống cây',
+      preConfirm: () => {
+        const treeTypeName = (document.getElementById('swal-input1') as HTMLInputElement).value;     
+        return { treeTypeName};
+      },  
+    });
+
+    if (value) {
+      setIsLoading(true);
+      try {
+        await useApi.post(TREE_TYPE_LIST, {
+          ...value,
+        });
+        ref.current?.reload();
+        navigate("/manage-tree/create")
+
+        // Show success alert
+        Swal.fire(
+          'Thành công!',
+          'Thêm giống cây thành công.',
+          'success'
+        );
+      } catch (error) {
+        console.error("Error submitting response:", error);
+
+        // Show error alert
+        Swal.fire(
+          'Lỗi!',
+          'Không thể thêm giống cây. Vui lòng thử lại.',
+          'error'
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+  // --------------------------------------
+
   const fields: Field[] = [
     {
       label: "Mã Cây",
@@ -45,10 +92,10 @@ export const CreateTree = () => {
       formType: "input",
       keyName: "treeLocation",
       googleAddress: true,
-      value: address,
-      onChange: (e) => {
-        setAddress(e.target.value);
-      },
+      // value: address,
+      // onChange: (e) => {
+      //   setAddress(e.target.value);
+      // },
       placeholder: "Nhập địa chỉ",
     },
     {
@@ -109,36 +156,40 @@ export const CreateTree = () => {
       googleAddress: false,
       placeholder: "Ví dụ: Cần lưu ý...",
     },
-
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
     setIsLoading(true);
     try {
+      Swal.fire({
+        title: 'Đang thêm cây...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       await useApi.post(TREE_ADD, {
         ...data,
         cutTime: data.cutTime,
         plantTime: data.plantTime,
         isExist: true,
       });
-      Swal.fire(
-        'Thành công!',
-        'Thêm cây mới thành công!',
-        'success'
-      );
+      Swal.close();
+      Swal.fire("Thành công!", "Thêm cây mới thành công!", "success");
       ref.current?.reload();
       navigate("/manage-tree");
     } catch (error) {
-      Swal.fire(
-        'Lỗi!',
-        'Lỗi khi thêm cây! Vui lòng thử lại sau.',
-        'error'
-      );
+      Swal.fire("Lỗi!", "Lỗi khi thêm cây! Vui lòng thử lại sau.", "error");
       console.error("Error creating tree:", error);
     } finally {
       setIsLoading(false);
     }
   };
+
+  <div>
+    <button className="btnAdd" onClick={handleTreeTypeClick}>Thêm giống cây</button>
+  </div>
 
   return (
     <div className="form-cover">
@@ -148,6 +199,7 @@ export const CreateTree = () => {
         onSave={handleSubmit}
         onCancel={() => navigate("/manage-tree")}
       />
+      <button className="btnAdd" onClick={handleTreeTypeClick}>Thêm giống cây</button>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   TREE_DETAIL,
@@ -8,12 +8,15 @@ import {
 } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
 import { useCookies } from "react-cookie";
+import Swal from "sweetalert2";
 
 export const UpdateTree = () => {
   const navigate = useNavigate();
   const { id = "" } = useParams();
   const [data, setData] = useState<any>();
   const [token] = useCookies(["accessToken"]);
+  const ref = useRef<any>();
+  const [, setIsLoading] = useState(false);
 
   const fetch = async () => {
     try {
@@ -105,12 +108,38 @@ export const UpdateTree = () => {
       return newCutTime;
     };
 
-    await useApi.put(TREE_UPDATE.replace(":id", id), {
-      ...data,
-      plantTime: data.plantTime,
-      // cutTime: cutTime(),
-    });
-    console.log("UpdateTree", data);
+    try{
+      Swal.fire({
+        title: 'Đang cập nhật cây...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+      await useApi.put(TREE_UPDATE.replace(":id", id), {
+        ...data,
+        plantTime: data.plantTime,
+        // cutTime: cutTime(),
+      });
+      Swal.close();
+      Swal.fire(
+        'Thành công!',
+        'Cập nhật cây thành công!',
+        'success'
+      );
+      ref.current?.reload();
+      navigate(-1)
+    } catch (error) {
+      console.error("Error update tree:", error);
+      Swal.fire(
+        'Lỗi!',
+        'Lỗi khi cập nhật cây! Vui lòng thử lại sau.',
+        'error'
+      )
+    } finally {
+      setIsLoading(false);
+    }
     navigate(-1);
   };
 

@@ -18,15 +18,15 @@ export type Field = {
   value?: any;
   placeholder?: string;
   formType:
-  | "input"
-  | "shortInput"
-  | "select"
-  | "textarea"
-  | "number"
-  | "date"
-  | "jsx"
-  | "datetime"
-  | "multi-select";
+    | "input"
+    | "shortInput"
+    | "select"
+    | "textarea"
+    | "number"
+    | "date"
+    | "jsx"
+    | "datetime"
+    | "multi-select";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
@@ -109,18 +109,29 @@ const FormType = (props: Field) => {
 
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
-          console.log(place);
+          // console.log(place);
+          console.log(formData[keyName]);
           if (place.geometry && place.geometry.location) {
             const latitude = place.geometry.location.lat();
             const longitude = place.geometry.location.lng();
-            console.log("Latitude:", latitude);
-            console.log("Longitude:", longitude);
+            // console.log("Latitude:", latitude);
+            // console.log("Longitude:", longitude);
+            const addressComponents = place.address_components;
+            let address = "";
+            // Iterate through address components to construct the address string
+            addressComponents?.forEach((component) => {
+              address += component.long_name + ", ";
+            });
+            // Remove trailing comma and space
+            address = address.slice(0, -2);
+            console.log("Selected Address:", address);
+            setFormData((prev) => ({ ...prev, [keyName]: address }));
           }
         });
-        console.log(places);
+        // console.log(places);
       }
     }
-  }, [props.value]);
+  }, [formData[keyName], props.value]);
 
   const fetchDataForFormSelect = async (option: OptionExtra) => {
     const res = await useApi.get(option.url);
@@ -142,8 +153,8 @@ const FormType = (props: Field) => {
           name={keyName}
           value={formData[keyName]}
           onChange={(e) => {
-            console.log(formData[keyName], e.target.value);
-            onChange && onChange(e);
+            console.log("formbase", formData[keyName]);
+            // onChange && onChange(e);
             setFormData((prev) => ({ ...prev, [keyName]: e.target.value }));
           }}
           disabled={_disabled}
@@ -308,9 +319,9 @@ export const FormBase = (props: Props) => {
     const _data = { ...formData };
     fields.forEach(
       (f) =>
-      (_data[f.keyName] = f.value
-        ? f.value
-        : _data[f.keyName]
+        (_data[f.keyName] = f.value
+          ? f.value
+          : _data[f.keyName]
           ? _data[f.keyName]
           : f.defaultValue)
     );
@@ -319,6 +330,7 @@ export const FormBase = (props: Props) => {
 
   const handleSubmit = () => {
     onSave && onSave(formData);
+    console.log(formData);
   };
 
   return (
