@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { FlatList, View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ActivityIndicator, Button, Image } from "react-native";
+import { FlatList, View, Text, StyleSheet, TextInput, TouchableOpacity, Modal, ActivityIndicator, Button, Image, TouchableHighlight } from "react-native";
 import { Formik } from "formik";
 import { RadioButton } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -10,8 +10,12 @@ import { api } from "../shared/api";
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Camera } from 'expo-camera';
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import * as Location from 'expo-location';
+import Geocoder from "react-native-geocoding";
 
 
+
+Geocoder.init('AIzaSyDpDsjnmVkeWs0myDwrK0dHgj_fFMXYAIo');
 
 const ReportSchema = yup.object({
     reportSubject: yup.string().required('Nhập tiêu đề báo cáo').min(4, 'Ít nhất 4 ký tự'),
@@ -32,6 +36,30 @@ export default function ReportForm({ onFormSuccess }) {
     const [loading, setLoading] = useState(false);
     const [isCameraVisible, setCameraVisible] = useState(false);
     const [isCameraReady, setIsCameraReady] = useState(false);
+    const [issueLocation, setIssueLocation] = useState('');
+    const autocompleteRef = useRef(null);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [locationOption, setLocationOption] = useState(null);
+
+    const getLocation = async () => {
+        let { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+            alert('Thiết bị đã từ chối quyền đọc địa chỉ của ứng dụng!');
+            return;
+        }
+
+        let location = await Location.getCurrentPositionAsync({});
+        const { latitude, longitude } = location.coords;
+
+        // Reverse geocoding
+        Geocoder.from(latitude, longitude)
+            .then(json => {
+                var addressComponent = json.results[0].formatted_address;
+                console.log(addressComponent);
+                setIssueLocation(addressComponent);
+            })
+            .catch(error => console.warn(error));
+    };
 
 
     let cameraRef = useRef();
@@ -94,14 +122,13 @@ export default function ReportForm({ onFormSuccess }) {
     };
 
     return (
-
         <View style={styles.container}>
 
             <Formik
                 initialValues={{
                     reportSubject: '',
                     reportBody: '',
-                    issueLocation: '',
+                    issueLocation: issueLocation,
                     reportImages: [],
                     reportImpact: 'Thấp',
                     reportBodyHeight: 100,
@@ -173,13 +200,92 @@ export default function ReportForm({ onFormSuccess }) {
                                     <Text style={styles.inputLabel}>
                                         Vị trí cụ thể
                                     </Text>
-                                    <GooglePlacesAutocomplete
+
+
+
+                                    <Modal
+                                        animationType="slide"
+                                        transparent={true}
+                                        visible={modalVisible}
+                                        onRequestClose={() => {
+                                            setModalVisible(!modalVisible);
+                                        }}
+                                    >
+                                        <View style={styles.centeredView}>
+                                            <View style={styles.modalView}>
+                                                <TouchableHighlight
+                                                    style={styles.modalButton}
+                                                    onPress={() => {
+                                                        setLocationOption('manual');
+                                                        setModalVisible(!modalVisible);
+                                                    }}
+                                                >
+                                                    <View style={styles.modalButtonText}>
+                                                        <Icon style={styles.modalIcon} name="edit" type="font-awesome" size={20} color="palegreen" />
+                                                        <Text style={styles.textStyle}>Nhập vị trí</Text>
+                                                    </View>
+                                                </TouchableHighlight>
+
+                                                <TouchableHighlight
+                                                    style={styles.modalButton}
+                                                    onPress={() => {
+                                                        getLocation();
+                                                        setLocationOption('current');
+                                                        setModalVisible(!modalVisible);
+                                                        props.setFieldValue('issueLocation', issueLocation);
+
+                                                    }}
+                                                >
+                                                    <View style={styles.modalButtonText}>
+                                                        <Icon style={styles.modalIcon} name="map-marker" type="font-awesome" size={20} color="lightgreen" />
+                                                        <Text style={styles.textStyle}>Vị trí hiện tại</Text>
+                                                    </View>
+
+                                                </TouchableHighlight>
+                                            </View>
+                                        </View>
+                                    </Modal>
+                                    <TouchableOpacity style={styles.buttonMapStyle} onPress={() => setModalVisible(true)}>
+                                        <Icon name="map" size={30} color="green" />
+                                        <Text style={styles.buttonMapText}>Chọn vị trí</Text>
+                                    </TouchableOpacity>
+
+                                    {locationOption === 'manual' && (
+                                        <GooglePlacesAutocomplete
+                                            placeholder='Ví dụ: 123 Nguyễn Văn Linh, Đà Nẵng'
+                                            keepResultsAfterBlur={true}
+                                            onFail={error => console.error(error)}
+                                            onPress={(data, details = null) => {
+                                                console.log('Pressed!');
+                                                props.setFieldValue('issueLocation', data.description);
+                                            }}
+                                            query={{
+                                                key: 'AIzaSyDpDsjnmVkeWs0myDwrK0dHgj_fFMXYAIo',
+                                                language: 'vi',
+                                                components: 'country:vn',
+                                                location: '16.0544,108.2022', // danang
+                                                radius: '50000',
+                                            }}
+                                            fetchDetails={true}
+                                            styles={{
+                                                textInputContainer: styles.inputAddress,
+                                            }}
+                                        />
+                                    )}
+
+                                    {locationOption === 'current' && (
+                                        <View style={styles.currentLocation}>
+                                            <Text style={styles.currentLocationText}>{issueLocation}</Text>
+                                        </View>
+                                    )}
+
+                                    {/* <GooglePlacesAutocomplete
                                         placeholder='Ví dụ: 123 Nguyễn Văn Linh, Đà Nẵng'
                                         keepResultsAfterBlur={true}
                                         onFail={error => console.error(error)}
                                         onPress={(data, details = null) => {
                                             console.log('Pressed!');
-                                            props.setFieldValue('issueLocation', data.description);
+                                            setIssueLocation(data.description);
                                         }}
                                         query={{
                                             key: 'AIzaSyDpDsjnmVkeWs0myDwrK0dHgj_fFMXYAIo',
@@ -192,14 +298,23 @@ export default function ReportForm({ onFormSuccess }) {
                                         styles={{
                                             textInputContainer: styles.inputAddress,
                                         }}
+                                        textInputProps={{
+                                            value: issueLocation,
+                                            onChangeText: (text) => setIssueLocation(text)
+                                        }}
                                     />
+                                    <Text style={{ alignSelf: 'center' }}>Hoặc</Text>
+                                    <View>
+                                        <Button title="Vị trí hiện tại" onPress={getLocation} />
+                                    </View>
+                                    <Text>
+                                        {issueLocation}</Text> */}
+
 
 
                                     <Text style={styles.errorText}>
                                         {props.touched.issueLocation && props.errors.issueLocation}
                                     </Text>
-
-
                                     <View style={styles.impact}>
                                         <Text style={styles.inputLabel}>Mức độ ảnh hưởng</Text>
                                         <RadioButton.Group
@@ -578,5 +693,70 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 5,
 
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+
+    },
+    modalView: {
+        margin: 2,
+        backgroundColor: "rgba(0, 0, 0, 0.6)",
+        borderRadius: 4,
+        padding: 20,
+        alignItems: "center",
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    modalButton: {
+        padding: 10,
+        marginTop: 5,
+        backgroundColor: "rgba(0, 0, 0, 1)",
+        width: '100%',
+
+    },
+    modalButtonText: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    textStyle: {
+        color: "whitesmoke",
+        textAlign: "center",
+        fontSize: 22,
+        paddingLeft: 10,
+        fontFamily: 'quolibet',
+    },
+    buttonMapStyle: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#DDDDDD',
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 10,
+        justifyContent: 'center',
+    },
+    buttonMapText: {
+        marginLeft: 10,
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: 'darkgreen',
+    },
+    currentLocation: {
+        padding: 10,
+        borderRadius: 5,
+    },
+    currentLocationText: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: 'green',
+        textDecorationLine: 'underline',
     },
 });
