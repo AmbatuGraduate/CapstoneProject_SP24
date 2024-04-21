@@ -101,6 +101,58 @@ namespace Infrastructure.Persistence.Repositories
             }
         }
 
+        public async Task<List<GoogleUser>> GetAllGroupManager(string accessToken)
+        {
+            List<GoogleUser> users = new List<GoogleUser>();
+            try
+            {
+                var allGoogleUsers = _userRepository.GetGoogleUsers(accessToken);
+                var allDBUsers = _userRepository.GetAll();
+                var allDbGroups = GetAllGroups();
+                var credential = GoogleCredential.FromAccessToken(accessToken);
+                var service = _directoryServiceFactory(credential);
+
+                foreach(var dbGroup in allDbGroups)
+                {
+                    var request = service.Members.List(dbGroup.DepartmentId);
+                    var members = request.Execute().MembersValue;
+                    if(members != null && members.Count() > 0)
+                    {
+                        foreach (var member in members)
+                        {
+                            var memberDB = allDBUsers.FirstOrDefault(x => x.Email.Equals(member.Email, StringComparison.OrdinalIgnoreCase));
+                            var memberGoogle = allGoogleUsers.Result.FirstOrDefault(x => x.Email.Equals(member.Email, StringComparison.OrdinalIgnoreCase));
+                            if (memberDB != null && memberGoogle != null && _userRepository.GetRoleNameById(memberDB.RoleId.ToString()).Equals("Manager"))
+                            {
+                                users.Add(
+                                    new GoogleUser()
+                                    {
+                                        Id = member.Id,
+                                        Email = member.Email,
+                                        Picture = _userRepository.GetGoogleUserImage(accessToken, member.Email).Result,
+                                        Name = memberGoogle.Name,
+                                        Department = _userRepository.GetDepartmentNameById(memberDB.DepartmentId),
+                                        DepartmentEmail = _userRepository.GetDepartmentEmailById(memberDB.DepartmentId),
+                                        PhoneNumber = memberGoogle.PhoneNumber,
+                                        Role = _userRepository.GetRoleNameById(memberDB.RoleId.ToString()),
+                                        Address = memberGoogle.Address,
+
+                                    });
+                            }
+                        }
+
+                    }
+
+                }
+                return users;
+            }
+            catch (Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine($"An error occurred: {e.Message}");
+                return new List<GoogleUser>();
+            }
+        }
+
         public async Task<List<GroupResult>> GetAllGoogleGroupByUserEmail(string accessToken, string userEmail)
         {
             var groupResult = new List<GroupResult>();
@@ -149,9 +201,21 @@ namespace Infrastructure.Persistence.Repositories
             {
                 var credential = GoogleCredential.FromAccessToken(accessToken);
                 var service = _directoryServiceFactory(credential);
-                if(group != null && (group.Members.Count() > 0 || group.Owners.Count() > 0))
+                
+                var newGroup = new Group()
                 {
-                    foreach(var member in group.Members)
+                    Email = group.Email,
+                    Name = group.Name,
+                    Description = group.Description,
+                    AdminCreated = group.AdminCreated
+                };
+
+                var request = service.Groups.Insert(newGroup);
+                var googleGroup = await request.ExecuteAsync();
+
+                if (googleGroup != null && group != null && (group.Members.Count() > 0 || group.Owners.Count() > 0))
+                {
+                    foreach (var member in group.Members)
                     {
                         await _userRepository.AddUserToGoogleGroup(new Application.User.Common.Add.AddGoogleUser
                         {
@@ -171,16 +235,6 @@ namespace Infrastructure.Persistence.Repositories
                         });
                     }
                 }
-                var newGroup = new Group()
-                {
-                    Email = group.Email,
-                    Name = group.Name,
-                    Description = group.Description,
-                    AdminCreated = group.AdminCreated
-                };
-
-                var request = service.Groups.Insert(newGroup);
-                var googleGroup = await request.ExecuteAsync();
 
                 return new GroupResult
                 {
