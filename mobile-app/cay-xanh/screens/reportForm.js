@@ -48,6 +48,13 @@ export default function ReportForm({ onFormSuccess }) {
             return;
         }
 
+        let providerStatus = await Location.getProviderStatusAsync();
+        if (!providerStatus.locationServicesEnabled || !providerStatus.gpsAvailable) {
+            alert('Please enable location services!');
+            IntentLauncher.startActivityAsync(IntentLauncher.ACTION_LOCATION_SOURCE_SETTINGS);
+            return;
+        }
+
         let location = await Location.getCurrentPositionAsync({});
         const { latitude, longitude } = location.coords;
 
@@ -60,7 +67,6 @@ export default function ReportForm({ onFormSuccess }) {
             })
             .catch(error => console.warn(error));
     };
-
 
     let cameraRef = useRef();
 
