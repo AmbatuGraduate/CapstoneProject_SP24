@@ -717,6 +717,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         backgroundColor: "rgba(0, 0, 0, 1)",
         width: '100%',
+        borderRadius: 8
 
     },
     modalButtonText: {
