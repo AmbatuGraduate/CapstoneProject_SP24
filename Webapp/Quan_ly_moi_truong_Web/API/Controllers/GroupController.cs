@@ -8,6 +8,7 @@ using Application.Group.Common;
 using Application.Group.Common.Add_Update;
 using Application.Group.Common.Add_Update_Request;
 using Application.Group.Common.Add_Update_Response;
+using Application.Group.Queries.GetAllGroupManager;
 using Application.Group.Queries.GetAllGroups;
 using Application.Group.Queries.GetAllGroupsByUserEmail;
 using Application.Group.Queries.GetAllMembersOfGroup;
@@ -104,6 +105,34 @@ namespace API.Controllers
         [HttpGet()]
         [Authorize(Roles = "Admin, Hr")]
         [HasPermission(Permission.ADMIN + "," + Permission.HR)]
+        public async Task<IActionResult> GetAllGroupManager()
+        {
+            string accessToken;
+            var jwt = Request.Cookies["u_tkn"];
+            if (String.IsNullOrEmpty(jwt))
+            {
+                return BadRequest("u_tkn cookie is missing");
+            }
+            System.Diagnostics.Debug.WriteLine("token: " + jwt);
+            ErrorOr<GoogleAccessTokenResult> token = await mediator.Send(new GoogleAccessTokenQuery(jwt));
+            if (token.IsError)
+            {
+                return BadRequest("Invalid token");
+            }
+            accessToken = token.Value.accessToken;
+            ErrorOr<List<GoogleUser>> usersResult = await mediator.Send(new GetAllGroupManagerQuery(accessToken));
+
+            if (usersResult.IsError)
+            {
+                return Problem(statusCode: StatusCodes.Status400BadRequest, title: "");
+            }
+
+            return Ok(usersResult.Value);
+        }
+
+        [HttpGet()]
+        [Authorize(Roles = "Admin, Hr")]
+        [HasPermission(Permission.ADMIN + "," + Permission.HR)]
         public async Task<IActionResult> GetAllGroups()
         {
             ErrorOr<List<GroupResult>> groupResult = await mediator.Send(new GetAllGroupsQuery());
@@ -162,7 +191,7 @@ namespace API.Controllers
                 return BadRequest("Invalid token");
             }
             var listOwners = !group.Owners.IsNullOrEmpty() ? group.Owners.Split(",").ToList() : new List<string>(); 
-            var listMembers = !group.Members.IsNullOrEmpty() ? group.Owners.Split(",").ToList() : new List<string>();
+            var listMembers = !group.Members.IsNullOrEmpty() ? group.Members.Split(",").ToList() : new List<string>();
 
             accessToken = token.Value.accessToken;
             ErrorOr<GroupResult> groupResult = await mediator.Send(new AddGroupCommand(accessToken, 
