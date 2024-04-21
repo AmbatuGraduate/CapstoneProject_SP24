@@ -58,10 +58,19 @@ export const CreateGroup = () => {
     setIsLoading(true);
 
     try {
+      Swal.fire({
+        title: 'Đang thêm bộ phận...',
+        allowEscapeKey: false,
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
       await useApi.post(GROUP_ADD, {
         ...data,
         adminCreated: true,
       });
+      Swal.close();
       Swal.fire(
         'Thành công!',
         'Thêm bộ phận mới thành công!',

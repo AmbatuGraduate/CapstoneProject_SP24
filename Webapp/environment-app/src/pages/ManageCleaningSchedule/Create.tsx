@@ -110,8 +110,16 @@ export const CreateCleaningSchedule = () => {
 
             delete requestData["start.dateTime"];
             delete requestData["end.dateTime"];
-
+            Swal.fire({
+                title: 'Đang thêm lịch...',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                }
+              });
             await useApi.post(ClEANING_SCHEDULE_ADD, requestData);
+            Swal.close();
             Swal.fire(
                 'Thành công!',
                 'Thêm lịch quét dọn mới thành công!',
