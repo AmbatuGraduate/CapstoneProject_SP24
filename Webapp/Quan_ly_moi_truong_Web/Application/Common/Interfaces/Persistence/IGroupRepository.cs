@@ -12,6 +12,7 @@ namespace Application.Common.Interfaces.Persistence
         Task<GroupResult> GetGoogleGroupByEmail(string accessToken, string groupEmail);
 
         Task<List<GoogleUser>> GetAllMembersOfGroup(string accessToken, string groupId);
+        Task<List<GoogleUser>> GetAllGroupManager(string accessToken);
 
         Task<List<GroupResult>> GetAllGoogleGroupByUserEmail(string accessToken, string userEmail);
 
