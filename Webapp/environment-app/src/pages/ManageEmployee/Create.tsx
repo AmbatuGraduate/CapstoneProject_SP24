@@ -83,6 +83,7 @@ export const CreateEmployee = () => {
     setIsLoading(true);
 
     try {
+
       Swal.fire({
         title: 'Đang thêm tài khoản nhân viên...',
         allowEscapeKey: false,
@@ -91,6 +92,7 @@ export const CreateEmployee = () => {
           Swal.showLoading();
         }
       });
+
       await useApi.post(EMPLOYEE_ADD, {
         ...data,
         userRole: Number(data?.userRole)
