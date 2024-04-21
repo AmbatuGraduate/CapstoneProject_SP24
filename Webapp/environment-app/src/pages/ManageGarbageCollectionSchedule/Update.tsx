@@ -115,9 +115,16 @@ export const UpdateGarbageCollectionSchedule = () => {
             delete requestData["end.dateTime"];
             delete requestData["attendees.email"]
             delete requestData["departmentEmail"]
-
+            Swal.fire({
+                title: 'Đang cập nhật lịch...',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                }
+              });
             await useApi.post(GARBAGE_COLLECTION_UPDATE.replace(":id", id), requestData);
-
+            Swal.close();
             Swal.fire(
                 'Thành công!',
                 'cập nhật lịch thu gom thành công!',

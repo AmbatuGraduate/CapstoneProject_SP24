@@ -117,8 +117,16 @@ export const UpdateCleaningSchedule = () => {
             delete requestData["end.dateTime"];
             delete requestData["attendees.email"]
             delete requestData["departmentEmail"]
-
+            Swal.fire({
+                title: 'Đang cập nhật lịch...',
+                allowEscapeKey: false,
+                allowOutsideClick: false,
+                didOpen: () => {
+                  Swal.showLoading();
+                }
+              });
             await useApi.post(ClEANING_SCHEDULE_UPDATE.replace(":id", id), requestData);
+            Swal.close();
             Swal.fire(
                 'Thành công!',
                 'Cập nhật lịch quét dọn thành công!',
