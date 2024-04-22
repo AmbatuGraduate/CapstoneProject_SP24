@@ -11,13 +11,13 @@ namespace Application.Tree.Queries.GetByTreeCode
     {
         private readonly ITreeRepository treeRepository;
         private readonly ITreeTypeRepository treeTypeRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IGroupRepository groupRepository;
 
-        public GetByTreeCodeHandler(ITreeRepository treeRepository, ITreeTypeRepository treeTypeRepository, IUserRepository userRepository)
+        public GetByTreeCodeHandler(ITreeRepository treeRepository, ITreeTypeRepository treeTypeRepository, IGroupRepository groupRepository)
         {
             this.treeRepository = treeRepository;
             this.treeTypeRepository = treeTypeRepository;
-            this.userRepository = userRepository;
+            this.groupRepository = groupRepository;
         }
 
         public async Task<ErrorOr<TreeDetailResult>> Handle(GetByTreeCodeQuery request, CancellationToken cancellationToken)
@@ -32,8 +32,8 @@ namespace Application.Tree.Queries.GetByTreeCode
             }
 
             var treeType = treeTypeRepository.GetTreeTypeById(tree.TreeTypeId).TreeTypeName;
-            var user = userRepository.GetById(tree.UserId).Email;
-            var result = new TreeDetailResult(tree.TreeCode, tree.TreeLocation, treeType, tree.BodyDiameter, tree.LeafLength, tree.PlantTime, tree.IntervalCutTime, tree.CutTime, tree.isCut, user, tree.Note);
+            var department = groupRepository.GetGroupDbById(tree.DepartmentId).DepartmentName;
+            var result = new TreeDetailResult(tree.TreeCode, tree.TreeLocation, treeType, tree.BodyDiameter, tree.LeafLength, tree.PlantTime, tree.IntervalCutTime, tree.CutTime, tree.isCut, department, tree.Note);
 
             return result;
         }

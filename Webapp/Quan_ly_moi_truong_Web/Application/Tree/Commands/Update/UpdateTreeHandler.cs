@@ -11,12 +11,12 @@ namespace Application.Tree.Commands.Update
         IRequestHandler<UpdateTreeCommand, ErrorOr<AddTreeResult>>
     {
         private readonly ITreeRepository treeRepository;
-        private readonly IUserRepository userRepository;
+        private readonly IGroupRepository groupRepository;
 
-        public UpdateTreeHandler(ITreeRepository treeRepository, IUserRepository userRepository)
+        public UpdateTreeHandler(ITreeRepository treeRepository, IGroupRepository groupRepository)
         {
             this.treeRepository = treeRepository;
-            this.userRepository = userRepository;
+            this.groupRepository = groupRepository;
         }
 
         public async Task<ErrorOr<AddTreeResult>> Handle(UpdateTreeCommand request, CancellationToken cancellationToken)
@@ -30,12 +30,11 @@ namespace Application.Tree.Commands.Update
                 return Errors.GetTreeById.getTreeFail;
             }
 
+            var department = groupRepository.GetGroupByEmail(request.Email);
 
-            var userId = userRepository.GetAll().FirstOrDefault(x => x.Email == request.Email).Id;
-
-            if (userId == null)
+            if (department == null)
             {
-                return Errors.User.NotExist;
+                return Errors.Group.notFoundGroup;
             }
 
             var tree = new Trees
@@ -49,7 +48,7 @@ namespace Application.Tree.Commands.Update
                 CutTime = request.PlantTime.AddMonths(request.IntervalCutTime),
                 TreeTypeId = request.TreeTypeId,
                 IntervalCutTime = request.IntervalCutTime,
-                UserId = userId,
+                DepartmentId = department.DepartmentId,
                 Note = request.Note
             };
 
