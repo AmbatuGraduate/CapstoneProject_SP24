@@ -81,10 +81,10 @@ namespace Infrastructure.Persistence
                         .IsRequired();
 
             //Relationship entity Users - trees => 1 - n
-            modelBuilder.Entity<Users>()
-                        .HasMany(e => e.trees)
-                        .WithOne(e => e.user)
-                        .HasForeignKey(e => e.UserId)
+            modelBuilder.Entity<Departments>()
+                        .HasMany(e => e.Trees)
+                        .WithOne(e => e.department)
+                        .HasForeignKey(e => e.DepartmentId)
                         .IsRequired();
 
             //Relationship entity TreeTypes - trees => 1 - n
