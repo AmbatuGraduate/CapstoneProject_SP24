@@ -40,10 +40,10 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
             var getAllTree = _treeRepository.GetAllTrees().Where(tree => !tree.isCut);
 
             var treeByAddress = getAllTree
-                .GroupBy(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty).Split(",")[0])
+                .GroupBy(tree => tree.TreeLocation.Split(",", StringSplitOptions.TrimEntries)[1])
                 .ToDictionary(
                     group => group.Key,
-                    group => group.Where(tree => Regex.Replace(tree.TreeLocation, @"^\d+\s+", string.Empty).Split(",")[0].ToLower() == group.Key.Split(",")[0].ToLower())
+                    group => group.Where(tree => tree.TreeLocation.Split(",", StringSplitOptions.TrimEntries)[1].ToLower() == group.Key.Split(",", StringSplitOptions.TrimEntries)[1].ToLower())
                 .ToList()).ToList();
 
             foreach (var group in treeByAddress)
@@ -59,7 +59,7 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
                 var addedEvent = new MyAddedEvent
                 {
                     Summary = "Lịch cắt tỉa cây tại " + group.Key,
-                    Description = "Đến thởi điểm cắt tỉa các cây đã đến hạn tại đường " + group.Key,
+                    Description = "Đến thời điểm cắt tỉa các cây đã đến hạn tại đường " + group.Key,
                     location = group.Key + ",Đà Nẵng",
                     TreeId = treeFormat,
                     DepartmentEmail = "cayxanh@vesinhdanang.xyz",

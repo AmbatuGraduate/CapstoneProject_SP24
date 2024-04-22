@@ -48,15 +48,15 @@ namespace Application.Tree.Queries.ListCut
             // Group all tree that have same address
             var treeByAddresses = treeRepository.GetAllTrees()
                 .Where(x => x.isCut == false)
-                .GroupBy(tree => Regex.Replace(request.Address, @"^\d+\s+", string.Empty).Split(",")[0])
+                .GroupBy(tree => request.Address.Split(",")[0])
                 .ToDictionary(
                     group => group.Key,
-                    group => group.Where(tree => Regex.Replace(tree.TreeLocation.ToLower(), @"^\d+\s+", string.Empty).Split(",")[0].ToLower() == group.Key.Split(",")[0].ToLower()));
+                    group => group.Where(tree => tree.TreeLocation.ToLower().Split(",", StringSplitOptions.TrimEntries)[1].ToLower() == group.Key.Split(",", StringSplitOptions.RemoveEmptyEntries)[0].ToLower()));
 
             // List all event that has be in progress or note start and in same address
             var listCalendar = list.Where(x => ((x.ExtendedProperties.PrivateProperties["JobWorkingStatus"] == _treeCalendarService.ConvertToJobWorkingStatusString(JobWorkingStatus.NotStart))
                                                     || (x.ExtendedProperties.PrivateProperties["JobWorkingStatus"] == _treeCalendarService.ConvertToJobWorkingStatusString(JobWorkingStatus.InProgress)))
-                                                    && (Regex.Replace(x.Location.ToLower(), @"^\d+\s+", string.Empty).Split(",")[0].ToLower() == Regex.Replace(request.Address, @"^\d+\s+", string.Empty).Split(",")[0].ToLower())).ToList();
+                                                    && x.Location.ToLower().Split(",", StringSplitOptions.TrimEntries)[1].ToLower() == request.Address.Split(",", StringSplitOptions.RemoveEmptyEntries)[0].ToLower()).ToList();
 
             // Get list of tree that have been in cut but not finish
             StringBuilder treeInCalendar = new StringBuilder();
