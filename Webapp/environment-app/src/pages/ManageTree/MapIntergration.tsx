@@ -2,6 +2,8 @@ import GoogleMapReact, { Coords } from "google-map-react";
 import Marker from "../../../public/assets/marker.svg";
 import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import axios from "axios";
+import Streetview from 'react-google-streetview';
+
 
 <script
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU&v=weekly"
@@ -20,15 +22,16 @@ export type MarkerType = {
 };
 type SimpleMapProps = {
   location?: string;
+  showStreetView?: boolean;
 };
-export default function SimpleMap(props: SimpleMapProps) {
+export default function SimpleMap({ location, showStreetView = true }: SimpleMapProps) {
   const [treeLocation, setTreeLocation] = useState<MarkerType>({
     lat: 16.041871,
     lng: 108.216446,
   });
 
   const fetch = async () => {
-    const addressURI = encodeURI(props?.location || "Da nang");
+    const addressURI = encodeURI(location || "Da nang");
     const res = await axios.get(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${addressURI}&key=AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU`
     );
@@ -55,6 +58,7 @@ export default function SimpleMap(props: SimpleMapProps) {
         bootstrapURLKeys={{ key: "AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU" }}
         defaultZoom={15}
         center={treeLocation}
+
       >
         {
           <AnyReactComponent
@@ -62,7 +66,22 @@ export default function SimpleMap(props: SimpleMapProps) {
             lng={treeLocation.lng} // Lấy tọa độ lng từ treeLocation
           />
         }
+
       </GoogleMapReact>
+      <br></br>
+      {showStreetView && (
+
+        <Streetview
+          apiKey="AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU"
+          streetViewPanoramaOptions={{
+            position: { lat: treeLocation.lat, lng: treeLocation.lng },
+            pov: { heading: 100, pitch: 0 },
+            zoom: 1,
+          }}
+        />
+      )}
+
+
     </div>
   );
 }

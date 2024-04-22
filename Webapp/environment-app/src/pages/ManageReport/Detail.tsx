@@ -288,7 +288,7 @@ export const DetailReport = () => {
             marginLeft: '10%',
             boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.3)',
           }}>
-            <SimpleMap location={data.reportFormat?.issueLocation} />
+            <SimpleMap location={data.reportFormat?.issueLocation} showStreetView={false} />
 
           </div>
         </div>
