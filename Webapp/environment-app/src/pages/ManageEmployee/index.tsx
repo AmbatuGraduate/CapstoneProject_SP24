@@ -24,11 +24,13 @@ export const ManageEmployee = () => {
       header: "",
       accessorFn(row) {
         return (
-          <div>
-            <button type="button" className="btn btn-click" onClick={() => { }}>
-              <ModalDelete handleDelete={() => handleDelete(row.email)} />
-            </button>
-          </div>
+          (JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR") && (
+            <div>
+              <button type="button" className="btn btn-click" onClick={() => { }}>
+                <ModalDelete handleDelete={() => handleDelete(row.email)} />
+              </button>
+            </div>
+          )
         );
       },
       width: "1%",

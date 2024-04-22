@@ -25,11 +25,13 @@ export const ManageTree = () => {
       header: "",
       accessorFn(row) {
         return (
-          <div>
-            <button type="button" className="btn btn-click" onClick={() => { }}>
-              <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
-            </button>
-          </div>
+          (JSON.parse(token.accessToken).role != "HR") && (
+            <div>
+              <button type="button" className="btn btn-click" onClick={() => { }}>
+                <ModalDelete handleDelete={() => handleDelete(row.treeCode)} />
+              </button>
+            </div>
+          )
         );
       },
       width: "1%",
