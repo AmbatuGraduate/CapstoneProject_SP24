@@ -109,7 +109,7 @@ const FormType = (props: Field) => {
 
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
-          // console.log(place);
+          console.log(place);
           console.log(formData[keyName]);
           if (place.geometry && place.geometry.location) {
             const latitude = place.geometry.location.lat();
@@ -120,7 +120,16 @@ const FormType = (props: Field) => {
             let address = "";
             // Iterate through address components to construct the address string
             addressComponents?.forEach((component) => {
-              address += component.long_name + ", ";
+              if (
+                !(
+                  component.types.includes("country") ||
+                  component.long_name === "Đà Nẵng" ||
+                  component.long_name === "Vietnam" ||
+                  component.long_name === "550000"
+                )
+              ) {
+                address += component.long_name + ", ";
+              }
             });
             // Remove trailing comma and space
             address = address.slice(0, -2);
