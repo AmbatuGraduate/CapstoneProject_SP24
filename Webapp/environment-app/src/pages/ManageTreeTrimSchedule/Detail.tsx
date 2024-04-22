@@ -86,7 +86,10 @@ export const DetailTreeTrimSchedule = () => {
                         style={{
                             alignSelf: 'center',
                             justifyContent: 'center',
+                            width: '100%',
                             margin: '4rem',
+                            marginLeft: '0',
+                            marginBottom: '60%',
                             boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.3)',
 
                         }}>
