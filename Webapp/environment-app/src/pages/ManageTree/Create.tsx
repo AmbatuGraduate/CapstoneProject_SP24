@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { EMPLOYEE_LIST, TREE_ADD, TREE_TYPE_LIST, useApi } from "../../Api";
 import { Field, FormBase } from "../../Components/FormBase";
-import { dateConstructor } from "../../utils";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
@@ -13,6 +12,7 @@ export const CreateTree = () => {
   const [plantTime, setPlantTime] = useState<Date | null>(null);
   const [intervalCutTime, setIntervalCutTime] = useState<number>(1);
   const [address, setAddress] = useState<string | null>("");
+  const [token] = useCookies(["accessToken"]);
 
   const cutTime = () => {
     const newCutTime = new Date(plantTime || new Date());
@@ -23,13 +23,13 @@ export const CreateTree = () => {
   // --------------------------------------
   const handleTreeTypeClick = async () => {
     const { value } = await Swal.fire({
-      title: 'Thêm giống cây',
+      title: 'Thêm loại cây',
       html: `
-      <textarea id="swal-input1" name"treeTypeName" class="swal2-input" placeholder="Nhập giống cây"></textarea>
+      <textarea id="swal-input1" name"treeTypeName" class="swal2-input" placeholder="Nhập loại cây"></textarea>
     `,
     showCancelButton: true,
       focusConfirm: false,
-      confirmButtonText: 'Thêm giống cây',
+      confirmButtonText: 'Thêm loại cây',
       preConfirm: () => {
         const treeTypeName = (document.getElementById('swal-input1') as HTMLInputElement).value;     
         return { treeTypeName};
@@ -137,17 +137,17 @@ export const CreateTree = () => {
       googleAddress: false,
       onChange: (value) => setIntervalCutTime(Number(value || 0)),
     },
-    {
-      label: "Người Phụ Trách",
-      formType: "select",
-      keyName: "email",
-      optionExtra: {
-        url: EMPLOYEE_LIST,
-        _key: "email",
-        _value: "email",
-      },
-      googleAddress: false,
-    },
+    // {
+    //   label: "Người Phụ Trách",
+    //   formType: "select",
+    //   keyName: "email",
+    //   optionExtra: {
+    //     url: EMPLOYEE_LIST,
+    //     _key: "email",
+    //     _value: "email",
+    //   },
+    //   googleAddress: false,
+    // },
 
     {
       label: "Ghi Chú",
@@ -174,6 +174,7 @@ export const CreateTree = () => {
         cutTime: data.cutTime,
         plantTime: data.plantTime,
         isExist: true,
+        email: JSON.parse(token.accessToken).departmentEmail,
       });
       Swal.close();
       Swal.fire("Thành công!", "Thêm cây mới thành công!", "success");
@@ -187,10 +188,6 @@ export const CreateTree = () => {
     }
   };
 
-  <div>
-    <button className="btnAdd" onClick={handleTreeTypeClick}>Thêm giống cây</button>
-  </div>
-
   return (
     <div className="form-cover">
       <h4>Thêm cây</h4>
@@ -199,7 +196,7 @@ export const CreateTree = () => {
         onSave={handleSubmit}
         onCancel={() => navigate("/manage-tree")}
       />
-      <button className="btnAdd" onClick={handleTreeTypeClick}>Thêm giống cây</button>
+      <button className="btnAdd" onClick={handleTreeTypeClick} style={{position: 'absolute', bottom: 27, right: 107}}>Thêm loại cây</button>
     </div>
   );
 };
