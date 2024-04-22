@@ -1,4 +1,5 @@
-﻿using Domain.Entities.User;
+﻿using Domain.Entities.Tree;
+using Domain.Entities.User;
 using System.Runtime.Serialization;
 
 namespace Domain.Entities.Deparment
@@ -25,5 +26,6 @@ namespace Domain.Entities.Deparment
         public long DirectMembersCount { get; set; }
 
         public ICollection<Users>? Users { get; set; }
+        public ICollection<Trees>? Trees { get; set; }
     }
 }
