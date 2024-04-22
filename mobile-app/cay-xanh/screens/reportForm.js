@@ -59,18 +59,22 @@ export default function ReportForm({ onFormSuccess }) {
             );
             return;
         }
+        setLoading(true);
 
         let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
         const { latitude, longitude } = location.coords;
 
-        // Reverse geocoding
         Geocoder.from(latitude, longitude)
             .then(json => {
                 var addressComponent = json.results[0].formatted_address;
                 console.log(addressComponent);
                 setIssueLocation(addressComponent);
+                setLoading(false);
             })
-            .catch(error => console.warn(error));
+            .catch(error => {
+                console.warn(error);
+                setLoading(false);
+            });
     };
 
     let cameraRef = useRef();
