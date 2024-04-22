@@ -41,7 +41,7 @@ export const DetailCleaningSchedule = () => {
         <div className="main-layout row">
             <h4 className="title">Xem Thông Tin Chi Tiết Lịch Vệ Sinh Đô Thị</h4>
             <hr className="line" />
-            
+
             <div className="detail-content col-md-8">
                 <div className="detail-cover">
                     <div className="detail-content-parent">
@@ -86,7 +86,10 @@ export const DetailCleaningSchedule = () => {
                         style={{
                             alignSelf: 'center',
                             justifyContent: 'center',
+                            width: '100%',
                             margin: '4rem',
+                            marginLeft: '0',
+                            marginBottom: '60%',
                             boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.3)',
 
                         }}>

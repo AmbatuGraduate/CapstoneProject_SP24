@@ -59,8 +59,11 @@ export const DetailTree = () => {
           </div>
           <div style={{
             alignSelf: 'center',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
+            width: '100%',
             margin: '4rem',
+            marginLeft: '0',
+            marginBottom: '60%',
             boxShadow: '0px 6px 12px rgba(0, 0, 0, 0.5)',
 
           }}>

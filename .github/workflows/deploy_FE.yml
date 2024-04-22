@@ -38,6 +38,7 @@ jobs:
           npm install --save @types/react-image-gallery
           npm i react-router-dom
           npm install sweetalert2
+          npm install --save react-google-streetview
           npm run build
           
       - name: Copy files to Azure VM
