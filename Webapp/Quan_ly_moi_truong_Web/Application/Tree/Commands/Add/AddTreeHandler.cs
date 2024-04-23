@@ -49,6 +49,8 @@ namespace Application.Tree.Commands.Add
                 Note = request.Note,
             };
 
+            tree.isCut = tree.CutTime.CompareTo(tree.PlantTime) > 0;
+
             var result = new AddTreeResult(treeRepository.CreateTree(tree).TreeCode);
 
             return result;

@@ -11,6 +11,7 @@ namespace Application.Common.Interfaces.Persistence
         List<Users> GetAll();
 
         Users GetById(string id);
+        Users GetByEmail(string email);
 
         //Users? GetUserByPhone(string phoneNumber);
 
