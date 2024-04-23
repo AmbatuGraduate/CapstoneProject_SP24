@@ -33,14 +33,14 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             // Making a run at the midnight
-            //var now = DateTime.Now;
-            //var hours = 23 - now.Hour;
-            //var minutes = 59 - now.Minute;
-            //var seconds = 59 - now.Second;
-            //var secondTillMidnight = hours * 3600 + minutes * 60 + seconds;
-            //await Task.Delay(TimeSpan.FromSeconds(secondTillMidnight), stoppingToken);
+            var now = DateTime.Now;
+            var hours = 23 - now.Hour;
+            var minutes = 59 - now.Minute;
+            var seconds = 59 - now.Second;
+            var secondTillMidnight = hours * 3600 + minutes * 60 + seconds;
+            await Task.Delay(TimeSpan.FromSeconds(secondTillMidnight), stoppingToken);
 
-            await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            //await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
