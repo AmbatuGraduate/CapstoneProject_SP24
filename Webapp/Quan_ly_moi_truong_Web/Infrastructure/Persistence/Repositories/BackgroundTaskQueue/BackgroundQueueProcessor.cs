@@ -40,7 +40,7 @@ namespace Infrastructure.Persistence.Repositories.BackgroundTaskQueue
             var secondTillMidnight = hours * 3600 + minutes * 60 + seconds;
             await Task.Delay(TimeSpan.FromSeconds(secondTillMidnight), stoppingToken);
 
-            //await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+            // await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
 
             while (!stoppingToken.IsCancellationRequested)
             {
