@@ -64,16 +64,18 @@ export default function ReportForm({ onFormSuccess }) {
         let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
         const { latitude, longitude } = location.coords;
 
-        Geocoder.from(latitude, longitude)
+        return Geocoder.from(latitude, longitude)
             .then(json => {
                 var addressComponent = json.results[0].formatted_address;
                 console.log(addressComponent);
                 setIssueLocation(addressComponent);
                 setLoading(false);
+                return addressComponent;
             })
             .catch(error => {
                 console.warn(error);
                 setLoading(false);
+                throw error;
             });
     };
 
@@ -248,7 +250,6 @@ export default function ReportForm({ onFormSuccess }) {
                                                         setLocationOption('current');
                                                         setModalVisible(!modalVisible);
                                                         props.setFieldValue('issueLocation', issueLocation);
-
                                                     }}
                                                 >
                                                     <View style={styles.modalButtonText}>
