@@ -18,15 +18,15 @@ export type Field = {
   value?: any;
   placeholder?: string;
   formType:
-    | "input"
-    | "shortInput"
-    | "select"
-    | "textarea"
-    | "number"
-    | "date"
-    | "jsx"
-    | "datetime"
-    | "multi-select";
+  | "input"
+  | "shortInput"
+  | "select"
+  | "textarea"
+  | "number"
+  | "date"
+  | "jsx"
+  | "datetime"
+  | "multi-select";
   options?: Option[];
   required?: boolean;
   disabled?: boolean;
@@ -38,6 +38,8 @@ export type Field = {
   formData?: any;
   hiddenInput?: any;
   display?: string;
+  pattern?: any; // Thêm pattern
+  errorMessage?: string; // Thêm errorMessage
 } & Partial<Props>;
 
 export type OptionExtra = {
@@ -75,13 +77,14 @@ const FormType = (props: Field) => {
     setAffectValue,
     defaultValue = "",
     display,
+    pattern, // Thêm pattern
+    errorMessage, // Thêm errorMessage
     ...rest
   } = props;
 
   const _disabled = mode == "view" ? true : disabled;
   const [_options, setOptions] = useState<Option[]>();
-
-  const [places] = useState([]);
+  const [error, setError] = useState<string | null>(null); // Thêm state để hiển thị thông báo lỗi
 
   useEffect(() => {
     if (optionExtra) {
@@ -157,6 +160,19 @@ const FormType = (props: Field) => {
     setFormData((prev) => ({ ...prev, [keyName]: _options[0]?.value }));
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setFormData((prev) => ({ ...prev, [keyName]: inputValue }));
+
+    // Kiểm tra lỗi sau khi cập nhật giá trị
+    if (pattern && !new RegExp(pattern).test(inputValue)) {
+      setError(errorMessage || "Invalid input");
+    } else {
+      setError(null);
+    }
+  };
+
+
   if (display == "None") {
     return <></>;
   }
@@ -164,34 +180,34 @@ const FormType = (props: Field) => {
   switch (formType) {
     case "input":
       return (
-        <Form.Control
-          id={props.googleAddress == true ? "pac-input" : ""}
-          type="text"
-          {...rest}
-          name={keyName}
-          value={formData[keyName]}
-          onChange={(e) => {
-            console.log("formbase", formData[keyName]);
-            // onChange && onChange(e);
-            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }));
-          }}
-          disabled={_disabled}
-        />
+        <div className="input-wrapper">
+          <Form.Control
+            id={props.googleAddress == true ? "pac-input" : ""}
+            type="text"
+            {...rest}
+            name={keyName}
+            value={formData[keyName]}
+            onChange={handleInputChange}
+            disabled={_disabled}
+          />
+          {error && <Form.Text className="text-danger">{error}</Form.Text>}
+        </div>
       );
     case "shortInput":
       return (
-        <Form.Control
-          id={props.googleAddress == true ? "pac-input" : ""}
-          as="input"
-          type={props.hiddenInput ? "password" : "text"}
-          {...rest}
-          name={keyName}
-          value={formData[keyName]}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, [keyName]: e.target.value }))
-          }
-          disabled={_disabled}
-        />
+        <div className="input-wrapper">
+          <Form.Control
+            id={props.googleAddress == true ? "pac-input" : ""}
+            as="input"
+            type={props.hiddenInput ? "password" : "text"}
+            {...rest}
+            name={keyName}
+            value={formData[keyName]}
+            onChange={handleInputChange}
+            disabled={_disabled}
+          />
+          {error && <Form.Text className="text-danger">{error}</Form.Text>}
+        </div>
       );
     case "number":
       return (
@@ -334,9 +350,9 @@ export const FormBase = (props: Props) => {
     const _data = { ...formData };
     fields.forEach(
       (f) =>
-        (_data[f.keyName] = f.value
-          ? f.value
-          : _data[f.keyName]
+      (_data[f.keyName] = f.value
+        ? f.value
+        : _data[f.keyName]
           ? _data[f.keyName]
           : f.defaultValue)
     );

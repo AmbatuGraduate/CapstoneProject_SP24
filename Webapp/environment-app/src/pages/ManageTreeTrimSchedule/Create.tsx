@@ -44,18 +44,22 @@ export const CreateTreeTrimSchedule = () => {
       label: "Tiêu Đề",
       formType: "input",
       keyName: "summary",
-      placeholder: "Nhập tiêu đề"
+      placeholder: "Nhập tiêu đề",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập tiêu đề công việc",
     },
     {
       label: "Địa Chỉ",
       formType: "input",
       keyName: "location",
       googleAddress: true,
-      // value: address,
-      // onChange: (e) => {
-      //   setAddress(e.target.value);
-      // },
+      value: address,
+      onChange: (e) => {
+        setAddress(e.target.value);
+      },
       placeholder: "Nhập địa chỉ",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập địa chỉ",
     },
     {
       label: "Bắt Đầu Từ",

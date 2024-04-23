@@ -10,6 +10,7 @@ export const UpdateEmployee = () => {
   const [data, setData] = useState<any>();
   const ref = useRef<any>();
   const [, setIsLoading] = useState(false);
+  const [address, setAddress] = useState<string | null>("");
 
   const fetch = async () => {
     try {
@@ -39,24 +40,32 @@ export const UpdateEmployee = () => {
       formType: "shortInput",
       keyName: "name",
       defaultValue: lastName,
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập họ cho nhân viên",
     },
     {
       label: "Tên",
       formType: "shortInput",
       keyName: "familyName",
       defaultValue: firstName,
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập tên cho nhân viên",
     },
     {
       label: "Email",
       formType: "input",
       keyName: "email",
       defaultValue: data?.email,
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      errorMessage: "Vui lòng nhập một địa chỉ email hợp lệ",
     },
     {
       label: "Số Điện Thoại",
       formType: "shortInput",
       keyName: "phone",
       defaultValue: data?.phoneNumber,
+      pattern: /^\d{10,11}$/,
+      errorMessage: "Vui lòng nhập đúng số điện thoại",
     },
     {
       label: "Bộ Phận",
@@ -82,6 +91,10 @@ export const UpdateEmployee = () => {
           key: "Quản Lý",
           value: 2,
         },
+        {
+          key: "Quản Lý Nhân Sự",
+          value: 4,
+        },
       ],
       defaultValue: data?.role,
     },
@@ -91,11 +104,13 @@ export const UpdateEmployee = () => {
       formType: "input",
       keyName: "address",
       defaultValue: data?.address,
-      // googleAddress: true,
-      // value: address,
-      // onChange: (e) => {
-      //   setAddress(e.target.value);
-      // },
+      googleAddress: true,
+      value: address,
+      onChange: (e) => {
+        setAddress(e.target.value);
+      },
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập địa chỉ",
     },
   ];
 

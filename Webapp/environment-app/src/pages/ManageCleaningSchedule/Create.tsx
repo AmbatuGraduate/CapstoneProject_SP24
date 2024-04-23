@@ -37,7 +37,9 @@ export const CreateCleaningSchedule = () => {
             label: "Tiêu Đề",
             formType: "input",
             keyName: "summary",
-            placeholder: "Nhập tiêu đề"
+            placeholder: "Nhập tiêu đề",
+            pattern: /\S/, // Mẫu kiểm tra không được để trống
+            errorMessage: "Vui lòng nhập tiêu đề công việc",
         },
         {
             label: "Địa Chỉ",
@@ -49,6 +51,8 @@ export const CreateCleaningSchedule = () => {
                 setAddress(e.target.value);
             },
             placeholder: "Nhập địa chỉ",
+            pattern: /\S/, // Mẫu kiểm tra không được để trống
+            errorMessage: "Vui lòng nhập địa chỉ",
         },
         {
             label: "Bắt Đầu Từ",
@@ -115,9 +119,9 @@ export const CreateCleaningSchedule = () => {
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 didOpen: () => {
-                  Swal.showLoading();
+                    Swal.showLoading();
                 }
-              });
+            });
             await useApi.post(ClEANING_SCHEDULE_ADD, requestData);
             Swal.close();
             Swal.fire(

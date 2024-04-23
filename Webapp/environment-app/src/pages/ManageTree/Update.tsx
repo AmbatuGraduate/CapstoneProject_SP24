@@ -59,6 +59,7 @@ export const UpdateTree = () => {
       // onChange: (e) => {
       //   setAddress(e.target.value);
       // },
+      disabled: true,
     },
     {
       label: "Đường Kính Thân",
@@ -101,7 +102,7 @@ export const UpdateTree = () => {
 
   const handleSubmit = async (data: Record<string, any>) => {
 
-    try{
+    try {
       Swal.fire({
         title: 'Đang cập nhật cây...',
         allowEscapeKey: false,

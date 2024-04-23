@@ -16,30 +16,40 @@ export const CreateEmployee = () => {
       formType: "shortInput",
       keyName: "name",
       placeholder: "Ví dụ: Nguyễn",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập họ cho nhân viên",
     },
     {
       label: "Tên",
       formType: "shortInput",
       keyName: "familyName",
       placeholder: "Ví dụ: Văn A",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập tên cho nhân viên",
     },
     {
       label: "Email",
       formType: "input",
       keyName: "email",
-      defaultValue: "@vesinhdanang.xyz"
+      defaultValue: "@vesinhdanang.xyz",
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      errorMessage: "Vui lòng nhập một địa chỉ email hợp lệ",
     },
     {
       label: "Mật Khẩu",
       formType: "shortInput",
       keyName: "password",
       hiddenInput: "true",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng mật khẩu",
     },
     {
       label: "Số Điện Thoại",
       formType: "shortInput",
       keyName: "phone",
       placeholder: "Ví dụ: 0123456789",
+      pattern: /^\d{10,11}$/,
+      errorMessage: "Vui lòng nhập đúng số điện thoại",
     },
     {
       label: "Địa Chỉ",
@@ -50,7 +60,9 @@ export const CreateEmployee = () => {
       onChange: (e) => {
         setAddress(e.target.value);
       },
-      placeholder: "Nhập địa chỉ"
+      placeholder: "Nhập địa chỉ",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập địa chỉ",
     },
     {
       label: "Bộ Phận",
@@ -66,6 +78,7 @@ export const CreateEmployee = () => {
       label: "Chức Vụ",
       formType: "select",
       keyName: "userRole",
+      defaultValue: 1,
       options: [
         {
           key: "Nhân Viên",
@@ -74,6 +87,10 @@ export const CreateEmployee = () => {
         {
           key: "Quản Lý",
           value: 2,
+        },
+        {
+          key: "Quản Lý Nhân Sự",
+          value: 4,
         },
       ],
     },

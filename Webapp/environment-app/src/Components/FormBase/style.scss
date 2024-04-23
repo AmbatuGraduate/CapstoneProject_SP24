@@ -29,11 +29,11 @@
     margin-top: 40px;
     justify-content: space-between;
 
-    >div {
+    > div {
         width: 48%;
     }
 
-    >div:last-child {
+    > div:last-child {
         width: 100%;
     }
 
@@ -78,6 +78,15 @@
 
     .date-picker-container {
         position: relative;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper .text-danger {
+        position: absolute;
+        bottom: -20px; /* Điều chỉnh khoảng cách giữa trường nhập liệu và thông báo lỗi */
     }
 
     .date-picker-container .calendar-icon {
@@ -136,7 +145,7 @@
         padding-bottom: 12px;
     }
 
-    >form {
+    > form {
         padding-top: 10px;
     }
 }

@@ -18,30 +18,26 @@ export const CreateGroup = () => {
       keyName: "email",
       required: true,
       placeholder: "Ví dụ: quanlyvesinh@vesinhdanang.xyz",
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      errorMessage: "Vui lòng nhập một địa chỉ email hợp lệ",
     },
     {
       label: "Tên Bộ Phận",
       formType: "input",
       keyName: "name",
+      required: true,
       placeholder: "Ví dụ: Bộ phận quản lý..",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập tên bộ phận",
     },
     {
       label: "Mô tả",
       formType: "input",
       keyName: "description",
       placeholder: "Ví dụ: Bộ phận quản lý..",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập mô tả cho bộ phận",
     },
-    // {
-    //   label: "Nhân viên",
-    //   formType: "select",
-    //   keyName: "members",
-    //   placeholder: "Ví dụ: abc@vesinhdanang.xyz",
-    //   optionExtra: {
-    //     url: EMPLOYEE_LIST,
-    //     _key: "email",
-    //     _value: "email",
-    //   },
-    // },
     {
       label: "Quản lý",
       formType: "select",
