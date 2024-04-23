@@ -32,10 +32,12 @@ export type Field = {
   disabled?: boolean;
   optionExtra?: OptionExtra;
   onChange?: (value: any) => void;
+  setAffectValue?: any;
   onRender?: React.ReactNode;
   setFormData?: any;
   formData?: any;
   hiddenInput?: any;
+  display?: string;
 } & Partial<Props>;
 
 export type OptionExtra = {
@@ -70,7 +72,9 @@ const FormType = (props: Field) => {
     formData,
     setFormData,
     onChange,
+    setAffectValue,
     defaultValue = "",
+    display,
     ...rest
   } = props;
 
@@ -135,6 +139,7 @@ const FormType = (props: Field) => {
             address = address.slice(0, -2);
             console.log("Selected Address:", address);
             setFormData((prev) => ({ ...prev, [keyName]: address }));
+            setAffectValue(address);
           }
         });
         // console.log(places);
@@ -151,6 +156,10 @@ const FormType = (props: Field) => {
     setOptions(_options);
     setFormData((prev) => ({ ...prev, [keyName]: _options[0]?.value }));
   };
+
+  if (display == "None") {
+    return <></>;
+  }
 
   switch (formType) {
     case "input":
@@ -270,8 +279,6 @@ const FormType = (props: Field) => {
           />
           <FaRegCalendarAlt className="calendar-icon" />
         </div>
-
-
       );
     case "jsx":
       return onRender;
@@ -295,7 +302,6 @@ const FormType = (props: Field) => {
           />
           <FaRegCalendarAlt className="calendar-icon" />
         </div>
-
       );
     default:
       return (
@@ -347,6 +353,9 @@ export const FormBase = (props: Props) => {
       {fields.map((f, idx) => {
         // console.log("rerender FormType", f.label);
         const groupClassName = `custom-group-${f.formType}`;
+        if (f.display == "None") {
+          return <></>;
+        }
         return (
           <Form.Group className={`mb-3 ${groupClassName}`} key={idx}>
             <Form.Label>{f.label}</Form.Label>
