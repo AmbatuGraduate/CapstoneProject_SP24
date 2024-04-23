@@ -43,7 +43,7 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
                 .GroupBy(tree => tree.TreeLocation.Split(",", StringSplitOptions.TrimEntries)[1])
                 .ToDictionary(
                     group => group.Key,
-                    group => group.Where(tree => tree.TreeLocation.Split(",", StringSplitOptions.TrimEntries)[1].ToLower() == group.Key.Split(",", StringSplitOptions.TrimEntries)[1].ToLower())
+                    group => group.Where(tree => tree.TreeLocation.Split(",", StringSplitOptions.TrimEntries)[1].ToLower() == group.Key.Split(",", StringSplitOptions.TrimEntries)[0].ToLower())
                 .ToList()).ToList();
 
             foreach (var group in treeByAddress)
