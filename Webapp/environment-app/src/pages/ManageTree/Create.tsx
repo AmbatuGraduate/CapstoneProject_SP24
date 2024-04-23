@@ -34,6 +34,9 @@ export const CreateTree = () => {
 
     // Iterate over each part of the address
     parts?.forEach((part, index) => {
+      // Remove accents/diacritics from the part
+      part = part.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
       // Check if it's the first part (house number)
       let abbreviation;
       if (index === 0) {
@@ -237,7 +240,7 @@ export const CreateTree = () => {
       <button
         className="btnAdd"
         onClick={handleTreeTypeClick}
-        style={{ position: "absolute", bottom: 27, right: 1163 }}
+        style={{ position: "absolute", bottom: "2rem", left: '17.5rem' }}
       >
         Thêm loại cây
       </button>

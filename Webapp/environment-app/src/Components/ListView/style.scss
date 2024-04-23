@@ -313,8 +313,6 @@
     display: flex;
     justify-content: space-between;
 
-
-
     .image-container {
       width: 40%;
     }
@@ -390,22 +388,21 @@
   background-color: #156e1a;
 }
 
-
 //btn Add Tree Type
 .btnAdd {
-   width: 7.9rem;
-    height: 2.9rem;
-    padding: 0.25rem;
-    background-color: var(--whiteColor);
-    --bs-btn-border-radius: none;
-    color: var(--PrimaryColor);
-    border-radius: 2rem;
-    border: 2px solid var(--PrimaryColor);
-    font-weight: bold;
+  width: 7.9rem;
+  height: 2.9rem;
+  padding: 0.25rem;
+  background-color: var(--whiteColor);
+  --bs-btn-border-radius: none;
+  color: var(--PrimaryColor);
+  border-radius: 2rem;
+  border: 2px solid var(--PrimaryColor);
+  font-weight: bold;
 
-    &:hover {
-      background-color: var(--PrimaryColor);
-      border: 2px solid var(--PrimaryColor);
-      color: var(--whiteColor);
-    }
+  &:hover {
+    background-color: var(--PrimaryColor);
+    border: 2px solid var(--PrimaryColor);
+    color: var(--whiteColor);
+  }
 }

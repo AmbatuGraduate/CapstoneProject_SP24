@@ -31,17 +31,17 @@ export const CreateGroup = () => {
       keyName: "description",
       placeholder: "Ví dụ: Bộ phận quản lý..",
     },
-    {
-      label: "Nhân viên",
-      formType: "select",
-      keyName: "members",
-      placeholder: "Ví dụ: abc@vesinhdanang.xyz",
-      optionExtra: {
-        url: EMPLOYEE_LIST,
-        _key: "email",
-        _value: "email",
-      },
-    },
+    // {
+    //   label: "Nhân viên",
+    //   formType: "select",
+    //   keyName: "members",
+    //   placeholder: "Ví dụ: abc@vesinhdanang.xyz",
+    //   optionExtra: {
+    //     url: EMPLOYEE_LIST,
+    //     _key: "email",
+    //     _value: "email",
+    //   },
+    // },
     {
       label: "Quản lý",
       formType: "select",
@@ -68,6 +68,7 @@ export const CreateGroup = () => {
       });
       await useApi.post(GROUP_ADD, {
         ...data,
+        members: data.owners,
         adminCreated: true,
       });
       Swal.close();
