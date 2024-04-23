@@ -10,6 +10,7 @@
 
 .listView {
   width: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
 
   .search {
     gap: 2rem;
@@ -391,18 +392,18 @@
 
 
 //btn Add Tree Type
-.btnAdd{
+.btnAdd {
   width: 6rem;
-    padding: 0.25rem;
-    background-color: var(--whiteColor);
-    --bs-btn-border-radius: none;
-    color: var(--PrimaryColor);
-    border-radius: 0.5rem;
+  padding: 0.25rem;
+  background-color: var(--whiteColor);
+  --bs-btn-border-radius: none;
+  color: var(--PrimaryColor);
+  border-radius: 0.5rem;
+  border: 2px solid var(--PrimaryColor);
+  font-weight: bold;
+
+  &:hover {
+    background-color: var(--PrimaryColor);
     border: 2px solid var(--PrimaryColor);
-    font-weight: bold;
-  
-    &:hover {
-      background-color: var(--PrimaryColor);
-      border: 2px solid var(--PrimaryColor);
-    }
+  }
 }
