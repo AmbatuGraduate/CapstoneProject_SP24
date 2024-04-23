@@ -16,11 +16,8 @@ export const CreateTree = () => {
   const [, setIsLoading] = useState(false);
   const [plantTime, setPlantTime] = useState<Date | null>(null);
   const [intervalCutTime, setIntervalCutTime] = useState<number>(1);
-<<<<<<< HEAD
-=======
   const [address, setAddress] = useState<string | null>("");
   const [token] = useCookies(["accessToken"]);
->>>>>>> dev
 
   const cutTime = () => {
     const newCutTime = new Date(plantTime || new Date());
@@ -37,6 +34,9 @@ export const CreateTree = () => {
 
     // Iterate over each part of the address
     parts?.forEach((part, index) => {
+      // Remove accents/diacritics from the part
+      part = part.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
       // Check if it's the first part (house number)
       let abbreviation;
       if (index === 0) {
@@ -70,13 +70,9 @@ export const CreateTree = () => {
       focusConfirm: false,
       confirmButtonText: "Thêm loại cây",
       preConfirm: () => {
-<<<<<<< HEAD
-        const treeTypeName = (document.getElementById('swal-input1') as HTMLInputElement).value;
-=======
         const treeTypeName = (
           document.getElementById("swal-input1") as HTMLInputElement
         ).value;
->>>>>>> dev
         return { treeTypeName };
       },
     });
@@ -87,12 +83,8 @@ export const CreateTree = () => {
         await useApi.post(TREE_TYPE_LIST, {
           ...value,
         });
-<<<<<<< HEAD
-        navigate("/manage-tree/create")
-=======
         ref.current?.reload();
         navigate("/manage-tree/create");
->>>>>>> dev
 
         // Show success alert
         Swal.fire("Thành công!", "Thêm giống cây thành công.", "success");
@@ -248,7 +240,7 @@ export const CreateTree = () => {
       <button
         className="btnAdd"
         onClick={handleTreeTypeClick}
-        style={{ position: "absolute", bottom: 27, right: 1163 }}
+        style={{ position: "absolute", bottom: "2rem", left: '17.5rem' }}
       >
         Thêm loại cây
       </button>
