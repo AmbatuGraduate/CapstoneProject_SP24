@@ -12,7 +12,6 @@ export const CreateTree = () => {
   const [, setIsLoading] = useState(false);
   const [plantTime, setPlantTime] = useState<Date | null>(null);
   const [intervalCutTime, setIntervalCutTime] = useState<number>(1);
-  const [address, setAddress] = useState<string | null>("");
 
   const cutTime = () => {
     const newCutTime = new Date(plantTime || new Date());
@@ -27,13 +26,13 @@ export const CreateTree = () => {
       html: `
       <textarea id="swal-input1" name"treeTypeName" class="swal2-input" placeholder="Nhập giống cây"></textarea>
     `,
-    showCancelButton: true,
+      showCancelButton: true,
       focusConfirm: false,
       confirmButtonText: 'Thêm giống cây',
       preConfirm: () => {
-        const treeTypeName = (document.getElementById('swal-input1') as HTMLInputElement).value;     
-        return { treeTypeName};
-      },  
+        const treeTypeName = (document.getElementById('swal-input1') as HTMLInputElement).value;
+        return { treeTypeName };
+      },
     });
 
     if (value) {
@@ -42,7 +41,6 @@ export const CreateTree = () => {
         await useApi.post(TREE_TYPE_LIST, {
           ...value,
         });
-        ref.current?.reload();
         navigate("/manage-tree/create")
 
         // Show success alert
