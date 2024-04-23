@@ -100,13 +100,6 @@ export const UpdateTree = () => {
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
-    const cutTime = () => {
-      const newCutTime = new Date(data.plantTime || new Date());
-      newCutTime.setMonth(
-        newCutTime.getMonth() + Number(data.intervalCutTime || 0) * 3
-      );
-      return newCutTime;
-    };
 
     try{
       Swal.fire({
