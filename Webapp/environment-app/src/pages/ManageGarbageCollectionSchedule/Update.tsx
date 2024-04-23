@@ -10,6 +10,7 @@ export const UpdateGarbageCollectionSchedule = () => {
     const [data, setData] = useState<any>();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
+    const [address, setAddress] = useState<string | null>("");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,12 +31,22 @@ export const UpdateGarbageCollectionSchedule = () => {
             formType: "input",
             keyName: "summary",
             defaultValue: data?.myEvent.summary,
+            pattern: /\S/, // Mẫu kiểm tra không được để trống
+            errorMessage: "Vui lòng nhập tiêu đề công việc",
         },
         {
             label: "Địa Chỉ",
             formType: "input",
             keyName: "location",
             defaultValue: data?.myEvent.location,
+            googleAddress: true,
+            value: address,
+            onChange: (e) => {
+                setAddress(e.target.value);
+            },
+            placeholder: "Nhập địa chỉ",
+            pattern: /\S/, // Mẫu kiểm tra không được để trống
+            errorMessage: "Vui lòng nhập địa chỉ",
         },
         {
             label: "Bắt Đầu Từ",
@@ -120,9 +131,9 @@ export const UpdateGarbageCollectionSchedule = () => {
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 didOpen: () => {
-                  Swal.showLoading();
+                    Swal.showLoading();
                 }
-              });
+            });
             await useApi.post(GARBAGE_COLLECTION_UPDATE.replace(":id", id), requestData);
             Swal.close();
             Swal.fire(

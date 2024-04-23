@@ -133,6 +133,8 @@ export const CreateTree = () => {
       // value: address,
       setAffectValue: setAddress,
       placeholder: "Nhập địa chỉ",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập địa chỉ",
     },
     {
       label: "Đường Kính Thân (cm)",

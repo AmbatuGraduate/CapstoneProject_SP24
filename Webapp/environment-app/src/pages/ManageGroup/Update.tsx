@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-    EMPLOYEE_LIST,
+  EMPLOYEE_LIST,
   GROUP_DETAIL,
   GROUP_UPDATE,
   useApi,
@@ -42,40 +42,44 @@ export const UpdateGroup = () => {
       formType: "input",
       keyName: "name",
       defaultValue: data?.value?.name,
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập tên bộ phận",
     },
     {
       label: "Mô tả",
       formType: "input",
       keyName: "description",
       defaultValue: data?.value?.description,
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập mô tả cho bộ phận",
     },
+    // {
+    //   label: "Nhân viên",
+    //   formType: "select",
+    //   keyName: "members",
+    //   defaultValue: data?.value?.members,
+    //   optionExtra: {
+    //     url: EMPLOYEE_LIST,
+    //     _key: "email",
+    //     _value: "email",
+    //   },
+    // },
     {
-      label: "Nhân viên",
+      label: "Quản lý",
       formType: "select",
-      keyName: "members",
-      defaultValue: data?.value?.members,
+      keyName: "owners",
+      defaultValue: data?.value?.owners,
       optionExtra: {
         url: EMPLOYEE_LIST,
         _key: "email",
         _value: "email",
       },
     },
-    {
-        label: "Quản lý",
-        formType: "select",
-        keyName: "owners",
-        defaultValue: data?.value?.owners,
-        optionExtra: {
-        url: EMPLOYEE_LIST,
-        _key: "email",
-        _value: "email",
-      },
-      },  
   ];
 
   const handleSubmit = async (data: Record<string, any>) => {
-    
-    try{
+
+    try {
       Swal.fire({
         title: 'Đang cập nhật bộ phận...',
         allowEscapeKey: false,
@@ -86,6 +90,7 @@ export const UpdateGroup = () => {
       });
       await useApi.post(GROUP_UPDATE.replace(":email", email), {
         ...data,
+        members: data?.owners,
       });
       Swal.close();
       Swal.fire(

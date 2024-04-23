@@ -37,7 +37,9 @@ export const CreateGarbageCollectionSchedule = () => {
       label: "Tiêu Đề",
       formType: "input",
       keyName: "summary",
-      placeholder: "Nhập tiêu đề"
+      placeholder: "Nhập tiêu đề",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập tiêu đề công việc",
     },
     {
       label: "Địa Chỉ",
@@ -49,6 +51,8 @@ export const CreateGarbageCollectionSchedule = () => {
         setAddress(e.target.value);
       },
       placeholder: "Nhập địa chỉ",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập địa chỉ",
     },
     {
       label: "Bắt Đầu Từ",
