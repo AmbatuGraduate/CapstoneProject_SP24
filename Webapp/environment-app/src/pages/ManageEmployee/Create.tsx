@@ -34,8 +34,8 @@ export const CreateEmployee = () => {
       formType: "input",
       keyName: "email",
       defaultValue: "@vesinhdanang.xyz",
-      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      errorMessage: "Vui lòng nhập một địa chỉ email hợp lệ",
+      pattern: /^[^\s@]+@vesinhdanang\.xyz$/,
+      errorMessage: "Vui lòng nhập một địa chỉ email hợp lệ có đuôi @vesinhdanang.xyz",
       required: true,
     },
     {
