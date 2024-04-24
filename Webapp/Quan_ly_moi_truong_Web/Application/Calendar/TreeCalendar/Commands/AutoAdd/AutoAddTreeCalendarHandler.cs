@@ -40,10 +40,10 @@ namespace Application.Calendar.TreeCalendar.Commands.AutoAdd
             var getAllTree = _treeRepository.GetAllTrees().Where(tree => !tree.isCut);
 
             var treeByAddress = getAllTree
-                .GroupBy(tree => tree.TreeLocation.Split(",", StringSplitOptions.TrimEntries)[1])
+                .GroupBy(tree => tree.TreeLocation.Substring(tree.TreeLocation.IndexOf(",")+1))
                 .ToDictionary(
                     group => group.Key,
-                    group => group.Where(tree => tree.TreeLocation.Split(",", StringSplitOptions.TrimEntries)[1].ToLower() == group.Key.Split(",", StringSplitOptions.TrimEntries)[0].ToLower())
+                    group => group.Where(tree => group.Key.Substring(tree.TreeLocation.IndexOf(",")).ToLower().Contains(tree.TreeLocation.Split(",", StringSplitOptions.TrimEntries)[1].ToLower()))
                 .ToList()).ToList();
 
             foreach (var group in treeByAddress)
