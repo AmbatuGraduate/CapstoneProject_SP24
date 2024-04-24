@@ -14,12 +14,23 @@ export const CreateGroup = () => {
   const fields: Field[] = [
     {
       label: "Email",
-      formType: "input",
+      formType: "shortInput",
       keyName: "email",
       required: true,
-      placeholder: "Ví dụ: quanlyvesinh@vesinhdanang.xyz",
-      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      errorMessage: "Vui lòng nhập một địa chỉ email hợp lệ",
+      defaultValue: "@vesinhdanang.xyz",
+      pattern: /^[^\s@]+@vesinhdanang\.xyz$/,
+      errorMessage: "Vui lòng nhập một địa chỉ email hợp lệ có đuôi @vesinhdanang.xyz",
+    },
+    {
+      label: "Quản lý",
+      formType: "select",
+      keyName: "owners",
+      optionExtra: {
+        url: EMPLOYEE_LIST,
+        _key: "email",
+        _value: "email",
+      },
+      required: true,
     },
     {
       label: "Tên Bộ Phận",
@@ -32,22 +43,11 @@ export const CreateGroup = () => {
     },
     {
       label: "Mô tả",
-      formType: "input",
+      formType: "textarea",
       keyName: "description",
       placeholder: "Ví dụ: Bộ phận quản lý..",
       pattern: /\S/, // Mẫu kiểm tra không được để trống
       errorMessage: "Vui lòng nhập mô tả cho bộ phận",
-      required: true,
-    },
-    {
-      label: "Quản lý",
-      formType: "select",
-      keyName: "owners",
-      optionExtra: {
-        url: EMPLOYEE_LIST,
-        _key: "email",
-        _value: "email",
-      },
       required: true,
     },
   ];
