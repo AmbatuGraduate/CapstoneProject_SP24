@@ -96,7 +96,6 @@ export const UpdateEmployee = () => {
           value: 4,
         },
       ],
-      defaultValue: data?.role,
     },
 
     {
