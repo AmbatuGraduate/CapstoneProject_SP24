@@ -158,6 +158,13 @@ export default function ReportForm({ onFormSuccess }) {
                     const accessToken = await AsyncStorage.getItem("@accessToken");
                     const user = JSON.parse(await AsyncStorage.getItem("@user"));
                     const issuerEmail = user?.email;
+                    console.log('issuerEmail:', issuerEmail);
+                    console.log('subject:', values.reportSubject);
+                    console.log('body:', values.reportBody);
+                    console.log('location:', values.issueLocation);
+                    console.log('impact:', values.reportImpact);
+                    console.log('date:', values.expectedResolutionDate);
+
 
                     // local test: http://192.168.1.7:45455/api/Report/GetReportsByUser?accessToken=
                     // server:     https://vesinhdanang.xyz:7024/api/Report/CreateReport
@@ -245,11 +252,15 @@ export default function ReportForm({ onFormSuccess }) {
 
                                                 <TouchableHighlight
                                                     style={styles.modalButton}
-                                                    onPress={() => {
-                                                        getLocation();
-                                                        setLocationOption('current');
-                                                        setModalVisible(!modalVisible);
-                                                        props.setFieldValue('issueLocation', issueLocation);
+                                                    onPress={async () => {
+                                                        try {
+                                                            const location = await getLocation();
+                                                            setLocationOption('current');
+                                                            setModalVisible(!modalVisible);
+                                                            props.setFieldValue('issueLocation', location);
+                                                        } catch (error) {
+                                                            console.warn('Error getting location', error);
+                                                        }
                                                     }}
                                                 >
                                                     <View style={styles.modalButtonText}>
