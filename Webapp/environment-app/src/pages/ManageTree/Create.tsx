@@ -124,6 +124,7 @@ export const CreateTree = () => {
         _value: "treeTypeId",
       },
       googleAddress: false,
+      required: true,
     },
     {
       label: "Địa Chỉ Cụ Thể",
@@ -135,6 +136,7 @@ export const CreateTree = () => {
       placeholder: "Nhập địa chỉ",
       pattern: /\S/, // Mẫu kiểm tra không được để trống
       errorMessage: "Vui lòng nhập địa chỉ",
+      required: true,
     },
     {
       label: "Đường Kính Thân (cm)",
@@ -142,6 +144,9 @@ export const CreateTree = () => {
       keyName: "bodyDiameter",
       googleAddress: false,
       placeholder: "Ví dụ: 50",
+      pattern: /^\d*[1-9]\d*$/,
+      errorMessage: "Vui lòng nhập đường kính thân và giá trị lớn hơn 0",
+      required: true,
     },
     {
       label: "Tán Lá (cm)",
@@ -149,6 +154,9 @@ export const CreateTree = () => {
       keyName: "leafLength",
       googleAddress: false,
       placeholder: "Ví dụ: 150",
+      pattern: /^\d*[1-9]\d*$/,
+      errorMessage: "Vui lòng nhập độ rộng tán lá và giá trị lớn hơn 0",
+      required: true,
     },
     {
       label: "Thời Điểm Trồng",
@@ -159,6 +167,7 @@ export const CreateTree = () => {
       onChange: (date) => {
         setPlantTime(date);
       },
+      required: true,
     },
     {
       label: "Thời Điểm Cắt",
@@ -166,6 +175,7 @@ export const CreateTree = () => {
       keyName: "cutTime",
       value: cutTime(),
       googleAddress: false,
+      disabled: true,
     },
     {
       label: "Khoảng Thời Gian Cắt (Quý)",
@@ -174,6 +184,9 @@ export const CreateTree = () => {
       defaultValue: intervalCutTime,
       googleAddress: false,
       onChange: (value) => setIntervalCutTime(Number(value || 0)),
+      pattern: /^\d*[1-9]\d*$/,
+      errorMessage: "Vui lòng nhập khoảng thời gian cắt tỉa và giá trị lớn hơn 0",
+      required: true,
     },
     {
       label: "Bộ Phận Phụ Trách",
@@ -187,6 +200,7 @@ export const CreateTree = () => {
       googleAddress: false,
       hiddenInput: true,
       display: JSON.parse(token.accessToken).role == "Manager" ? "None" : "",
+      required: true,
     },
 
     {
@@ -242,7 +256,7 @@ export const CreateTree = () => {
       <button
         className="btnAdd"
         onClick={handleTreeTypeClick}
-        style={{ position: "absolute", bottom: "2rem", left: '17.5rem' }}
+        style={{ position: "absolute", bottom: "2rem", left: '16%' }}
       >
         Thêm loại cây
       </button>

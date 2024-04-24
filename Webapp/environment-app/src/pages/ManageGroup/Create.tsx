@@ -37,6 +37,7 @@ export const CreateGroup = () => {
       placeholder: "Ví dụ: Bộ phận quản lý..",
       pattern: /\S/, // Mẫu kiểm tra không được để trống
       errorMessage: "Vui lòng nhập mô tả cho bộ phận",
+      required: true,
     },
     {
       label: "Quản lý",
@@ -47,6 +48,7 @@ export const CreateGroup = () => {
         _key: "email",
         _value: "email",
       },
+      required: true,
     },
   ];
 

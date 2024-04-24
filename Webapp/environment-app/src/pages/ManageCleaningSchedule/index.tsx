@@ -259,12 +259,19 @@ export const ManageCleaningSchedule = () => {
     },
   ];
 
+  const transformData = (data) => {
+    // Sắp xếp các lịch theo ngày từ mới tới cũ
+    // @ts-ignore or @ts-expect-error
+    return data.sort((a, b) => new Date(b.start) - new Date(a.start));
+  };
+
   return (
     <div>
       <ListView
         ref={ref}
         listURL={ClEANING_SCHEDULE}
         columns={columns}
+        transform={transformData}
         bottom={
           <>
             <Button

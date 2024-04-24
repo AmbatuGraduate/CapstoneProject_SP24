@@ -11,6 +11,14 @@ export const UpdateTreeTrimSchedule = () => {
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
     const [address, setAddress] = useState<string | null>("");
+    const [startTime, setStartTime] = useState<Date | null>(null);
+
+    const endTime = () => {
+        if (!startTime) return null; // Trả về null nếu không có startTime
+        const newEndTime = new Date(startTime); // Sử dụng startTime làm tham số khởi tạo
+        newEndTime.setMinutes(newEndTime.getMinutes() + 60); // Cộng thêm 00 phút
+        return newEndTime;
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,12 +61,18 @@ export const UpdateTreeTrimSchedule = () => {
             formType: "datetime",
             keyName: "start.dateTime",
             defaultValue: data?.myEvent.start,
+            minDate: new Date(),
+            onChange: (datetime) => {
+                setStartTime(datetime);
+            },
         },
         {
             label: "Kết Thúc Trước",
             formType: "datetime",
             keyName: "end.dateTime",
             defaultValue: data?.myEvent.end,
+            minDate: startTime || new Date(),
+            value: endTime(),
         },
         {
             label: "Cây Cần Cẳt",

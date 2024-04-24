@@ -10,6 +10,14 @@ export const CreateCleaningSchedule = () => {
     const [, setIsLoading] = useState(false);
     const [departmentEmail, setDepartmentEmail] = useState<any>();
     const [address, setAddress] = useState<string | null>("");
+    const [startTime, setStartTime] = useState<Date | null>(null);
+
+    const endTime = () => {
+        if (!startTime) return null; // Trả về null nếu không có startTime
+        const newEndTime = new Date(startTime); // Sử dụng startTime làm tham số khởi tạo
+        newEndTime.setMinutes(newEndTime.getMinutes() + 60); // Cộng thêm 00 phút
+        return newEndTime;
+    };
 
     const fields: Field[] = [
         {
@@ -59,12 +67,18 @@ export const CreateCleaningSchedule = () => {
             formType: "datetime",
             keyName: "start.dateTime",
             defaultValue: new Date(),
+            minDate: new Date(),
+            onChange: (datetime) => {
+                setStartTime(datetime);
+            },
         },
         {
             label: "Kết Thúc Trước",
             formType: "datetime",
             keyName: "end.dateTime",
             defaultValue: new Date(),
+            minDate: startTime || new Date(),
+            value: endTime(),
         },
         {
             label: "Ghi Chú",

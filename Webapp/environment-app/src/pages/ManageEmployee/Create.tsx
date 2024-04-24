@@ -18,6 +18,7 @@ export const CreateEmployee = () => {
       placeholder: "Ví dụ: Nguyễn",
       pattern: /\S/, // Mẫu kiểm tra không được để trống
       errorMessage: "Vui lòng nhập họ cho nhân viên",
+      required: true,
     },
     {
       label: "Tên",
@@ -26,6 +27,7 @@ export const CreateEmployee = () => {
       placeholder: "Ví dụ: Văn A",
       pattern: /\S/, // Mẫu kiểm tra không được để trống
       errorMessage: "Vui lòng nhập tên cho nhân viên",
+      required: true,
     },
     {
       label: "Email",
@@ -34,6 +36,7 @@ export const CreateEmployee = () => {
       defaultValue: "@vesinhdanang.xyz",
       pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
       errorMessage: "Vui lòng nhập một địa chỉ email hợp lệ",
+      required: true,
     },
     {
       label: "Mật Khẩu",
@@ -42,6 +45,7 @@ export const CreateEmployee = () => {
       hiddenInput: "true",
       pattern: /\S/, // Mẫu kiểm tra không được để trống
       errorMessage: "Vui lòng mật khẩu",
+      required: true,
     },
     {
       label: "Số Điện Thoại",
@@ -50,6 +54,7 @@ export const CreateEmployee = () => {
       placeholder: "Ví dụ: 0123456789",
       pattern: /^\d{10,11}$/,
       errorMessage: "Vui lòng nhập đúng số điện thoại",
+      required: true,
     },
     {
       label: "Địa Chỉ",
@@ -63,6 +68,7 @@ export const CreateEmployee = () => {
       placeholder: "Nhập địa chỉ",
       pattern: /\S/, // Mẫu kiểm tra không được để trống
       errorMessage: "Vui lòng nhập địa chỉ",
+      required: true,
     },
     {
       label: "Bộ Phận",
@@ -73,6 +79,7 @@ export const CreateEmployee = () => {
         _key: "name",
         _value: "email",
       },
+      required: true,
     },
     {
       label: "Chức Vụ",
@@ -93,6 +100,7 @@ export const CreateEmployee = () => {
           value: 4,
         },
       ],
+      required: true,
     },
   ];
 

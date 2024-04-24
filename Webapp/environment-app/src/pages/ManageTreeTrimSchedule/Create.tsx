@@ -17,6 +17,14 @@ export const CreateTreeTrimSchedule = () => {
   const [, setIsLoading] = useState(false);
   const [departmentEmail, setDepartmentEmail] = useState<any>();
   const [address, setAddress] = useState<string | null>("");
+  const [startTime, setStartTime] = useState<Date | null>(null);
+
+  const endTime = () => {
+    if (!startTime) return null; // Trả về null nếu không có startTime
+    const newEndTime = new Date(startTime); // Sử dụng startTime làm tham số khởi tạo
+    newEndTime.setMinutes(newEndTime.getMinutes() + 60); // Cộng thêm 00 phút
+    return newEndTime;
+  };
 
   const fields: Field[] = [
     {
@@ -29,6 +37,7 @@ export const CreateTreeTrimSchedule = () => {
         _value: "email",
       },
       onChange: (value) => setDepartmentEmail(value),
+      required: true,
     },
     {
       label: "Nhân Viên Thực Hiện",
@@ -39,6 +48,7 @@ export const CreateTreeTrimSchedule = () => {
         _key: "name",
         _value: "email",
       },
+      required: true,
     },
     {
       label: "Tiêu Đề",
@@ -47,6 +57,7 @@ export const CreateTreeTrimSchedule = () => {
       placeholder: "Nhập tiêu đề",
       pattern: /\S/, // Mẫu kiểm tra không được để trống
       errorMessage: "Vui lòng nhập tiêu đề công việc",
+      required: true,
     },
     {
       label: "Địa Chỉ",
@@ -60,18 +71,27 @@ export const CreateTreeTrimSchedule = () => {
       placeholder: "Nhập địa chỉ",
       pattern: /\S/, // Mẫu kiểm tra không được để trống
       errorMessage: "Vui lòng nhập địa chỉ",
+      required: true,
     },
     {
       label: "Bắt Đầu Từ",
       formType: "datetime",
       keyName: "start.dateTime",
       defaultValue: new Date(),
+      minDate: new Date(),
+      onChange: (datetime) => {
+        setStartTime(datetime);
+      },
+      required: true,
     },
     {
       label: "Kết Thúc Trước",
       formType: "datetime",
       keyName: "end.dateTime",
       defaultValue: new Date(),
+      minDate: startTime || new Date(),
+      value: endTime(),
+      required: true,
     },
     {
       label: "Ghi Chú",
