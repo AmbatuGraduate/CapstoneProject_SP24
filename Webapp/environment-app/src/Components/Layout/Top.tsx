@@ -45,7 +45,7 @@ const Top = () => {
     <div className="topSection">
       <div className="headerSection flex">
         <div className="title">
-          <h1>Chào mừng tới với Ambatu!</h1>
+          <h1>Chào mừng tới với ecoHub!</h1>
           <p>Xin chào {JSON.parse(token.accessToken).name}</p>
         </div>
         <div className="adminDiv flex">
