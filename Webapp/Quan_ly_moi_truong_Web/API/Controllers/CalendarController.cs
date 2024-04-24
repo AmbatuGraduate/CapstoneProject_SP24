@@ -54,7 +54,7 @@ namespace API.Controllers
         // get google calendar events
         [HttpGet()]
         [Authorize(Roles = "Admin, Manager, Employee")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetAllCalendarEvents(CalendarTypeEnum calendarTypeEnum)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -101,7 +101,7 @@ namespace API.Controllers
         // get google calendar events by attendee email
         [HttpGet()]
         [Authorize(Roles = "Admin, Manager, Employee")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetCalendarEventsByAttendeeEmail(CalendarTypeEnum calendarTypeEnum, string attendeeEmail)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -187,7 +187,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetAllLateCalendarEvent(CalendarTypeEnum calendarTypeEnum)
         {
             var httpContext = _httpContextAccessor.HttpContext;
@@ -207,7 +207,7 @@ namespace API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> GetAllCalendarEventNoAttendees(CalendarTypeEnum calendarTypeEnum)
         {
             var httpContext = _httpContextAccessor.HttpContext;
@@ -228,7 +228,7 @@ namespace API.Controllers
         // add events
         [HttpPost()]
         [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> AddCalendarEvent(CalendarTypeEnum calendarTypeEnum, MyAddedEvent? myEvent)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -315,7 +315,7 @@ namespace API.Controllers
         // update events
         [HttpPost()]
         [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> UpdateCalendarEvent(CalendarTypeEnum calendarTypeEnum, MyUpdatedEvent? myEvent, string eventId)
         {
             var clientType = Request.Headers["Client-Type"];
@@ -414,7 +414,7 @@ namespace API.Controllers
         // delete events
         [HttpDelete()]
         [Authorize(Roles = "Admin, Manager")]
-        [HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
+        //[HasPermission(Permission.TREE_DEPARTMENT + "," + Permission.ADMIN + "," + Permission.GARBAGE_COLLECTION_DEPARTMENT + "," + Permission.CLEANER_DEPARTMENT)]
         public async Task<IActionResult> DeleteCalendarEvent(CalendarTypeEnum calendarTypeEnum, string eventId)
         {
             var clientType = Request.Headers["Client-Type"];
