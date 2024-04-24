@@ -11,6 +11,5 @@ namespace Application.Report.Common
         public List<string>? ReportImages { get; set; }
         public DateTime ExpectedResolutionDate { get; set; }
         public ReportImpact ReportImpact { get; set; }
-      
     }
 }
