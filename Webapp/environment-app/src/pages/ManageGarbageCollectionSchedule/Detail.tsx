@@ -89,11 +89,10 @@ export const DetailGarbageCollectionSchedule = () => {
                             width: '100%',
                             margin: '4rem',
                             marginLeft: '0',
-                            marginBottom: '60%',
                             boxShadow: '0px 5px 10px rgba(0, 0, 0, 0.3)',
 
                         }}>
-                        <SimpleMap location={data.myEvent.location} />
+                        <SimpleMap location={data.myEvent.location} showStreetView={false} />
                     </div>
                 </div>
 
