@@ -85,6 +85,7 @@ export const CreateCleaningSchedule = () => {
             formType: "textarea",
             keyName: "description",
             placeholder: "Ví dụ: Cần lưu ý...",
+            defaultValue: "",
         },
     ];
 

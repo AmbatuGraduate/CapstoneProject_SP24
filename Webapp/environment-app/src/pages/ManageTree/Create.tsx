@@ -209,6 +209,7 @@ export const CreateTree = () => {
       keyName: "note",
       googleAddress: false,
       placeholder: "Ví dụ: Cần lưu ý...",
+      defaultValue: "",
     },
   ];
 
