@@ -10,6 +10,14 @@ export const CreateCleaningSchedule = () => {
     const [, setIsLoading] = useState(false);
     const [departmentEmail, setDepartmentEmail] = useState<any>();
     const [address, setAddress] = useState<string | null>("");
+    const [startTime, setStartTime] = useState<Date | null>(null);
+
+    const endTime = () => {
+        if (!startTime) return null; // Trả về null nếu không có startTime
+        const newEndTime = new Date(startTime); // Sử dụng startTime làm tham số khởi tạo
+        newEndTime.setMinutes(newEndTime.getMinutes() + 60); // Cộng thêm 00 phút
+        return newEndTime;
+    };
 
     const fields: Field[] = [
         {
@@ -37,7 +45,9 @@ export const CreateCleaningSchedule = () => {
             label: "Tiêu Đề",
             formType: "input",
             keyName: "summary",
-            placeholder: "Nhập tiêu đề"
+            placeholder: "Nhập tiêu đề",
+            pattern: /\S/, // Mẫu kiểm tra không được để trống
+            errorMessage: "Vui lòng nhập tiêu đề công việc",
         },
         {
             label: "Địa Chỉ",
@@ -49,18 +59,26 @@ export const CreateCleaningSchedule = () => {
                 setAddress(e.target.value);
             },
             placeholder: "Nhập địa chỉ",
+            pattern: /\S/, // Mẫu kiểm tra không được để trống
+            errorMessage: "Vui lòng nhập địa chỉ",
         },
         {
             label: "Bắt Đầu Từ",
             formType: "datetime",
             keyName: "start.dateTime",
             defaultValue: new Date(),
+            minDate: new Date(),
+            onChange: (datetime) => {
+                setStartTime(datetime);
+            },
         },
         {
             label: "Kết Thúc Trước",
             formType: "datetime",
             keyName: "end.dateTime",
             defaultValue: new Date(),
+            minDate: startTime || new Date(),
+            value: endTime(),
         },
         {
             label: "Ghi Chú",
@@ -115,9 +133,9 @@ export const CreateCleaningSchedule = () => {
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 didOpen: () => {
-                  Swal.showLoading();
+                    Swal.showLoading();
                 }
-              });
+            });
             await useApi.post(ClEANING_SCHEDULE_ADD, requestData);
             Swal.close();
             Swal.fire(

@@ -11,7 +11,6 @@ import Swal from "sweetalert2";
 export const ManageTreeTrimSchedule = () => {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [employees, setEmployees] = useState<employee[]>([]);
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState("");
   const [hoveringRows, setHoveringRows] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [selectedRowId, setSelectedRowId] = useState(null); // Thêm state mới để lưu trữ id của hàng được chọn
@@ -277,12 +276,19 @@ export const ManageTreeTrimSchedule = () => {
     },
   ];
 
+  const transformData = (data) => {
+    // Sắp xếp các lịch theo ngày từ mới tới cũ
+    // @ts-ignore or @ts-expect-error
+    return data.sort((a, b) => new Date(b.start) - new Date(a.start));
+  };
+
   return (
     <div>
       <ListView
         ref={ref}
         listURL={TREE_TRIM_SCHEDULE}
         columns={columns}
+        transform={transformData}
         bottom={
           <>
             <Button

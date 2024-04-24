@@ -43,7 +43,7 @@ const Sidebar = () => {
               <span className="smallText d-none d-md-inline ">Trang Chủ</span>
             </NavLink>
           </li>
-          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "HR" || JSON.parse(token.accessToken).role == "Manager") && (
+          {(JSON.parse(token.accessToken).role == "Admin" || JSON.parse(token.accessToken).role == "Manager") && (
             <li className="listItem">
               <NavLink to="/manage-report" className="menuLink flex">
                 <TbLayoutDashboard className="icon" />

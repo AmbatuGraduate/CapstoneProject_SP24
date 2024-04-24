@@ -7,7 +7,6 @@ import {
 } from "react";
 
 import { useApi } from "../../Api";
-import { Filter } from "../Filter";
 import SearchBar from "../SearchBar";
 import Table, { Column } from "./Table";
 import "./style.scss";
@@ -71,15 +70,20 @@ export const ListView = forwardRef((props: Props, ref) => {
     fetchData();
   }, []);
 
+  const removeDiacritics = (str: string) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  };
+
   const filterCallBack = (query: string) => {
+    const normalizedQuery = removeDiacritics(query.toLowerCase()); // Loại bỏ dấu từ từ được tìm kiếm
+
     const filter: DataResponse["data"] = unFilterData?.filter((e) => {
       const rowData: string[] = Object.values(e as object);
       return rowData.some((row) => {
-        // console.log(String(row).includes(query));
-        return String(row).toLowerCase().includes(query.toLowerCase());
+        const normalizedRow = removeDiacritics(String(row).toLowerCase()); // Loại bỏ dấu từ từ trong dữ liệu
+        return normalizedRow.includes(normalizedQuery);
       });
     });
-
     // @ts-ignore or @ts-expect-error
     setData({ ...data, data: filter });
   };

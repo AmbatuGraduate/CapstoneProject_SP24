@@ -10,6 +10,15 @@ export const UpdateTreeTrimSchedule = () => {
     const [data, setData] = useState<any>();
     const ref = useRef<any>();
     const [, setIsLoading] = useState(false);
+    const [address, setAddress] = useState<string | null>("");
+    const [startTime, setStartTime] = useState<Date | null>(null);
+
+    const endTime = () => {
+        if (!startTime) return null; // Trả về null nếu không có startTime
+        const newEndTime = new Date(startTime); // Sử dụng startTime làm tham số khởi tạo
+        newEndTime.setMinutes(newEndTime.getMinutes() + 60); // Cộng thêm 00 phút
+        return newEndTime;
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,24 +39,40 @@ export const UpdateTreeTrimSchedule = () => {
             formType: "input",
             keyName: "summary",
             defaultValue: data?.myEvent.summary,
+            pattern: /\S/, // Mẫu kiểm tra không được để trống
+            errorMessage: "Vui lòng nhập tiêu đề công việc",
         },
         {
             label: "Địa Chỉ",
             formType: "input",
             keyName: "location",
             defaultValue: data?.myEvent.location,
+            googleAddress: true,
+            value: address,
+            onChange: (e) => {
+                setAddress(e.target.value);
+            },
+            placeholder: "Nhập địa chỉ",
+            pattern: /\S/, // Mẫu kiểm tra không được để trống
+            errorMessage: "Vui lòng nhập địa chỉ",
         },
         {
             label: "Bắt Đầu Từ",
             formType: "datetime",
             keyName: "start.dateTime",
             defaultValue: data?.myEvent.start,
+            minDate: new Date(),
+            onChange: (datetime) => {
+                setStartTime(datetime);
+            },
         },
         {
             label: "Kết Thúc Trước",
             formType: "datetime",
             keyName: "end.dateTime",
             defaultValue: data?.myEvent.end,
+            minDate: startTime || new Date(),
+            value: endTime(),
         },
         {
             label: "Cây Cần Cẳt",
@@ -130,9 +155,9 @@ export const UpdateTreeTrimSchedule = () => {
                 allowEscapeKey: false,
                 allowOutsideClick: false,
                 didOpen: () => {
-                  Swal.showLoading();
+                    Swal.showLoading();
                 }
-              });
+            });
             await useApi.post(TREE_TRIM_SCHEDULE_UPDATE.replace(":id", id), requestData);
             Swal.close();
             Swal.fire(

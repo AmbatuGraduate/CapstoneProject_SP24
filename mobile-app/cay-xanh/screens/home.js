@@ -164,14 +164,13 @@ export default function Home() {
 
                     var department = user?.department;
                     var calendarId;
-                    if (department.toString().toLowerCase().includes('cay xanh')) {
+                    if (department.toString().toLowerCase().includes('cay xanh') || department.toString().toLowerCase().includes('cây xanh')) {
                         calendarId = 1;
-                    } else if (department.toString().toLowerCase().includes('ve sinh')) {
+                    } else if (department.toString().toLowerCase().includes('thu gom')) {
                         calendarId = 2;
-                    } else if (department.toString().toLowerCase().includes('quet don')) {
+                    } else if (department.toString().toLowerCase().includes('quet don') || department.toString().toLowerCase().includes('quét dọn')) {
                         calendarId = 3;
                     }
-
 
                     const atoken = await AsyncStorage.getItem("@accessToken");;
                     if (atoken !== null) {

@@ -130,9 +130,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5FCFF',
     },
     logo: {
-        width: 150, // Adjust as needed
-        height: 150, // Adjust as needed
-        marginBottom: 50, // Creates some space between the logo and the button
+        width: 150,
+        height: 150,
+        marginBottom: 50,
         resizeMode: 'contain',
     },
     button: {

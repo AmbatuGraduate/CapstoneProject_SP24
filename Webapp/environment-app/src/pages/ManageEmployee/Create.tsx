@@ -16,30 +16,45 @@ export const CreateEmployee = () => {
       formType: "shortInput",
       keyName: "name",
       placeholder: "Ví dụ: Nguyễn",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập họ cho nhân viên",
+      required: true,
     },
     {
       label: "Tên",
       formType: "shortInput",
       keyName: "familyName",
       placeholder: "Ví dụ: Văn A",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập tên cho nhân viên",
+      required: true,
     },
     {
       label: "Email",
       formType: "input",
       keyName: "email",
-      defaultValue: "@vesinhdanang.xyz"
+      defaultValue: "@vesinhdanang.xyz",
+      pattern: /^[^\s@]+@vesinhdanang\.xyz$/,
+      errorMessage: "Vui lòng nhập một địa chỉ email hợp lệ có đuôi @vesinhdanang.xyz",
+      required: true,
     },
     {
       label: "Mật Khẩu",
       formType: "shortInput",
       keyName: "password",
       hiddenInput: "true",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng mật khẩu",
+      required: true,
     },
     {
       label: "Số Điện Thoại",
       formType: "shortInput",
       keyName: "phone",
       placeholder: "Ví dụ: 0123456789",
+      pattern: /^\d{10,11}$/,
+      errorMessage: "Vui lòng nhập đúng số điện thoại",
+      required: true,
     },
     {
       label: "Địa Chỉ",
@@ -50,7 +65,10 @@ export const CreateEmployee = () => {
       onChange: (e) => {
         setAddress(e.target.value);
       },
-      placeholder: "Nhập địa chỉ"
+      placeholder: "Nhập địa chỉ",
+      pattern: /\S/, // Mẫu kiểm tra không được để trống
+      errorMessage: "Vui lòng nhập địa chỉ",
+      required: true,
     },
     {
       label: "Bộ Phận",
@@ -61,11 +79,13 @@ export const CreateEmployee = () => {
         _key: "name",
         _value: "email",
       },
+      required: true,
     },
     {
       label: "Chức Vụ",
       formType: "select",
       keyName: "userRole",
+      defaultValue: 1,
       options: [
         {
           key: "Nhân Viên",
@@ -75,7 +95,12 @@ export const CreateEmployee = () => {
           key: "Quản Lý",
           value: 2,
         },
+        {
+          key: "Quản Lý Nhân Sự",
+          value: 4,
+        },
       ],
+      required: true,
     },
   ];
 

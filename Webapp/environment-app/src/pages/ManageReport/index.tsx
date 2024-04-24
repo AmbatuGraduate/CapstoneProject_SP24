@@ -1,12 +1,9 @@
-import { Button } from "react-bootstrap";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { DELETE_REPORT, REPORT_BY_USER, REPORT_LIST, useApi } from "../../Api";
 import { ListView } from "../../Components/ListView";
 import { Column } from "../../Components/ListView/Table";
 import { ReportImpact, ReportStatus, dayFormat } from "../../utils";
 import { useRef } from "react";
-
-import { MdAddCircleOutline } from "react-icons/md";
 import { useCookies } from "react-cookie";
 import ModalDelete from "../../Components/Modals/ModalDelete";
 
@@ -21,7 +18,6 @@ export const ManageReport = () => {
 
 
   const email = isUser.email;
-  const navigate = useNavigate();
   const ref = useRef<any>();
   // TODO get list
 
@@ -110,13 +106,24 @@ export const ManageReport = () => {
     },
   ];
 
+  const sortReports = (reports) => {
+    return reports.sort((a, b) => {
+      // Sắp xếp theo mức độ ảnh hưởng
+      if (ReportImpact(a.reportImpact).text !== ReportImpact(b.reportImpact).text) {
+        return ReportImpact(a.reportImpact).text.localeCompare(ReportImpact(b.reportImpact).text);
+      }
+      // Nếu cùng mức độ ảnh hưởng, sắp xếp theo trạng thái
+      return ReportStatus(a.reportStatus).text.localeCompare(ReportStatus(b.reportStatus).text);
+    });
+  };
+
   return (
     <div>
       <ListView
         ref={ref}
         listURL={isAdmin ? REPORT_LIST : REPORT_BY_USER.replace(":email", email)}
         columns={columns}
-        transform={(data: any) => data?.value?.map((i) => i.reportFormat) || []}
+        transform={(data: any) => sortReports(data?.value?.map((i) => i.reportFormat) || [])}
       />
     </div>
   );
