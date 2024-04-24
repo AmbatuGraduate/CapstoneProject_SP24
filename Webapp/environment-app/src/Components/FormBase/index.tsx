@@ -40,6 +40,7 @@ export type Field = {
   display?: string;
   pattern?: any; // Thêm pattern
   errorMessage?: string; // Thêm errorMessage
+  minDate?: Date; // Thêm minDate
 } & Partial<Props>;
 
 export type OptionExtra = {
@@ -211,20 +212,30 @@ const FormType = (props: Field) => {
       );
     case "number":
       return (
-        <Form.Control
-          type="number"
-          {...rest}
-          name={keyName}
-          disabled={_disabled}
-          value={formData[keyName]}
-          onChange={(e) => {
-            setFormData((prev) => ({
-              ...prev,
-              [keyName]: Number(e.target.value || 0),
-            }));
-            onChange && onChange(e.target.value || 0);
-          }}
-        />
+        <div className="input-wrapper">
+          <Form.Control
+            type="number"
+            {...rest}
+            name={keyName}
+            disabled={_disabled}
+            value={formData[keyName]}
+            onChange={(e) => {
+              setFormData((prev) => ({
+                ...prev,
+                [keyName]: Number(e.target.value || 0),
+              }));
+              onChange && onChange(e.target.value || 0);
+
+              const inputValue = e.target.value;
+              if (pattern && !new RegExp(pattern).test(inputValue)) {
+                setError(errorMessage || "Invalid input");
+              } else {
+                setError(null);
+              }
+            }}
+          />
+          {error && <Form.Text className="text-danger">{error}</Form.Text>}
+        </div>
       );
     case "textarea":
       return (
@@ -315,6 +326,7 @@ const FormType = (props: Field) => {
             className="datepicker"
             name={keyName}
             disabled={_disabled}
+            minDate={rest.minDate}
           />
           <FaRegCalendarAlt className="calendar-icon" />
         </div>
@@ -374,7 +386,7 @@ export const FormBase = (props: Props) => {
         }
         return (
           <Form.Group className={`mb-3 ${groupClassName}`} key={idx}>
-            <Form.Label>{f.label}</Form.Label>
+            <Form.Label className={f.required ? "required-label" : ""}>{f.label}</Form.Label>
             <FormType
               setFormData={setFormData}
               formData={formData}

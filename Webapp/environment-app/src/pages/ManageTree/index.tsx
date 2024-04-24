@@ -89,12 +89,22 @@ export const ManageTree = () => {
     },
   ];
 
+  const transformData = (data: any) => {
+    // Filter các cây với trạng thái isCut là false trước
+    const notCutTrees = data.filter((tree: any) => !tree.isCut);
+    // Filter các cây với trạng thái isCut là true
+    const cutTrees = data.filter((tree: any) => tree.isCut);
+    // Nối hai mảng lại với nhau, đảm bảo các cây chưa cắt sẽ xuất hiện trước
+    return [...notCutTrees, ...cutTrees];
+  };
+
   return (
     <div>
       <ListView
         ref={ref}
         listURL={TREE_LIST}
         columns={columns}
+        transform={transformData}
         bottom={
           ((JSON.parse(token.accessToken).role == "Manager" || JSON.parse(token.accessToken).role == "Admin") && (
             <Button
