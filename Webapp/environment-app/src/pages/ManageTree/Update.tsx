@@ -89,7 +89,7 @@ export const UpdateTree = () => {
       label: "Người Phụ Trách",
       formType: "shortInput",
       keyName: "email",
-      defaultValue: data?.user,
+      defaultValue: "cayxanh@vesinhdanang.xyz",
       disabled: true,
     },
     {
