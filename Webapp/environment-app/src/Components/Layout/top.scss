@@ -1,0 +1,95 @@
+.topSection {
+  .headerSection {
+    justify-content: space-between;
+
+    .title {
+      h1 {
+        font-size: var(--h1FontSize);
+        color: var(--blackColor);
+        font-weight: 700;
+      }
+
+      p {
+        font-size: var(--h3FontSize);
+        color: var(--textColor);
+        font-weight: 500;
+      }
+    }
+
+    .adminDiv {
+      gap: 1rem;
+
+      .icon {
+        font-size: var(--biggestFontSize);
+        background: var(--whiteColor);
+        border-radius: 5px;
+        padding: 5px;
+        box-shadow: 0 2px 4px var(--inputColor);
+        color: var(--textColor);
+      }
+
+      .adminImage {
+        display: inline-block;
+        border: 3px solid var(--whiteColor);
+        border-radius: 10px;
+        width: 3rem;
+        height: 3rem;
+        overflow: hidden;
+        box-shadow: 0 2px 4px var(--inputColor);
+
+        .dropbtn {
+          border: none;
+          outline: none;
+          background: none;
+          cursor: pointer;
+        }
+
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+        }
+
+        .dropdown-menu {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          background-color: var(--whiteColor);
+          padding: 0;
+          min-width: auto;
+          right: 2rem;
+          top: 6.5rem;
+          border: none;
+          box-shadow: 0 2px 4px var(--inputColor);
+          border-radius: 5px;
+
+          button {
+            border: none;
+            background-color: var(--whiteColor);
+            font-size: var(--normalFontSize);
+            padding: 0.5rem;
+            border-radius: 5px;
+
+            h6 {
+              font-size: var(--h3FontSize);
+              margin: 0;
+              padding-left: 0.5rem;
+            }
+
+            .dropIcon {
+              font-size: var(--h1FontSize);
+            }
+          }
+          button:hover {
+            background-color: var(--paleGreen);
+            color: var(--blackColor);
+            border: var(--paleGreen);
+          }
+          .menuLine {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+}

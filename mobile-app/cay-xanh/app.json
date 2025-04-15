@@ -1,5 +1,13 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Cho phép ecoHub truy cập vị trí."
+        }
+      ]
+    ],
     "name": "cay-xanh",
     "slug": "cay-xanh",
     "version": "1.0.0",
@@ -18,15 +26,25 @@
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCp5s2EfbrVp4Lctv5Zc01PQdy-AvW2kOU"
+        }
       },
       "package": "com.aobnao9.cayxanh"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "scheme": "cayxanh",
     "extra": {
       "eas": {
         "projectId": "1e87e928-b177-44c8-933d-7a48b9765133"

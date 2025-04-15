@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Routes from './navigations/drawer';
 import * as SplashScreen from 'expo-splash-screen'; // loading screen
 import { RootSiblingParent } from 'react-native-root-siblings'; // show toast all app
+import 'react-native-url-polyfill/auto'; // fix url error
 
 
 /*************************************************************
@@ -27,6 +28,7 @@ export default function App() {
         await Font.loadAsync({
           'nunito-regular': require('./assets/fonts/static/NunitoSans_7pt-Regular.ttf'),
           'nunito-bold': require('./assets/fonts/static/NunitoSans_7pt-SemiBold.ttf'),
+          'quolibet': require('./assets/fonts/static/QuodlibetSans-Regular.ttf'),
         });
       } catch (e) {
         console.warn(e);

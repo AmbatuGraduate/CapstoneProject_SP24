@@ -1,0 +1,3 @@
+- `AccessTokenData.cs` là thông tin của access token sau khi mã hóa ra
+- `GoogleAuthenticationResult.cs` là dữ liệu sẽ trả về cho bên `API` bao gồm tên, ảnh, hạn, jwt token và refresh token
+- `GoogleRefreshResult.cs` thì giống như `GoogleAuthenticationResult.cs` ngoài trừ việc sẽ không có refresh token trả về

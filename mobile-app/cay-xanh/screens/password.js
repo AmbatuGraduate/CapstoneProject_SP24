@@ -57,7 +57,7 @@ export default function Password() {
 
             {/* ------------------------------------------------------------------- */}
             {/* Edit profile Container */}
-            <FlatButton text='Đổi mật khẩu' onPress={() => alert('pass')}></FlatButton>
+            <FlatButton text='Đổi mật khẩu' iconName="check" onPress={() => alert('pass')}></FlatButton>
         </View >
     )
 }

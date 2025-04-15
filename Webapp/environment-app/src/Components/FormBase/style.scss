@@ -1,0 +1,157 @@
+.datepicker {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.form-base {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 16px;
+    width: 70%;
+    margin: auto;
+    font-weight: 600;
+    gap: 30px;
+    margin-top: 40px;
+    justify-content: space-between;
+
+    > div {
+        width: 48%;
+    }
+
+    > div:last-child {
+        width: 100%;
+    }
+
+    button {
+        min-width: 100px;
+        float: right;
+        --bs-btn-border-radius: none;
+        border: none;
+    }
+
+    .custom-group-input,
+    .custom-group-textarea {
+        width: 100%;
+    }
+
+    input,
+    number,
+    select,
+    date,
+    datetime {
+        height: 3.5rem;
+        border-radius: 0;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    textarea {
+        border-radius: 0;
+    }
+
+    input:hover {
+        box-shadow: 0 0 5px rgba(0, 128, 0, 0.5);
+    }
+
+    input::placeholder {
+        color: grey;
+        font-style: italic;
+        font-size: 1rem;
+    }
+
+    .date-picker-container {
+        position: relative;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-wrapper .text-danger {
+        position: absolute;
+        bottom: -20px; /* Điều chỉnh khoảng cách giữa trường nhập liệu và thông báo lỗi */
+    }
+
+    .required-label::after {
+        content: "*";
+        color: red;
+        padding-left: 2px;
+    }
+
+    .date-picker-container .calendar-icon {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        color: #888;
+        z-index: 1;
+    }
+
+    .btnSave {
+        margin-right: 0;
+        padding: 0.5rem;
+        background-color: white;
+        --bs-btn-border-radius: none;
+        color: var(--PrimaryColor);
+        border-radius: 1.5rem;
+        border: 2px solid var(--PrimaryColor);
+        font-weight: bold;
+
+        &:hover {
+            background-color: var(--PrimaryColor);
+            border: 2px solid var(--PrimaryColor);
+        }
+    }
+
+    .btnCancel {
+        margin-right: 2rem;
+        padding: 0.5rem;
+        background-color: white;
+        --bs-btn-border-radius: none;
+        color: #c82333;
+        border-radius: 1.5rem;
+        border: 2px solid #c82333;
+        font-weight: bold;
+
+        &:hover {
+            background-color: #c82333;
+            border: 2px solid #c82333;
+        }
+    }
+}
+
+.form-cover {
+    position: relative;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 24px;
+    min-height: calc(100vh - 150px);
+    box-shadow: 1px 11px 15px rgba(65, 50, 50, 0.1);
+    display: flex;
+    flex-direction: column;
+
+    h4 {
+        border-bottom: 1px solid rgb(212, 212, 212);
+        padding-bottom: 12px;
+    }
+
+    > form {
+        padding-top: 10px;
+    }
+}

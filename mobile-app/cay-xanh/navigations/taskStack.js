@@ -3,6 +3,8 @@ import React from 'react';
 import Header from '../shared/header';
 import TasksList from '../screens/tasks';
 import TaskDetails from '../screens/taskDetails';
+import { Image, View } from 'react-native';
+import SharedMap from '../shared/map';
 
 /*************************************************************
 **________________ TASK NAVIGATION OF APP __________________**
@@ -21,14 +23,34 @@ function TaskStackRouting() {
                 options={
                     {
                         title: 'Chi tiết công việc',
-                        headerTintColor: '#333',
+                        headerTintColor: 'skyblue',
                         headerStyle: {
-                            backgroundColor: '#cffdbc',
                             height: 60,
-                        }
+                        },
+                        headerBackground: () => (
+                            <React.Fragment>
+                                <Image
+                                    style={{ width: '100%', height: '100%', position: 'absolute' }}
+                                    source={require('../assets/game_bg.png')}
+                                />
+                                <View
+                                    style={{
+                                        position: 'absolute',
+                                        width: '100%',
+                                        height: '100%',
+                                    }}
+                                />
+                            </React.Fragment>
+                        )
 
                     }
                 }></Stack.Screen>
+            <Stack.Screen name="MapsView" component={SharedMap}
+                options={{
+                    title: 'Vị trí trên bản đồ',
+                    headerTintColor: 'skyblue',
+                }}>
+            </Stack.Screen>
         </Stack.Navigator>
     )
 }

@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ImageBackground } from "react-native";
 
 /*************************************************************
 **                      CUSTOM HEADER                       **
@@ -8,42 +8,41 @@ import { StyleSheet, Text, View } from "react-native";
 *************************************************************/
 
 
-export default function Header({ navigation, title }) {
+export default function Header({ navigation, title, customDrawerProp }) {
     const openMenu = () => {
         navigation.openDrawer();
     }
     return (
-
-        <View style={styles.header}>
-            <MaterialIcons style={styles.icon} name="menu" size={28} onPress={openMenu} ></MaterialIcons>
+        <ImageBackground source={require('../assets/game_bg.png')} style={styles.header}>
+            <MaterialIcons style={styles.icon} name="menu" size={28} onPress={openMenu} />
             <Text style={styles.headerText}>{title}</Text>
-        </View>
+            <View style={{ width: '12%' }}></View>
+        </ImageBackground>
     )
 }
 
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        height: '100%',
-        flex: 1,
         flexDirection: 'row',
-        backgroundColor: '#fff'
+        backgroundColor: '#fff',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
     },
     headerText: {
+        fontFamily: 'nunito-regular',
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 16,
         color: '#333',
         letterSpacing: 1,
+        textAlign: 'center',
+        alignSelf: 'center',
+        flex: 1,
     },
     icon: {
-        borderColor: '#333'
+        borderColor: '#333',
+        color: '#01796E',
     },
-    headerImg: {
-        width: 26,
-        height: 26,
-        marginHorizontal: 10,
-    },
-    headerTitle: {
-        flexDirection: 'row',
-    }
+
 });
